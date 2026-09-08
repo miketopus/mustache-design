@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content · Voice and tone — Mustache Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08080A;--bg-2:#0C0C0E;--panel:#121214;--panel-2:#18181B;--tile:#0E0E10;
+    --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.15);
+    --text:#F5F5F6;--muted:#96969C;--muted-2:#65656B;--white:#FFFFFF;
+    --display:'Sora',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --radius:16px;--topbar:64px;--side:288px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .display{font-family:var(--display);letter-spacing:-.02em;font-weight:800;line-height:1.05}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+
+  /* ---------- top bar ---------- */
+  .topbar{position:sticky;top:0;z-index:60;height:var(--topbar);display:flex;align-items:center;gap:20px;
+    padding:0 22px;background:rgba(10,10,12,.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+  .tb-brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+  .tb-logo{width:38px;height:38px;border-radius:11px;background:var(--tile);border:1px solid var(--line);display:grid;place-items:center;overflow:hidden}
+  .tb-brand b{font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:-.01em;line-height:1}
+  .tb-brand small{display:block;font-size:7.5px;letter-spacing:.32em;color:var(--muted-2);font-weight:600;margin-top:2px}
+  .tb-nav{display:flex;gap:2px;margin-left:14px}
+  .tb-nav a{font-size:14px;color:var(--muted);font-weight:500;padding:9px 13px;border-radius:11px;transition:.16s;white-space:nowrap}
+  .tb-nav a:hover{color:var(--text);background:var(--panel-2)}
+  .tb-nav a.on{color:var(--text);background:var(--panel-2);border:1px solid var(--line)}
+  .tb-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .tb-login{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#0A0A0C;background:var(--white);
+    padding:9px 15px;border-radius:11px;white-space:nowrap}
+  .tb-login svg{width:12px;height:12px}
+  @media(max-width:960px){.tb-nav{display:none}}
+
+  /* ---------- shell ---------- */
+  .shell{display:flex;align-items:flex-start}
+  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));
+    overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
+  .sb-group{margin-bottom:26px}
+  .sb-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text);
+    font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
+  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
+  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
+  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
+  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
+  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
+  .sb-soon .sb-title{color:var(--muted-2)}
+  .sb-soon .sb-title .dot{background:var(--muted-2)}
+  .sb-soon .tag{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
+    border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-weight:600;margin-left:auto}
+  .sb-lock{width:11px;height:11px;color:var(--muted-2)}
+
+  /* ---------- main ---------- */
+  .main{flex:1;min-width:0;padding:44px 56px 120px}
+  .main-inner{max-width:800px;margin:0 auto}
+  .crumb{font-size:13px;color:var(--muted-2);margin-bottom:20px;display:flex;gap:8px;align-items:center}
+  .crumb b{color:var(--muted);font-weight:500}
+  .page-h1{font-size:clamp(34px,5vw,52px);margin-bottom:18px}
+  .page-lead{font-size:18px;color:var(--muted);max-width:640px;margin-bottom:16px}
+  .page-lead + .page-lead{margin-top:-4px}
+
+  section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
+  section.doc:first-of-type{padding-top:40px}
+  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
+  .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
+  .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
+  .doc h4{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);margin:26px 0 12px}
+  .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
+  .doc p strong{color:var(--text);font-weight:600}
+  .doc p em{color:var(--muted-2);font-style:normal}
+  .hr{height:1px;background:var(--line);margin:8px 0}
+
+  /* attribute / archetype cards */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0 8px}
+  .cards.two{grid-template-columns:repeat(2,1fr)}
+  .acard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;transition:.22s}
+  .acard:hover{border-color:var(--line-2);background:var(--panel-2)}
+  .acard .k{font-family:var(--display);font-weight:700;font-size:17px;margin-bottom:8px;letter-spacing:-.01em}
+  .acard p{font-size:14px;color:var(--muted);margin-bottom:0}
+  .acard .not{display:block;margin-top:12px;font-size:13px;color:var(--muted-2)}
+  .acard .not b{color:var(--muted);font-weight:600}
+  @media(max-width:820px){.cards,.cards.two{grid-template-columns:1fr}}
+
+  /* es / no es */
+  .esnoes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  .en-col{border-radius:var(--radius);padding:20px 22px;border:1px solid var(--line)}
+  .en-yes{background:var(--panel);border-left:3px solid var(--white)}
+  .en-no{background:transparent;border:1px dashed var(--line-2)}
+  .en-col .lab{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+  .en-yes .lab{color:var(--text)}
+  .en-no .lab{color:var(--muted-2)}
+  .en-col .lab svg{width:15px;height:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:14px;font-weight:500;padding:7px 13px;border-radius:10px}
+  .en-yes .chip{background:var(--panel-2);border:1px solid var(--line-2);color:var(--text)}
+  .en-no .chip{background:transparent;border:1px solid var(--line);color:var(--muted-2)}
+  @media(max-width:820px){.esnoes{grid-template-columns:1fr}}
+
+  /* stages */
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px 24px;margin-bottom:14px}
+  .stage .st-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+  .stage h3{margin:0;font-size:20px}
+  .stage .tone-pill{font-size:12.5px;color:var(--text);background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;font-weight:600;white-space:nowrap}
+  .stage p{font-size:14.5px;margin-bottom:10px}
+  .stage p:last-child{margin-bottom:0}
+
+  /* example messages */
+  .msg{border-left:3px solid var(--line-2);background:var(--bg-2);border-radius:0 12px 12px 0;
+    padding:14px 18px;margin:12px 0;color:var(--text);font-size:14.5px;line-height:1.6}
+  .msg + .msg{margin-top:8px}
+
+  /* callout / note */
+  .note{display:flex;gap:12px;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:16px 0}
+  .note svg{width:17px;height:17px;flex-shrink:0;margin-top:2px;color:var(--muted)}
+  .note p{margin:0;font-size:14px;color:var(--muted)}
+  .note p b{color:var(--text)}
+
+  /* visual-only marker */
+  .visual{display:flex;align-items:center;gap:12px;border:1px dashed var(--line-2);border-radius:12px;
+    padding:16px 18px;margin:16px 0;color:var(--muted-2);font-size:13.5px}
+  .visual svg{width:18px;height:18px;flex-shrink:0}
+  .visual b{color:var(--muted);font-weight:600}
+
+  /* bullet lists */
+  .doc ul{list-style:none;margin:6px 0 16px;padding:0}
+  .doc ul li{position:relative;padding-left:20px;color:var(--muted);font-size:15px;margin-bottom:9px}
+  .doc ul li::before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--muted-2)}
+  .doc ul li strong{color:var(--text);font-weight:600}
+
+  .backtop{display:inline-flex;align-items:center;gap:7px;margin-top:50px;font-size:13px;color:var(--muted-2);
+    border:1px solid var(--line);border-radius:10px;padding:8px 14px;transition:.16s}
+  .backtop:hover{color:var(--text);border-color:var(--line-2)}
+
+  /* tables */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:18px 0}
+  .doc table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:440px}
+  .doc th,.doc td{text-align:left;padding:11px 15px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top;color:var(--muted);line-height:1.5}
+  .doc th:last-child,.doc td:last-child{border-right:none}
+  .doc tr:last-child td{border-bottom:none}
+  .doc th{background:var(--panel-2);color:var(--text);font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+  .doc td strong{color:var(--text);font-weight:600}
+  .doc tbody tr:hover td{background:rgba(255,255,255,.02)}
+  .tcap{font-size:12.5px;color:var(--muted-2);margin:-6px 0 4px}
+  /* shortcut/tile grid */
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .tile{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px;transition:.2s}
+  .tile:hover{border-color:var(--line-2);background:var(--panel-2);transform:translateY(-2px)}
+  .tile .tk{font-family:var(--display);font-weight:700;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .tile .tk svg{width:14px;height:14px;color:var(--muted-2)}
+  .tile p{font-size:13px;color:var(--muted);margin:0}
+  @media(max-width:820px){.tiles{grid-template-columns:1fr}}
+  .quote{border-left:3px solid var(--line-2);padding:6px 0 6px 18px;margin:14px 0;color:var(--text);font-family:var(--display);font-weight:600;font-size:16px}
+
+  @media(max-width:760px){
+    .sidebar{display:none}
+    .main{padding:32px 22px 90px}
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <a href="index.html" class="tb-brand" aria-label="Mustache Design System">
+    <span class="tb-logo">
+      <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="2" y="2" width="24" height="3" rx="1" fill="url(#c1)"/>
+        <path d="M2 8C2 7.44772 2.44772 7 3 7H25C25.5523 7 26 7.44772 26 8V9C26 9.55228 25.5523 10 25 10H3C2.44772 10 2 9.55228 2 9V8Z" fill="url(#c2)"/>
+        <path d="M10.5139 25.0532C10.372 25.0532 10.2655 25.0355 10.1946 25C10.1236 24.9527 10.0881 24.8877 10.0881 24.8049C10.0881 24.6984 10.1354 24.6334 10.2301 24.6097C10.3365 24.5743 10.4547 24.5329 10.5848 24.4856C10.8568 24.391 11.0934 24.2254 11.2944 23.9889C11.5073 23.7523 11.6374 23.4508 11.6847 23.0842C11.7556 22.5402 11.8266 21.872 11.8975 21.0797C11.9803 20.2755 12.0631 19.4181 12.1459 18.5075C12.2287 17.5969 12.2996 16.6981 12.3587 15.8111C12.3706 15.7402 12.3765 15.6515 12.3765 15.545C12.3765 15.4386 12.3765 15.3263 12.3765 15.208C12.3765 14.9951 12.341 14.8296 12.2701 14.7113C12.2109 14.5812 12.1045 14.4748 11.9507 14.392C11.8088 14.2974 11.6551 14.2205 11.4895 14.1614C11.324 14.0904 11.1466 14.0313 10.9574 13.984C10.8154 13.9485 10.7031 13.9012 10.6203 13.8421C10.5375 13.783 10.4961 13.7061 10.4961 13.6115C10.4961 13.505 10.5434 13.4341 10.6381 13.3986C10.7327 13.3631 10.845 13.3454 10.9751 13.3454C11.1525 13.3454 11.3713 13.3513 11.6314 13.3631C11.8916 13.375 12.1754 13.3868 12.4829 13.3986C12.8022 13.3986 13.1215 13.4045 13.4408 13.4163C13.772 13.4282 14.0735 13.4341 14.3455 13.4341C14.4401 13.4341 14.5288 13.4696 14.6116 13.5405C14.6944 13.5997 14.7476 13.6706 14.7713 13.7534C14.8541 13.9781 14.9309 14.1969 15.0019 14.4097C15.0728 14.6108 15.1497 14.8237 15.2325 15.0483L17.8401 21.2748C17.8638 21.3221 17.8934 21.3517 17.9288 21.3635C17.9761 21.3635 18.0116 21.3339 18.0353 21.2748L20.572 15.3854C20.6547 14.9715 20.7198 14.6344 20.7671 14.3743C20.8262 14.1141 20.8794 13.9071 20.9267 13.7534C20.9741 13.5997 21.0687 13.5228 21.2106 13.5228H21.9734C22.4701 13.4991 22.9845 13.4637 23.5167 13.4163C24.0607 13.3572 24.4864 13.3277 24.7939 13.3277C24.9121 13.3277 25.0127 13.3513 25.0954 13.3986C25.1901 13.4341 25.2374 13.4991 25.2374 13.5937C25.2374 13.7002 25.196 13.777 25.1132 13.8243C25.0422 13.8717 24.9476 13.913 24.8294 13.9485C24.7584 13.9722 24.6756 14.0077 24.581 14.055C24.4864 14.0904 24.4036 14.1259 24.3327 14.1614C24.0252 14.3033 23.7946 14.4689 23.6408 14.6581C23.4989 14.8355 23.4398 15.1252 23.4634 15.5273C23.4871 16.3788 23.5167 17.1238 23.5521 17.7624C23.5876 18.401 23.6172 18.9923 23.6408 19.5363C23.6763 20.0803 23.7118 20.648 23.7473 21.2393C23.7946 21.8188 23.8419 22.4988 23.8892 23.2793C23.9128 23.5868 24.037 23.8351 24.2617 24.0243C24.4982 24.2017 24.8057 24.3377 25.1841 24.4323C25.3024 24.4678 25.4029 24.5092 25.4857 24.5565C25.5685 24.6038 25.6099 24.6807 25.6099 24.7871C25.6099 24.8699 25.5744 24.935 25.5034 24.9823C25.4325 25.0296 25.3438 25.0532 25.2374 25.0532C24.9772 25.0532 24.6756 25.0414 24.3327 25.0177C24.0015 25.0059 23.6704 24.9941 23.3393 24.9823C23.02 24.9704 22.7421 24.9645 22.5055 24.9645C22.269 24.9645 22.0029 24.9704 21.7073 24.9823C21.4234 24.9941 21.1337 25.0059 20.8381 25.0177C20.5424 25.0414 20.2586 25.0532 19.9866 25.0532C19.8801 25.0532 19.7855 25.0355 19.7027 25C19.62 24.9527 19.5786 24.8877 19.5786 24.8049C19.5786 24.6984 19.62 24.6157 19.7027 24.5565C19.7855 24.4974 19.8861 24.456 20.0043 24.4323C20.4419 24.3496 20.7434 24.2313 20.909 24.0776C21.0746 23.912 21.1514 23.6459 21.1396 23.2793C21.1041 22.5461 21.0746 21.8188 21.0509 21.0974C21.0273 20.3642 21.0036 19.6487 20.98 18.951C20.9681 18.2414 20.9445 17.5555 20.909 16.8932C20.909 16.8104 20.8854 16.775 20.8381 16.7868C20.8026 16.7868 20.7671 16.8282 20.7316 16.911L17.3434 24.9645C17.2843 25.1301 17.1956 25.201 17.0774 25.1774C16.9591 25.1537 16.8763 25.0946 16.829 25C16.2495 23.6282 15.6405 22.2741 15.0019 20.9377C14.3751 19.6014 13.7956 18.2769 13.2634 16.9642C13.228 16.8577 13.1688 16.8223 13.0861 16.8577C13.0151 16.8814 12.9737 16.9583 12.9619 17.0883C12.9264 17.6797 12.8968 18.3301 12.8732 19.0397C12.8495 19.7374 12.8377 20.447 12.8377 21.1683C12.8377 21.8779 12.8377 22.5402 12.8377 23.1551C12.8377 23.4863 12.9441 23.7583 13.157 23.9711C13.3699 24.1722 13.7069 24.3259 14.1681 24.4323C14.2864 24.456 14.3987 24.4974 14.5052 24.5565C14.6116 24.6038 14.6648 24.6807 14.6648 24.7871C14.6648 24.8699 14.6175 24.935 14.5229 24.9823C14.4283 25.0296 14.3278 25.0532 14.2214 25.0532C13.9021 25.0532 13.6537 25.0414 13.4763 25.0177C13.2989 25.0059 13.1393 25 12.9974 25C12.8554 24.9882 12.6603 24.9823 12.412 24.9823C12.1518 24.9823 11.8857 24.9882 11.6137 25C11.3417 25.0118 11.1052 25.0237 10.9041 25.0355C10.7031 25.0473 10.573 25.0532 10.5139 25.0532Z" fill="#F5F5F6"/>
+        <defs>
+          <linearGradient id="c1" x1="2" y1="3.5" x2="26" y2="3.5" gradientUnits="userSpaceOnUse"><stop stop-color="#FF2526"/><stop offset="0.934543" stop-color="#FF4583"/></linearGradient>
+          <linearGradient id="c2" x1="2" y1="8.5" x2="26" y2="8.5" gradientUnits="userSpaceOnUse"><stop stop-color="#FF4583"/><stop offset="1" stop-color="#FF7A4D"/></linearGradient>
+        </defs>
+      </svg>
+    </span>
+    <span><b>Mustache</b><small>DESIGN SYSTEM</small></span>
+  </a>
+  <nav class="tb-nav">
+    <a href="#">Design</a>
+    <a href="content.html" class="on">Content</a>
+    <a href="#">Components</a>
+    <a href="#">Brand</a>
+    <a href="#">Resources</a>
+  </nav>
+  <div class="tb-right">
+    <a href="#" class="tb-login"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Login</a>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="eyebrow" style="padding:0 12px 14px">Content</div>
+
+    <div class="sb-group">
+      <div class="sb-title"><span class="dot"></span> Voice and tone</div>
+      <nav class="sb-links">
+        <a href="#tone-ux" class="on">Tone of voice &amp; UX guidelines</a>
+        <a href="#arquetipos">Los arquetipos de Rappi</a>
+        <a href="#voz">La voz de Rappi</a>
+        <a href="#tono">El tono de Rappi</a>
+        <a href="#etapas">Nuestro tono en cada etapa</a>
+        <a href="#b2b">B2B Voice &amp; Tone</a>
+      </nav>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-title"><span class="dot"></span> Product content</div>
+      <nav class="sb-links">
+        <a href="#pc-que">Qué es y para qué sirve</a>
+        <a href="#pc-principios">Content Principles</a>
+        <a href="#pc-tips">Tips</a>
+      </nav>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-title"><span class="dot"></span> Grammar guidelines</div>
+      <nav class="sb-links">
+        <a href="#gr-orto">Ortografía</a>
+        <a href="#gr-estilo">Estilo</a>
+        <a href="#gr-voz">Voz activa y pasiva</a>
+        <a href="#gr-abrev">Abreviaciones</a>
+        <a href="#gr-lenguaje">Lenguaje simple</a>
+        <a href="#gr-titulos">Títulos y subtítulos</a>
+        <a href="#gr-nombres">Nombres de productos</a>
+        <a href="#gr-microcopy">Microcopy</a>
+        <a href="#gr-botones">Botones y links</a>
+        <a href="#gr-fechas">Fechas y números</a>
+        <a href="#gr-unidades">Unidades de medida</a>
+        <a href="#gr-moneda">Moneda</a>
+        <a href="#gr-tropicalizacion">Tropicalización</a>
+        <a href="#gr-restringidas">Palabras restringidas</a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <div class="main-inner">
+
+      <div class="crumb"><b>Content</b> <span>/</span> Voice and tone</div>
+      <h1 class="page-h1 display">Voice and tone</h1>
+      <p class="page-lead">Conoce cómo es la voz (personalidad) y el tono (estilo) de Rappi.</p>
+      <p class="page-lead">Encuentra, paso a paso, la manera ideal para hacer de nuestra marca una más consistente en todos los productos, servicios y formatos en los que tiene presencia.</p>
+
+      <!-- 1 -->
+      <section class="doc" id="tone-ux">
+        <div class="sec-num">01</div>
+        <h2>Tone of voice and UX guidelines</h2>
+        <p>Conoce cómo es la voz (personalidad) y el tono (estilo) de Rappi.</p>
+
+        <h3>Voz y tono</h3>
+        <p>La voz y el tono de Rappi son eso que la diferencia de manera significativa de cualquier otra app, la hace sentir humana, clara, fresca y con personalidad.</p>
+        <p>La <strong>voz</strong> de una marca se mantiene con el tiempo, es el ejemplo perfecto de quién es y su personalidad. <em>Esta puede entenderse de la misma manera que lo hace la identidad visual.</em></p>
+        <p>El <strong>tono</strong>, por su parte, es el estilo que posee una marca al momento de comunicar, guiar y ayudar a las personas en los diferentes contextos. ¡Es cómo nuestro producto habla con los usuarios y se adapta a sus emociones y sentimientos!</p>
+      </section>
+
+      <!-- 2 -->
+      <section class="doc" id="arquetipos">
+        <div class="sec-num">02</div>
+        <h2>Los arquetipos de Rappi</h2>
+        <p>Cuando hablamos de los arquetipos de una marca, hacemos referencia a esos rasgos de su personalidad que la hacen única a través de su voz y tono.</p>
+        <p>En Rappi, nuestros arquetipos reflejan aquello que nos hace ser innovadores, disruptivos y diferentes en cualquier acción.</p>
+
+        <h3>Nuestros arquetipos</h3>
+        <div class="cards">
+          <div class="acard"><div class="k">The Hero</div><p>Nuestra imagen es la de un líder, la representación ideal de una persona honesta que se esfuerza por hacer un cambio positivo en la vida de las demás personas.</p></div>
+          <div class="acard"><div class="k">The Rebel</div><p>Uno de los rasgos principales de nuestra personalidad. Gracias a este podemos ser disruptivos, valientes e innovadores sin temerle al error, creando nuevas funcionalidades que lo revolucionen todo.</p></div>
+          <div class="acard"><div class="k">The Ruler</div><p>Nuestro esfuerzo por gestionar y adaptarnos de la mejor forma a las diferentes situaciones, brindar las mejores experiencias y crear soluciones significativas para nuestros usuarios.</p></div>
+        </div>
+
+        <h3>Los arquetipos de Soy Rappi</h3>
+        <div class="cards">
+          <div class="acard"><div class="k">Héroe</div><p>Nuestra proactividad y disposición nos hace estar siempre listos para atender el llamado en cualquier ciudad y hora. A través de cada Rappi tenemos la oportunidad de transformar las ciudades donde tenemos presencia.</p></div>
+          <div class="acard"><div class="k">Cuidador</div><p>Uno de los rasgos principales de nuestra personalidad. Cuidamos de nuestros repartidores para que ellos a su vez cuiden a los usuarios. Hacemos lo mejor que podemos y un poco más.</p></div>
+          <div class="acard"><div class="k">Líder</div><p>Entendemos que la responsabilidad de ser mejores está en nosotros mismos, por eso no nos asusta hacer las cosas diferentes y ser referentes; al contrario, esto nos motiva.</p></div>
+        </div>
+
+        <div class="visual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span><b>Sentimientos</b> y <b>Feelings Wheel</b> — contenido visual en el sitio (diagramas), sin texto para transcribir.</span></div>
+      </section>
+
+      <!-- 3 -->
+      <section class="doc" id="voz">
+        <div class="sec-num">03</div>
+        <h2>La voz de Rappi</h2>
+        <p>Rappi se caracteriza por tener una personalidad <strong>honesta, valiente y práctica</strong>.</p>
+        <p>A través de ella representamos que somos la superapp que le ayuda a hacer su vida más fácil a las personas; por eso cada frase, botón o pantalla, tanto dentro como fuera de la app, debe demostrarlo.</p>
+
+        <h3>Su voz</h3>
+        <div class="cards">
+          <div class="acard"><div class="k">Honesta</div><p>En cada situación, decisión y acción da muestra de lo que la hace única. La verdad es su única forma de comunicar.</p><span class="not"><b>No es:</b> impaciente, desinteresada, forzada, tímida o individualista.</span></div>
+          <div class="acard"><div class="k">Valiente</div><p>Su forma de solucionar cualquier eventualidad demuestra que no hay obstáculos para hacer las cosas bien y hacerte sentir especial.</p><span class="not"><b>No es:</b> ansiosa, desmesurada ni distraída.</span></div>
+          <div class="acard"><div class="k">Práctica</div><p>Cuando se trata de dejar atrás las complejidades de la vida, es la primera en hacerlo posible sin enredos ni burocracias.</p><span class="not"><b>No es:</b> mediocre, problemática ni inexperta.</span></div>
+        </div>
+
+        <h3>La voz de Soy Rappi</h3>
+        <p>Nuestra voz se mantiene casi igual cuando les hablamos a nuestros repartidores. Sin embargo, sabemos que sus necesidades son diferentes y en ese sentido nos adaptamos.</p>
+        <div class="cards">
+          <div class="acard"><div class="k">Honesta</div><p>Transparente, detallada, precisa. Generamos confianza en cada interacción.</p><span class="not"><b>No es:</b> distante, confusa ni superficial.</span></div>
+          <div class="acard"><div class="k">Amable</div><p>Acompaña a los repartidores en todo momento. Siempre tiene un consejo, recomendación o explicación de cómo funcionan las cosas.</p><span class="not"><b>No es:</b> indiferente ni descuidada.</span></div>
+          <div class="acard"><div class="k">Práctica</div><p>Decimos las cosas puntuales, sencillas y con la intención de resolver, no de confundir. Nuestra voz se enfrenta al afán, la calle, el estrés y otras situaciones del día a día.</p><span class="not"><b>No es:</b> ambigua, compleja ni dubitativa.</span></div>
+        </div>
+
+        <div class="visual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span><b>Guía de voz</b> — contenido visual en el sitio, sin texto para transcribir.</span></div>
+      </section>
+
+      <!-- 4 -->
+      <section class="doc" id="tono">
+        <div class="sec-num">04</div>
+        <h2>El tono de Rappi</h2>
+        <p>En una marca tan diversa y con diferentes etapas como Rappi, debemos tener presente sus diversas formas de comunicar para lograr que nuestra interfaz guíe y conecte con nuestras personas usuarias.</p>
+        <p>El tono de Rappi se adapta según el contexto, sentimientos y emociones de los usuarios; cada etapa es un punto de partida para conectar y brindar la mejor solución.</p>
+
+        <div class="esnoes">
+          <div class="en-col en-yes">
+            <div class="lab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Nuestro tono es</div>
+            <div class="chips"><span class="chip">Comprometido</span><span class="chip">Cercano</span><span class="chip">Buena onda</span></div>
+          </div>
+          <div class="en-col en-no">
+            <div class="lab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg> No es</div>
+            <div class="chips"><span class="chip">Confianzudo</span><span class="chip">Formal</span><span class="chip">Sarcástico</span></div>
+          </div>
+        </div>
+
+        <div class="visual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span><b>Adaptación del tono</b> — contenido visual en el sitio, sin texto para transcribir.</span></div>
+      </section>
+
+      <!-- 5 -->
+      <section class="doc" id="etapas">
+        <div class="sec-num">05</div>
+        <h2>Nuestro tono en cada etapa</h2>
+        <p>Aquí las palabras son nuestras aliadas: a través de ellas conectamos con las emociones y sentimientos de nuestras personas usuarias en los diferentes momentos del app.</p>
+
+        <div class="stage">
+          <div class="st-head"><h3>Prime</h3><span class="tone-pill">Comprometido · Inteligente · Buena onda</span></div>
+          <p>Rappi y nuestro programa de membresía, Rappi Prime, deben sentirse como una sola marca. Aquí Prime se comunica de una manera un tanto diferente a la usual, abrazando su propia personalidad y valores.</p>
+          <p>Al integrar Plus y Basic a la suscripción Prime, su estilo y forma de comunicar son los mismos, aunque sus beneficios varían. Comunicar ambas de forma clara, consistente y cercana permite que Prime se identifique como una experiencia con la calidad Rappi, adaptada a los gustos de cada persona.</p>
+          <p><em>No es: confianzudo, formal o sarcástico.</em></p>
+        </div>
+
+        <div class="stage">
+          <div class="st-head"><h3>Turbo</h3><span class="tone-pill">Resolutivo · Disruptivo · Innovador</span></div>
+          <p>La velocidad, la frescura y lo premium del servicio se sienten en cada mensaje o diseño. Evitamos compararnos con otros servicios o competidores: nuestros hechos hablan por sí solos.</p>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Nota:</b> Turbo es la oportunidad perfecta para comunicar desde la app mensajes claros y motivantes que inviten a usar o seguir usando nuestras nuevas funcionalidades.</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="st-head"><h3>Onboarding <span style="font-weight:400;color:var(--muted-2);font-size:14px">— Registro y primera compra</span></h3><span class="tone-pill">Explicativo · Claro · Preciso</span></div>
+          <p>El usuario inicia su recorrido dentro de la app. A través del contenido y los CTA guiamos a la persona de forma fácil y sin complicaciones, desde su registro hasta su primera compra.</p>
+          <p>En las opciones A y B del Login, mediante iteraciones en elementos, llamados a la acción y palabras, mantenemos el estilo con un mismo objetivo: lograr el registro. En el Home para un usuario que aún no compra, mantenemos el tono objetivo y educativo.</p>
+        </div>
+
+        <div class="stage">
+          <div class="st-head"><h3>Momentum <span style="font-weight:400;color:var(--muted-2);font-size:14px">— 2 a 4 compras</span></h3><span class="tone-pill">Motivante · Claro · Cercano</span></div>
+          <p>Guiamos a las nuevas personas usuarias y las mantenemos motivadas para crear un hábito de compra. Evitamos ser invasivos: les seguimos mostrando todas las opciones y soluciones para disfrutar en su superapp, ¡sin abrumarles!</p>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Nota:</b> es importante que en este punto los usuarios encuentren contenido usable, disfrutable y escaneable, donde el mensaje les ayude a cumplir su objetivo.</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="st-head"><h3>Escenarios de error, fallas o sustitución</h3><span class="tone-pill">Sincero · Resolutivo · Empático</span></div>
+          <p>Hacemos lo mejor para evitar errores, pero suceden. No todos son extremos, pero sí necesitan una solución rápida y clara.</p>
+          <div class="msg">Sabemos que tu pedido no llegó como lo esperabas y lo sentimos, revisaremos lo sucedido. Trabajaremos en darte una mejor experiencia.</div>
+          <div class="msg">¡Hola, [User_name]! Revisé tu solicitud: la cancelación de tu pedido en [Brand_Name] fue porque la tienda estaba cerrada. 😔 Sentimos lo sucedido. No te quedes con el antojo, anímate a conocer todas las tiendas que tenemos abiertas para ti 😉.</div>
+          <p style="margin-top:14px">Al crear contenido para esta etapa, recuerda:</p>
+          <ul>
+            <li>Contar la razón del error de la manera más clara y precisa posible.</li>
+            <li>Evitar enredar al usuario con tecnicismos y darle vueltas al mensaje.</li>
+            <li>Revisar las palabras para no hacer sentir al usuario culpable por lo ocurrido.</li>
+          </ul>
+        </div>
+
+        <div class="stage">
+          <div class="st-head"><h3>Situaciones de cancelación</h3></div>
+          <p>La cancelación se ve desde dos puntos: la del usuario y la del aliado. La uniformidad del tono se adapta según el objetivo y la solicitud.</p>
+          <div class="esnoes">
+            <div class="en-col en-yes"><div class="lab">Nuestro tono</div><div class="chips"><span class="chip">Resolutivo</span><span class="chip">Preciso</span><span class="chip">Comprensivo</span></div></div>
+            <div class="en-col en-yes"><div class="lab">Tono del aliado en la app</div><div class="chips"><span class="chip">Explicativo</span><span class="chip">Considerado</span><span class="chip">Eficiente</span></div></div>
+          </div>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Nota:</b> a veces el objetivo del usuario quedó incompleto (ej. olvidó agregar un producto y por eso canceló). Por eso las respuestas deben ser cortas, precisas y concisas.</p></div>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="doc" id="b2b">
+        <div class="sec-num">06</div>
+        <h2>B2B Voice &amp; Tone</h2>
+        <p>Conoce la voz y el tono de Rappi con nuestros aliados: cómo se siente en todos los productos, servicios y formatos en los que tenemos presencia.</p>
+
+        <h3>¿Quiénes son nuestros aliados?</h3>
+        <p>Principalmente restaurantes, tiendas, marcas nacionales o internacionales y emprendimientos que, a través de nuestra plataforma o soluciones de negocio, tienen la oportunidad de llegar a otro nivel. Son parte fundamental para hacer la mejor Superapp de LATAM.</p>
+
+        <h3>Nuestro tono con los aliados</h3>
+        <p>Nuestras comunicaciones siempre deben tener como centro a nuestros aliados. Una guía clara y sencilla en cada producto o servicio nos permite brindarles una gran experiencia y convertirnos en su principal aliado de negocio. El tono se adapta según la vertical y el producto de la marca.</p>
+        <div class="esnoes">
+          <div class="en-col en-yes"><div class="lab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Nuestro tono B2B</div><div class="chips"><span class="chip">Comprometido</span><span class="chip">Cercano</span></div></div>
+          <div class="en-col en-no"><div class="lab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg> Evitamos que sea</div><div class="chips"><span class="chip">Confianzudo</span><span class="chip">Totalmente informal</span><span class="chip">Sarcástico</span></div></div>
+        </div>
+
+        <h4>Adapting tone</h4>
+        <p>When targeting B2B products, it's crucial to customize your tone according to the specific needs and preferences of your audience.</p>
+        <ul>
+          <li><strong>Keep it professional:</strong> B2B products require a more professional tone — authoritative, informative and educational.</li>
+          <li><strong>Use technical terminology:</strong> it's okay to use product-specific language, but avoid jargon that may be unfamiliar to your audience.</li>
+          <li><strong>Use active voice:</strong> more direct and engaging than passive voice; it keeps your audience engaged and conveys your message clearly.</li>
+          <li><strong>Be consistent:</strong> consistency in tone of voice is key for brand differentiation. Maintain it across every touchpoint, website, marketing material and support interaction.</li>
+        </ul>
+
+        <h4>Brazil — Tone of voice</h4>
+        <p>Rappi's tone of voice in Brazil has become more native, and for B2B that line of communication is maintained, bringing unity to the brand. As a company speaking to companies, the language needs to be a little more formal, embracing the linguistic characteristics of the established brand.</p>
+        <p>We will follow Rappi's personality — <strong>honest, brave and practical</strong>. We won't have a new voice, but a new tone: adapting what already exists in Rappi's reality to a more formal and adequate tone for the B2B environment.</p>
+
+        <h4>Adapting tone by situation</h4>
+        <p>Our tone adjusts to users' contexts and emotions. Focus on the specifics of the situation and less on the emotions — don't assume or tell people how to feel.</p>
+        <p><strong>Respond to the B2B user needs</strong></p>
+        <ul>
+          <li>Only use industry-standard terminology when you have reason to believe it will improve understanding.</li>
+          <li>Research the language people use instead of corporate jargon.</li>
+          <li>Edit unnecessary or repeated words.</li>
+          <li>Write for mobile first — constraints help you focus on the most important message.</li>
+          <li>Read your content out loud. If you get tripped up, it needs to be edited.</li>
+        </ul>
+        <p><strong>Encourage action</strong></p>
+        <ul>
+          <li>Calls to action and links should start with a strong verb that describes the action a person will take.</li>
+          <li>Prioritize the most important information and tasks — don't make people dig for what they care about.</li>
+          <li>Break down complicated tasks into steps that help people focus on one thing at a time.</li>
+        </ul>
+        <p><strong>Be consistent</strong></p>
+        <ul>
+          <li>Make a list of all the most important verbs and nouns in the experience you're building.</li>
+          <li>Check that each word clearly describes the object or action in the simplest way possible.</li>
+          <li>Make sure your language reflects how people think and the words they use.</li>
+          <li>Identify synonyms and eliminate them — each important object and action should have a single word to represent it.</li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- ==================== PRODUCT CONTENT ======================= -->
+      <!-- ============================================================ -->
+      <div style="border-top:1px solid var(--line);margin-top:80px;padding-top:60px">
+        <div class="eyebrow" style="margin-bottom:14px">Content</div>
+        <h1 class="page-h1 display" style="font-size:clamp(30px,4.4vw,46px)">Product content</h1>
+        <p class="page-lead">Consistencia, claridad y simpleza son la base fundamental para crear una gran experiencia a través del contenido.</p>
+        <p class="page-lead">Conoce cómo, desde el product content y nuestros principios, podrás lograrlo.</p>
+      </div>
+
+      <section class="doc" id="pc-que">
+        <div class="sec-num">01</div>
+        <h2>Qué es y para qué sirve</h2>
+        <p>Cuando hablamos de product content, no solo nos referimos a los textos que los productos contienen dentro de su card o ficha técnica, sino también al diseño en general que se crea en conjunto con el contenido y la UI en toda la interfaz.</p>
+        <p>A continuación te damos algunos consejos para ser más consistentes, estratégicos y claros en el product content de nuestra app, y así brindarle una mejor experiencia a nuestras personas usuarias.</p>
+      </section>
+
+      <section class="doc" id="pc-principios">
+        <div class="sec-num">02</div>
+        <h2>Content Principles</h2>
+        <div class="cards two">
+          <div class="acard"><div class="k">01 · Demuéstrales que son nuestra prioridad</div><p>Cada palabra dentro de nuestra interfaz es una oportunidad para demostrarle a las personas usuarias que realmente nos fijamos en cada detalle para brindarles la mejor experiencia.</p></div>
+          <div class="acard"><div class="k">02 · Guíalos y ayúdales a aprender</div><p>Además de guiar el recorrido en la app, nuestro propósito es enseñarles de la manera más sencilla y práctica cómo usarla al máximo; así les fidelizamos y les demostramos todos los beneficios.</p></div>
+          <div class="acard"><div class="k">03 · Menos palabras, más calidad</div><p>Al navegar por cualquier app lo que menos quieren las personas es leer grandes bloques de texto. Bríndales contenido con propósito, conciso y con estructura, que cumpla con sus necesidades.</p></div>
+          <div class="acard"><div class="k">04 · Habla su mismo lenguaje</div><p>No solo su idioma, también todas las palabras que usan en su día a día. Las personas buscan palabras conocidas que les guíen y conecten con su objetivo o próxima misión en la app.</p></div>
+        </div>
+      </section>
+
+      <section class="doc" id="pc-tips">
+        <div class="sec-num">03</div>
+        <h2>Tips</h2>
+        <ul>
+          <li>Escribe <strong>frases cortas</strong>: 3 renglones es el largo ideal.</li>
+          <li>Crea contenido <strong>escaneable</strong>: usa el peso de las tipografías y los bullet points para mejorar la lecturabilidad.</li>
+          <li>Usa siempre un <strong>lenguaje sencillo</strong> e inclusivo. Un truco: ¿un adulto mayor o un niño de 7 años entendería esta frase?</li>
+          <li><strong>Prioriza la información más relevante</strong> al inicio de cada oración; evita que los usuarios salten entre pantallas para encontrar lo que buscan.</li>
+          <li><strong>Evita redundancias</strong>: lee tus textos en voz alta y revisa el uso excesivo de conectores o sinónimos.</li>
+        </ul>
+        <div class="visual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span><b>Así logramos ser una Super App</b> y <b>Contenido de calidad crea un App de calidad</b> — el resto de estas páginas son ejemplos visuales / pantallas en el sitio.</span></div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- ==================== GRAMMAR GUIDELINES ==================== -->
+      <!-- ============================================================ -->
+      <div style="border-top:1px solid var(--line);margin-top:80px;padding-top:60px">
+        <div class="eyebrow" style="margin-bottom:14px">Content</div>
+        <h1 class="page-h1 display" style="font-size:clamp(30px,4.4vw,46px)">Grammar guidelines</h1>
+        <p class="page-lead">Una guía para diseñadores UI/UX, developers, researchers, content writers y demás colaboradores que escriben al público con la voz de Rappi.</p>
+        <p class="page-lead">Nos ayuda a tener una redacción consistente, empática y clara con nuestras personas usuarias a través de la interfaz.</p>
+      </div>
+
+      <section class="doc" id="gr-orto">
+        <div class="sec-num">01</div>
+        <h2>Ortografía</h2>
+        <h3>Uso de mayúsculas y minúsculas</h3>
+        <p>El uso de mayúsculas siempre debe aplicarse en:</p>
+        <ul>
+          <li>Títulos e inicios de frases.</li>
+          <li>Después de un punto seguido o final.</li>
+          <li>Cuando iniciamos una nueva idea en otro renglón que, por el formato, no tiene punto final.</li>
+        </ul>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p>Los días de la semana, los meses, idiomas y nacionalidades <b>no</b> se consideran nombres propios, por eso no llevan mayúscula inicial.</p></div>
+      </section>
+
+      <section class="doc" id="gr-estilo">
+        <div class="sec-num">02</div>
+        <h2>Estilo</h2>
+        <p>El manual de estilo de la marca es una guía para diseñadores UI/UX, developers, researchers, content writers y demás colaboradores que escriben al público con la voz de Rappi desde sus diferentes funciones.</p>
+        <p>Nos ayuda a mantener como marca una redacción consistente, empática y clara con las personas usuarias a través de la interfaz.</p>
+      </section>
+
+      <section class="doc" id="gr-voz">
+        <div class="sec-num">03</div>
+        <h2>Voz activa y voz pasiva</h2>
+        <h3>Voz activa</h3>
+        <p>Es el tipo de voz gramatical donde el sujeto de la oración realiza, ejecuta o controla la acción. En Rappi, para la mayoría de situaciones, usamos voz activa: expresamos las acciones que nuestros colaboradores, RT's o aliados están realizando.</p>
+        <div class="quote">Sujeto + verbo (la acción) + objeto</div>
+        <h3>Voz pasiva</h3>
+        <p>La usamos cuando el objeto o producto es quien recibe la acción del verbo. No la utilizamos para referirnos a nuestros colaboradores, aliados o RT's (los sujetos), sino cuando buscamos hacer énfasis en la acción.</p>
+        <div class="quote">Objeto directo + verbo en infinitivo + participio</div>
+        <p>3 formas de identificar si es momento de usar voz pasiva:</p>
+        <ul>
+          <li>Cuando la acción a comunicar es la prioridad.</li>
+          <li>Si buscamos no hacer énfasis directamente en (nosotros) Rappi.</li>
+          <li>La acción que buscamos comunicar ya fue realizada (creamos, realizamos, devolvimos).</li>
+        </ul>
+      </section>
+
+      <section class="doc" id="gr-abrev">
+        <div class="sec-num">04</div>
+        <h2>Abreviaciones</h2>
+        <p>Su objetivo es ser más puntuales, cercanos y casuales al comunicarnos con las personas usuarias, haciendo más entendibles y precisos nuestros mensajes.</p>
+        <p class="tcap">La etiqueta de cuál ejemplo es "correcto" y cuál "evitar" es visual en el sitio; se conservan como pares de comparación.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Ejemplo A</th><th>Ejemplo B</th></tr></thead>
+          <tbody>
+            <tr><td>El Restaurante prepara tu pedido</td><td>El restaurante preparará tu orden</td></tr>
+            <tr><td>Elige un complemento / Acompaña tu orden con:</td><td>Adiciona un acompañamiento a tu orden</td></tr>
+            <tr><td>Agrega tu bebida (Obligatorio)</td><td>Agrega tu bebida (o no podrás seguir con tu pedido)</td></tr>
+            <tr><td>Elige su sustituto en caso de estar agotado</td><td>Elige el sustituto del producto que elegiste por si llega a estar agotado</td></tr>
+            <tr><td>No pudimos continuar con tu pedido. Revisa el saldo de tu tarjeta VISA *3420</td><td>Algo falló y no pudimos continuar con tu pedido. No tienes fondos suficientes en tu tarjeta</td></tr>
+            <tr><td>Agrega máximo [number]/ud. de este producto</td><td>Puedes agregar máximo 1 unidad de este producto</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Soy Rappi</h4>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Ejemplo A</th><th>Ejemplo B</th></tr></thead>
+          <tbody>
+            <tr><td>Entrega en las manos del cliente</td><td>Entrega el pedido en las manos del cliente</td></tr>
+            <tr><td>Reserva tu conexión</td><td>Realiza una reserva de tu conexión</td></tr>
+            <tr><td>Estás autoaceptando pedidos</td><td>Estás conectado en modo autoaceptar</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="doc" id="gr-lenguaje">
+        <div class="sec-num">05</div>
+        <h2>Lenguaje explicativo y simple</h2>
+        <p>Usar un lenguaje cercano y común al explicar cualquier situación nos hace sencillos y fáciles de entender; por eso evitamos tecnicismos y localismos.</p>
+        <p>Cada frase que comuniquemos debe tener:</p>
+        <ul>
+          <li>Un único objetivo.</li>
+          <li>Nada de información innecesaria que pueda confundir a los usuarios.</li>
+        </ul>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Ejemplo A</th><th>Ejemplo B</th></tr></thead>
+          <tbody>
+            <tr><td>Sustituiste 1 producto / Agregaste 1 producto / Eliminaste 1 producto de tu lista</td><td>Has cambiado un producto / Has agregado un producto nuevo / Sacaste 1 producto de tu pedido</td></tr>
+            <tr><td>Estos productos no están disponibles para ordenar</td><td>Tus productos no se encuentran disponibles para tu orden</td></tr>
+            <tr><td>Envíos gratis y más beneficios convirtiéndote en RappiPrime</td><td>Obtén envío gratis y otros beneficios suscribiéndote a RappiPrime</td></tr>
+            <tr><td>Cambia el método de pago para obtener los beneficios de RappiPrime</td><td>Cambia el método de pago para obtener el beneficio de envío gratis de RappiPrime</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Soy Rappi</h4>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Ejemplo A</th><th>Ejemplo B</th></tr></thead>
+          <tbody>
+            <tr><td>Otro repartidor se llevó el pedido</td><td>Otro RT se llevó el pedido</td></tr>
+            <tr><td>Producto no disponible o sin aprobar</td><td>Producto no disponible / sin aprobar</td></tr>
+            <tr><td>En caso que debas pagar por el pedido verás los métodos de pago disponibles.</td><td>Ten en cuenta que puede ser que tengas que pagar o no, por la orden.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="doc" id="gr-titulos">
+        <div class="sec-num">06</div>
+        <h2>Títulos y subtítulos</h2>
+        <p>Su función es comunicar de manera concisa, rápida y jerárquica la información que las personas encontrarán a continuación. Ten en cuenta que:</p>
+        <ul>
+          <li>Deben ser claros, escaneables y, en lo posible, mantenerse en una sola línea.</li>
+          <li>No llevan signos de puntuación como (.) o (;) al final.</li>
+          <li>Usan un lenguaje atractivo (imperativo) que invita a la acción: descubre, conoce, encuentra, etc.</li>
+          <li>La información más importante o el tema central debe estar en su contenido.</li>
+          <li>Mayúscula solo en la primera letra de la oración o en nombres propios.</li>
+          <li>Evita los artículos definidos e indefinidos (el, la, los); resérvalos para áreas conversacionales como espacios vacíos o cartas de producto.</li>
+        </ul>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Ejemplo A</th><th>Ejemplo B</th></tr></thead>
+          <tbody>
+            <tr><td>Revisa los últimos detalles</td><td>Revisa por última vez</td></tr>
+            <tr><td>Creamos tu pedido con éxito / ¡Pedido creado con éxito!</td><td>Genial, tú pedido se ha creado</td></tr>
+            <tr><td>Alimento para mascotas</td><td>Alimentos Otras Mascotas</td></tr>
+            <tr><td>1 producto está agotado</td><td>1 producto agotado ahora</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Soy Rappi</h4>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Ejemplo A</th><th>Ejemplo B</th></tr></thead>
+          <tbody>
+            <tr><td>Configura tu cuenta</td><td>Configuración de la cuenta</td></tr>
+            <tr><td>Solicitud de tarjeta exitosa</td><td>Tu tarjeta se ha solicitado con éxito</td></tr>
+            <tr><td>Qué son los estados</td><td>Qué significan los estados en Soy Rappi</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="doc" id="gr-nombres">
+        <div class="sec-num">07</div>
+        <h2>Nombres de productos y tooltips</h2>
+        <p>Al mencionar un producto propio, funcionalidad o nombre específico, sigue estos lineamientos para lograr uniformidad y estándares de calidad:</p>
+        <ul>
+          <li>Escribe con mayúscula inicial las verticales y productos propios: Restaurantes, Créditos, RappiCréditos, etc.</li>
+          <li>Algunos nombres propios van pegados: RappiPrime, RappiPay, etc.</li>
+          <li>Evita mayúsculas sostenidas en botones o textos para resaltar información.</li>
+          <li>En botones/CTA usa palabras que den claridad sobre la acción: Agregar cuenta, Quiero pedirlo.</li>
+        </ul>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p>En los textos de los botones, evita el uso de artículos que no aporten y alarguen el contenido.</p></div>
+      </section>
+
+      <section class="doc" id="gr-microcopy">
+        <div class="sec-num">08</div>
+        <h2>Microcopy</h2>
+        <p>El microcopy es el mensaje específico, corto y detonador usado en una web o interfaz. Es el responsable de impulsar al usuario a realizar una acción o de entenderla de forma rápida. Es ideal para:</p>
+        <ul>
+          <li>Explicar el porqué de alguna falla.</li>
+          <li>Acompañar a los usuarios en su recorrido.</li>
+          <li>Resolver dudas de forma rápida y clara.</li>
+          <li>Impactar con pocas palabras.</li>
+          <li>Motivar a los usuarios a tomar acción.</li>
+        </ul>
+        <div class="visual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Los ejemplos de aplicación en el sitio son visuales.</span></div>
+      </section>
+
+      <section class="doc" id="gr-botones">
+        <div class="sec-num">09</div>
+        <h2>Botones y links</h2>
+        <p>Los botones o CTA son los elementos clickeables que, mediante un lenguaje imperativo, guían a los usuarios a tomar una decisión. Al crearlos, recuerda:</p>
+        <ul>
+          <li>Que sean capaces de contar su función.</li>
+          <li>Evita más de 3 palabras (máx. 4).</li>
+          <li>Hazlos parte de la historia o narrativa que buscas resolver con ellos.</li>
+          <li>Itera su contenido y valida los resultados.</li>
+        </ul>
+        <div class="quote">Valor + Relevancia = Conversión</div>
+        <p>Los textos de los botones no siempre deben ser los mismos: también son la oportunidad ideal para demostrar el estilo y la voz de la marca.</p>
+      </section>
+
+      <section class="doc" id="gr-fechas">
+        <div class="sec-num">10</div>
+        <h2>Fechas y números</h2>
+        <p>Organizar correctamente cifras numéricas, telefónicas y fechas permite una experiencia de uso mucho más sencilla.</p>
+        <h3>Números telefónicos</h3>
+        <p>Recomendaciones: usa paréntesis ( ) o guiones (-) para separar dígitos, agrúpalos en cifras y usa o pregunta el código del país.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>País</th><th>Estructura</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td><strong>CO</strong></td><td>+ (código país) + inicial del operador + 7 números</td><td>+57(320) 572-1937</td></tr>
+            <tr><td><strong>BR</strong></td><td>+ (país)(área) + el 9 (móvil) + 8 números</td><td>+55(21) 9 9699-9959</td></tr>
+            <tr><td><strong>MX</strong></td><td>+ (país)(área) + 7 u 8 números según el estado</td><td>+52(55) 9969-9959</td></tr>
+            <tr><td><strong>ARG</strong></td><td>+ (país)(área) + 8 números</td><td>+54(11) 2312-7865</td></tr>
+            <tr><td><strong>EC</strong></td><td>+ (país)(área) + 7 números</td><td>+593(98) 312-7865</td></tr>
+            <tr><td><strong>PE</strong></td><td>+ (país) + inicial del operador + 9 números</td><td>+51 9 8754-0800</td></tr>
+            <tr><td><strong>CL</strong></td><td>+ (país)(área) + 8 números</td><td>+56(9) 2459-3233</td></tr>
+            <tr><td><strong>CR</strong></td><td>+ (país) + 8 números</td><td>+506 8338-4040</td></tr>
+            <tr><td><strong>UY</strong></td><td>+ (país) + 8 números</td><td>+598 9966 2233</td></tr>
+            <tr><td><strong>U.S.A</strong></td><td>+ (país)(área) + 7 números</td><td>+1(212) 324-4152</td></tr>
+          </tbody>
+        </table></div>
+        <h3>Fechas</h3>
+        <ul>
+          <li>Escribe completo el nombre del día y del mes.</li>
+          <li>Al abreviar, hazlo de forma concreta.</li>
+          <li>En lo posible, evita las fechas en solo dígitos numéricos.</li>
+        </ul>
+        <div class="quote">Ej: Sábado 1 de enero</div>
+      </section>
+
+      <section class="doc" id="gr-unidades">
+        <div class="sec-num">11</div>
+        <h2>Unidades de medida</h2>
+        <p>Guía trilingüe (Español · Português · English) de uso correcto e incorrecto.</p>
+        <h3>Fechas</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Idioma</th><th>Formato</th><th>Ejemplos</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Español</strong></td><td>DD/MM/AAAA</td><td>24 de marzo de 1991 · 24 de marzo</td></tr>
+            <tr><td><strong>Português</strong></td><td>DD/MM/AAAA</td><td>24 de março de 1991 · 24 de março</td></tr>
+            <tr><td><strong>English</strong></td><td>MM/DD/YYYY</td><td>March 24, 1991 · the 24th of March</td></tr>
+          </tbody>
+        </table></div>
+        <h3>Días y meses</h3>
+        <ul>
+          <li><strong>Español:</strong> siempre con inicial en minúscula. Ej: lunes, martes · enero, febrero.</li>
+          <li><strong>Português:</strong> siempre con inicial en minúscula; de preferencia solo la palabra inicial, sin "-feira". Ej: segunda, terça · janeiro, fevereiro.</li>
+          <li><strong>English:</strong> always capitalized. Ej: Monday, Tuesday · January, February.</li>
+        </ul>
+        <h3>Tiempo, longitud, masa y volumen</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Magnitud</th><th>Símbolo</th><th>Correcto (ES / EN)</th><th>Correcto (PT)</th><th>Incorrecto</th></tr></thead>
+          <tbody>
+            <tr><td>Horas</td><td>h</td><td>10 h</td><td>10h</td><td>10h · 10 H · 10 hs · 10 h.</td></tr>
+            <tr><td>Minutos</td><td>min</td><td>10 min</td><td>10min</td><td>10min · 10 Min · 10 mins · 10 min.</td></tr>
+            <tr><td>Kilómetros</td><td>km</td><td>10 km</td><td>10 km</td><td>10k · 10 Km · 10 kms · 10 km.</td></tr>
+            <tr><td>Metros</td><td>m</td><td>10 m</td><td>10 m</td><td>10m · 10 mt · 10 mts · 10 m.</td></tr>
+            <tr><td>Centímetros</td><td>cm</td><td>10 cm</td><td>10 cm</td><td>10cm · 10 cms · 10 ctms · 10 cm.</td></tr>
+            <tr><td>Kilogramos</td><td>kg</td><td>10 kg</td><td>10 kg</td><td>10kg · 10 kgs · 10 kgs.</td></tr>
+            <tr><td>Libras</td><td>lb</td><td>10 lb</td><td>10 lb</td><td>10lb · 10 lbs · 10 lbs.</td></tr>
+            <tr><td>Gramos</td><td>g</td><td>10 g</td><td>10 g</td><td>10g · 10 gs · 10 grs · 10 g.</td></tr>
+            <tr><td>Litro</td><td>L</td><td>10 L</td><td>10 L</td><td>10L · 10 l · 10 lts · 10 Lts · 10 L.</td></tr>
+            <tr><td>Mililitro</td><td>ml</td><td>10 ml</td><td>10 ml</td><td>10ml · 10 mls · 10 mlts · 10 ml.</td></tr>
+          </tbody>
+        </table></div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p>Para horas y minutos, el uso correcto en portugués va pegado (10h, 10min); en español e inglés va separado (10 h, 10 min).</p></div>
+      </section>
+
+      <section class="doc" id="gr-moneda">
+        <div class="sec-num">12</div>
+        <h2>Moneda</h2>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>País</th><th>Símbolo</th><th>ISO</th><th>Uso correcto</th><th>Uso incorrecto</th></tr></thead>
+          <tbody>
+            <tr><td>Colombia</td><td>$</td><td>COP</td><td>$1.000 · 1.000 pesos</td><td>COP $1.000 · $1.000 pesos</td></tr>
+            <tr><td>México</td><td>$</td><td>MXN</td><td>$1,000 (punto decimal) · 1,000 pesos</td><td>MXN $1,000 · $1,000 pesos</td></tr>
+            <tr><td>Brasil</td><td>R$</td><td>BRL</td><td>R$1.000 · 1.000 reales</td><td>BRL $1.000 · R$ 1.000 reales</td></tr>
+            <tr><td>Argentina</td><td>$</td><td>ARS</td><td>$1.000 · 1.000 pesos</td><td>ARS $1.000 · $1.000 pesos</td></tr>
+            <tr><td>Uruguay</td><td>$</td><td>UYU</td><td>$1.000 · 1.000 pesos</td><td>UYU $1.000 · $1.000 pesos</td></tr>
+            <tr><td>Chile</td><td>$</td><td>CLP</td><td>$1.000 · 1.000 pesos</td><td>CLP $1.000 · $1.000 pesos</td></tr>
+            <tr><td>Perú</td><td>S/</td><td>PEN</td><td>S/1.000 · 1.000 soles</td><td>S/ 1.000 · S/1.000 soles</td></tr>
+            <tr><td>Ecuador</td><td>$</td><td>USD</td><td>$1.000 · 1.000 dólares</td><td>USD $1.000 · $1.000 dólares</td></tr>
+            <tr><td>Costa Rica</td><td>₡</td><td>CRC</td><td>₡1,000 (punto decimal) · 1,000 colones</td><td>₡1,000 colones · US $1,000</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="doc" id="gr-tropicalizacion">
+        <div class="sec-num">13</div>
+        <h2>Tropicalización</h2>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Pendiente por llenar:</b> al momento de la extracción, esta página del sitio mostraba contenido placeholder de zeroheight (texto de plantilla en inglés sobre design principles), no contenido real de Rappi.</p></div>
+      </section>
+
+      <section class="doc" id="gr-restringidas">
+        <div class="sec-num">14</div>
+        <h2>Palabras con restricción de uso</h2>
+        <h3>Soy Rappi</h3>
+        <p>En Soy Rappi no tenemos un vínculo laboral directo con los repartidores. Por eso existen palabras o expresiones que no debemos usar, para evitar inconvenientes legales.</p>
+        <p class="tcap">Tabla transcrita del sitio. Un par de celdas marcadas <em>[revisar]</em> conviene confirmarlas contra el sitio.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Palabra</th><th>Por qué no se usa</th><th>Reemplazo sugerido</th><th>Países / notas</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Admisión / Aprobación de la cuenta / Aplicar</strong></td><td>Implica relación de trabajo / contratación</td><td>Autorización</td><td>Todos</td></tr>
+            <tr><td><strong>Bloqueo</strong></td><td>Facultad sancionatoria</td><td>Revocación de uso de la app · Inhabilidad permanente</td><td>Todos</td></tr>
+            <tr><td><strong>Capacitación, entrenamiento</strong></td><td>Relación de trabajo <em>[revisar]</em></td><td>Instrucciones de uso · Tutorial · Video</td><td>Todos. Chile: puede usar "capacitación" para las exigidas por ley (Ley 21.431)</td></tr>
+            <tr><td><strong>Cliente</strong></td><td>No prohibido, pero se recomienda "Usuario"</td><td>Usuario</td><td>Todos</td></tr>
+            <tr><td><strong>Contraprestación</strong></td><td>Relación de trabajo</td><td>Ganancias generadas a través de la app</td><td>Todos</td></tr>
+            <tr><td><strong>Cuenta aprobada</strong></td><td>—</td><td>Cuenta habilitada</td><td>Todos</td></tr>
+            <tr><td><strong>«Debes…» / «Estás obligado a…» / «Tienes que…»</strong></td><td>Subordinación</td><td>«Recuerda que…» · «Te recomendamos…» · «Ten en cuenta que…»</td><td>Todos</td></tr>
+            <tr><td><strong>Disciplina</strong></td><td>Relación de trabajo</td><td>Esfuerzos voluntarios</td><td>Todos</td></tr>
+            <tr><td><strong>Dotación / indumentaria</strong></td><td>Relación de trabajo</td><td>Accesorios · Prendas · Elementos de protección personal</td><td>Todos</td></tr>
+            <tr><td><strong>Empleado</strong></td><td>Relación de trabajo</td><td>Repartidor Independiente / Rappitendero (evitar en Perú y Argentina)</td><td>Todos</td></tr>
+            <tr><td><strong>Eres parte de</strong></td><td>Subordinación</td><td>Haces uso de</td><td>Todos</td></tr>
+            <tr><td><strong>Estado asignado</strong></td><td>—</td><td>Estado aceptado</td><td>Todos</td></tr>
+            <tr><td><strong>Fraude</strong></td><td>Facultad sancionatoria</td><td>Incumplimiento / uso incorrecto de los TyC de la app</td><td>Todos</td></tr>
+            <tr><td><strong>«Gana $X…»</strong></td><td>Relación de trabajo</td><td>—</td><td>Todos</td></tr>
+            <tr><td><strong>Horario</strong></td><td>Relación de trabajo</td><td>Tiempo de conexión</td><td>Todos, salvo Brasil ("Horário")</td></tr>
+            <tr><td><strong>Horas laborales</strong></td><td>Relación de trabajo</td><td>Tiempo de conexión</td><td>Todos</td></tr>
+            <tr><td><strong>Mensajero</strong></td><td>Riesgos de modelo de negocio y tributarios</td><td>Repartidor</td><td>Todos</td></tr>
+            <tr><td><strong>Métricas</strong></td><td>Subordinación</td><td>Componentes de calidad de tu servicio</td><td>Todos</td></tr>
+            <tr><td><strong>Nivel / Niveles</strong></td><td>Subordinación</td><td>—</td><td>Todos</td></tr>
+            <tr><td><strong>Pedidos asignados</strong></td><td>Subordinación</td><td>«Pedidos notificados»</td><td>Todos</td></tr>
+            <tr><td><strong>Rappitendero</strong></td><td>Connotación negativa y restricción legal</td><td>Repartidor</td><td>Perú: connotación negativa. Argentina: restricción legal. Demás países hispanohablantes pueden usarla</td></tr>
+            <tr><td><strong>Recargos</strong></td><td>Relación de trabajo</td><td>Ganancias extra / Incentivos</td><td>Todos</td></tr>
+            <tr><td><strong>Reclutamiento</strong></td><td>Relación de trabajo</td><td>—</td><td>Todos</td></tr>
+            <tr><td><strong>Reglamento</strong></td><td>Relación de trabajo</td><td>Términos y condiciones de uso de la app</td><td>Todos</td></tr>
+            <tr><td><strong>Rendimiento</strong></td><td>Subordinación</td><td>Calidad del servicio prestada a los Usuarios</td><td>Todos</td></tr>
+            <tr><td><strong>Salario</strong></td><td>Relación de trabajo <em>[revisar]</em></td><td>Ganancias / Ingresos generados a través de la app</td><td>Todos</td></tr>
+            <tr><td><strong>«Sé parte de…» / «Únete a…»</strong></td><td>Vínculo directo con Rappi</td><td>Haz parte de… · Vuélvete…</td><td>Todos</td></tr>
+            <tr><td><strong>Trabajo</strong></td><td>Relación de trabajo</td><td>Uso de la app · Conexión</td><td>Todos, salvo México</td></tr>
+            <tr><td><strong>Valoraciones</strong></td><td>Subordinación</td><td>Componentes de calidad de tu servicio</td><td>Todos</td></tr>
+            <tr><td><strong>Zonas calientes</strong></td><td>Subordinación</td><td>Zonas de mayor demanda de pedidos</td><td>Todos</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <a href="#top" class="backtop"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg> Volver arriba</a>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  // scroll-spy: highlight the sidebar link of the section in view
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-links a'));
+  var map = {};
+  links.forEach(function(a){ var id = a.getAttribute('href').slice(1); map[id] = a; });
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(a){ a.classList.remove('on'); });
+        if(map[e.target.id]) map[e.target.id].classList.add('on');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+  secs.forEach(function(s){ obs.observe(s); });
+})();
+</script>
+</body>
+</html>

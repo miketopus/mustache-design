@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mustache Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08080A;--bg-2:#0C0C0E;--panel:#121214;--panel-2:#18181B;--tile:#0E0E10;
+    --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.15);
+    --text:#F5F5F6;--muted:#96969C;--muted-2:#65656B;--white:#FFFFFF;
+    --display:'Sora',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --radius:18px;--maxw:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  section[id]{scroll-margin-top:110px}
+  .display{font-family:var(--display);letter-spacing:-.02em;font-weight:800;line-height:1.02}
+  .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+  .silver{background:linear-gradient(180deg,#fff 0%,#fff 40%,#8a8a90 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sec-eyebrow-row{display:flex;align-items:center;gap:12px}
+  .sec-eyebrow-row .ln{height:1px;width:36px;background:var(--line-2)}
+  .rmark{font-family:'Archivo Black',var(--display);color:var(--text);line-height:1;letter-spacing:-.02em;font-weight:400}
+
+  /* ---------- floating hybrid nav ---------- */
+  .floatnav{position:fixed;top:20px;left:0;right:0;z-index:80;display:flex;justify-content:center;padding:0 16px;pointer-events:none}
+  .fn-inner{pointer-events:auto;display:flex;align-items:center;gap:6px;background:rgba(20,20,23,.82);
+    backdrop-filter:blur(18px);border:1px solid var(--line-2);border-radius:22px;padding:8px;
+    box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05)}
+  .fn-logo{width:52px;height:52px;border-radius:15px;background:var(--tile);border:1px solid var(--line);
+    display:grid;place-items:center;overflow:hidden;flex-shrink:0;margin-right:2px}
+  .fn-links{display:flex;gap:4px}
+  .fn-links a{font-size:14px;color:var(--muted);font-weight:500;padding:12px 15px;border-radius:14px;
+    border:1px solid transparent;transition:.18s;white-space:nowrap}
+  .fn-links a:hover{color:var(--text);background:var(--panel-2);border-color:var(--line)}
+  .fn-div{width:1px;height:30px;background:var(--line-2);margin:0 6px}
+  .fn-lock{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--muted-2);font-weight:500;
+    padding:12px 15px;border-radius:14px;border:1px dashed var(--line-2);white-space:nowrap}
+  .fn-lock svg{width:13px;height:13px}
+  /* subtle language toggle */
+  .lang{display:flex;background:var(--tile);border:1px solid var(--line);border-radius:12px;padding:3px;flex-shrink:0}
+  .lang button{font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.02em;color:var(--muted-2);
+    background:transparent;border:none;padding:7px 8px;border-radius:9px;cursor:pointer;transition:.15s;line-height:1}
+  .lang button:hover{color:var(--muted)}
+  .lang button.on{background:var(--panel-2);color:var(--text)}
+  .langbar{position:fixed;top:20px;right:20px;z-index:85;background:rgba(20,20,23,.82);backdrop-filter:blur(18px);border:1px solid var(--line-2);border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+  .fn-cta{font-size:14px;font-weight:600;color:#0A0A0C;background:var(--white);padding:13px 18px;border-radius:14px;
+    display:flex;align-items:center;gap:8px;transition:.18s;white-space:nowrap;border:none;cursor:pointer;font-family:var(--body)}
+  .fn-cta:hover{background:#e9e9ea;transform:translateY(-1px)}
+  .fn-cta svg{width:14px;height:14px}
+  @media(max-width:1080px){.fn-links,.fn-lock,.fn-div{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:190px 0 96px;overflow:hidden}
+  .hero-glow{position:absolute;top:-360px;right:-160px;width:900px;height:900px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(255,255,255,.14),rgba(255,255,255,.04) 55%,transparent 72%);filter:blur(6px);pointer-events:none}
+  .hero-grid{position:absolute;inset:0;opacity:.5;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:26px 26px;
+    mask-image:linear-gradient(180deg,#000,transparent 75%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 75%)}
+  .hero-inner{position:relative;z-index:2;max-width:840px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);
+    border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 13px;margin-bottom:26px}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.7)}
+  .hero h1{font-size:clamp(42px,7.2vw,82px);margin-bottom:22px}
+  .hero p.lead{font-size:clamp(17px,2.2vw,21px);color:var(--muted);max-width:600px;margin-bottom:34px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn{font-family:var(--body);font-weight:600;border-radius:14px;cursor:pointer;transition:.2s;white-space:nowrap;border:1px solid var(--line-2);background:transparent;color:var(--text)}
+  .btn-primary{background:var(--white);color:#0A0A0C;border:none;padding:14px 24px;font-size:15px}
+  .btn-primary:hover{transform:translateY(-1px);background:#e9e9ea}
+  .btn-ghost{padding:14px 22px;font-size:15px}
+  .btn-ghost:hover{background:rgba(255,255,255,.06)}
+  .hero-meta{margin-top:44px;display:flex;gap:34px;flex-wrap:wrap;color:var(--muted-2);font-size:13px}
+  .hero-meta b{color:var(--text);font-family:var(--display);font-weight:700;font-size:22px;display:block;margin-bottom:2px}
+
+  /* ---------- sections ---------- */
+  .section{padding:84px 0}
+  .divtop{border-top:1px solid var(--line)}
+  .manifesto h2{font-size:clamp(28px,4vw,44px);max-width:820px;margin:18px 0 0}
+  .manifesto h2 em{font-style:normal;color:var(--muted-2)}
+  .man-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:44px;align-items:start}
+  .man-grid p{color:var(--muted);font-size:16px;margin-bottom:16px}
+  @media(max-width:820px){.man-grid{grid-template-columns:1fr;gap:26px}}
+
+  .prin-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;transition:.25s;min-height:220px;display:flex;flex-direction:column}
+  .card:hover{border-color:var(--line-2);transform:translateY(-3px);background:var(--panel-2)}
+  .card .num{font-family:var(--display);font-weight:800;font-size:15px;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;margin-bottom:22px;color:#0A0A0C;background:var(--white)}
+  .card h3{font-family:var(--display);font-weight:700;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
+  .card p{color:var(--muted);font-size:15px}
+  @media(max-width:820px){.cards3{grid-template-columns:1fr}}
+
+  .craft{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .craft-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .craft-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
+  .craft-head p{color:var(--muted);max-width:420px;font-size:15px}
+  .craft-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:190px;gap:16px;margin-top:40px}
+  .cx{border:1px solid var(--line);border-radius:16px;background:var(--panel);position:relative;overflow:hidden;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;transition:.25s}
+  .cx:hover{border-color:var(--line-2);transform:translateY(-3px)}
+  .cx b{font-family:var(--display);font-weight:700;font-size:17px;position:relative;z-index:2}
+  .cx span{color:var(--muted-2);font-size:12.5px;position:relative;z-index:2;margin-top:2px}
+  .cx .art{position:absolute;inset:0;z-index:1}
+  .cx.big{grid-column:span 3}.cx.mid{grid-column:span 3}.cx.sq{grid-column:span 2}
+  @media(max-width:900px){.craft-grid{grid-template-columns:repeat(2,1fr)}.cx.big,.cx.mid,.cx.sq{grid-column:span 1}}
+  .art-3d{background:radial-gradient(60% 60% at 65% 35%,#2a2a2f,#0E0E10 72%)}
+  .art-3d::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;right:-20px;top:20px;
+    background:radial-gradient(35% 35% at 40% 30%,#fff,#6a6a70 40%,#141416 78%);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+  .art-icons svg{position:absolute;stroke:#7a7a80;stroke-width:2;fill:none}
+  .art-type{display:grid;place-items:center}
+  .art-type .aa{font-family:var(--display);font-weight:800;font-size:78px;color:#26262b;line-height:1}
+  .art-color{display:flex;inset:0 0 42% 0}
+  .art-color i{flex:1}
+  .art-motion::after{content:"";position:absolute;left:24px;top:40px;width:90px;height:90px;border-radius:50%;
+    border:2px solid #3a3a40;box-shadow:26px 0 0 -1px #2b2b30,52px 0 0 -2px #202024}
+
+  .numbers-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
+  .stat-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+  .stat{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:30px}
+  .stat b{font-family:var(--display);font-weight:800;font-size:clamp(34px,5vw,52px);display:block;letter-spacing:-.02em}
+  .stat span{color:var(--muted);font-size:14px;display:block;margin-top:6px}
+  .stat-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:16px}
+  .chip{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:16px 22px;flex:1;min-width:180px}
+  .chip b{font-family:var(--display);font-weight:700;font-size:18px;display:block}
+  .chip span{color:var(--muted-2);font-size:12.5px}
+  .note-x{margin-top:18px;color:var(--muted-2);font-size:12.5px}
+  @media(max-width:820px){.stat-hero{grid-template-columns:1fr}}
+
+  .access{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .access-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
+  .acc{border:1px solid var(--line);border-radius:var(--radius);padding:32px;background:var(--panel)}
+  .acc .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:20px;border:1px solid var(--line-2)}
+  .acc.pub .tag{background:rgba(255,255,255,.10);color:#fff}
+  .acc.priv .tag{background:transparent;color:var(--muted)}
+  .acc h3{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:12px}
+  .acc p{color:var(--muted);font-size:15px;margin-bottom:18px}
+  .acc ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .acc li{font-size:14.5px;color:var(--text);display:flex;gap:10px;align-items:flex-start}
+  .acc li svg{width:16px;height:16px;flex-shrink:0;margin-top:3px}
+  @media(max-width:820px){.access-grid{grid-template-columns:1fr}}
+
+  .team-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
+  .lead-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+  .person{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:26px;transition:.25s}
+  .person:hover{border-color:var(--line-2);background:var(--panel-2)}
+  .avatar{width:52px;height:52px;border-radius:50%;background:var(--tile);border:1px solid var(--line-2);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:17px;color:var(--text);margin-bottom:16px}
+  .person b{font-family:var(--display);font-weight:600;font-size:17px;display:block}
+  .person span{color:var(--muted-2);font-size:13px}
+  .designers{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .designers .who{display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 14px 7px 7px}
+  .designers .who .dot{width:26px;height:26px;border-radius:50%;background:var(--tile);border:1px solid var(--line-2);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:11px}
+  .designers .who span{font-size:13.5px;color:var(--text)}
+  .designers .role{color:var(--muted-2);font-size:13px;margin-left:4px}
+  @media(max-width:820px){.lead-grid{grid-template-columns:1fr}}
+
+  .timeline{display:flex;margin-top:44px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .tl{flex:1;min-width:170px;padding:26px 22px 26px 0;border-right:1px solid var(--line)}
+  .tl:last-child{border-right:none}
+  .tl b{font-family:var(--display);font-weight:800;font-size:24px;color:var(--text)}
+  .tl span{display:block;color:var(--muted);font-size:14px;margin-top:8px}
+
+  footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--bg-2)}
+  .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .box{width:44px;height:44px;border-radius:12px;background:var(--tile);border:1px solid var(--line);display:grid;place-items:center;overflow:hidden}
+  .brand b{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.01em}
+  .brand small{display:block;font-size:8.5px;letter-spacing:.34em;color:var(--muted-2);font-weight:600;margin-top:1px}
+  .foot-links{display:flex;gap:60px;flex-wrap:wrap}
+  .foot-col h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);margin-bottom:14px;font-weight:600}
+  .foot-col a{display:block;color:var(--muted);font-size:14px;margin-bottom:9px;transition:.2s}
+  .foot-col a:hover{color:var(--text)}
+  .foot-bottom{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted-2);font-size:13px}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mustache" viewBox="0 0 120 46">
+    <path d="M60 15 C56 9 49 8 42 10 C33 12.5 26 18 17 26 C12 30.5 7 33 4 31.5 C1.5 30.2 3 26 8 22
+      C2 27 0.5 33 5 35.5 C9 37.7 15 34 21 29 C29 22.5 37 20.5 45 23 C50.5 24.7 55.5 26 60 24
+      C64.5 26 69.5 24.7 75 23 C83 20.5 91 22.5 99 29 C105 34 111 37.7 115 35.5 C119.5 33 118 27 112 22
+      C117 26 118.5 30.2 116 31.5 C113 33 108 30.5 103 26 C94 18 87 12.5 78 10 C71 8 64 9 60 15 Z"/>
+  </symbol>
+</svg>
+
+<!-- ===================== HYBRID FLOATING NAV ===================== -->
+<div class="floatnav">
+  <div class="fn-inner">
+    <a href="#top" class="fn-logo" aria-label="Mustache Design System"><svg class="ms-mark" width="30" height="30" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="2" y="2" width="24" height="3" rx="1" fill="url(#msn1)"/><path d="M2 8C2 7.44772 2.44772 7 3 7H25C25.5523 7 26 7.44772 26 8V9C26 9.55228 25.5523 10 25 10H3C2.44772 10 2 9.55228 2 9V8Z" fill="url(#msn2)"/><path d="M10.5139 25.0532C10.372 25.0532 10.2655 25.0355 10.1946 25C10.1236 24.9527 10.0881 24.8877 10.0881 24.8049C10.0881 24.6984 10.1354 24.6334 10.2301 24.6097C10.3365 24.5743 10.4547 24.5329 10.5848 24.4856C10.8568 24.391 11.0934 24.2254 11.2944 23.9889C11.5073 23.7523 11.6374 23.4508 11.6847 23.0842C11.7556 22.5402 11.8266 21.872 11.8975 21.0797C11.9803 20.2755 12.0631 19.4181 12.1459 18.5075C12.2287 17.5969 12.2996 16.6981 12.3587 15.8111C12.3706 15.7402 12.3765 15.6515 12.3765 15.545C12.3765 15.4386 12.3765 15.3263 12.3765 15.208C12.3765 14.9951 12.341 14.8296 12.2701 14.7113C12.2109 14.5812 12.1045 14.4748 11.9507 14.392C11.8088 14.2974 11.6551 14.2205 11.4895 14.1614C11.324 14.0904 11.1466 14.0313 10.9574 13.984C10.8154 13.9485 10.7031 13.9012 10.6203 13.8421C10.5375 13.783 10.4961 13.7061 10.4961 13.6115C10.4961 13.505 10.5434 13.4341 10.6381 13.3986C10.7327 13.3631 10.845 13.3454 10.9751 13.3454C11.1525 13.3454 11.3713 13.3513 11.6314 13.3631C11.8916 13.375 12.1754 13.3868 12.4829 13.3986C12.8022 13.3986 13.1215 13.4045 13.4408 13.4163C13.772 13.4282 14.0735 13.4341 14.3455 13.4341C14.4401 13.4341 14.5288 13.4696 14.6116 13.5405C14.6944 13.5997 14.7476 13.6706 14.7713 13.7534C14.8541 13.9781 14.9309 14.1969 15.0019 14.4097C15.0728 14.6108 15.1497 14.8237 15.2325 15.0483L17.8401 21.2748C17.8638 21.3221 17.8934 21.3517 17.9288 21.3635C17.9761 21.3635 18.0116 21.3339 18.0353 21.2748L20.572 15.3854C20.6547 14.9715 20.7198 14.6344 20.7671 14.3743C20.8262 14.1141 20.8794 13.9071 20.9267 13.7534C20.9741 13.5997 21.0687 13.5228 21.2106 13.5228H21.9734C22.4701 13.4991 22.9845 13.4637 23.5167 13.4163C24.0607 13.3572 24.4864 13.3277 24.7939 13.3277C24.9121 13.3277 25.0127 13.3513 25.0954 13.3986C25.1901 13.4341 25.2374 13.4991 25.2374 13.5937C25.2374 13.7002 25.196 13.777 25.1132 13.8243C25.0422 13.8717 24.9476 13.913 24.8294 13.9485C24.7584 13.9722 24.6756 14.0077 24.581 14.055C24.4864 14.0904 24.4036 14.1259 24.3327 14.1614C24.0252 14.3033 23.7946 14.4689 23.6408 14.6581C23.4989 14.8355 23.4398 15.1252 23.4634 15.5273C23.4871 16.3788 23.5167 17.1238 23.5521 17.7624C23.5876 18.401 23.6172 18.9923 23.6408 19.5363C23.6763 20.0803 23.7118 20.648 23.7473 21.2393C23.7946 21.8188 23.8419 22.4988 23.8892 23.2793C23.9128 23.5868 24.037 23.8351 24.2617 24.0243C24.4982 24.2017 24.8057 24.3377 25.1841 24.4323C25.3024 24.4678 25.4029 24.5092 25.4857 24.5565C25.5685 24.6038 25.6099 24.6807 25.6099 24.7871C25.6099 24.8699 25.5744 24.935 25.5034 24.9823C25.4325 25.0296 25.3438 25.0532 25.2374 25.0532C24.9772 25.0532 24.6756 25.0414 24.3327 25.0177C24.0015 25.0059 23.6704 24.9941 23.3393 24.9823C23.02 24.9704 22.7421 24.9645 22.5055 24.9645C22.269 24.9645 22.0029 24.9704 21.7073 24.9823C21.4234 24.9941 21.1337 25.0059 20.8381 25.0177C20.5424 25.0414 20.2586 25.0532 19.9866 25.0532C19.8801 25.0532 19.7855 25.0355 19.7027 25C19.62 24.9527 19.5786 24.8877 19.5786 24.8049C19.5786 24.6984 19.62 24.6157 19.7027 24.5565C19.7855 24.4974 19.8861 24.456 20.0043 24.4323C20.4419 24.3496 20.7434 24.2313 20.909 24.0776C21.0746 23.912 21.1514 23.6459 21.1396 23.2793C21.1041 22.5461 21.0746 21.8188 21.0509 21.0974C21.0273 20.3642 21.0036 19.6487 20.98 18.951C20.9681 18.2414 20.9445 17.5555 20.909 16.8932C20.909 16.8104 20.8854 16.775 20.8381 16.7868C20.8026 16.7868 20.7671 16.8282 20.7316 16.911L17.3434 24.9645C17.2843 25.1301 17.1956 25.201 17.0774 25.1774C16.9591 25.1537 16.8763 25.0946 16.829 25C16.2495 23.6282 15.6405 22.2741 15.0019 20.9377C14.3751 19.6014 13.7956 18.2769 13.2634 16.9642C13.228 16.8577 13.1688 16.8223 13.0861 16.8577C13.0151 16.8814 12.9737 16.9583 12.9619 17.0883C12.9264 17.6797 12.8968 18.3301 12.8732 19.0397C12.8495 19.7374 12.8377 20.447 12.8377 21.1683C12.8377 21.8779 12.8377 22.5402 12.8377 23.1551C12.8377 23.4863 12.9441 23.7583 13.157 23.9711C13.3699 24.1722 13.7069 24.3259 14.1681 24.4323C14.2864 24.456 14.3987 24.4974 14.5052 24.5565C14.6116 24.6038 14.6648 24.6807 14.6648 24.7871C14.6648 24.8699 14.6175 24.935 14.5229 24.9823C14.4283 25.0296 14.3278 25.0532 14.2214 25.0532C13.9021 25.0532 13.6537 25.0414 13.4763 25.0177C13.2989 25.0059 13.1393 25 12.9974 25C12.8554 24.9882 12.6603 24.9823 12.412 24.9823C12.1518 24.9823 11.8857 24.9882 11.6137 25C11.3417 25.0118 11.1052 25.0237 10.9041 25.0355C10.7031 25.0473 10.573 25.0532 10.5139 25.0532Z" fill="#F5F5F6"/><defs><linearGradient id="msn1" x1="2" y1="3.5" x2="26" y2="3.5" gradientUnits="userSpaceOnUse"><stop stop-color="#FF2526"/><stop offset="0.934543" stop-color="#FF4583"/></linearGradient><linearGradient id="msn2" x1="2" y1="8.5" x2="26" y2="8.5" gradientUnits="userSpaceOnUse"><stop stop-color="#FF4583"/><stop offset="1" stop-color="#FF7A4D"/></linearGradient></defs></svg></a>
+    <nav class="fn-links">
+      <a href="design.html">Design</a>
+      <a href="content.html">Content</a>
+      <a href="#">Components</a>
+      <a href="#">Brand</a>
+      <a href="#">Resources</a>
+    </nav>
+    <button type="button" class="fn-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> <span data-en="Login" data-es="Iniciar sesión">Login</span></button>
+  </div>
+</div>
+
+<!-- standalone language toggle, top-right corner -->
+<div class="lang langbar" role="group" aria-label="Language">
+  <button type="button" data-lang="es">ES</button>
+  <button type="button" data-lang="en" class="on">EN</button>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap hero-inner">
+    <span class="badge"><span class="dot"></span> <span data-en="Living system · updated this week" data-es="Sistema vivo · actualizado esta semana">Living system · updated this week</span></span>
+    <h1 class="display" data-html data-en="A place where something<br><span class='silver'>powerful</span> begins." data-es="Donde empieza algo<br><span class='silver'>poderoso</span>.">A place where something<br><span class="silver">powerful</span> begins.</h1>
+    <p class="lead" data-en="Mustache is Rappi's design system. The philosophy, the craft and the people behind every product experience we ship." data-es="Mustache es el design system de Rappi. La filosofía, el craft y las personas detrás de cada experiencia de producto.">Mustache is Rappi's design system. The philosophy, the craft and the people behind every product experience we ship.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" data-en="Explore the story" data-es="Explora la historia">Explore the story</button>
+      <button class="btn btn-ghost" data-en="Read our principles" data-es="Lee los principios">Read our principles</button>
+    </div>
+    <div class="hero-meta">
+      <div><b data-en="2019" data-es="2019">2019</b><span data-en="Building since" data-es="Construyéndolo desde">Building since</span></div>
+      <div><b data-en="Millions" data-es="Millones">Millions</b><span data-en="Orders a day" data-es="Pedidos al día">Orders a day</span></div>
+      <div><b data-en="iOS · Android · Web" data-es="iOS · Android · Web">iOS · Android · Web</b><span data-en="Every platform" data-es="Cada plataforma">Every platform</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MANIFESTO ===================== -->
+<section class="section manifesto divtop" id="about">
+  <div class="wrap">
+    <div class="sec-eyebrow-row"><span class="eyebrow" data-en="Living · Evolving" data-es="Vivo · Evolucionando">Living · Evolving</span><span class="ln"></span></div>
+    <h2 class="display" data-html data-en="This is Mustache. <em>Our library to build powerful, amazing and uncommon digital experiences.</em>" data-es="Esto es Mustache. <em>Nuestra librería para construir experiencias digitales potentes, increíbles y fuera de lo común.</em>">This is Mustache. <em>Our library to build powerful, amazing and uncommon digital experiences.</em></h2>
+    <div class="man-grid">
+      <div>
+        <p data-en="Since 2019 we've been building one of the most complete design systems at Rappi, shaped around the way our teams actually work." data-es="Desde 2019 construimos uno de los design systems más completos de Rappi, moldeado a la forma real en que trabajan nuestros equipos.">Since 2019 we've been building one of the most complete design systems at Rappi, shaped around the way our teams actually work.</p>
+        <p data-en="It unifies our B2C and B2B products under one language, so every designer and engineer can connect and grow in an organized way." data-es="Unifica nuestros productos B2C y B2B bajo un mismo lenguaje, para que cada diseñador e ingeniero pueda conectarse y crecer de forma ordenada.">It unifies our B2C and B2B products under one language, so every designer and engineer can connect and grow in an organized way.</p>
+      </div>
+      <div>
+        <p data-en="Our purpose is simple: build consistent products at Rappi, and make sure our brand stays recognizable wherever it shows up, on every platform and format." data-es="Nuestro propósito es simple: construir productos consistentes en Rappi y lograr que la marca se reconozca dondequiera que aparezca, en cada plataforma y formato.">Our purpose is simple: build consistent products at Rappi, and make sure our brand stays recognizable wherever it shows up, on every platform and format.</p>
+        <p data-en="A polished UI builds trust and reduces friction. That belief is the reason Mustache exists." data-es="Una UI pulida genera confianza y reduce la fricción. Esa convicción es la razón de ser de Mustache.">A polished UI builds trust and reduces friction. That belief is the reason Mustache exists.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRINCIPLES ===================== -->
+<section class="section divtop" id="principles">
+  <div class="wrap">
+    <div class="prin-head">
+      <span class="eyebrow" data-en="The 3 pillars" data-es="Los 3 pilares">The 3 pillars</span>
+      <h2 class="display" data-en="Principles that hold it together" data-es="Principios que lo sostienen">Principles that hold it together</h2>
+    </div>
+    <div class="cards3">
+      <div class="card"><div class="num">01</div><h3 data-en="Beautiful &amp; scalable" data-es="Bello y escalable">Beautiful &amp; scalable</h3><p data-en="We build products that look great and grow gracefully, from a single button to an entire platform." data-es="Construimos productos que se ven muy bien y crecen con elegancia, desde un botón hasta una plataforma entera.">We build products that look great and grow gracefully, from a single button to an entire platform.</p></div>
+      <div class="card"><div class="num">02</div><h3 data-en="Holistic by design" data-es="Holístico por diseño">Holistic by design</h3><p data-en="We create holistic designs where every piece works as part of one coherent, connected whole." data-es="Creamos diseños holísticos donde cada pieza funciona como parte de un todo coherente y conectado.">We create holistic designs where every piece works as part of one coherent, connected whole.</p></div>
+      <div class="card"><div class="num">03</div><h3 data-en="Experience first" data-es="La experiencia primero">Experience first</h3><p data-en="We prioritize our users' experience in every decision, because the details are the product." data-es="Priorizamos la experiencia de nuestros usuarios en cada decisión, porque los detalles son el producto.">We prioritize our users' experience in every decision, because the details are the product.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CRAFT ===================== -->
+<section class="section craft" id="craft">
+  <div class="wrap">
+    <div class="craft-head">
+      <div>
+        <div class="sec-eyebrow-row"><span class="eyebrow" data-en="The signature look" data-es="El sello visual">The signature look</span><span class="ln"></span></div>
+        <h2 class="display" data-en="Craft you can recognize" data-es="Un craft que se reconoce">Craft you can recognize</h2>
+      </div>
+      <p data-en="Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon." data-es="Nuestro lenguaje visual es lo que hace que una pantalla de Rappi se sienta Rappi: 3D, glossy, expresiva y consistente hasta el último ícono.">Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon.</p>
+    </div>
+    <div class="craft-grid">
+      <div class="cx big"><div class="art art-3d"></div><b data-en="3D Illustrations" data-es="Ilustraciones 3D">3D Illustrations</b><span data-en="Our signature glossy look" data-es="Nuestro sello glossy">Our signature glossy look</span></div>
+      <div class="cx mid"><div class="art art-type"><div class="aa">Aa</div></div><b data-en="Typography" data-es="Tipografía">Typography</b><span data-en="Medium weight, lighter load" data-es="Peso Medium, menos carga">Medium weight, lighter load</span></div>
+      <div class="cx sq"><div class="art art-icons">
+        <svg viewBox="0 0 24 24" style="left:20px;top:24px;width:26px;height:26px"><circle cx="12" cy="12" r="9"/></svg>
+        <svg viewBox="0 0 24 24" style="left:64px;top:24px;width:26px;height:26px"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>
+        <svg viewBox="0 0 24 24" style="left:20px;top:70px;width:26px;height:26px"><path d="M12 3 21 20 3 20Z"/></svg>
+        <svg viewBox="0 0 24 24" style="left:64px;top:70px;width:26px;height:26px"><path d="M4 12h16M12 4v16"/></svg>
+      </div><b data-en="Iconography" data-es="Iconografía">Iconography</b><span data-en="2px stroke, in harmony" data-es="Trazo de 2px, en armonía">2px stroke, in harmony</span></div>
+      <div class="cx sq"><div class="art art-motion"></div><b data-en="Motion" data-es="Movimiento">Motion</b><span data-en="How things move" data-es="Cómo se mueve todo">How things move</span></div>
+      <div class="cx sq"><div class="art art-color"><i style="background:#f5f5f6"></i><i style="background:#b8b8bd"></i><i style="background:#7a7a80"></i><i style="background:#3a3a40"></i><i style="background:#151519"></i></div><b data-en="Color &amp; tokens" data-es="Color y tokens">Color &amp; tokens</b><span data-en="Semantic, accessible" data-es="Semánticos, accesibles">Semantic, accessible</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BY THE NUMBERS ===================== -->
+<section class="section divtop" id="numbers">
+  <div class="wrap">
+    <div class="numbers-head">
+      <div class="sec-eyebrow-row"><span class="eyebrow" data-en="By the numbers" data-es="En cifras">By the numbers</span><span class="ln"></span></div>
+      <h2 class="display" data-en="A system at Rappi scale" data-es="Un sistema a escala Rappi">A system at Rappi scale</h2>
+    </div>
+    <div class="stat-hero">
+      <div class="stat"><b>500<span style="font-size:.5em">+</span></b><span data-en="Components in the library *" data-es="Componentes en la librería *">Components in the library *</span></div>
+      <div class="stat"><b>1,400<span style="font-size:.5em">+</span></b><span data-en="Variants built *" data-es="Variantes construidas *">Variants built *</span></div>
+      <div class="stat"><b>3M<span style="font-size:.5em">+</span></b><span data-en="On-screen uses *" data-es="Usos en pantalla *">On-screen uses *</span></div>
+    </div>
+    <div class="stat-row">
+      <div class="chip"><b data-en="Millions / day" data-es="Millones / día">Millions / day</b><span data-en="Orders served across products" data-es="Pedidos servidos entre productos">Orders served across products</span></div>
+      <div class="chip"><b>B2C + B2B</b><span data-en="One system, both ecosystems" data-es="Un sistema, ambos ecosistemas">One system, both ecosystems</span></div>
+      <div class="chip"><b>iOS · Android · Web</b><span data-en="Every platform, one language" data-es="Cada plataforma, un lenguaje">Every platform, one language</span></div>
+      <div class="chip"><b data-en="Since 2019" data-es="Desde 2019">Since 2019</b><span data-en="And still evolving" data-es="Y sigue evolucionando">And still evolving</span></div>
+    </div>
+    <p class="note-x" data-en="* Example figures. Replace them with Mustache's real numbers." data-es="* Cifras de ejemplo. Reemplázalas con los números reales de Mustache.">* Example figures. Replace them with Mustache's real numbers.</p>
+  </div>
+</section>
+
+<!-- ===================== TEAM ===================== -->
+<section class="section divtop" id="team">
+  <div class="wrap">
+    <div class="team-head">
+      <div class="sec-eyebrow-row"><span class="eyebrow" data-en="The people behind it" data-es="Las personas detrás">The people behind it</span><span class="ln"></span></div>
+      <h2 class="display" data-en="Made by the Rappi design team" data-es="Hecho por el equipo de diseño de Rappi">Made by the Rappi design team</h2>
+    </div>
+    <div class="lead-grid">
+      <div class="person"><div class="avatar">DV</div><b>Diego Villarroel</b><span>Head of Design</span></div>
+      <div class="person"><div class="avatar">AD</div><b>Andrés Durán</b><span>Design Director</span></div>
+      <div class="person"><div class="avatar">MA</div><b>Miguel Ávila</b><span>Design Lead · “Mustache Glossy”</span></div>
+    </div>
+    <div class="designers">
+      <div class="who"><span class="dot">JG</span><span>Jorge Guzmán</span></div>
+      <div class="who"><span class="dot">CL</span><span>Christian Linares</span></div>
+      <div class="who"><span class="dot">PV</span><span>Pablo Vargas</span></div>
+      <div class="who"><span class="dot">MB</span><span>Mariangela Boscán</span></div>
+      <div class="who"><span class="dot">MR</span><span>Melany Roa</span></div>
+      <div class="who"><span class="dot">DP</span><span>Daniella Pereira</span></div>
+      <div class="who"><span class="dot">AC</span><span>Andrés Cerrón</span></div>
+      <span class="role" data-en="Product Designers" data-es="Product Designers">Product Designers</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STORY ===================== -->
+<section class="section divtop" id="story">
+  <div class="wrap">
+    <div class="sec-eyebrow-row"><span class="eyebrow" data-en="Our story" data-es="Nuestra historia">Our story</span><span class="ln"></span></div>
+    <h2 class="display" style="font-size:clamp(26px,3.6vw,38px);margin-top:12px" data-en="A system that keeps evolving" data-es="Un sistema que sigue evolucionando">A system that keeps evolving</h2>
+    <div class="timeline">
+      <div class="tl"><b>2019</b><span data-en="Mustache is born to unify Rappi's products." data-es="Nace Mustache para unificar los productos de Rappi.">Mustache is born to unify Rappi's products.</span></div>
+      <div class="tl"><b data-en="Foundation" data-es="Fundación">Foundation</b><span data-en="Color, type, icons and 3D come together." data-es="Color, tipografía, iconos y 3D se unen.">Color, type, icons and 3D come together.</span></div>
+      <div class="tl"><b>2024</b><span data-en="A full library rebuild for the new app." data-es="Rebuild completo de la librería para el nuevo app.">A full library rebuild for the new app.</span></div>
+      <div class="tl"><b data-en="Today" data-es="Hoy">Today</b><span data-en="A living system across iOS, Android and Web." data-es="Un sistema vivo en iOS, Android y Web.">A living system across iOS, Android and Web.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="brand">
+        <div class="box" aria-label="Mustache"><svg class="ms-mark" width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="2" y="2" width="24" height="3" rx="1" fill="url(#msf1)"/><path d="M2 8C2 7.44772 2.44772 7 3 7H25C25.5523 7 26 7.44772 26 8V9C26 9.55228 25.5523 10 25 10H3C2.44772 10 2 9.55228 2 9V8Z" fill="url(#msf2)"/><path d="M10.5139 25.0532C10.372 25.0532 10.2655 25.0355 10.1946 25C10.1236 24.9527 10.0881 24.8877 10.0881 24.8049C10.0881 24.6984 10.1354 24.6334 10.2301 24.6097C10.3365 24.5743 10.4547 24.5329 10.5848 24.4856C10.8568 24.391 11.0934 24.2254 11.2944 23.9889C11.5073 23.7523 11.6374 23.4508 11.6847 23.0842C11.7556 22.5402 11.8266 21.872 11.8975 21.0797C11.9803 20.2755 12.0631 19.4181 12.1459 18.5075C12.2287 17.5969 12.2996 16.6981 12.3587 15.8111C12.3706 15.7402 12.3765 15.6515 12.3765 15.545C12.3765 15.4386 12.3765 15.3263 12.3765 15.208C12.3765 14.9951 12.341 14.8296 12.2701 14.7113C12.2109 14.5812 12.1045 14.4748 11.9507 14.392C11.8088 14.2974 11.6551 14.2205 11.4895 14.1614C11.324 14.0904 11.1466 14.0313 10.9574 13.984C10.8154 13.9485 10.7031 13.9012 10.6203 13.8421C10.5375 13.783 10.4961 13.7061 10.4961 13.6115C10.4961 13.505 10.5434 13.4341 10.6381 13.3986C10.7327 13.3631 10.845 13.3454 10.9751 13.3454C11.1525 13.3454 11.3713 13.3513 11.6314 13.3631C11.8916 13.375 12.1754 13.3868 12.4829 13.3986C12.8022 13.3986 13.1215 13.4045 13.4408 13.4163C13.772 13.4282 14.0735 13.4341 14.3455 13.4341C14.4401 13.4341 14.5288 13.4696 14.6116 13.5405C14.6944 13.5997 14.7476 13.6706 14.7713 13.7534C14.8541 13.9781 14.9309 14.1969 15.0019 14.4097C15.0728 14.6108 15.1497 14.8237 15.2325 15.0483L17.8401 21.2748C17.8638 21.3221 17.8934 21.3517 17.9288 21.3635C17.9761 21.3635 18.0116 21.3339 18.0353 21.2748L20.572 15.3854C20.6547 14.9715 20.7198 14.6344 20.7671 14.3743C20.8262 14.1141 20.8794 13.9071 20.9267 13.7534C20.9741 13.5997 21.0687 13.5228 21.2106 13.5228H21.9734C22.4701 13.4991 22.9845 13.4637 23.5167 13.4163C24.0607 13.3572 24.4864 13.3277 24.7939 13.3277C24.9121 13.3277 25.0127 13.3513 25.0954 13.3986C25.1901 13.4341 25.2374 13.4991 25.2374 13.5937C25.2374 13.7002 25.196 13.777 25.1132 13.8243C25.0422 13.8717 24.9476 13.913 24.8294 13.9485C24.7584 13.9722 24.6756 14.0077 24.581 14.055C24.4864 14.0904 24.4036 14.1259 24.3327 14.1614C24.0252 14.3033 23.7946 14.4689 23.6408 14.6581C23.4989 14.8355 23.4398 15.1252 23.4634 15.5273C23.4871 16.3788 23.5167 17.1238 23.5521 17.7624C23.5876 18.401 23.6172 18.9923 23.6408 19.5363C23.6763 20.0803 23.7118 20.648 23.7473 21.2393C23.7946 21.8188 23.8419 22.4988 23.8892 23.2793C23.9128 23.5868 24.037 23.8351 24.2617 24.0243C24.4982 24.2017 24.8057 24.3377 25.1841 24.4323C25.3024 24.4678 25.4029 24.5092 25.4857 24.5565C25.5685 24.6038 25.6099 24.6807 25.6099 24.7871C25.6099 24.8699 25.5744 24.935 25.5034 24.9823C25.4325 25.0296 25.3438 25.0532 25.2374 25.0532C24.9772 25.0532 24.6756 25.0414 24.3327 25.0177C24.0015 25.0059 23.6704 24.9941 23.3393 24.9823C23.02 24.9704 22.7421 24.9645 22.5055 24.9645C22.269 24.9645 22.0029 24.9704 21.7073 24.9823C21.4234 24.9941 21.1337 25.0059 20.8381 25.0177C20.5424 25.0414 20.2586 25.0532 19.9866 25.0532C19.8801 25.0532 19.7855 25.0355 19.7027 25C19.62 24.9527 19.5786 24.8877 19.5786 24.8049C19.5786 24.6984 19.62 24.6157 19.7027 24.5565C19.7855 24.4974 19.8861 24.456 20.0043 24.4323C20.4419 24.3496 20.7434 24.2313 20.909 24.0776C21.0746 23.912 21.1514 23.6459 21.1396 23.2793C21.1041 22.5461 21.0746 21.8188 21.0509 21.0974C21.0273 20.3642 21.0036 19.6487 20.98 18.951C20.9681 18.2414 20.9445 17.5555 20.909 16.8932C20.909 16.8104 20.8854 16.775 20.8381 16.7868C20.8026 16.7868 20.7671 16.8282 20.7316 16.911L17.3434 24.9645C17.2843 25.1301 17.1956 25.201 17.0774 25.1774C16.9591 25.1537 16.8763 25.0946 16.829 25C16.2495 23.6282 15.6405 22.2741 15.0019 20.9377C14.3751 19.6014 13.7956 18.2769 13.2634 16.9642C13.228 16.8577 13.1688 16.8223 13.0861 16.8577C13.0151 16.8814 12.9737 16.9583 12.9619 17.0883C12.9264 17.6797 12.8968 18.3301 12.8732 19.0397C12.8495 19.7374 12.8377 20.447 12.8377 21.1683C12.8377 21.8779 12.8377 22.5402 12.8377 23.1551C12.8377 23.4863 12.9441 23.7583 13.157 23.9711C13.3699 24.1722 13.7069 24.3259 14.1681 24.4323C14.2864 24.456 14.3987 24.4974 14.5052 24.5565C14.6116 24.6038 14.6648 24.6807 14.6648 24.7871C14.6648 24.8699 14.6175 24.935 14.5229 24.9823C14.4283 25.0296 14.3278 25.0532 14.2214 25.0532C13.9021 25.0532 13.6537 25.0414 13.4763 25.0177C13.2989 25.0059 13.1393 25 12.9974 25C12.8554 24.9882 12.6603 24.9823 12.412 24.9823C12.1518 24.9823 11.8857 24.9882 11.6137 25C11.3417 25.0118 11.1052 25.0237 10.9041 25.0355C10.7031 25.0473 10.573 25.0532 10.5139 25.0532Z" fill="#F5F5F6"/><defs><linearGradient id="msf1" x1="2" y1="3.5" x2="26" y2="3.5" gradientUnits="userSpaceOnUse"><stop stop-color="#FF2526"/><stop offset="0.934543" stop-color="#FF4583"/></linearGradient><linearGradient id="msf2" x1="2" y1="8.5" x2="26" y2="8.5" gradientUnits="userSpaceOnUse"><stop stop-color="#FF4583"/><stop offset="1" stop-color="#FF7A4D"/></linearGradient></defs></svg></div>
+        <div><b>Mustache</b><small>DESIGN SYSTEM</small></div>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col"><h4 data-en="Public" data-es="Público">Public</h4><a href="#principles" data-en="Principles" data-es="Principios">Principles</a><a href="#craft">Craft</a><a href="#numbers" data-en="Numbers" data-es="Cifras">Numbers</a><a href="#team" data-en="Team" data-es="Equipo">Team</a></div>
+        <div class="foot-col"><h4 data-en="Rappi only" data-es="Solo Rappi">Rappi only</h4><a href="#" data-en="Components" data-es="Componentes">Components</a><a href="#">Tokens</a><a href="#" data-en="Downloads" data-es="Descargas">Downloads</a></div>
+        <div class="foot-col"><h4 data-en="More" data-es="Más">More</h4><a href="#story" data-en="Our story" data-es="Nuestra historia">Our story</a><a href="#" data-en="Release notes" data-es="Release notes">Release notes</a><a href="#" data-en="Feedback" data-es="Feedback">Feedback</a></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Mustache Design System · Rappi</span>
+      <span>Living. Evolving.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nodes = document.querySelectorAll('[data-es]');
+  var buttons = document.querySelectorAll('.lang button');
+  function setLang(l){
+    nodes.forEach(function(el){
+      var v = el.getAttribute('data-'+l);
+      if(v===null) return;
+      if(el.hasAttribute('data-html')) el.innerHTML = v; else el.textContent = v;
+    });
+    document.documentElement.lang = l;
+    buttons.forEach(function(b){ b.classList.toggle('on', b.dataset.lang===l); });
+  }
+  buttons.forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.dataset.lang); });
+  });
+})();
+</script>
+
+</body>
+</html>
