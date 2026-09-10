@@ -145,10 +145,10 @@
     height:clamp(440px,62vh,660px);overflow:hidden;isolation:isolate}
   .mfield-grid{position:absolute;inset:0;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;
     line-height:1;font-family:'Archivo',var(--display);letter-spacing:-.02em;user-select:none;will-change:contents}
-  .mfield-grid span{display:flex;align-items:center;justify-content:center;color:#2f2f30;
+  .mfield-grid span{display:flex;align-items:center;justify-content:center;color:#1c1c1e;
     font-variation-settings:'wght' 400}
-  .mfield-iso{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:clamp(104px,14vw,176px);height:auto;mix-blend-mode:plus-lighter;opacity:.8;pointer-events:none;z-index:2}
+  .mfield-iso{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;
+    width:clamp(104px,14vw,176px);height:auto;color:#fff;mix-blend-mode:plus-lighter;opacity:.8;pointer-events:none;z-index:2}
   .mfield-fade{position:absolute;inset:0;pointer-events:none;z-index:1;
     background:radial-gradient(62% 62% at 50% 50%,transparent 26%,rgba(8,8,10,.55) 100%),
                linear-gradient(180deg,var(--bg),transparent 15%,transparent 85%,var(--bg))}
@@ -312,7 +312,7 @@
 <section class="mfield" aria-label="Mustache">
   <div class="mfield-grid" aria-hidden="true"></div>
   <div class="mfield-fade" aria-hidden="true"></div>
-  <img class="mfield-iso" src="assets/isotype-mustache.svg" alt="" aria-hidden="true">
+  <svg class="mfield-iso" viewBox="0 0 28 28" fill="none" aria-hidden="true"><g clip-path="url(#mfi-clip)"><path d="M26 0C27.1046 0 28 0.895431 28 2V26C28 27.1046 27.1046 28 26 28H2C0.895431 28 0 27.1046 0 26V2C3.86553e-07 0.895431 0.895431 0 2 0H26ZM3 23C2.44772 23 2 23.4477 2 24V25C2 25.5523 2.44772 26 3 26H25C25.5523 26 26 25.5523 26 25V24C26 23.4477 25.5523 23 25 23H3ZM3 18C2.44772 18 2 18.4477 2 19V20C2 20.5523 2.44772 21 3 21H25C25.5523 21 26 20.5523 26 20V19C26 18.4477 25.5523 18 25 18H3ZM24.7939 3.32812C24.4865 3.32812 24.0606 3.35689 23.5166 3.41602C22.9845 3.46331 22.4702 3.49881 21.9736 3.52246H21.2109C21.0692 3.52246 20.9741 3.59947 20.9268 3.75293C20.8795 3.9066 20.8267 4.114 20.7676 4.37402C20.7203 4.6342 20.655 4.97183 20.5723 5.38574L18.0352 11.2744C18.0115 11.3335 17.976 11.3633 17.9287 11.3633C17.8933 11.3514 17.8635 11.3216 17.8398 11.2744L15.2324 5.04883C15.1497 4.82428 15.0729 4.61108 15.002 4.41016C14.931 4.19729 14.8543 3.97763 14.7715 3.75293C14.7478 3.67031 14.694 3.59908 14.6113 3.54004C14.5287 3.46936 14.4401 3.43461 14.3457 3.43457C14.0737 3.43457 13.7716 3.42784 13.4404 3.41602C13.1214 3.40421 12.8024 3.39844 12.4834 3.39844C12.1761 3.38662 11.8919 3.3751 11.6318 3.36328C11.3717 3.35146 11.152 3.3457 10.9746 3.3457C10.8447 3.34575 10.7322 3.363 10.6377 3.39844C10.5433 3.43393 10.4961 3.50507 10.4961 3.61133C10.4961 3.70584 10.5375 3.78269 10.6201 3.8418C10.7029 3.9009 10.8152 3.9489 10.957 3.98438C11.1461 4.03165 11.3238 4.09024 11.4893 4.16113C11.6548 4.22026 11.8093 4.29699 11.9512 4.3916C12.1048 4.47434 12.2114 4.58096 12.2705 4.71094C12.3415 4.8292 12.377 4.99514 12.377 5.20801V5.54492C12.377 5.65136 12.3702 5.74057 12.3584 5.81152C12.2993 6.69835 12.2283 7.59735 12.1455 8.50781C12.0627 9.41829 11.9802 10.276 11.8975 11.0801C11.8265 11.8722 11.7555 12.5401 11.6846 13.084C11.6373 13.4506 11.5068 13.7527 11.2939 13.9893C11.093 14.2255 10.8567 14.3908 10.585 14.4854C10.4551 14.5326 10.3368 14.5739 10.2305 14.6094C10.1359 14.633 10.0879 14.6984 10.0879 14.8047C10.0879 14.8874 10.1235 14.9527 10.1943 15C10.2653 15.0355 10.3719 15.0527 10.5137 15.0527C10.5728 15.0527 10.7033 15.047 10.9043 15.0352C11.1052 15.0233 11.3415 15.0118 11.6133 15C11.8853 14.9882 12.1519 14.9824 12.4121 14.9824C12.6602 14.9824 12.8552 14.9882 12.9971 15C13.139 15 13.2992 15.0058 13.4766 15.0176C13.6539 15.0412 13.9025 15.0527 14.2217 15.0527C14.3278 15.0527 14.4281 15.0295 14.5225 14.9824C14.6171 14.9351 14.665 14.8699 14.665 14.7871C14.665 14.6807 14.6113 14.6039 14.5049 14.5566C14.3985 14.4976 14.2862 14.4563 14.168 14.4326C13.7068 14.3262 13.3701 14.1717 13.1572 13.9707C12.9445 13.7579 12.8379 13.4863 12.8379 13.1553V11.168C12.8379 10.4468 12.8494 9.73753 12.873 9.04004C12.8967 8.33047 12.9264 7.67919 12.9619 7.08789C12.9738 6.95809 13.0151 6.88105 13.0859 6.85742C13.1687 6.82198 13.2282 6.8576 13.2637 6.96387C13.7958 8.27651 14.3752 9.60121 15.002 10.9375C15.6406 12.2738 16.2496 13.6282 16.8291 15C16.8764 15.0946 16.959 15.1541 17.0771 15.1777C17.1954 15.2014 17.2846 15.1303 17.3438 14.9648L20.7314 6.91113C20.7669 6.82848 20.8025 6.78724 20.8379 6.78711C20.8852 6.77528 20.9092 6.81077 20.9092 6.89355C20.9446 7.55571 20.9677 8.24173 20.9795 8.95117C21.0031 9.64885 21.0271 10.3645 21.0508 11.0977C21.0744 11.819 21.1042 12.5462 21.1396 13.2793C21.1515 13.6457 21.0745 13.9116 20.9092 14.0771C20.7436 14.2309 20.4415 14.3498 20.0039 14.4326C19.8859 14.4563 19.7858 14.4977 19.7031 14.5566C19.6204 14.6157 19.5782 14.6983 19.5781 14.8047C19.5781 14.8875 19.6203 14.9527 19.7031 15C19.7858 15.0354 19.8801 15.0527 19.9863 15.0527C20.2583 15.0527 20.5423 15.0412 20.8379 15.0176C21.1335 15.0058 21.4233 14.9942 21.707 14.9824C22.0027 14.9706 22.2693 14.9648 22.5059 14.9648C22.7422 14.9648 23.0199 14.9706 23.3389 14.9824C23.67 14.9942 24.0019 15.0058 24.333 15.0176C24.6758 15.0412 24.9772 15.0527 25.2373 15.0527C25.3437 15.0527 25.4329 15.0297 25.5039 14.9824C25.5747 14.9351 25.6104 14.8698 25.6104 14.7871C25.6103 14.6807 25.5681 14.6039 25.4854 14.5566C25.4027 14.5095 25.3025 14.468 25.1846 14.4326C24.8062 14.338 24.4982 14.2018 24.2617 14.0244C24.037 13.8352 23.9133 13.5868 23.8896 13.2793C23.8423 12.4988 23.7944 11.8187 23.7471 11.2393C23.7116 10.648 23.6761 10.0801 23.6406 9.53613C23.617 8.99226 23.5872 8.40113 23.5518 7.7627C23.5163 7.1241 23.4875 6.3788 23.4639 5.52734C23.4402 5.12539 23.4988 4.83561 23.6406 4.6582C23.7944 4.46899 24.0255 4.30305 24.333 4.16113C24.4039 4.12572 24.4866 4.0901 24.5811 4.05469C24.6755 4.00745 24.7582 3.97188 24.8291 3.94824C24.9474 3.91276 25.0423 3.87152 25.1133 3.82422C25.196 3.77691 25.2373 3.70012 25.2373 3.59375C25.2373 3.4992 25.1902 3.43393 25.0957 3.39844C25.0129 3.35114 24.9122 3.32813 24.7939 3.32812Z" fill="currentColor"/></g><defs><clipPath id="mfi-clip"><rect width="28" height="28" fill="#fff"/></clipPath></defs></svg>
 </section>
 
 <!-- ===================== PRINCIPLES ===================== -->
@@ -569,22 +569,21 @@
   if(!grid) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // grey ramp (single-channel cosine palette) — dark grey up to near-white
+  // dark grey ramp — near-black at the low end, mid grey at the heavy end
   function palette(t){
-    var v = 0.5 - 0.5 * Math.cos(6.28318 * (t * 0.5 + 0.5));
-    var g = 34 + (v * 216) | 0;
+    var g = 20 + (t * 170) | 0;
     return 'rgb(' + g + ',' + g + ',' + g + ')';
   }
-  var STEPS = 64, colorLUT = [], weightLUT = [];
+  var STEPS = 110, colorLUT = [], weightLUT = [];
   for(var s = 0; s < STEPS; s++){
     var st = s / (STEPS - 1);
     colorLUT[s] = palette(st);
-    weightLUT[s] = Math.round(120 + st * 780);
+    weightLUT[s] = Math.round(280 + st * 560);   // keep every M with body (no frail strokes)
   }
 
   var cells = [], size = 0, W = 0, H = 0, raf = 0, running = false;
   var mouse = { x: -9999, y: -9999 };
-  var ts = { cur: 0, prev: -1, start: 0, prog: 1, DUR: 1300 };
+  var ts = { cur: 0, prev: -1, start: 0, prog: 1, DUR: 1900 };
 
   function build(){
     var rect = section.getBoundingClientRect();
@@ -617,18 +616,18 @@
     if(state === 0){                                    // radial ripple from centre
       dx = it.x - W / 2; dy = it.y - H / 2;
       dist = Math.sqrt(dx * dx + dy * dy);
-      return Math.sin(dist * 0.016 - time * 0.011) * 0.5 + 0.5;
+      return Math.sin(dist * 0.011 - time * 0.0065) * 0.5 + 0.5;
     } else if(state === 1){                             // rotating linear gradient
-      var v = (cosA * it.x + sinA * it.y) * 0.003;
+      var v = (cosA * it.x + sinA * it.y) * 0.0022;
       return Math.cos(v * 2) * 0.5 + 0.5;
     } else {                                            // horizontal travelling wave
       dy = it.y - H / 2;
-      return (dy + Math.cos(it.x * 0.004 + time * 0.007) * 90) * 0.006 + 0.5;
+      return (dy + Math.cos(it.x * 0.003 + time * 0.0045) * 90) * 0.006 + 0.5;
     }
   }
 
   function paint(time){
-    var cycle = 12000, prog = (time % cycle) / (cycle / 3);
+    var cycle = 18000, prog = (time % cycle) / (cycle / 3);
     var active = Math.floor(prog);
     var angle = time * 0.0018, cosA = Math.cos(angle) * 2, sinA = Math.sin(angle) * 2;
 
@@ -645,7 +644,8 @@
       }
       // mouse-proximity boost — thickens / brightens cells near the cursor
       var mdx = it.x - mouse.x, mdy = it.y - mouse.y;
-      val += Math.max(0, 1 - Math.sqrt(mdx * mdx + mdy * mdy) / 260) * 0.85;
+      var md = 1 - Math.sqrt(mdx * mdx + mdy * mdy) / 240;
+      if(md > 0) val += md * md * 0.7;
 
       var b = Math.round((val < 0 ? 0 : val > 1 ? 1 : val) * (STEPS - 1)) | 0;
       if(b === it.b) continue;
