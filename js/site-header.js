@@ -20,6 +20,7 @@
     { id: 'design',     href: 'design.html',  label: 'Design'     },
     { id: 'content',    href: 'content.html', label: 'Content'    },
     { id: 'components', href: '#',            label: 'Components' },
+    { id: 'ai',         href: '#',            label: 'AI'         },
     { id: 'brand',      href: '#',            label: 'Brand'      },
     { id: 'resources',  href: '#',            label: 'Resources'  },
   ];
