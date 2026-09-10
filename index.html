@@ -531,10 +531,10 @@
   function make(){
     return {
       color: 'rgba(' + WARM[Math.random() * WARM.length | 0] + ',' + (Math.random() < 0.16 ? 0.95 : 0.66) + ')',
-      radius: Math.random() * 4.2,
+      radius: Math.random() * 2.3,
       ring: Math.random() * R * 3,
       angle: Math.random() * 7,
-      speed: (Math.random() * 4 + 1) / 500
+      speed: (Math.random() * 4 + 1) / 2400
     };
   }
   function setup(){
@@ -551,7 +551,7 @@
     counter = 0;
   }
   function step(p, time){
-    if(p.radius < 0.8){ p.ring = Math.random() * R * 3; p.radius = Math.random() * 4.2; }
+    if(p.radius < 0.5){ p.ring = Math.random() * R * 3; p.radius = Math.random() * 2.3; }
     p.radius *= 0.994;
     p.ring = Math.max(p.ring - 1, R);
     p.angle += p.speed;
@@ -582,7 +582,7 @@
       ctx.beginPath();
       ctx.fillStyle = p.color;
       ctx.arc(Math.cos(a + Math.PI) * ring, Math.sin(a + Math.PI) * ring,
-              Math.random() * 1.8 + 0.4, 0, 6.2832);
+              Math.random() * 1.1 + 0.3, 0, 6.2832);
       ctx.fill();
     }
   }
