@@ -45,9 +45,12 @@ un paso de compilación entre "edito" y "veo".
     ├── isotype-mustache-tint.svg   Isotipo monocromo (currentColor)
     ├── mustache.svg                Wordmark "Mustache" (currentColor)
     ├── system-DSystem.svg          Descriptor "Design System" + divisor (currentColor)
-    ├── system-uxSystem.svg         Descriptor "UX System" + divisor (currentColor)
-    └── hero-bg.jpg                 Fondo del hero del home
+    └── system-uxSystem.svg         Descriptor "UX System" + divisor (currentColor)
 ```
+
+El fondo del hero del home es procedural (bubbles orgánicos en CSS +
+starfield en `<canvas>`), no una imagen.
+
 
 Cada página de Foundations es independiente: su propio `<style>`, su propio
 scrollspy. Lo único que comparten es el `<site-header>`.
