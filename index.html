@@ -142,19 +142,20 @@
 
   /* ---------- M letter field ---------- */
   .mfield{position:relative;background:var(--bg);
-    height:clamp(440px,62vh,660px);overflow:hidden;isolation:isolate}
+    height:clamp(420px,58vh,620px);overflow:hidden;isolation:isolate}
   .mfield-grid{position:absolute;inset:0;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;
     line-height:1;font-family:'Archivo',var(--display);letter-spacing:-.02em;user-select:none;will-change:contents}
-  .mfield-grid span{display:flex;align-items:center;justify-content:center;color:#141416;
+  .mfield-grid span{display:flex;align-items:center;justify-content:center;color:#0b0b0b;
     font-variation-settings:'wght' 400}
-  .mfield-noise{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.4;mix-blend-mode:overlay;
+  .mfield-noise{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size:180px 180px}
   .mfield-iso{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;
-    width:clamp(104px,14vw,176px);height:auto;color:#fff;opacity:.7;pointer-events:none;z-index:3;
-    mix-blend-mode:plus-lighter;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+    width:clamp(104px,14vw,176px);height:auto;color:rgba(255,255,255,.2);opacity:1;pointer-events:none;z-index:3;
+    backdrop-filter:blur(16px) brightness(1.15);-webkit-backdrop-filter:blur(16px) brightness(1.15)}
   .mfield-fade{position:absolute;inset:0;pointer-events:none;z-index:2;
-    background:radial-gradient(66% 66% at 50% 50%,transparent 34%,rgba(8,8,10,.4) 100%)}
+    background:radial-gradient(66% 66% at 50% 50%,transparent 34%,rgba(8,8,10,.4) 100%),
+               linear-gradient(180deg,transparent 82%,var(--bg) 100%)}
 
   /* ---------- sections ---------- */
   .section{padding:84px 0}
@@ -573,9 +574,9 @@
   if(!grid) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // very dark grey ramp — near-black at the low end, dim grey at the heavy end
+  // near-black ramp — brightest grey caps at #0F0F0F
   function palette(t){
-    var g = 12 + (t * 118) | 0;
+    var g = 4 + (t * 11) | 0;
     return 'rgb(' + g + ',' + g + ',' + g + ')';
   }
   var STEPS = 110, colorLUT = [], weightLUT = [];
