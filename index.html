@@ -140,9 +140,9 @@
   .hcard-icon{position:relative;z-index:2;width:34px;height:34px;color:var(--muted-2);
     transition:color .3s ease,scale .3s ease}
   .hcard:where(:hover,:focus-within) .hcard-icon{color:var(--hc-active,var(--text));scale:1.12}
-  .hcard-body{padding:22px 22px 26px}
-  .hcard-body h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin-bottom:8px}
-  .hcard-body p{color:var(--muted);font-size:14.5px;line-height:1.5}
+  .hcard-body{padding:24px 24px 30px}
+  .hcard-body h3{font-family:var(--display);font-weight:700;font-size:clamp(22px,2.4vw,28px);letter-spacing:-.02em;margin-bottom:10px}
+  .hcard-body p{color:var(--muted);font-size:15.5px;line-height:1.5}
   @media(max-width:860px){.home-cards{grid-template-columns:1fr;max-width:420px}}
 
   /* ---------- M letter field ---------- */
@@ -164,8 +164,7 @@
   .divtop{border-top:1px solid var(--line)}
   .prin-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
   .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;transition:.25s;min-height:220px;display:flex;flex-direction:column}
-  .card:hover{border-color:var(--line-2);transform:translateY(-3px);background:var(--panel-2)}
+  .card{background:var(--panel);border-radius:var(--radius);padding:30px 26px;min-height:220px;display:flex;flex-direction:column}
   .card .num{font-family:var(--display);font-weight:800;font-size:15px;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;margin-bottom:22px;color:#0A0A0C;background:var(--white)}
   .card h3{font-family:var(--display);font-weight:700;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
   .card p{color:var(--muted);font-size:15px}
@@ -175,14 +174,24 @@
   .craft-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
   .craft-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
   .craft-head p{color:var(--muted);max-width:420px;font-size:15px}
-  .craft-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:190px;gap:16px;margin-top:40px}
-  .cx{border:1px solid var(--line);border-radius:16px;background:var(--panel);position:relative;overflow:hidden;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;transition:.25s}
+  .craft-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:156px;gap:16px;margin-top:40px}
+  .cx{border:1px solid var(--line);border-radius:16px;background:var(--panel);position:relative;overflow:hidden;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .25s,transform .25s}
   .cx:hover{border-color:var(--line-2);transform:translateY(-3px)}
   .cx b{font-family:var(--display);font-weight:700;font-size:17px;position:relative;z-index:2}
   .cx span{color:var(--muted-2);font-size:12.5px;position:relative;z-index:2;margin-top:2px}
   .cx .art{position:absolute;inset:0;z-index:1}
-  .cx.big{grid-column:span 3}.cx.mid{grid-column:span 3}.cx.sq{grid-column:span 2}
-  @media(max-width:900px){.craft-grid{grid-template-columns:repeat(2,1fr)}.cx.big,.cx.mid,.cx.sq{grid-column:span 1}}
+  /* bento layout */
+  .cx.big{grid-column:span 4;grid-row:span 2}
+  .cx.mid{grid-column:span 2;grid-row:span 1}
+  .cx.sq:nth-of-type(3){grid-column:span 2;grid-row:span 1}
+  .cx.sq:nth-of-type(4){grid-column:span 3;grid-row:span 1}
+  .cx.sq:nth-of-type(5){grid-column:span 3;grid-row:span 1}
+  .cx.big b{font-size:22px}
+  @media(max-width:900px){
+    .craft-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px}
+    .cx.big{grid-column:span 2;grid-row:span 2}
+    .cx.mid,.cx.sq:nth-of-type(3),.cx.sq:nth-of-type(4),.cx.sq:nth-of-type(5){grid-column:span 1;grid-row:span 1}
+  }
   .art-3d{background:radial-gradient(60% 60% at 65% 35%,#2a2a2f,#0E0E10 72%)}
   .art-3d::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;right:-20px;top:20px;
     background:radial-gradient(35% 35% at 40% 30%,#fff,#6a6a70 40%,#141416 78%);box-shadow:0 20px 50px rgba(0,0,0,.5)}
@@ -510,7 +519,7 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  var COUNT = 440;
+  var COUNT = 280;
   var WARM = ['255,120,45', '255,80,35', '255,175,60', '255,222,140', '255,150,95'];
   var particles = [], counter = 0, raf = 0, R = 120, cw = 0, ch = 0;
 
@@ -544,9 +553,9 @@
     // radial distortion: concentric ripples travelling outward + a faint
     // radius-dependent swirl, so the rings warp instead of sitting perfectly round
     var d = p.ring;
-    var rd = d + Math.sin(d * 0.028 - time * 0.0022) * 6
-               + Math.sin(d * 0.011 + time * 0.0013) * 3;
-    var a = p.angle + Math.PI + Math.sin(d * 0.006 - time * 0.0009) * 0.05;
+    var rd = d + Math.sin(d * 0.028 - time * 0.006) * 6
+               + Math.sin(d * 0.011 + time * 0.0038) * 3;
+    var a = p.angle + Math.PI + Math.sin(d * 0.006 - time * 0.0026) * 0.05;
     var jx = (Math.random() - 0.5) * 0.9, jy = (Math.random() - 0.5) * 0.9;   // subtle noise
     ctx.beginPath();
     ctx.fillStyle = p.color;
