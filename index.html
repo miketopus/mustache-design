@@ -529,7 +529,8 @@
       radius: Math.random() * 2.3,
       ring: Math.random() * R * 3,
       angle: Math.random() * 7,
-      speed: (Math.random() * 4 + 1) / 2400
+      speed: (Math.random() * 4 + 1) / 2400,
+      spark: 0
     };
   }
   function setup(){
@@ -557,10 +558,26 @@
                + Math.sin(d * 0.009 + time * 0.001) * 2;
     var a = p.angle + Math.PI + Math.sin(d * 0.005 - time * 0.0007) * 0.03;
     var jx = (Math.random() - 0.5) * 0.35, jy = (Math.random() - 0.5) * 0.35;   // faint grain
+    var x = Math.cos(a) * rd + jx, y = Math.sin(a) * rd + jy;
+    var r = Math.max(p.radius, 0);
+    // occasional white spark
+    if(p.spark > 0) p.spark--;
+    else if(Math.random() < 0.0011) p.spark = 7 + (Math.random() * 9 | 0);
+    if(p.spark > 0){
+      var g = Math.min(1, 0.35 + p.spark / 9);
+      ctx.save();
+      ctx.shadowBlur = 9;
+      ctx.shadowColor = 'rgba(255,255,255,' + g + ')';
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(255,255,255,' + g + ')';
+      ctx.arc(x, y, r * 1.5 + 0.7, 0, 6.2832);
+      ctx.fill();
+      ctx.restore();
+      return;
+    }
     ctx.beginPath();
     ctx.fillStyle = p.color;
-    ctx.arc(Math.cos(a) * rd + jx, Math.sin(a) * rd + jy,
-            Math.max(p.radius, 0), 0, 6.2832);
+    ctx.arc(x, y, r, 0, 6.2832);
     ctx.fill();
   }
   function loop(time){
