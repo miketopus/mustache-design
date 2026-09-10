@@ -577,42 +577,41 @@
   window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(boot, 200); });
 })();
 
-// M letter field — waves of variable weight + warm colour ripple across a grid
-// of "M"s (adapted from Liam Egan's "Letterfield" pen). Animates only in view.
+// M letter field — cycling patterns of variable font weight + a grey ramp
+// ripple across a grid of "M"s, with a mouse-proximity weight boost.
+// Ported from Liam Egan's "Letterfield" pen (logic only). Animates in view.
 (function(){
   var section = document.querySelector('.mfield');
   var grid = section && section.querySelector('.mfield-grid');
   if(!grid) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // hand-tuned warm ramp: deep red -> red-orange -> orange -> amber -> yellow -> warm white
-  var STOPS = [
-    [46, 8, 10], [138, 20, 14], [214, 46, 20], [255, 104, 32],
-    [255, 160, 46], [255, 208, 84], [255, 240, 170]
-  ];
+  // grey ramp (single-channel cosine palette) — dark grey up to near-white
   function palette(t){
-    t = t < 0 ? 0 : t > 1 ? 1 : t;
-    var f = t * (STOPS.length - 1), i = f | 0, k = f - i;
-    var a = STOPS[i], b = STOPS[i + 1] || a;
-    return 'rgb(' + (a[0] + (b[0] - a[0]) * k | 0) + ',' +
-                    (a[1] + (b[1] - a[1]) * k | 0) + ',' +
-                    (a[2] + (b[2] - a[2]) * k | 0) + ')';
+    var v = 0.5 - 0.5 * Math.cos(6.28318 * (t * 0.5 + 0.5));
+    var g = 34 + (v * 216) | 0;
+    return 'rgb(' + g + ',' + g + ',' + g + ')';
   }
-  var STEPS = 48, colorLUT = [], weightLUT = [];
-  for(var kk = 0; kk < STEPS; kk++){
-    var tk = kk / (STEPS - 1);
-    colorLUT[kk] = palette(tk);
-    weightLUT[kk] = Math.round(170 + tk * 730);
+  var STEPS = 64, colorLUT = [], weightLUT = [];
+  for(var s = 0; s < STEPS; s++){
+    var st = s / (STEPS - 1);
+    colorLUT[s] = palette(st);
+    weightLUT[s] = Math.round(120 + st * 780);
   }
 
-  var cells = [], size = 0, raf = 0, running = false;
+  var cells = [], size = 0, W = 0, H = 0, raf = 0, running = false;
+  var mouse = { x: -9999, y: -9999 };
+  var ts = { cur: 0, prev: -1, start: 0, prog: 1, DUR: 1300 };
 
   function build(){
     var rect = section.getBoundingClientRect();
-    size = Math.round(Math.max(70, Math.min(rect.width / 9, rect.height / 4.4, 132)));
-    var cols = Math.ceil(rect.width / size) + 1, rows = Math.ceil(rect.height / size) + 1;
+    W = rect.width; H = rect.height;
+    size = Math.round(Math.max(66, Math.min(W / 9, H / 4.4, 128)));
+    var cols = Math.ceil(W / size) + 1, rows = Math.ceil(H / size) + 1;
+    var gw = cols * size, gh = rows * size;
+    var ox = (W - gw) / 2, oy = (H - gh) / 2;
     grid.style.fontSize = size + 'px';
-    grid.style.width = (cols * size) + 'px';
+    grid.style.width = gw + 'px';
     grid.style.left = '50%';
     grid.style.transform = 'translateX(-50%)';
     grid.innerHTML = '';
@@ -620,45 +619,80 @@
     var frag = document.createDocumentFragment();
     for(var r = 0; r < rows; r++){
       for(var c = 0; c < cols; c++){
-        var s = document.createElement('span');
-        s.textContent = 'M';
-        s.style.width = s.style.height = size + 'px';
-        frag.appendChild(s);
-        cells.push({ el: s, c: c, r: r, li: -1 });
+        var el = document.createElement('span');
+        el.textContent = 'M';
+        el.style.width = el.style.height = size + 'px';
+        frag.appendChild(el);
+        cells.push({ el: el, x: ox + c * size + size / 2, y: oy + r * size + size / 2, b: -1 });
       }
     }
     grid.appendChild(frag);
   }
-  function paint(time){
-    var tt = time * 0.00045;
-    for(var i = 0; i < cells.length; i++){
-      var p = cells[i];
-      var raw = Math.sin(p.c * 0.55 - tt) + Math.sin(p.r * 0.42 + tt * 0.7) +
-                Math.sin((p.c + p.r) * 0.30 - tt * 0.5);
-      var idx = ((raw + 3) / 6) * (STEPS - 1) | 0;
-      if(idx < 0) idx = 0; else if(idx >= STEPS) idx = STEPS - 1;
-      if(idx !== p.li){
-        p.el.style.color = colorLUT[idx];
-        p.el.style.fontVariationSettings = "'wght' " + weightLUT[idx];
-        p.li = idx;
-      }
+
+  function stateVal(state, it, time, cosA, sinA){
+    var dx, dy, dist;
+    if(state === 0){                                    // radial ripple from centre
+      dx = it.x - W / 2; dy = it.y - H / 2;
+      dist = Math.sqrt(dx * dx + dy * dy);
+      return Math.sin(dist * 0.016 - time * 0.011) * 0.5 + 0.5;
+    } else if(state === 1){                             // rotating linear gradient
+      var v = (cosA * it.x + sinA * it.y) * 0.003;
+      return Math.cos(v * 2) * 0.5 + 0.5;
+    } else {                                            // horizontal travelling wave
+      dy = it.y - H / 2;
+      return (dy + Math.cos(it.x * 0.004 + time * 0.007) * 90) * 0.006 + 0.5;
     }
   }
+
+  function paint(time){
+    var cycle = 12000, prog = (time % cycle) / (cycle / 3);
+    var active = Math.floor(prog);
+    var angle = time * 0.0018, cosA = Math.cos(angle) * 2, sinA = Math.sin(angle) * 2;
+
+    if(active !== ts.cur){ ts.prev = ts.cur; ts.cur = active; ts.start = time; ts.prog = 0; }
+    if(ts.prog < 1) ts.prog = Math.min(1, (time - ts.start) / ts.DUR);
+    var e = ts.prog * ts.prog * (3 - 2 * ts.prog);       // smoothstep
+
+    for(var i = 0; i < cells.length; i++){
+      var it = cells[i];
+      var val = stateVal(ts.cur, it, time, cosA, sinA);
+      if(e < 1 && ts.prev >= 0){
+        var ov = stateVal(ts.prev, it, time, cosA, sinA);
+        val = ov + (val - ov) * e;
+      }
+      // mouse-proximity boost — thickens / brightens cells near the cursor
+      var mdx = it.x - mouse.x, mdy = it.y - mouse.y;
+      val += Math.max(0, 1 - Math.sqrt(mdx * mdx + mdy * mdy) / 260) * 0.85;
+
+      var b = Math.round((val < 0 ? 0 : val > 1 ? 1 : val) * (STEPS - 1)) | 0;
+      if(b === it.b) continue;
+      it.b = b;
+      it.el.style.color = colorLUT[b];
+      it.el.style.fontVariationSettings = "'wght' " + weightLUT[b];
+    }
+  }
+
   function loop(time){ paint(time); raf = requestAnimationFrame(loop); }
   function start(){ if(running) return; running = true; raf = requestAnimationFrame(loop); }
   function stop(){ running = false; cancelAnimationFrame(raf); }
 
+  section.addEventListener('pointermove', function(e){
+    var r = section.getBoundingClientRect();
+    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+  });
+  section.addEventListener('pointerleave', function(){ mouse.x = mouse.y = -9999; });
+
   build();
-  if(reduce){ paint(4200); }
+  if(reduce){ paint(3000); }
   else if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){
-      es.forEach(function(e){ e.isIntersecting ? start() : stop(); });
+      es.forEach(function(x){ x.isIntersecting ? start() : stop(); });
     }, { rootMargin: '140px' }).observe(section);
-  } else { start(); }
+  } else start();
 
   var mt;
   window.addEventListener('resize', function(){
-    clearTimeout(mt); mt = setTimeout(function(){ build(); if(reduce) paint(4200); }, 200);
+    clearTimeout(mt); mt = setTimeout(function(){ build(); if(reduce) paint(3000); }, 200);
   });
 })();
 </script>
