@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('preload')</script>
+<script src="js/pixel-canvas.js" defer></script>
 <style>
   :root{
     --bg:#08080A;--bg-2:#0C0C0E;--panel:#121214;--panel-2:#18181B;--tile:#0E0E10;
@@ -128,13 +129,17 @@
   .home-intro a:hover{color:var(--text);border-color:var(--text)}
   .home-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
   .hcard{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--radius);
-    background:var(--panel);overflow:hidden;transition:transform .25s,border-color .25s,background .25s;color:inherit}
-  .hcard:hover{border-color:var(--line-2);transform:translateY(-4px);background:var(--panel-2)}
+    background:var(--panel);overflow:hidden;transition:transform .25s,border-color .7s cubic-bezier(.45,0,.55,1),background .25s;color:inherit}
+  .hcard:where(:hover,:focus-within){border-color:var(--hc-active,var(--line-2));transform:translateY(-4px);background:var(--panel-2)}
   .hcard-media{position:relative;aspect-ratio:16/10;border-bottom:1px solid var(--line);overflow:hidden;
-    background:radial-gradient(70% 70% at 50% 38%,#1e1e23,#0d0d10 74%)}
-  .hcard-anim{position:absolute;inset:0}
-  .hcard-media::after{content:attr(data-label);position:absolute;left:16px;bottom:14px;
-    font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2)}
+    display:grid;place-items:center;isolation:isolate;background:#0b0b0d}
+  .hcard-media pixel-canvas{position:absolute;inset:0;z-index:0}
+  .hcard-media::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(circle at bottom left,transparent 52%,rgba(0,0,0,.55));transition:opacity .9s ease}
+  .hcard:where(:hover,:focus-within) .hcard-media::before{opacity:0}
+  .hcard-icon{position:relative;z-index:2;width:34px;height:34px;color:var(--muted-2);
+    transition:color .3s ease,scale .3s ease}
+  .hcard:where(:hover,:focus-within) .hcard-icon{color:var(--hc-active,var(--text));scale:1.12}
   .hcard-body{padding:22px 22px 26px}
   .hcard-body h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin-bottom:8px}
   .hcard-body p{color:var(--muted);font-size:14.5px;line-height:1.5}
@@ -147,9 +152,6 @@
     line-height:1;font-family:'Archivo',var(--display);letter-spacing:-.02em;user-select:none;will-change:contents}
   .mfield-grid span{display:flex;align-items:center;justify-content:center;color:#0b0b0b;
     font-variation-settings:'wght' 400}
-  .mfield-noise{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size:180px 180px}
   .mfield-iso{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;
     width:clamp(104px,14vw,176px);height:auto;color:rgba(255,255,255,.2);opacity:1;pointer-events:none;z-index:3;
     backdrop-filter:blur(16px) brightness(1.15);-webkit-backdrop-filter:blur(16px) brightness(1.15)}
@@ -287,22 +289,31 @@
       <a href="design.html" data-en="Introduction" data-es="Introducción">Introduction</a>
     </div>
     <div class="home-cards">
-      <a class="hcard" href="design.html">
-        <div class="hcard-media" data-label="Animation"><div class="hcard-anim" data-anim="design"></div></div>
+      <a class="hcard" data-pixel-canvas-host href="design.html" style="--hc-active:#e0f2fe">
+        <div class="hcard-media">
+          <pixel-canvas data-gap="10" data-speed="25" data-colors="#e0f2fe, #7dd3fc, #0ea5e9"></pixel-canvas>
+          <svg class="hcard-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true"><path d="M216,42H40A14,14,0,0,0,26,56V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A14,14,0,0,0,216,42ZM40,54H216a2,2,0,0,1,2,2V98H38V56A2,2,0,0,1,40,54ZM38,200V110H98v92H40A2,2,0,0,1,38,200Zm178,2H110V110H218v90A2,2,0,0,1,216,202Z"/></svg>
+        </div>
         <div class="hcard-body">
           <h3 data-en="Start Designing" data-es="Empieza a diseñar">Start Designing</h3>
           <p data-en="Foundations, tokens and the visual language behind every screen." data-es="Foundations, tokens y el lenguaje visual detrás de cada pantalla.">Foundations, tokens and the visual language behind every screen.</p>
         </div>
       </a>
-      <a class="hcard" href="#">
-        <div class="hcard-media" data-label="Animation"><div class="hcard-anim" data-anim="develop"></div></div>
+      <a class="hcard" data-pixel-canvas-host href="#" style="--hc-active:#e0f2fe">
+        <div class="hcard-media">
+          <pixel-canvas data-gap="10" data-speed="25" data-colors="#e0f2fe, #7dd3fc, #0ea5e9"></pixel-canvas>
+          <svg class="hcard-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true"><path d="M67.84,92.61,25.37,128l42.47,35.39a6,6,0,1,1-7.68,9.22l-48-40a6,6,0,0,1,0-9.22l48-40a6,6,0,0,1,7.68,9.22Zm176,30.78-48-40a6,6,0,1,0-7.68,9.22L230.63,128l-42.47,35.39a6,6,0,1,0,7.68,9.22l48-40a6,6,0,0,0,0-9.22Zm-81.79-89A6,6,0,0,0,154.36,38l-64,176A6,6,0,0,0,94,221.64a6.15,6.15,0,0,0,2,.36,6,6,0,0,0,5.64-3.95l64-176A6,6,0,0,0,162.05,34.36Z"/></svg>
+        </div>
         <div class="hcard-body">
           <h3 data-en="Start Developing" data-es="Empieza a construir">Start Developing</h3>
           <p data-en="Components, code and the guides to ship them consistently." data-es="Componentes, código y las guías para llevarlos a producción con consistencia.">Components, code and the guides to ship them consistently.</p>
         </div>
       </a>
-      <a class="hcard" href="#">
-        <div class="hcard-media" data-label="Animation"><div class="hcard-anim" data-anim="brand"></div></div>
+      <a class="hcard" data-pixel-canvas-host href="#" style="--hc-active:#e0f2fe">
+        <div class="hcard-media">
+          <pixel-canvas data-gap="10" data-speed="25" data-colors="#e0f2fe, #7dd3fc, #0ea5e9"></pixel-canvas>
+          <svg class="hcard-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true"><path d="M222,67.34a33.81,33.81,0,0,0-10.64-24.25C198.12,30.56,176.68,31,163.54,44.18L142.82,65l-.63-.63a22,22,0,0,0-31.11,0l-9,9a14,14,0,0,0,0,19.81l3.47,3.47L53.14,149.1a37.81,37.81,0,0,0-9.84,36.73l-8.31,19a11.68,11.68,0,0,0,2.46,13A13.91,13.91,0,0,0,47.32,222,14.15,14.15,0,0,0,53,220.82L71,212.92a37.92,37.92,0,0,0,35.84-10.07l52.44-52.46,3.47,3.48a14,14,0,0,0,19.8,0l9-9a22.06,22.06,0,0,0,0-31.13l-.66-.65L212,91.85A33.76,33.76,0,0,0,222,67.34Zm-123.61,127a26,26,0,0,1-26,6.47,6,6,0,0,0-4.17.24l-20,8.75a2,2,0,0,1-2.09-.31l9.12-20.9a5.94,5.94,0,0,0,.19-4.31A25.91,25.91,0,0,1,56,166h70.78ZM138.78,154H65.24l48.83-48.84,36.76,36.78Zm64.77-70.59L178.17,108.9a6,6,0,0,0,0,8.47l4.88,4.89a10,10,0,0,1,0,14.15l-9,9a2,2,0,0,1-2.82,0l-60.69-60.7a2,2,0,0,1,0-2.83l9-9a10,10,0,0,1,14.14,0l4.89,4.89a6,6,0,0,0,4.24,1.75h0a6,6,0,0,0,4.25-1.77L172,52.66c8.57-8.58,22.51-9,31.07-.85a22,22,0,0,1,.44,31.57Z"/></svg>
+        </div>
         <div class="hcard-body">
           <h3 data-en="Brand" data-es="Marca">Brand</h3>
           <p data-en="Logo, identity and how Mustache shows up everywhere." data-es="Logo, identidad y cómo se presenta Mustache en todos lados.">Logo, identity and how Mustache shows up everywhere.</p>
@@ -315,7 +326,6 @@
 <!-- ===================== M LETTER FIELD ===================== -->
 <section class="mfield" aria-label="Mustache">
   <div class="mfield-grid" aria-hidden="true"></div>
-  <div class="mfield-noise" aria-hidden="true"></div>
   <div class="mfield-fade" aria-hidden="true"></div>
   <svg class="mfield-iso" viewBox="0 0 28 28" fill="none" aria-hidden="true"><g clip-path="url(#mfi-clip)"><path d="M26 0C27.1046 0 28 0.895431 28 2V26C28 27.1046 27.1046 28 26 28H2C0.895431 28 0 27.1046 0 26V2C3.86553e-07 0.895431 0.895431 0 2 0H26ZM3 23C2.44772 23 2 23.4477 2 24V25C2 25.5523 2.44772 26 3 26H25C25.5523 26 26 25.5523 26 25V24C26 23.4477 25.5523 23 25 23H3ZM3 18C2.44772 18 2 18.4477 2 19V20C2 20.5523 2.44772 21 3 21H25C25.5523 21 26 20.5523 26 20V19C26 18.4477 25.5523 18 25 18H3ZM24.7939 3.32812C24.4865 3.32812 24.0606 3.35689 23.5166 3.41602C22.9845 3.46331 22.4702 3.49881 21.9736 3.52246H21.2109C21.0692 3.52246 20.9741 3.59947 20.9268 3.75293C20.8795 3.9066 20.8267 4.114 20.7676 4.37402C20.7203 4.6342 20.655 4.97183 20.5723 5.38574L18.0352 11.2744C18.0115 11.3335 17.976 11.3633 17.9287 11.3633C17.8933 11.3514 17.8635 11.3216 17.8398 11.2744L15.2324 5.04883C15.1497 4.82428 15.0729 4.61108 15.002 4.41016C14.931 4.19729 14.8543 3.97763 14.7715 3.75293C14.7478 3.67031 14.694 3.59908 14.6113 3.54004C14.5287 3.46936 14.4401 3.43461 14.3457 3.43457C14.0737 3.43457 13.7716 3.42784 13.4404 3.41602C13.1214 3.40421 12.8024 3.39844 12.4834 3.39844C12.1761 3.38662 11.8919 3.3751 11.6318 3.36328C11.3717 3.35146 11.152 3.3457 10.9746 3.3457C10.8447 3.34575 10.7322 3.363 10.6377 3.39844C10.5433 3.43393 10.4961 3.50507 10.4961 3.61133C10.4961 3.70584 10.5375 3.78269 10.6201 3.8418C10.7029 3.9009 10.8152 3.9489 10.957 3.98438C11.1461 4.03165 11.3238 4.09024 11.4893 4.16113C11.6548 4.22026 11.8093 4.29699 11.9512 4.3916C12.1048 4.47434 12.2114 4.58096 12.2705 4.71094C12.3415 4.8292 12.377 4.99514 12.377 5.20801V5.54492C12.377 5.65136 12.3702 5.74057 12.3584 5.81152C12.2993 6.69835 12.2283 7.59735 12.1455 8.50781C12.0627 9.41829 11.9802 10.276 11.8975 11.0801C11.8265 11.8722 11.7555 12.5401 11.6846 13.084C11.6373 13.4506 11.5068 13.7527 11.2939 13.9893C11.093 14.2255 10.8567 14.3908 10.585 14.4854C10.4551 14.5326 10.3368 14.5739 10.2305 14.6094C10.1359 14.633 10.0879 14.6984 10.0879 14.8047C10.0879 14.8874 10.1235 14.9527 10.1943 15C10.2653 15.0355 10.3719 15.0527 10.5137 15.0527C10.5728 15.0527 10.7033 15.047 10.9043 15.0352C11.1052 15.0233 11.3415 15.0118 11.6133 15C11.8853 14.9882 12.1519 14.9824 12.4121 14.9824C12.6602 14.9824 12.8552 14.9882 12.9971 15C13.139 15 13.2992 15.0058 13.4766 15.0176C13.6539 15.0412 13.9025 15.0527 14.2217 15.0527C14.3278 15.0527 14.4281 15.0295 14.5225 14.9824C14.6171 14.9351 14.665 14.8699 14.665 14.7871C14.665 14.6807 14.6113 14.6039 14.5049 14.5566C14.3985 14.4976 14.2862 14.4563 14.168 14.4326C13.7068 14.3262 13.3701 14.1717 13.1572 13.9707C12.9445 13.7579 12.8379 13.4863 12.8379 13.1553V11.168C12.8379 10.4468 12.8494 9.73753 12.873 9.04004C12.8967 8.33047 12.9264 7.67919 12.9619 7.08789C12.9738 6.95809 13.0151 6.88105 13.0859 6.85742C13.1687 6.82198 13.2282 6.8576 13.2637 6.96387C13.7958 8.27651 14.3752 9.60121 15.002 10.9375C15.6406 12.2738 16.2496 13.6282 16.8291 15C16.8764 15.0946 16.959 15.1541 17.0771 15.1777C17.1954 15.2014 17.2846 15.1303 17.3438 14.9648L20.7314 6.91113C20.7669 6.82848 20.8025 6.78724 20.8379 6.78711C20.8852 6.77528 20.9092 6.81077 20.9092 6.89355C20.9446 7.55571 20.9677 8.24173 20.9795 8.95117C21.0031 9.64885 21.0271 10.3645 21.0508 11.0977C21.0744 11.819 21.1042 12.5462 21.1396 13.2793C21.1515 13.6457 21.0745 13.9116 20.9092 14.0771C20.7436 14.2309 20.4415 14.3498 20.0039 14.4326C19.8859 14.4563 19.7858 14.4977 19.7031 14.5566C19.6204 14.6157 19.5782 14.6983 19.5781 14.8047C19.5781 14.8875 19.6203 14.9527 19.7031 15C19.7858 15.0354 19.8801 15.0527 19.9863 15.0527C20.2583 15.0527 20.5423 15.0412 20.8379 15.0176C21.1335 15.0058 21.4233 14.9942 21.707 14.9824C22.0027 14.9706 22.2693 14.9648 22.5059 14.9648C22.7422 14.9648 23.0199 14.9706 23.3389 14.9824C23.67 14.9942 24.0019 15.0058 24.333 15.0176C24.6758 15.0412 24.9772 15.0527 25.2373 15.0527C25.3437 15.0527 25.4329 15.0297 25.5039 14.9824C25.5747 14.9351 25.6104 14.8698 25.6104 14.7871C25.6103 14.6807 25.5681 14.6039 25.4854 14.5566C25.4027 14.5095 25.3025 14.468 25.1846 14.4326C24.8062 14.338 24.4982 14.2018 24.2617 14.0244C24.037 13.8352 23.9133 13.5868 23.8896 13.2793C23.8423 12.4988 23.7944 11.8187 23.7471 11.2393C23.7116 10.648 23.6761 10.0801 23.6406 9.53613C23.617 8.99226 23.5872 8.40113 23.5518 7.7627C23.5163 7.1241 23.4875 6.3788 23.4639 5.52734C23.4402 5.12539 23.4988 4.83561 23.6406 4.6582C23.7944 4.46899 24.0255 4.30305 24.333 4.16113C24.4039 4.12572 24.4866 4.0901 24.5811 4.05469C24.6755 4.00745 24.7582 3.97188 24.8291 3.94824C24.9474 3.91276 25.0423 3.87152 25.1133 3.82422C25.196 3.77691 25.2373 3.70012 25.2373 3.59375C25.2373 3.4992 25.1902 3.43393 25.0957 3.39844C25.0129 3.35114 24.9122 3.32813 24.7939 3.32812Z" fill="currentColor"/></g><defs><clipPath id="mfi-clip"><rect width="28" height="28" fill="#fff"/></clipPath></defs></svg>
 </section>
@@ -683,6 +693,7 @@
     clearTimeout(mt); mt = setTimeout(function(){ build(); if(reduce) paint(3000); }, 200);
   });
 })();
+
 </script>
 
 </body>
