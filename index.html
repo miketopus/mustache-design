@@ -536,22 +536,29 @@
     for(var i = 0; i < COUNT; i++) particles.push(make());
     counter = 0;
   }
-  function step(p){
+  function step(p, time){
     if(p.radius < 0.8){ p.ring = Math.random() * R * 3; p.radius = Math.random() * 4.2; }
     p.radius *= 0.994;
     p.ring = Math.max(p.ring - 1, R);
     p.angle += p.speed;
+    // radial distortion: concentric ripples travelling outward + a faint
+    // radius-dependent swirl, so the rings warp instead of sitting perfectly round
+    var d = p.ring;
+    var rd = d + Math.sin(d * 0.028 - time * 0.0022) * 6
+               + Math.sin(d * 0.011 + time * 0.0013) * 3;
+    var a = p.angle + Math.PI + Math.sin(d * 0.006 - time * 0.0009) * 0.05;
     var jx = (Math.random() - 0.5) * 0.9, jy = (Math.random() - 0.5) * 0.9;   // subtle noise
     ctx.beginPath();
     ctx.fillStyle = p.color;
-    ctx.arc(Math.cos(p.angle + Math.PI) * p.ring + jx, Math.sin(p.angle + Math.PI) * p.ring + jy,
+    ctx.arc(Math.cos(a) * rd + jx, Math.sin(a) * rd + jy,
             Math.max(p.radius, 0) * (0.88 + Math.random() * 0.24), 0, 6.2832);
     ctx.fill();
   }
-  function loop(){
+  function loop(time){
+    time = time || performance.now();
     ctx.clearRect(-cw, -ch, cw * 2, ch * 2);
     if(counter < particles.length) counter += 2;
-    for(var i = 0; i < counter && i < particles.length; i++) step(particles[i]);
+    for(var i = 0; i < counter && i < particles.length; i++) step(particles[i], time);
     raf = requestAnimationFrame(loop);
   }
   function still(){
