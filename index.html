@@ -574,9 +574,9 @@
   if(!grid) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // near-black ramp — brightest grey caps at #0F0F0F
+  // very dark grey ramp — brightest grey around #28
   function palette(t){
-    var g = 4 + (t * 11) | 0;
+    var g = 8 + (t * 32) | 0;
     return 'rgb(' + g + ',' + g + ',' + g + ')';
   }
   var STEPS = 110, colorLUT = [], weightLUT = [];
