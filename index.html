@@ -116,10 +116,7 @@
   .hero-stars{position:absolute;inset:0;width:100%;height:100%;opacity:.92;mix-blend-mode:plus-lighter}
   .hero-inner{position:relative;z-index:1}
   .hero .eyebrow{display:block;margin-bottom:18px;color:var(--muted)}
-  .hero h1{font-size:clamp(46px,12vw,132px);line-height:.96;letter-spacing:-.04em;margin-bottom:26px;min-height:1.92em;
-    background:linear-gradient(102deg,#ff5a1f 0%,#ff9a2e 38%,#ffd23d 66%,#fff1c4 100%);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-    mix-blend-mode:plus-lighter}
+  .hero h1{font-size:clamp(46px,12vw,132px);line-height:.96;letter-spacing:-.04em;margin-bottom:26px;min-height:1.92em}
   .hero p.lead{font-family:var(--mono);font-weight:400;font-size:clamp(16px,1.9vw,20px);color:var(--text);
     max-width:640px;line-height:1.55;min-height:3.3em}
 
@@ -130,7 +127,7 @@
   .langbar{transition:opacity .55s ease}
   .preload .langbar{opacity:0}
   .preload .hero .eyebrow,.preload .hero h1,.preload .hero p.lead{visibility:hidden}
-  .tw-caret::after{content:"";display:inline-block;width:.09em;min-width:2px;height:1em;background:#ffb84d;
+  .tw-caret::after{content:"";display:inline-block;width:.09em;min-width:2px;height:1em;background:currentColor;
     margin-left:.06em;vertical-align:-.12em;animation:tw-blink .7s step-end infinite}
   @keyframes tw-blink{50%{opacity:0}}
   @media(prefers-reduced-motion:reduce){
