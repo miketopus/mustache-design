@@ -39,7 +39,6 @@
 }
 .tb-menu a{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);font-weight:500;padding:10px 12px;border-radius:10px;white-space:nowrap;
   transition:transform .22s cubic-bezier(.34,1.55,.64,1),background .14s,color .14s}
-.tb-menu a .tb-lock{margin-left:auto}
 .tb-menu a:hover{color:var(--text);background:var(--panel-2);transform:scale(1.025)}
 .tb-menu a:active{transform:scale(.965)}
 .tb-menu a.on{color:var(--text);background:var(--panel-2)}

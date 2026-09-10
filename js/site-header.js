@@ -40,7 +40,7 @@
 
   function navItem(item, active) {
     const on = item.id === active;
-    return `<a href="${item.href}"${on ? ' class="on"' : ''}>${item.label}${item.lock ? LOCK : ''}</a>`;
+    return `<a href="${item.href}"${on ? ' class="on"' : ''}>${item.lock ? LOCK : ''}${item.label}</a>`;
   }
 
   class SiteHeader extends HTMLElement {
