@@ -17,6 +17,7 @@
     --display:'Archivo Black',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
     --body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --neon:#FF441F;
     --radius:18px;--maxw:1200px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -44,9 +45,10 @@
             mask:url(assets/mustache.svg) left center/contain no-repeat}
   @media(max-width:560px){.fn-word{display:none}}
   .fn-links{display:flex;gap:4px}
-  .fn-links a{font-size:14px;color:var(--muted);font-weight:500;padding:12px 15px;border-radius:14px;
+  .fn-links a{display:inline-flex;align-items:center;gap:5px;font-size:14px;color:var(--muted);font-weight:500;padding:12px 15px;border-radius:14px;
     border:1px solid transparent;transition:.18s;white-space:nowrap}
   .fn-links a:hover{color:var(--text);background:var(--panel-2);border-color:var(--line)}
+  .fn-lock{width:12px;height:12px;flex-shrink:0;opacity:.6}
   .fn-div{width:1px;height:30px;background:var(--line-2);margin:0 6px}
   .fn-lock{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--muted-2);font-weight:500;
     padding:12px 15px;border-radius:14px;border:1px dashed var(--line-2);white-space:nowrap}
@@ -83,8 +85,9 @@
     70% {opacity:1;transform:translateY(1px)  scale(1.012)}
     100%{opacity:1;transform:translateY(0)    scale(1)}
   }
-  .fn-menu a{font-size:14px;color:var(--muted);font-weight:500;padding:11px 13px;border-radius:12px;white-space:nowrap;
+  .fn-menu a{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);font-weight:500;padding:11px 13px;border-radius:12px;white-space:nowrap;
     transition:transform .22s cubic-bezier(.34,1.55,.64,1),background .14s,color .14s}
+  .fn-menu a .fn-lock{margin-left:auto}
   .fn-menu a:hover{color:var(--text);background:var(--panel-2);transform:scale(1.025)}
   .fn-menu a:active{transform:scale(.965)}
   @media(prefers-reduced-motion:reduce){
@@ -130,7 +133,7 @@
   .home-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
   .hcard{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--radius);
     background:var(--panel);overflow:hidden;transition:transform .25s,border-color .7s cubic-bezier(.45,0,.55,1),background .25s;color:inherit}
-  .hcard:where(:hover,:focus-within){border-color:var(--hc-active,var(--line-2));transform:translateY(-4px);background:var(--panel-2)}
+  .hcard:where(:hover,:focus-within){border-color:var(--neon);transform:translateY(-4px);background:var(--panel-2)}
   .hcard-media{position:relative;aspect-ratio:16/10;border-bottom:1px solid var(--line);overflow:hidden;
     display:grid;place-items:center;isolation:isolate;background:#0b0b0d}
   .hcard-media pixel-canvas{position:absolute;inset:0;z-index:0}
@@ -253,8 +256,8 @@
     <a href="#top" class="fn-brand" aria-label="Mustache Design System"><img class="fn-mark" src="assets/isotype-mustache.svg" width="30" height="30" alt="" aria-hidden="true"><span class="fn-word" role="img" aria-label="Mustache"></span></a>
     <nav class="fn-links">
       <a href="design.html">Design</a>
-      <a href="content.html">Content</a>
-      <a href="#">Components</a>
+      <a href="content.html">Content<svg class="fn-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
+      <a href="#">Components<svg class="fn-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
       <a href="#">AI</a>
       <a href="#">Brand</a>
       <a href="#">Resources</a>
@@ -263,8 +266,8 @@
       <button type="button" class="fn-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="fn-menu"><span class="fn-more-label" data-en="Home" data-es="Inicio">Home</span><svg class="fn-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <nav class="fn-menu" id="fn-menu" hidden>
         <a href="design.html">Design</a>
-        <a href="content.html">Content</a>
-        <a href="#">Components</a>
+        <a href="content.html">Content<svg class="fn-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
+        <a href="#">Components<svg class="fn-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
         <a href="#">AI</a>
         <a href="#">Brand</a>
         <a href="#">Resources</a>

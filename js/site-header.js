@@ -17,13 +17,15 @@
 (function () {
 
   const NAV = [
-    { id: 'design',     href: 'design.html',  label: 'Design'     },
-    { id: 'content',    href: 'content.html', label: 'Content'    },
-    { id: 'components', href: '#',            label: 'Components' },
-    { id: 'ai',         href: '#',            label: 'AI'         },
-    { id: 'brand',      href: '#',            label: 'Brand'      },
-    { id: 'resources',  href: '#',            label: 'Resources'  },
+    { id: 'design',     href: 'design.html',  label: 'Design'                  },
+    { id: 'content',    href: 'content.html', label: 'Content',    lock: true  },
+    { id: 'components', href: '#',            label: 'Components', lock: true  },
+    { id: 'ai',         href: '#',            label: 'AI'                      },
+    { id: 'brand',      href: '#',            label: 'Brand'                  },
+    { id: 'resources',  href: '#',            label: 'Resources'              },
   ];
+
+  const LOCK = `<svg class="tb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>`;
 
   // Brand lockup = isotype (full-color, self-contained) + 4px gap + "Mustache"
   // wordmark. The wordmark is one asset (assets/mustache.svg) used as a CSS mask
@@ -38,7 +40,7 @@
 
   function navItem(item, active) {
     const on = item.id === active;
-    return `<a href="${item.href}"${on ? ' class="on"' : ''}>${item.label}</a>`;
+    return `<a href="${item.href}"${on ? ' class="on"' : ''}>${item.label}${item.lock ? LOCK : ''}</a>`;
   }
 
   class SiteHeader extends HTMLElement {
