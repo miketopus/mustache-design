@@ -28,12 +28,13 @@
 
   const LOCK = `<svg class="tb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
 
-  // Brand lockup = isotype (full-color, self-contained) + 4px gap + "Mustache"
-  // wordmark. The wordmark is one asset (assets/mustache.svg) used as a CSS mask
-  // over var(--text) in site-header.css, so it recolours from a single file.
+  // Brand lockup = isotype (single-tint, white) + 4px gap + "Mustache / Design
+  // System" wordmark. Both pieces are CSS masks over a solid background
+  // (isotype-mustache-tint.svg, mustache-lockup.svg) so they recolour from
+  // one file instead of needing separate light/dark exports.
   const BRAND = `
-    <img class="tb-mark" src="/assets/isotype-mustache.svg" width="28" height="28" alt="" aria-hidden="true">
-    <span class="tb-word" role="img" aria-label="Mustache"></span>`;
+    <span class="tb-mark" role="img" aria-label="Mustache"></span>
+    <span class="tb-word" role="img" aria-label="Mustache Design System"></span>`;
 
   const LOGIN_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
 
