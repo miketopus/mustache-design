@@ -127,6 +127,13 @@
     .preload .hero .eyebrow,.preload .hero h1,.preload .hero p.lead{visibility:visible}
   }
 
+  /* section right after the hero — waits for the type sequence to finish, then fades up */
+  .next-reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+  .next-reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    .next-reveal{opacity:1;transform:none;transition:none}
+  }
+
   /* ---------- home intro + cards ---------- */
   .home-intro{max-width:640px;margin-bottom:46px}
   .home-intro p{font-family:var(--mono);font-weight:400;font-size:clamp(15px,1.8vw,19px);color:var(--text);line-height:1.6}
@@ -300,7 +307,7 @@
 </section>
 
 <!-- ===================== INTRO + START CARDS ===================== -->
-<section class="section" id="start">
+<section class="section next-reveal" id="start">
   <div class="wrap">
     <div class="home-intro">
       <p data-en="Mustache is a functional design system that lets every team member connect and grow in an organized way." data-es="Mustache es un design system funcional que permite que cada persona del equipo se conecte y crezca de forma ordenada.">Mustache is a functional design system that lets every team member connect and grow in an organized way.</p>
@@ -462,11 +469,22 @@
   mq.addEventListener('change', function(){ if(mq.matches) setOpen(false); });
 })();
 
-// hero entrance — 1) bg fades in, 2) nav appears, 3) texts type themselves in
+// hero entrance — 1) bg fades in, 2) nav appears, 3) texts type themselves in,
+// 4) once typing ends, the section right below fades up
 (function(){
   var root = document.documentElement;
-  var safety = setTimeout(function(){ root.classList.remove('preload'); }, 6000);
-  function finish(){ clearTimeout(safety); root.classList.remove('preload'); }
+  var next = document.querySelector('.next-reveal');
+  function revealNext(){ if(next) setTimeout(function(){ next.classList.add('in'); }, 160); }
+
+  var safety = setTimeout(function(){ root.classList.remove('preload'); revealNext(); }, 6000);
+  function finish(){
+    clearTimeout(safety);
+    // release the locked box now that typing is done — restores normal flow
+    // for any later resize, the fixed height/clip was only needed mid-type
+    [eyebrow, h1, lead].forEach(function(el){ if(el){ el.style.height = ''; el.style.overflow = ''; } });
+    root.classList.remove('preload');
+    revealNext();
+  }
 
   var eyebrow = document.querySelector('.hero .eyebrow');
   var h1      = document.querySelector('.hero h1');
@@ -477,12 +495,6 @@
   var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if(reduce || !eyebrow || !h1 || !lead){ finish(); return; }
-
-  // stash full content, then blank the fields so the caret starts from zero
-  eyebrow.dataset.tw = eyebrow.textContent.trim();
-  h1.dataset.tw      = h1.innerHTML.replace(/<br\s*\/?>/gi, '<br>').trim();
-  lead.dataset.tw    = lead.textContent.trim();
-  eyebrow.textContent = h1.textContent = lead.textContent = '';
 
   function type(el, cps){
     return new Promise(function(resolve){
@@ -509,12 +521,32 @@
     if(nav){ nav.style.opacity = '1'; nav.style.transform = 'none'; }
     if(langbar) langbar.style.opacity = '1';
   }, 560);
-  // 3) type the texts, one after another
+  // 3) type the texts, one after another — wait for the real webfonts to be
+  // in first (Archivo/Plex Mono, loaded with display:swap), then measure each
+  // field's fully-typed height and lock it as a fixed height + overflow:hidden.
+  // A fixed clipped box (not just min-height) matters because the blinking
+  // caret is an inline ::after — near a wrap boundary its extra width can
+  // shove a mid-word onto a transient extra line while typing, which briefly
+  // grows the box and shoves every section below down and back up. Clipping
+  // hides that transient overflow instead of letting it reflow the page.
+  var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(function(){}) : Promise.resolve();
   setTimeout(function(){
-    type(eyebrow, 45)
-      .then(function(){ return type(h1, 24); })
-      .then(function(){ return type(lead, 55); })
-      .then(finish);
+    fontsReady.then(function(){
+      [eyebrow, h1, lead].forEach(function(el){
+        el.style.height = el.getBoundingClientRect().height + 'px';
+        el.style.overflow = 'hidden';
+      });
+      // stash full content, then blank the fields so the caret starts from zero
+      eyebrow.dataset.tw = eyebrow.textContent.trim();
+      h1.dataset.tw      = h1.innerHTML.replace(/<br\s*\/?>/gi, '<br>').trim();
+      lead.dataset.tw    = lead.textContent.trim();
+      eyebrow.textContent = h1.textContent = lead.textContent = '';
+
+      type(eyebrow, 45)
+        .then(function(){ return type(h1, 24); })
+        .then(function(){ return type(lead, 55); })
+        .then(finish);
+    });
   }, 1050);
 })();
 
