@@ -151,6 +151,23 @@
       opacity:1;transform:none;transition:none}
   }
 
+  /* scroll-scrub text — metalab.com/work/the-atlantic style: body copy
+     sits dim and brightens continuously as it moves through the reading
+     zone of the viewport (not a one-shot reveal — scrolling back dims it
+     again). Native scroll-driven animation where supported; the JS below
+     drives the same --p custom property by hand everywhere else. */
+  @property --p{syntax:'<number>';inherits:true;initial-value:0}
+  .scrub{--p:0;color:color-mix(in srgb,var(--muted-2),var(--text) calc(var(--p) * 100%))}
+  @supports (animation-timeline: view()){
+    @media(prefers-reduced-motion:no-preference){
+      .scrub{animation:scrub-p linear both;animation-timeline:view();animation-range:entry 0% cover 40%}
+    }
+  }
+  @keyframes scrub-p{from{--p:0}to{--p:1}}
+  @media(prefers-reduced-motion:reduce){
+    .scrub{--p:1}
+  }
+
   /* ---------- scroll showcase ----------
      A tall scroll-driven section right after the hero: a full-bleed central
      image shrinks into a 5x3 subgrid as the section scrolls by, revealing
@@ -219,7 +236,7 @@
 
   /* ---------- home intro + cards ---------- */
   .home-intro{max-width:640px;margin-bottom:46px}
-  .home-intro p{font-family:var(--mono);font-weight:400;font-size:clamp(15px,1.8vw,19px);color:var(--text);line-height:1.6}
+  .home-intro p{font-family:var(--mono);font-weight:400;font-size:clamp(15px,1.8vw,19px);line-height:1.6}
   .home-intro a{color:var(--muted);border-bottom:1px solid var(--line-2);padding-bottom:1px;font-size:15px;
     display:inline-block;margin-top:20px;transition:.16s}
   .home-intro a:hover{color:var(--text);border-color:var(--text)}
@@ -269,7 +286,7 @@
   .craft{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .craft-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
   .craft-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
-  .craft-head p{color:var(--muted);max-width:420px;font-size:15px}
+  .craft-head p{max-width:420px;font-size:15px}
   .craft-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:156px;gap:16px;margin-top:40px}
   .cx{border:1px solid var(--line);border-radius:16px;background:var(--panel);position:relative;overflow:hidden;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .25s,transform .25s}
   .cx:hover{border-color:var(--line-2);transform:translateY(-3px)}
@@ -426,7 +443,7 @@
 <section class="section next-reveal" id="start">
   <div class="wrap">
     <div class="home-intro">
-      <p data-en="Mustache is a functional design system that lets every team member connect and grow in an organized way." data-es="Mustache es un design system funcional que permite que cada persona del equipo se conecte y crezca de forma ordenada.">Mustache is a functional design system that lets every team member connect and grow in an organized way.</p>
+      <p class="scrub" data-en="Mustache is a functional design system that lets every team member connect and grow in an organized way." data-es="Mustache es un design system funcional que permite que cada persona del equipo se conecte y crezca de forma ordenada.">Mustache is a functional design system that lets every team member connect and grow in an organized way.</p>
       <a href="design.html" data-en="Introduction" data-es="Introducción">Introduction</a>
     </div>
     <div class="home-cards">
@@ -494,7 +511,7 @@
         <div class="sec-eyebrow-row"><span class="eyebrow" data-en="The signature look" data-es="El sello visual">The signature look</span><span class="ln"></span></div>
         <h2 class="display" data-en="Craft you can recognize" data-es="Un craft que se reconoce">Craft you can recognize</h2>
       </div>
-      <p data-en="Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon." data-es="Nuestro lenguaje visual es lo que hace que una pantalla de Rappi se sienta Rappi: 3D, glossy, expresiva y consistente hasta el último ícono.">Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon.</p>
+      <p class="scrub" data-en="Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon." data-es="Nuestro lenguaje visual es lo que hace que una pantalla de Rappi se sienta Rappi: 3D, glossy, expresiva y consistente hasta el último ícono.">Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon.</p>
     </div>
     <div class="craft-grid">
       <div class="cx big"><div class="art art-3d"></div><b data-en="3D Illustrations" data-es="Ilustraciones 3D">3D Illustrations</b><span data-en="Our signature glossy look" data-es="Nuestro sello glossy">Our signature glossy look</span></div>
@@ -1023,6 +1040,38 @@
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
   els.forEach(function(el){ io.observe(el); });
+})();
+
+// scroll-scrub text fallback — for browsers without CSS
+// animation-timeline: view() (Firefox, older Safari), drives the same
+// --p custom property by hand on every scroll frame so .scrub paragraphs
+// still brighten (and re-dim on scroll-up) as they pass through the
+// reading zone, matching the native path 1:1.
+(function(){
+  var els = document.querySelectorAll('.scrub');
+  if(!els.length) return;
+  var supported = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'view()');
+  if(supported) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    els.forEach(function(el){ el.style.setProperty('--p', 1); });
+    return;
+  }
+
+  function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+  var raf = 0;
+  function update(){
+    raf = 0;
+    var vh = window.innerHeight;
+    var start = vh, end = vh * 0.6;   // brightens from the bottom edge up into the reading zone
+    els.forEach(function(el){
+      var top = el.getBoundingClientRect().top;
+      el.style.setProperty('--p', clamp01((start - top) / (start - end)));
+    });
+  }
+  function onScroll(){ if(!raf) raf = requestAnimationFrame(update); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
 })();
 
 </script>
