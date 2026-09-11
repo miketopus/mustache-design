@@ -21,7 +21,7 @@
     { id: 'content',    href: 'content.html', label: 'Content',    lock: true  },
     { id: 'components', href: '#',            label: 'Components', lock: true  },
     { id: 'ai',         href: '#',            label: 'AI'                      },
-    { id: 'brand',      href: '#',            label: 'Brand'                  },
+    { id: 'brand',      href: 'brand.html',   label: 'Neon805'                },
     { id: 'resources',  href: '#',            label: 'Resources'              },
   ];
 

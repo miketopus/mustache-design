@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon805 — Mustache Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/site-header.css">
+<script src="js/site-header.js" defer></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;font-synthesis:style;line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .display{font-family:var(--display);letter-spacing:-.02em;font-weight:800;line-height:1.05}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+
+  /* ---------- shell ---------- */
+  .shell{display:flex;align-items:flex-start}
+  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));
+    overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
+  .sb-group{margin-bottom:26px}
+  .sb-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text);
+    font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
+  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
+  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
+  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
+  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
+  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
+
+  /* ---------- main ---------- */
+  .main{flex:1;min-width:0;padding:44px 56px 120px}
+  .main-inner{max-width:860px;margin:0 auto}
+  .crumb{font-size:13px;color:var(--muted-2);margin-bottom:20px;display:flex;gap:8px;align-items:center}
+  .crumb b{color:var(--muted);font-weight:500}
+  .page-h1{font-size:clamp(34px,5vw,52px);margin-bottom:18px}
+  .page-lead{font-size:18px;color:var(--muted);max-width:640px;margin-bottom:16px}
+
+  section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
+  section.doc:first-of-type{padding-top:40px}
+  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
+  .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
+  .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
+  .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
+  .doc p strong{color:var(--text);font-weight:600}
+  .lead{font-size:17px;color:var(--muted)!important;max-width:640px}
+
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .tile{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px;transition:.2s}
+  .tile:hover{border-color:var(--line-2);background:var(--panel-2);transform:translateY(-2px)}
+  .tile .tk{font-family:var(--display);font-weight:700;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .tile .tk svg{width:14px;height:14px;color:var(--muted-2)}
+  .tile p{font-size:13px;color:var(--muted);margin:0}
+  @media(max-width:820px){.tiles{grid-template-columns:1fr}}
+
+  .note{display:flex;gap:12px;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:16px 0}
+  .note svg{width:17px;height:17px;flex-shrink:0;margin-top:2px;color:var(--muted)}
+  .note p{margin:0;font-size:14px;color:var(--muted)}
+  .note p b{color:var(--text)}
+
+  /* tables (reused pattern from content.html) */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:18px 0}
+  .doc table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:440px}
+  .doc th,.doc td{text-align:left;padding:11px 15px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top;color:var(--muted);line-height:1.5}
+  .doc th:last-child,.doc td:last-child{border-right:none}
+  .doc tr:last-child td{border-bottom:none}
+  .doc th{background:var(--panel-2);color:var(--text);font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+  .doc td strong{color:var(--text);font-weight:600}
+  .doc tbody tr:hover td{background:rgba(255,255,255,.02)}
+
+  /* ---------- PromptMaker Neon dashboard ---------- */
+  .pm{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px;margin-top:8px}
+  .pm-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+  .pm-top-l b{font-family:var(--display);font-weight:800;font-size:20px;display:flex;align-items:center;gap:9px}
+  .pm-dot{width:8px;height:8px;border-radius:50%;background:var(--neon);box-shadow:0 0 0 4px rgba(255,68,31,.18)}
+  .pm-top-l span{display:block;color:var(--muted);font-size:13.5px;margin-top:6px;max-width:440px}
+  .pm-badge{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffb199;background:rgba(255,68,31,.12);border:1px solid rgba(255,68,31,.35);border-radius:999px;padding:6px 12px;white-space:nowrap}
+
+  .pm-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+  .pm-kpi{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .pm-kpi b{font-family:var(--display);font-weight:800;font-size:24px;display:block}
+  .pm-kpi span{font-size:12px;color:var(--muted);display:block;margin-top:4px;line-height:1.4}
+  @media(max-width:700px){.pm-kpis{grid-template-columns:repeat(2,1fr)}}
+
+  .pm-h4{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px}
+
+  .pm-pipeline{display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:30px}
+  .pm-step{flex-shrink:0;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:12.5px;font-weight:600;color:var(--text);white-space:nowrap}
+  .pm-arrow{flex-shrink:0;color:var(--muted-2);font-size:14px}
+
+  .pm-example{background:var(--tile);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:28px}
+  .pm-example-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+  .pm-example-head b{font-family:var(--display);font-weight:700;font-size:14.5px}
+  .pm-example-head span{font-size:11.5px;color:var(--muted-2);font-family:var(--mono)}
+  .pm-fields{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+  .pm-field{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .pm-field b{display:block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);margin-bottom:4px}
+  .pm-field span{font-size:13px;color:var(--text)}
+  @media(max-width:700px){.pm-fields{grid-template-columns:repeat(2,1fr)}}
+  .pm-result{background:var(--panel);border:1px solid var(--line-2);border-radius:10px;padding:14px 16px;font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.6}
+  .pm-result b{color:var(--text);font-family:var(--body);font-weight:600;display:block;margin-bottom:6px;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+
+  .pm-cats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+  .pm-cat{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .pm-cat b{font-family:var(--display);font-weight:700;font-size:15px;display:block;margin-bottom:8px}
+  .pm-cat span{font-size:13px;color:var(--muted);line-height:1.6;display:block}
+  @media(max-width:700px){.pm-cats{grid-template-columns:1fr}}
+
+  .pm-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--line)}
+  .pm-foot p{margin:0;font-size:12.5px;color:var(--muted-2);max-width:420px}
+  .pm-cta{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#0A0A0C;background:var(--white);padding:11px 18px;border-radius:11px;white-space:nowrap;transition:.18s}
+  .pm-cta:hover{background:#e9e9ea;transform:translateY(-1px)}
+  .pm-cta svg{width:13px;height:13px}
+
+  /* ---------- Identidad Visual (inline replica, own white body) ---------- */
+  @font-face{font-family:'PP Object Sans';src:url(assets/identidad-visual/fonts/PPObjectSans-Regular.otf) format('opentype');font-weight:400;font-display:swap}
+  @font-face{font-family:'PP Object Sans';src:url(assets/identidad-visual/fonts/PPObjectSans-Medium.ttf) format('truetype');font-weight:500;font-display:swap}
+  @font-face{font-family:'PP Object Sans';src:url(assets/identidad-visual/fonts/PPObjectSans-Bold.otf) format('opentype');font-weight:700;font-display:swap}
+  @font-face{font-family:'PP Object Sans';src:url(assets/identidad-visual/fonts/PPObjectSans-Heavy.otf) format('opentype');font-weight:900;font-display:swap}
+
+  .iv{font-family:'PP Object Sans',var(--body);color:#141414;background:#fff;border-radius:24px;overflow:hidden;
+    margin-top:8px;box-shadow:0 0 0 1px var(--line)}
+
+  .iv-hero{position:relative;padding:56px 44px 44px;color:#fff;
+    background:linear-gradient(-45deg,#FF7A4D 0%,#FF2526 52%,#FF4583 100%)}
+  .iv-hero .iv-mustache{width:34px;height:auto;fill:#fff;opacity:.92;margin-bottom:22px;display:block}
+  .iv-hero .iv-eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.9;margin-bottom:14px}
+  .iv-hero .iv-eyebrow::before{content:"";width:22px;height:1px;background:rgba(255,255,255,.65)}
+  .iv-hero h2{font-family:'PP Object Sans',var(--display);font-weight:900;font-size:clamp(30px,5vw,48px);letter-spacing:-.01em;margin:0}
+
+  .iv-tabbar{position:sticky;top:var(--topbar);z-index:5;background:#fff;display:flex;gap:26px;border-bottom:1px solid #ececee;padding:0 44px;overflow-x:auto}
+  .iv-tabbar button{font-family:'PP Object Sans',var(--body);font-size:14px;font-weight:600;color:#9a9a9e;background:none;border:none;
+    padding:15px 2px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:.15s}
+  .iv-tabbar button:hover{color:#141414}
+  .iv-tabbar button.on{color:#FF2526;border-color:#FF2526}
+
+  .iv-content{padding:36px 44px 48px}
+  .iv-panel[hidden]{display:none}
+  .iv-block{margin-bottom:52px}
+  .iv-block:last-child{margin-bottom:0}
+  .iv-eyebrow-sm{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b7b7bb;margin-bottom:12px}
+  .iv-eyebrow-sm .dot{width:6px;height:6px;border-radius:50%;background:#FF2526;flex-shrink:0}
+  .iv-block h3.iv-h{font-family:'PP Object Sans',var(--display);font-weight:900;font-size:clamp(22px,3vw,28px);margin-bottom:8px;letter-spacing:-.01em;color:#141414}
+  .iv-block > p.iv-desc{color:#6b6b6f;font-size:14.5px;max-width:600px;margin-bottom:22px}
+
+  .iv-figure{border:1px solid #ececee;border-radius:16px;overflow:hidden;background:#fff;margin-bottom:14px}
+  .iv-figure img{display:block;width:100%;height:auto}
+
+  .iv-tblwrap{border:1px solid #ececee;border-radius:14px;overflow:auto;margin-top:18px}
+  .iv-rtable{width:100%;border-collapse:collapse;font-size:13.5px;min-width:480px}
+  .iv-rtable th,.iv-rtable td{text-align:left;padding:13px 16px;border-bottom:1px solid #ececee;vertical-align:top}
+  .iv-rtable tr:last-child td{border-bottom:none}
+  .iv-rtable th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#9a9a9e;font-weight:700;background:#fafafa}
+  .iv-rtable td:first-child{font-weight:600;white-space:nowrap;color:#141414}
+  .iv-rtable td{color:#6b6b6f}
+
+  .iv-callout{display:flex;gap:14px;background:#fff6f2;border:1px solid #ffdfcb;border-radius:16px;padding:18px 20px;margin-bottom:28px}
+  .iv-callout .ic{width:22px;height:22px;border-radius:50%;background:#FF2526;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .iv-callout b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#FF2526;margin-bottom:5px}
+  .iv-callout p{margin:0;font-size:14px;color:#4a4a4d;line-height:1.55}
+
+  .iv-level{border:1px solid #ececee;border-radius:22px;padding:28px;margin-bottom:22px}
+  .iv-level-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .iv-level-head h4{font-family:'PP Object Sans',var(--display);font-weight:800;font-size:21px;color:#141414}
+  .iv-level-tag{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#9a9a9e;border:1px solid #e3e3e6;border-radius:999px;padding:6px 13px;white-space:nowrap}
+  .iv-level p.d{color:#6b6b6f;font-size:14.5px;max-width:600px;margin:12px 0 22px}
+
+  .iv-swatches{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+  .iv-swatch{display:flex;flex-direction:column;width:130px;border:1px solid #ececee;border-radius:14px;overflow:hidden;background:#fff;cursor:pointer;font:inherit;text-align:left;transition:.15s;padding:0}
+  .iv-swatch:hover{border-color:#d5d5d9;transform:translateY(-2px)}
+  .iv-swatch .sw{height:56px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+  .iv-swatch .meta{padding:9px 11px}
+  .iv-swatch .hex{font-size:12px;font-weight:700;display:block}
+  .iv-swatch .name{font-size:11px;color:#9a9a9e;display:block;margin-top:1px}
+  .iv-swatch .cp{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#c9c9cc;display:block;margin-top:6px;transition:.15s}
+  .iv-swatch.copied .cp{color:#248F63;font-weight:700}
+
+  .iv-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+  .iv-tags span{font-size:12.5px;font-weight:600;color:#6b6b6f;background:#f3f3f4;border-radius:999px;padding:6px 13px}
+
+  .iv-dodont{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
+  .iv-dodont li{display:flex;gap:11px;font-size:13.5px;color:#4a4a4d;line-height:1.5}
+  .iv-dodont li::before{content:"";flex-shrink:0;width:20px;height:20px;border-radius:6px;margin-top:1px}
+  .iv-dodont li.ok::before{background-color:#248F63}
+  .iv-dodont li.no::before{background-color:#FF2526}
+
+  .iv-weight{border:1px solid #ececee;border-radius:22px;padding:30px;margin-bottom:20px}
+  .iv-weight-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+  .iv-weight-head b{font-family:'PP Object Sans',var(--display);font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:#FF2526}
+  .iv-weight-head span{color:#9a9a9e;font-size:13.5px}
+  .iv-sample{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f1f1f2}
+  .iv-sample .l1{font-size:clamp(24px,4vw,38px);line-height:1.08;letter-spacing:-.01em;margin-bottom:8px;color:#141414}
+  .iv-sample .l2{font-size:clamp(14.5px,2vw,17px);color:#4a4a4d;max-width:560px}
+  .iv-w900{font-weight:900}
+  .iv-w700{font-weight:700}
+  .iv-w500{font-weight:500}
+  .iv-w400{font-weight:400}
+  .iv-usage{font-size:13.5px;color:#6b6b6f;margin-bottom:18px;line-height:1.65}
+  .iv-usage b{color:#141414;font-weight:700}
+  .iv-spectags{display:flex;flex-wrap:wrap;gap:8px}
+  .iv-spectags span{font-size:11.5px;font-family:var(--mono);color:#6b6b6f;background:#f3f3f4;border-radius:8px;padding:6px 10px}
+
+  .iv-patterns{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:18px 0 30px}
+  .iv-pattern{border:1px solid #ececee;border-radius:18px;padding:22px}
+  .iv-pattern .pk{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9e;margin-bottom:14px}
+  .iv-pattern .pl1{font-weight:900;font-size:20px;margin-bottom:4px;letter-spacing:-.01em;color:#141414}
+  .iv-pattern .pl2{font-size:13.5px;color:#4a4a4d;margin-bottom:2px}
+  .iv-pattern .pl3{font-size:11.5px;color:#9a9a9e}
+  .iv-pattern .pf{margin-top:16px;font-size:11.5px;font-weight:700;color:#FF2526}
+  @media(max-width:700px){.iv-patterns{grid-template-columns:1fr}}
+
+  .iv-formats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:18px 0 30px}
+  .iv-format{border:1px solid #ececee;border-radius:18px;padding:22px;background:#fafafa}
+  .iv-format .fk{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9a9a9e;margin-bottom:12px}
+  .iv-format .fl1{font-weight:900;font-size:18px;margin-bottom:4px;color:#141414}
+  .iv-format .fl2{font-size:13px;color:#6b6b6f;margin-bottom:12px}
+  .iv-format .fspec{font-size:10.5px;font-family:var(--mono);color:#9a9a9e}
+  @media(max-width:700px){.iv-formats{grid-template-columns:1fr}}
+
+  .iv-note{display:flex;gap:12px;background:#fafafa;border:1px solid #ececee;border-radius:14px;padding:16px 18px;margin-top:20px}
+  .iv-note .ic{width:20px;height:20px;border-radius:50%;border:1.5px solid #c9c9cc;color:#9a9a9e;display:grid;place-items:center;font-size:11px;font-weight:800;flex-shrink:0}
+  .iv-note p{margin:0;font-size:13.5px;color:#6b6b6f;line-height:1.55}
+  .iv-note p b{color:#141414}
+
+  .iv-photocat{margin-bottom:34px}
+  .iv-photocat:last-child{margin-bottom:0}
+  .iv-photocat h4{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a4a4d;margin-bottom:16px}
+  .iv-photocat h4::before{content:"";width:7px;height:7px;border-radius:50%;background:#FF2526;flex-shrink:0}
+  .iv-pgrid{display:grid;gap:12px}
+  .iv-pgrid.c2{grid-template-columns:repeat(2,1fr)}
+  .iv-pgrid.c3{grid-template-columns:repeat(3,1fr)}
+  .iv-pgrid img{width:100%;height:100%;object-fit:cover;border-radius:16px;aspect-ratio:4/3;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+  @media(max-width:640px){.iv-pgrid.c3{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---------- real logo marks (from Figma) + built-from-scratch lockups ---------- */
+  .rp-logo{display:inline-block;flex-shrink:0;background-color:#FF441F;
+    -webkit-mask:url(assets/identidad-visual/logo-figma/rappi-wordmark.svg) center/contain no-repeat;
+            mask:url(assets/identidad-visual/logo-figma/rappi-wordmark.svg) center/contain no-repeat;
+    aspect-ratio:50/22;width:100px}
+  .rp-logo.white{background-color:#fff}
+  .rp-logo.black{background-color:#141414}
+  .rp-logo.blue{background-color:#2E6BFF}
+  .rp-logo.italic{transform:skewX(-16deg)}
+  .rp-logo.faint{opacity:.25}
+  .rp-mustache{display:inline-block;flex-shrink:0;background:linear-gradient(135deg,#FF7A4D,#FF2526 50%,#FF4583);
+    -webkit-mask:url(assets/identidad-visual/logo-figma/moustache-isotype.svg) center/contain no-repeat;
+            mask:url(assets/identidad-visual/logo-figma/moustache-isotype.svg) center/contain no-repeat;
+    aspect-ratio:1/1;width:44px}
+  .rp-mustache.white{background:#fff}
+  .rp-mustache.rotate{transform:rotate(180deg)}
+  .rp-soyrappi{display:inline-block;flex-shrink:0}
+  .rp-soyrappi img{display:block;height:100%;width:auto}
+  .rp-travel{display:inline-block;flex-shrink:0}
+  .rp-travel img{display:block;height:100%;width:auto}
+
+  .lg-card{border:1px solid #ececee;border-radius:16px;padding:26px;margin-bottom:16px;background:#fff}
+  .lg-card:last-child{margin-bottom:0}
+  .lg-card-label{font-size:11px;color:#9a9a9e;font-weight:600;margin-bottom:20px}
+  .lg-row{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-end}
+  .lg-item{display:flex;flex-direction:column;gap:16px}
+  .lg-cap{font-size:11px;color:#9a9a9e}
+  .lg-combo{display:flex;align-items:center;gap:10px}
+  .lg-hr{height:1px;background:#ececee;margin:26px 0}
+  .lg-min{display:flex;align-items:center;gap:16px}
+  .lg-min-text{font-size:12px;font-weight:700;color:#141414;line-height:1.5}
+
+  .lg-cta-word{font-family:'PP Object Sans',var(--display);font-weight:800;color:#141414;white-space:nowrap}
+  .lg-cta-hero{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px;padding:18px 0 34px}
+  .lg-cta-hero .rp-logo{width:180px}
+  .lg-cta-hero .lg-cta-word{font-size:clamp(26px,4.4vw,40px)}
+  .lg-cta-variants{display:flex;justify-content:space-around;flex-wrap:wrap;gap:24px;padding-top:26px;border-top:1px solid #ececee}
+  .lg-cta-variants>div{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .lg-cta-variants .lg-combo{gap:6px}
+  .lg-cta-variants .rp-logo{width:66px}
+  .lg-cta-variants .lg-cta-word{font-size:15px}
+  .lg-cta-variants small{font-size:10px;color:#9a9a9e;font-weight:700;text-align:center;line-height:1.4}
+
+  .lg-bg-black{background:#111214;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:22px;padding:34px;margin-bottom:14px}
+  .lg-bg-black .rp-logo{width:110px}
+  .lg-bg-black .rp-mustache{width:48px}
+  .lg-bg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .lg-bg{border-radius:12px;aspect-ratio:1.7/1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .lg-bg .rp-logo{width:64px;position:relative;z-index:1}
+  .lg-bg-neon{background:linear-gradient(135deg,#FF7A4D,#FF2526 55%,#FF4583)}
+  .lg-bg-cream{background:#FFF0DD}
+  .lg-bg-gray{background:#ECEFF3}
+  .lg-bg-photo{background-image:linear-gradient(0deg,rgba(0,0,0,.35),rgba(0,0,0,.35)),url(assets/identidad-visual/foto/6.jpg);background-size:cover;background-position:center}
+  @media(max-width:700px){.lg-bg-grid{grid-template-columns:repeat(2,1fr)}}
+
+  .lg-wrong-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+  .lg-wrong{border:1px solid #ececee;border-radius:12px;aspect-ratio:1.6/1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#fff;position:relative;overflow:hidden}
+  .lg-wrong .rp-logo{width:74px}
+  .lg-wrong .rp-mustache{width:30px}
+  .lg-wrong.split{background:linear-gradient(90deg,#111214 50%,#FF6B6B 50%)}
+  .lg-wrong.split .rp-logo{width:56px}
+  .lg-wrong.photobg{background-image:linear-gradient(0deg,rgba(0,0,0,.15),rgba(0,0,0,.15)),url(assets/identidad-visual/foto/13.jpg);background-size:cover;background-position:center}
+  .lg-wrong-caption{font-size:11px;color:#9a9a9e;line-height:1.7}
+  @media(max-width:700px){.lg-wrong-grid{grid-template-columns:repeat(2,1fr)}}
+
+  /* sub-brand lockups built with PP Object Sans (no vector source for Turbo/Pro) */
+  .lg-sub-lockup{display:flex;align-items:center;gap:2px}
+  .lg-sub-lockup .rp-logo{width:74px;margin-right:2px}
+  .lg-word{font-family:'PP Object Sans',var(--display);font-weight:800;font-size:30px;letter-spacing:-.01em}
+  .lg-word.turbo{color:#248F63}
+  .lg-word.pro{color:#141414}
+  .lg-word.pro .crown{width:.62em;height:.62em;color:#F0B769;margin:0 2px;vertical-align:.08em}
+  .lg-bolt{width:20px;height:20px;color:#248F63;flex-shrink:0}
+  .lg-sub-swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+  .lg-sub-sw{border-radius:12px;aspect-ratio:2/1;display:flex;align-items:center;justify-content:center;gap:6px}
+  .lg-sub-sw.turbo-green{background:#248F63}
+  .lg-sub-sw.turbo-dark{background:#00453E}
+  .lg-sub-sw.pro-light{background:#ECEFF3}
+  .lg-sub-sw.pro-black{background:#2A2B2B}
+  .lg-sub-sw .lg-word{font-size:19px}
+  .lg-sub-sw.turbo-green .lg-word,.lg-sub-sw.turbo-dark .lg-word{color:#fff}
+  .lg-sub-sw.pro-black .lg-word{color:#fff}
+  .lg-sub-sw.pro-black .lg-word .crown{color:#F0B769}
+  @media(max-width:700px){.lg-sub-swatches{grid-template-columns:repeat(2,1fr)}}
+
+  .lg-soyrappi-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .lg-soyrappi-row .rp-soyrappi{height:34px}
+  .lg-evoluciona{font-family:'PP Object Sans',var(--display);font-weight:600;font-size:15px;letter-spacing:.14em;color:#c9c9cc;text-transform:uppercase}
+
+  .lg-ally-placeholder{border:1.5px dashed #d5d5d9;border-radius:10px;padding:14px 22px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#b7b7bb;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+  .lg-cobrand-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:28px;border:1px solid #ececee;border-radius:14px;margin-bottom:20px}
+  .lg-cobrand-sep{width:1px;align-self:stretch;background:#ececee}
+  .lg-cobrand-note{font-size:12px;color:#9a9a9e}
+
+  @media(max-width:760px){
+    .sidebar{display:none}
+    .main{padding:32px 22px 90px}
+    .pm{padding:22px}
+    .iv-hero,.iv-tabbar,.iv-content{padding-left:22px;padding-right:22px}
+    .iv-patterns,.iv-formats{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body id="top">
+
+<site-header active="brand"></site-header>
+
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="eyebrow" style="padding:0 12px 14px">Neon805</div>
+
+    <div class="sb-group">
+      <div class="sb-title"><span class="dot"></span> Overview</div>
+      <nav class="sb-links">
+        <a href="#overview" class="on">Overview</a>
+      </nav>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-title"><span class="dot"></span> Herramientas</div>
+      <nav class="sb-links">
+        <a href="#promptmaker">PromptMaker Neon</a>
+      </nav>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-title"><span class="dot"></span> Identidad Visual</div>
+      <nav class="sb-links">
+        <a href="#identidad-visual" onclick="ivShowTab('logo')">Logo</a>
+        <a href="#identidad-visual" onclick="ivShowTab('color')">Sistema de Color</a>
+        <a href="#identidad-visual" onclick="ivShowTab('tipo')">Tipografía</a>
+        <a href="#identidad-visual" onclick="ivShowTab('foto')">Fotografía</a>
+      </nav>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-inner">
+
+      <div class="crumb"><b>Neon805</b> <span>/</span> Overview</div>
+      <h1 class="page-h1 display">Neon805</h1>
+      <div class="eyebrow" style="margin:-10px 0 18px">Content Power House</div>
+      <p class="page-lead">Todo lo que sostiene la marca Rappi: cómo se genera el sistema de íconos con IA y la identidad visual que define logo, color, tipografía y fotografía.</p>
+
+      <!-- OVERVIEW -->
+      <section class="doc" id="overview">
+        <div class="sec-num">01</div>
+        <h2>Overview</h2>
+        <p class="lead">Esta sección reúne las herramientas y referencias que usa el equipo de marca día a día.</p>
+        <div class="tiles">
+          <a href="#promptmaker" class="tile">
+            <div class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4.6L18 9l-4.1 1.4L12 15l-1.9-4.6L6 9l4.1-1.4L12 3z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg>PromptMaker Neon</div>
+            <p>Dashboard del sistema de prompts que arma los íconos 3D de la app.</p>
+          </a>
+          <a href="#identidad-visual" class="tile">
+            <div class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Identidad Visual</div>
+            <p>Logo, sistema de color, tipografía y fotografía — réplica del Brand Book 2026.</p>
+          </a>
+          <a href="#" class="tile">
+            <div class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Más próximamente</div>
+            <p>Voz de marca, arquitectura y tropicalización — en camino.</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- PROMPTMAKER NEON -->
+      <section class="doc" id="promptmaker">
+        <div class="sec-num">02</div>
+        <h2>PromptMaker Neon</h2>
+        <p class="lead">El motor de prompts que arma los íconos 3D de la app. Cada fila del sheet es una fórmula: estilo + producto + especificaciones + color de fondo = prompt listo para MidJourney.</p>
+
+        <div class="pm">
+          <div class="pm-top">
+            <div class="pm-top-l">
+              <b><span class="pm-dot"></span> PromptMaker · Íconos App Rappi</b>
+              <span>Sheet vivo que documenta cada ícono 3D de la app: producto, estilo, especificaciones EN/ES, color de fondo y el prompt final.</span>
+            </div>
+            <span class="pm-badge">Confidential</span>
+          </div>
+
+          <div class="pm-kpis">
+            <div class="pm-kpi"><b>2</b><span>Hojas activas<br>Iconos Cute · Iconos Season</span></div>
+            <div class="pm-kpi"><b>50+</b><span>Prompts documentados<br>solo en Iconos Cute</span></div>
+            <div class="pm-kpi"><b>3</b><span>Estilos base<br>3D cartoon · 3D icon · 3D realistic</span></div>
+            <div class="pm-kpi"><b>8</b><span>Columnas por fila<br>de ícono a prompt final</span></div>
+          </div>
+
+          <div class="pm-h4">Cómo se arma el prompt</div>
+          <div class="pm-pipeline">
+            <span class="pm-step">Ícono</span><span class="pm-arrow">→</span>
+            <span class="pm-step">Style</span><span class="pm-arrow">→</span>
+            <span class="pm-step">Descripción ES/EN</span><span class="pm-arrow">→</span>
+            <span class="pm-step">Especificaciones ES/EN</span><span class="pm-arrow">→</span>
+            <span class="pm-step">Color de fondo</span><span class="pm-arrow">→</span>
+            <span class="pm-step">Resultado</span><span class="pm-arrow">→</span>
+            <span class="pm-step">Imagen</span>
+          </div>
+
+          <div class="pm-example">
+            <div class="pm-example-head"><b>Ejemplo real — Restaurantes / Sushi</b><span>ICONOS CUTE · fila 2</span></div>
+            <div class="pm-fields">
+              <div class="pm-field"><b>Ícono</b><span>Restaurantes</span></div>
+              <div class="pm-field"><b>Style</b><span>3D cartoon icon</span></div>
+              <div class="pm-field"><b>Producto</b><span>Sushi / A plate of sushi</span></div>
+              <div class="pm-field"><b>Color de fondo</b><span>Light pink</span></div>
+            </div>
+            <div class="pm-result"><b>Resultado</b>"3D cartoon icon of a Sushi. A plate of sushi with a plastic texture, isometric view, featuring vibrant and vivid colors, cute style. Rendered in Cinema 4D style with smooth and glossy surfaces, soft natural lighting and a clean light pink background. High-quality and minimalistic design, close-up --ar 1:1"</div>
+          </div>
+
+          <div class="pm-h4">Hojas del sheet</div>
+          <div class="pm-cats">
+            <div class="pm-cat"><b>Iconos Cute</b><span>Categorías de la app — Restaurantes, Turbo, Super, Travel y más. Estilo base: 3D cartoon icon, look tipo Cinema 4D con fondo sólido.</span></div>
+            <div class="pm-cat"><b>Iconos Season</b><span>Íconos de temporada y momentos especiales. Mezcla estilos: 3D cartoon icon, 3D icon y 3D realistic según la pieza.</span></div>
+          </div>
+
+          <div class="pm-foot">
+            <p>Fuente: Google Sheets · Confidencial, visible solo para el equipo. Para generar nuevas filas, usa la skill <strong style="color:var(--text)">midjourney-prompt-builder</strong>.</p>
+            <a class="pm-cta" href="https://docs.google.com/spreadsheets/d/1ybqu78jSvYupDtPkhr_L_6ZPWFNDO4QTw3IdcUaBvqQ/edit?gid=1564214503#gid=1564214503" target="_blank" rel="noopener">Abrir en Google Sheets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- IDENTIDAD VISUAL -->
+      <section class="doc" id="identidad-visual">
+        <div class="sec-num">03</div>
+        <h2>Identidad Visual</h2>
+        <p class="lead">Réplica exacta del capítulo 04 del Brand Book 2026: logo, sistema de color, tipografía y fotografía de marca.</p>
+
+        <div class="iv">
+
+          <div class="iv-hero">
+            <svg class="iv-mustache" viewBox="0 0 120 46" xmlns="http://www.w3.org/2000/svg"><path d="M60 15 C56 9 49 8 42 10 C33 12.5 26 18 17 26 C12 30.5 7 33 4 31.5 C1.5 30.2 3 26 8 22
+              C2 27 0.5 33 5 35.5 C9 37.7 15 34 21 29 C29 22.5 37 20.5 45 23 C50.5 24.7 55.5 26 60 24
+              C64.5 26 69.5 24.7 75 23 C83 20.5 91 22.5 99 29 C105 34 111 37.7 115 35.5 C119.5 33 118 27 112 22
+              C117 26 118.5 30.2 116 31.5 C113 33 108 30.5 103 26 C94 18 87 12.5 78 10 C71 8 64 9 60 15 Z"/></svg>
+            <div class="iv-eyebrow">Capítulo 04</div>
+            <h2>Identidad Visual</h2>
+          </div>
+
+          <nav class="iv-tabbar">
+            <button data-iv-tab="logo" class="on">Logo</button>
+            <button data-iv-tab="color">Sistema de Color</button>
+            <button data-iv-tab="tipo">Tipografía</button>
+            <button data-iv-tab="foto">Fotografía</button>
+          </nav>
+
+          <div class="iv-content">
+
+          <!-- ============ LOGO ============ -->
+          <div class="iv-panel" data-iv-panel="logo">
+
+            <div class="iv-block">
+              <div class="iv-eyebrow-sm"><span class="dot"></span>01 · Masterbrand</div>
+              <h3 class="iv-h">Rappi</h3>
+
+              <div class="lg-card">
+                <div class="lg-card-label">Logo marca</div>
+                <div class="lg-row">
+                  <div class="lg-item">
+                    <span class="lg-cap">Logotipo</span>
+                    <span class="rp-logo" style="width:130px"></span>
+                  </div>
+                  <div class="lg-item">
+                    <span class="lg-cap">CTA + Logotipo + Isotipo</span>
+                    <div class="lg-combo">
+                      <span class="lg-cta-word" style="font-size:22px">Pide un</span>
+                      <span class="rp-logo" style="width:100px"></span>
+                      <span class="rp-mustache" style="width:42px"></span>
+                    </div>
+                  </div>
+                  <div class="lg-item">
+                    <span class="lg-cap">Isotipo</span>
+                    <span class="rp-mustache" style="width:56px"></span>
+                  </div>
+                </div>
+                <div class="lg-hr"></div>
+                <div class="lg-row">
+                  <div class="lg-min">
+                    <span class="rp-logo" style="width:76px"></span>
+                    <div class="lg-min-text">min 32px Logotipo completo<br>min 12mm Logotipo completo (impresión)</div>
+                  </div>
+                  <div class="lg-min">
+                    <span class="rp-mustache" style="width:34px"></span>
+                    <div class="lg-min-text">min 16px Símbolo (app icon)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lg-card">
+                <div class="lg-card-label">CTA</div>
+                <div class="lg-cta-hero">
+                  <span class="lg-cta-word">Pide un</span>
+                  <span class="rp-logo"></span>
+                </div>
+                <div class="lg-cta-variants">
+                  <div>
+                    <div class="lg-combo"><span class="lg-cta-word">Pide un</span><span class="rp-logo"></span></div>
+                    <small>CO<br>PE</small>
+                  </div>
+                  <div>
+                    <div class="lg-combo"><span class="lg-cta-word">Pedí un</span><span class="rp-logo"></span></div>
+                    <small>ARG<br>URU</small>
+                  </div>
+                  <div>
+                    <div class="lg-combo"><span class="lg-cta-word">Pídelo por</span><span class="rp-logo" style="width:76px"></span></div>
+                    <small>MEX</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lg-card">
+                <div class="lg-card-label">Aplicaciones sobre fondos</div>
+                <div class="lg-bg-black">
+                  <span class="rp-logo white"></span>
+                  <span class="rp-mustache white"></span>
+                </div>
+                <div class="lg-bg-grid">
+                  <div class="lg-bg lg-bg-neon"><span class="rp-logo white"></span></div>
+                  <div class="lg-bg lg-bg-cream"><span class="rp-logo"></span></div>
+                  <div class="lg-bg lg-bg-gray"><span class="rp-logo black"></span></div>
+                  <div class="lg-bg lg-bg-photo"><span class="rp-logo white"></span></div>
+                </div>
+              </div>
+
+              <div class="lg-card">
+                <div class="lg-card-label">Aplicaciones incorrectas</div>
+                <div class="lg-wrong-grid">
+                  <div class="lg-wrong split"><span class="rp-logo white"></span><span class="rp-mustache white"></span></div>
+                  <div class="lg-wrong"><span class="rp-mustache" style="margin-bottom:2px"></span><span class="rp-logo"></span></div>
+                  <div class="lg-wrong"><span class="rp-logo blue"></span></div>
+                  <div class="lg-wrong"><span class="rp-logo italic"></span></div>
+                  <div class="lg-wrong"><span class="rp-mustache rotate" style="width:46px"></span></div>
+                  <div class="lg-wrong"><span class="rp-logo" style="transform:rotate(-8deg)"></span></div>
+                  <div class="lg-wrong"><span class="rp-logo faint"></span></div>
+                  <div class="lg-wrong photobg"><span class="rp-logo white"></span></div>
+                </div>
+                <p class="lg-wrong-caption">Fondo dividido sin jerarquía · Isotipo suelto y desproporcionado · Color fuera de paleta · Itálica / distorsión · Isotipo rotado · Logo rotado · Opacidad reducida · Bajo contraste sobre foto</p>
+              </div>
+            </div>
+
+            <div class="iv-block">
+              <div class="iv-eyebrow-sm"><span class="dot"></span>02 · Submarca</div>
+              <h3 class="iv-h">Rappi Turbo</h3>
+              <p class="iv-desc">Sin vector oficial en la librería de Figma consultada — lockup construido en HTML con PP Object Sans y el token <strong style="color:#141414">Turbo Green</strong>.</p>
+              <div class="lg-card">
+                <div class="lg-card-label">Logo submarca</div>
+                <div class="lg-row">
+                  <div class="lg-item">
+                    <span class="lg-cap">Logotipo</span>
+                    <div class="lg-sub-lockup"><span class="rp-logo" style="width:64px"></span><span class="lg-word turbo">Turbo</span></div>
+                  </div>
+                  <div class="lg-item">
+                    <span class="lg-cap">Isotipo</span>
+                    <svg class="lg-bolt" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6z"/></svg>
+                  </div>
+                </div>
+                <div class="lg-sub-swatches">
+                  <div class="lg-sub-sw turbo-green"><span class="lg-word">Turbo</span></div>
+                  <div class="lg-sub-sw turbo-dark"><span class="lg-word">Turbo</span></div>
+                  <div class="lg-sub-sw" style="background:#fff;border:1px solid #ececee"><span class="lg-word turbo">Turbo</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="iv-block">
+              <div class="iv-eyebrow-sm"><span class="dot"></span>03 · Submarca</div>
+              <h3 class="iv-h">Rappi Pro</h3>
+              <p class="iv-desc">Rappi en vector real + "Pro"/corona construidos en HTML — sin vector oficial de Pro en la librería consultada.</p>
+              <div class="lg-card">
+                <div class="lg-card-label">Logo submarca</div>
+                <div class="lg-row">
+                  <div class="lg-item">
+                    <span class="lg-cap">Rappi Pro</span>
+                    <div class="lg-sub-lockup"><span class="rp-logo" style="width:64px"></span><span class="lg-word pro">Pro<svg class="crown" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block"><path d="M3 19h18l-1.5-9-4.5 3.5L12 6l-3 7.5L4.5 10 3 19z"/></svg></span></div>
+                  </div>
+                  <div class="lg-item">
+                    <span class="lg-cap">Rappi Pro Black</span>
+                    <div class="lg-sub-lockup"><span class="rp-logo black" style="width:64px"></span><span class="lg-word pro">Pro<svg class="crown" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block"><path d="M3 19h18l-1.5-9-4.5 3.5L12 6l-3 7.5L4.5 10 3 19z"/></svg>Black</span></div>
+                  </div>
+                </div>
+                <div class="lg-sub-swatches">
+                  <div class="lg-sub-sw pro-light"><span class="lg-word pro">Pro<svg class="crown" viewBox="0 0 24 24" fill="currentColor"><path d="M3 19h18l-1.5-9-4.5 3.5L12 6l-3 7.5L4.5 10 3 19z"/></svg></span></div>
+                  <div class="lg-sub-sw pro-black"><span class="lg-word pro">Pro<svg class="crown" viewBox="0 0 24 24" fill="currentColor"><path d="M3 19h18l-1.5-9-4.5 3.5L12 6l-3 7.5L4.5 10 3 19z"/></svg>Black</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="iv-block">
+              <div class="iv-eyebrow-sm"><span class="dot"></span>04 · Submarca</div>
+              <h3 class="iv-h">SoyRappi</h3>
+              <div class="lg-card">
+                <div class="lg-card-label">Logo submarca (vector real)</div>
+                <div class="lg-soyrappi-row">
+                  <span class="rp-soyrappi" style="height:36px"><img src="assets/identidad-visual/logo-figma/soyrappi-base.svg" alt="Logo SoyRappi"></span>
+                  <span class="rp-soyrappi" style="height:36px"><img src="assets/identidad-visual/logo-figma/soyrappi-base.svg" alt="Logo SoyRappi"></span><span class="lg-evoluciona">Evoluciona</span>
+                </div>
+                <div class="lg-bg-grid" style="margin-top:22px">
+                  <div class="lg-bg" style="background:#fff;border:1px solid #ececee"><span class="rp-soyrappi" style="height:24px"><img src="assets/identidad-visual/logo-figma/soyrappi-base.svg" alt=""></span></div>
+                  <div class="lg-bg lg-bg-neon"><span class="rp-soyrappi" style="height:24px;filter:brightness(0) invert(1)"><img src="assets/identidad-visual/logo-figma/soyrappi-base.svg" alt=""></span></div>
+                  <div class="lg-bg" style="background:#111214"><span class="rp-soyrappi" style="height:24px;filter:brightness(0) invert(1)"><img src="assets/identidad-visual/logo-figma/soyrappi-base.svg" alt=""></span></div>
+                  <div class="lg-bg lg-bg-cream"><span class="rp-soyrappi" style="height:24px"><img src="assets/identidad-visual/logo-figma/soyrappi-base.svg" alt=""></span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="iv-block">
+              <div class="iv-eyebrow-sm"><span class="dot"></span>05 · Cobranding</div>
+              <h3 class="iv-h">Rappi + Aliado</h3>
+              <p class="iv-desc">El ejemplo con Rappi Travel usa un vector real de la librería. El bloque "Aliado" es un placeholder deliberado — el logo del partner real se coloca ahí en cada pieza, nunca se reconstruye a mano.</p>
+
+              <div class="lg-cobrand-row">
+                <span class="rp-logo" style="width:96px"></span>
+                <div class="lg-cobrand-sep"></div>
+                <div class="lg-ally-placeholder">Logo aliado</div>
+              </div>
+
+              <div class="lg-cobrand-row">
+                <span class="rp-travel" style="height:32px"><img src="assets/identidad-visual/logo-figma/logo-travel.svg" alt="Logo Rappi Travel"></span>
+                <div class="lg-cobrand-sep"></div>
+                <div class="lg-ally-placeholder">Logo aliado</div>
+                <span class="lg-cobrand-note">Ejemplo real — Rappi Travel</span>
+              </div>
+
+              <div class="iv-tblwrap">
+                <table class="iv-rtable">
+                  <thead><tr><th>Regla</th><th>Descripción</th></tr></thead>
+                  <tbody>
+                    <tr><td>Tamaño visual igual</td><td>Los logos se equiparan por área visual percibida, no por ancho exacto.</td></tr>
+                    <tr><td>Separador obligatorio</td><td>Línea vertical o espacio equivalente a 2× la altura del logo de Rappi.</td></tr>
+                    <tr><td>Rappi en su versión de color</td><td>El logo de Rappi no se adapta al estilo del aliado. No se usa monocromático.</td></tr>
+                    <tr><td>Sin cierre de país</td><td>El cierre se omite en piezas cobranding salvo brief explícito.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ============ SISTEMA DE COLOR ============ -->
+          <div class="iv-panel" data-iv-panel="color" hidden>
+
+            <div class="iv-block">
+              <h3 class="iv-h">Arquitectura de Color</h3>
+              <p class="iv-desc">El sistema de color sigue la arquitectura de marca. La Masterbrand define el color de toda comunicación externa. Las submarcas tienen identidades propias, exclusivas dentro de la app.</p>
+              <div class="iv-callout">
+                <span class="ic">!</span>
+                <div><b>Regla global</b><p>Fuera de la app, toda pieza usa Neon. Sin excepción por vertical. El verde Turbo y la paleta Pro son exclusivos del contexto app. En paid media, OOH, redes sociales y materiales impresos: siempre gradiente Neon.</p></div>
+              </div>
+            </div>
+
+            <div class="iv-level">
+              <div class="iv-level-head"><h4>Rappi — Masterbrand</h4><span class="iv-level-tag">Nivel 1 · Todo contexto externo</span></div>
+              <p class="d">El Neon es el color de Rappi en el mundo. Siempre como gradiente. Define toda comunicación externa sin importar la vertical que comunica.</p>
+              <div class="iv-swatches">
+                <button class="iv-swatch" onclick="ivCopy(this,'#FF7A4D')"><span class="sw" style="background:#FF7A4D"></span><span class="meta"><span class="hex">#FF7A4D</span><span class="name">Coral</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#FF2526')"><span class="sw" style="background:#FF2526"></span><span class="meta"><span class="hex">#FF2526</span><span class="name">Red</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#FF4583')"><span class="sw" style="background:#FF4583"></span><span class="meta"><span class="hex">#FF4583</span><span class="name">Pink</span><span class="cp">Copiar</span></span></button>
+              </div>
+              <div class="iv-tags"><span>Paid media</span><span>OOH / Vallas</span><span>Redes sociales</span><span>Impresión</span><span>App (base)</span></div>
+              <ul class="iv-dodont">
+                <li class="ok">Ángulo base −45°. El ángulo puede variar por pieza, los colores nunca cambian.</li>
+                <li class="no">No usar los tres colores como planos independientes sin gradiente.</li>
+                <li class="no">No alterar el orden ni agregar colores intermedios no aprobados.</li>
+              </ul>
+            </div>
+
+            <div class="iv-eyebrow-sm" style="margin:34px 0 -6px"><span class="dot"></span>Submarcas — Nivel 2</div>
+
+            <div class="iv-level">
+              <div class="iv-level-head"><h4>Rappi Turbo</h4><span class="iv-level-tag">Nivel 2 · Solo dentro de la app</span></div>
+              <div class="iv-swatches" style="margin-top:16px">
+                <button class="iv-swatch" onclick="ivCopy(this,'#248F63')"><span class="sw" style="background:#248F63"></span><span class="meta"><span class="hex">#248F63</span><span class="name">Turbo Green</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#00453E')"><span class="sw" style="background:#00453E"></span><span class="meta"><span class="hex">#00453E</span><span class="name">Turbo Dark</span><span class="cp">Copiar</span></span></button>
+              </div>
+              <div class="iv-tags"><span>Banner Home</span><span>Banner Filtro</span><span>Inapp</span></div>
+              <ul class="iv-dodont">
+                <li class="ok">Texto blanco únicamente sobre fondo verde.</li>
+                <li class="no">Verde Turbo fuera de la app: nunca.</li>
+              </ul>
+            </div>
+
+            <div class="iv-level">
+              <div class="iv-level-head"><h4>Pro / Pro Black</h4><span class="iv-level-tag">Nivel 2 · Solo dentro de la app</span></div>
+              <div class="iv-swatches" style="margin-top:16px">
+                <button class="iv-swatch" onclick="ivCopy(this,'#ECEFF3')"><span class="sw" style="background:#ECEFF3"></span><span class="meta"><span class="hex">#ECEFF3</span><span class="name">Pro Claro</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#F0B769')"><span class="sw" style="background:#F0B769"></span><span class="meta"><span class="hex">#F0B769</span><span class="name">Dorado</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#E8A24C')"><span class="sw" style="background:#E8A24C"></span><span class="meta"><span class="hex">#E8A24C</span><span class="name">Dorado Dark</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#2A2B2B')"><span class="sw" style="background:#2A2B2B"></span><span class="meta"><span class="hex">#2A2B2B</span><span class="name">Pro Black</span><span class="cp">Copiar</span></span></button>
+              </div>
+              <div class="iv-tags"><span>Banner Home</span><span>Banner Filtro</span><span>Inapp</span></div>
+              <ul class="iv-dodont">
+                <li class="ok">Dorado: único acento compartido entre Pro y Pro Black.</li>
+                <li class="no">No intercambiar paletas. No usar dorado fuera del contexto Pro.</li>
+              </ul>
+            </div>
+
+            <div class="iv-level">
+              <div class="iv-level-head"><h4>Paleta Secundaria</h4><span class="iv-level-tag">Nivel 3 · Solo dentro de la app</span></div>
+              <p class="d">Colores de soporte para piezas inside app. Siempre acompañados de al menos un color Neon. No se usan en piezas externas.</p>
+              <div class="iv-swatches">
+                <button class="iv-swatch" onclick="ivCopy(this,'#FE3F23')"><span class="sw" style="background:#FE3F23"></span><span class="meta"><span class="hex">#FE3F23</span><span class="name">Plain Neon</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#D9F1FF')"><span class="sw" style="background:#D9F1FF"></span><span class="meta"><span class="hex">#D9F1FF</span><span class="name">Celeste</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#E5DCFF')"><span class="sw" style="background:#E5DCFF"></span><span class="meta"><span class="hex">#E5DCFF</span><span class="name">Morado</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#F4DFF6')"><span class="sw" style="background:#F4DFF6"></span><span class="meta"><span class="hex">#F4DFF6</span><span class="name">Rosado</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#F4F0FC')"><span class="sw" style="background:#F4F0FC"></span><span class="meta"><span class="hex">#F4F0FC</span><span class="name">Lavanda</span><span class="cp">Copiar</span></span></button>
+                <button class="iv-swatch" onclick="ivCopy(this,'#FFF0DD')"><span class="sw" style="background:#FFF0DD"></span><span class="meta"><span class="hex">#FFF0DD</span><span class="name">Beige</span><span class="cp">Copiar</span></span></button>
+              </div>
+              <ul class="iv-dodont">
+                <li class="ok">Un color secundario + Neon = combinación válida.</li>
+                <li class="no">Dos colores secundarios juntos sin Neon = no aprobado.</li>
+                <li class="no">Ningún color secundario en piezas externas.</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- ============ TIPOGRAFÍA ============ -->
+          <div class="iv-panel" data-iv-panel="tipo" hidden>
+
+            <div class="iv-block">
+              <h3 class="iv-h">PP Object Sans</h3>
+              <p class="iv-desc">PP Object Sans es la tipografía oficial de Rappi en todos los formatos digitales y materiales de campaña. Cuatro pesos con roles específicos — no son intercambiables.</p>
+            </div>
+
+            <div class="iv-weight">
+              <div class="iv-weight-head"><b>Heavy · 900</b><span>El protagonista. Siempre el mensaje más importante.</span></div>
+              <div class="iv-sample iv-w900"><div class="l1">30% OFF</div><div class="l2">Tu súper en 10 minutos.</div></div>
+              <p class="iv-usage"><b>Cuándo usar:</b> Deals y descuentos · Números y porcentajes · Tiempos de entrega · Titulares de banner · Headlines de campaña. El Heavy es siempre el elemento de mayor jerarquía visual de la pieza.</p>
+              <div class="iv-spectags"><span>Inapp titular · 33pt</span><span>Banner Filtro · 88pt</span><span>Banner Home · 26px</span><span>Paid headline</span><span>Precio / descuento</span></div>
+            </div>
+
+            <div class="iv-weight">
+              <div class="iv-weight-head"><b>Bold · 700</b><span>El puente. Conecta el headline con el cuerpo.</span></div>
+              <div class="iv-sample iv-w700"><div class="l1">Pide todo. Llega todo.</div><div class="l2">Rappi Turbo Restaurantes</div></div>
+              <p class="iv-usage"><b>Cuándo usar:</b> Sub-headlines · Nombre de producto en piezas medias · CTAs de botón · Datos de soporte del deal principal. Bold establece jerarquía secundaria: más fuerte que el cuerpo, sin competir con el Heavy.</p>
+              <div class="iv-spectags"><span>Sub-headline</span><span>Nombre de producto</span><span>Botón CTA</span><span>Dato de soporte</span></div>
+            </div>
+
+            <div class="iv-weight">
+              <div class="iv-weight-head"><b>Medium · 500</b><span>El narrador. Amplía y contextualiza.</span></div>
+              <div class="iv-sample iv-w500"><div class="l1" style="font-size:clamp(18px,2.4vw,24px)">En restaurantes seleccionados. Válido hasta el 14 de marzo.</div><div class="l2">Al mismo precio que en el súper. Sin costo de envío para usuarios Pro.</div></div>
+              <p class="iv-usage"><b>Cuándo usar:</b> Descripción de Inapp · Subtítulo de banner · Cuerpo de email · Copy de soporte en paid · Texto de WhatsApp y push body. Medium nunca compite con el Heavy — siempre es el elemento que amplía.</p>
+              <div class="iv-spectags"><span>Inapp descripción · 21pt</span><span>Banner Filtro desc · 40pt</span><span>Push body</span><span>Cuerpo email</span><span>Subtítulo banner</span></div>
+            </div>
+
+            <div class="iv-weight">
+              <div class="iv-weight-head"><b>Regular · 400</b><span>El silencioso. Legal y condiciones.</span></div>
+              <div class="iv-sample iv-w400"><div class="l2" style="max-width:100%">*Descuento aplicable en restaurantes seleccionados. Válido del 14 al 16 de marzo de 2026. No acumulable con otras promociones. Consulta términos y condiciones en rappi.com</div></div>
+              <p class="iv-usage"><b>Cuándo usar:</b> Textos legales · Términos y condiciones · Notas de pie. El Regular casi nunca aparece en los primeros tres elementos de jerarquía. Siempre al mínimo de tamaño legible para el formato.</p>
+              <div class="iv-spectags"><span>Legal · mín 18pt impresión</span><span>Legal · mín 10px digital</span><span>Nota de pie</span></div>
+            </div>
+
+            <div class="iv-block" style="margin-top:44px">
+              <h3 class="iv-h" style="font-size:22px">Jerarquía en Acción</h3>
+              <p class="iv-desc">Los cuatro pesos nunca aparecen juntos en la misma pieza. La regla es usar el mínimo de pesos necesarios para establecer la jerarquía. Lo más frecuente: Heavy + Medium. En piezas con más información: Heavy + Bold + Medium + Regular.</p>
+              <div class="iv-patterns">
+                <div class="iv-pattern">
+                  <div class="pk">Patrón 1 — Promo simple</div>
+                  <div class="pl1">30% OFF</div>
+                  <div class="pl2">En restaurantes seleccionados. Solo hoy.</div>
+                  <div class="pl3">*Aplican términos. Válido 14 mar.</div>
+                  <div class="pf">Heavy + Medium + Regular</div>
+                </div>
+                <div class="iv-pattern">
+                  <div class="pk">Patrón 2 — Turbo</div>
+                  <div class="pl2" style="font-weight:500">Rappi Turbo</div>
+                  <div class="pl1">10 minutos.</div>
+                  <div class="pl2">Tu despensa sin salir. Al mismo precio.</div>
+                  <div class="pf">Medium + Heavy + Medium</div>
+                </div>
+                <div class="iv-pattern">
+                  <div class="pk">Patrón 3 — Inapp banner</div>
+                  <div class="pl1">30% OFF hoy</div>
+                  <div class="pl2">En restaurantes seleccionados.</div>
+                  <div class="pl2" style="font-weight:700;color:#141414;margin-top:8px">Ver restaurantes</div>
+                  <div class="pf">Heavy 33pt + Medium 21pt + Bold CTA</div>
+                </div>
+                <div class="iv-pattern">
+                  <div class="pk">Patrón 4 — Cashback</div>
+                  <div class="pl2" style="font-weight:500">Esta semana</div>
+                  <div class="pl1">99% de Cashback</div>
+                  <div class="pl2">Hasta $200 en créditos en Turbo.</div>
+                  <div class="pl3">*Límite diario. Ver términos.</div>
+                  <div class="pf">Medium + Heavy + Medium + Regular</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="iv-block">
+              <h3 class="iv-h" style="font-size:22px">Escala de Tamaños por Formato</h3>
+              <p class="iv-desc" style="text-transform:uppercase;font-size:11.5px;letter-spacing:.08em;font-weight:700;color:#9a9a9e">Referencia — tamaños aprobados por formato</p>
+              <div class="iv-formats">
+                <div class="iv-format">
+                  <div class="fk">Banner Filtro</div>
+                  <div class="fl1">TU SÚPER EN 10 MINUTOS</div>
+                  <div class="fl2">Frescos, básicos y premium. Al mismo precio.<br>*Tiempo estimado. Aplican términos.</div>
+                  <div class="fspec">88pt Heavy · 40pt Medium · 24pt Regular</div>
+                </div>
+                <div class="iv-format">
+                  <div class="fk">Banner Home</div>
+                  <div class="fl1">Tu súper en 10 min</div>
+                  <div class="fl2">Al mismo precio. Sin salir.</div>
+                  <div class="fspec">26px Heavy · 20px Medium</div>
+                </div>
+                <div class="iv-format">
+                  <div class="fk">Inapp</div>
+                  <div class="fl1">30% OFF hoy</div>
+                  <div class="fl2">En restaurantes seleccionados.</div>
+                  <div class="fspec">33pt Heavy · 21pt Medium · 12–15 chars máx</div>
+                </div>
+                <div class="iv-format">
+                  <div class="fk">Push Notif.</div>
+                  <div class="fl1" style="font-size:15px;font-weight:700">Tu súper en 10 minutos</div>
+                  <div class="fl2">Rappi Turbo tiene todo lo que necesitas. Al mismo precio.</div>
+                  <div class="fspec">Bold título · Medium body · 30 + 60–70 chars</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="iv-block">
+              <h3 class="iv-h" style="font-size:22px">Guardrails Tipográficos</h3>
+              <div class="iv-tblwrap">
+                <table class="iv-rtable">
+                  <thead><tr><th>Regla</th><th>✅ Correcto</th><th>🚫 Incorrecto</th></tr></thead>
+                  <tbody>
+                    <tr><td>Mezcla de fuentes</td><td>PP Object Sans en toda la pieza (salvo email)</td><td>PP Object Sans + Inter + otra en la misma pieza</td></tr>
+                    <tr><td>Tracking Heavy</td><td>Siempre negativo en titulares grandes</td><td>"30% OFF" con tracking 0 o positivo</td></tr>
+                    <tr><td>Mayúsculas</td><td>Solo en titular cuando lleva número de deal o tiempo</td><td>Todo el copy en mayúsculas para "dar energía"</td></tr>
+                    <tr><td>Legal</td><td>Regular · mínimo 10px digital</td><td>Legal en Bold o en el mismo tamaño que el cuerpo</td></tr>
+                    <tr><td>Color de texto</td><td>Blanco sobre Neon · Negro sobre Pro claro · Blanco sobre Pro Black</td><td>Texto gris medio sobre gradiente neon</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="iv-block">
+              <h3 class="iv-h" style="font-size:22px">Helvetica</h3>
+              <p class="iv-desc">Los emails de Rappi están construidos en HTML. La tipografía usada es Helvetica. No es intercambiable con PP Object Sans — aplica solo en el canal email.</p>
+              <div class="iv-tblwrap">
+                <table class="iv-rtable">
+                  <thead><tr><th>Elemento</th><th>Tipografía</th><th>Tamaño</th><th>Peso</th><th>Color</th></tr></thead>
+                  <tbody>
+                    <tr><td>Titular email</td><td>Helvetica</td><td>40px</td><td>Heavy</td><td>#383838</td></tr>
+                    <tr><td>Cuerpo email</td><td>Helvetica</td><td>20px</td><td>Medium</td><td>#383838</td></tr>
+                    <tr><td>CTA email</td><td>Helvetica</td><td>28pt</td><td>Heavy</td><td>Según color de botón</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="iv-note"><span class="ic">i</span><p><b>Nota:</b> los textos en email no llevan emojis. Cualquier cambio debe hacerse en el template HTML, no en una imagen.</p></div>
+            </div>
+
+          </div>
+
+          <!-- ============ FOTOGRAFÍA ============ -->
+          <div class="iv-panel" data-iv-panel="foto" hidden>
+
+            <div class="iv-photocat">
+              <h4>Individual de producto · Fondo Neon</h4>
+              <div class="iv-pgrid c2">
+                <img src="assets/identidad-visual/foto/1.jpg" alt="Aguacate sobre fondo neon rojo — fotografía individual de producto">
+                <img src="assets/identidad-visual/foto/2.jpg" alt="Sándwich de jamón serrano sobre fondo neon rojo">
+                <img src="assets/identidad-visual/foto/3.jpg" alt="Hamburguesa con bolsa Rappi sobre fondo neon">
+                <img src="assets/identidad-visual/foto/4.jpg" alt="Pizza margarita sobre fondo neon rojo">
+              </div>
+            </div>
+
+            <div class="iv-photocat">
+              <h4>Bodegones · Fondo Neon</h4>
+              <div class="iv-pgrid c2">
+                <img src="assets/identidad-visual/foto/5.jpg" alt="Bodegón de hamburguesa, pizza y acompañamientos sobre fondo neon">
+                <img src="assets/identidad-visual/foto/6.jpg" alt="Bodegón de hamburguesa, ensalada y pizza sobre fondo neon">
+                <img src="assets/identidad-visual/foto/7.jpg" alt="Bodegón de sándwich, papas y nachos sobre fondo neon con empaques de marca">
+                <img src="assets/identidad-visual/foto/8.jpg" alt="Bodegón de hamburguesa, pizza y papas sobre fondo neon con empaques de marca">
+              </div>
+            </div>
+
+            <div class="iv-photocat">
+              <h4>Lifestyle</h4>
+              <div class="iv-pgrid c3">
+                <img src="assets/identidad-visual/foto/9.jpg" alt="Persona compartiendo una mesa con hamburguesa y bebidas — lifestyle">
+                <img src="assets/identidad-visual/foto/10.jpg" alt="Mesa con waffles, fruta y jugo de naranja — lifestyle">
+                <img src="assets/identidad-visual/foto/11.jpg" alt="Mesa compartida con hamburguesa, ensalada y bebida — lifestyle">
+              </div>
+              <div class="iv-pgrid c2" style="margin-top:12px">
+                <img src="assets/identidad-visual/foto/12.jpg" alt="Persona sosteniendo un bowl poke con bolsa de domicilio Rappi — lifestyle">
+                <img src="assets/identidad-visual/foto/13.jpg" alt="Persona entregando un bowl poke con bolsa de domicilio Rappi — lifestyle">
+              </div>
+            </div>
+
+            <div class="iv-photocat">
+              <h4>Individual de producto · Fondo blanco</h4>
+              <div class="iv-pgrid c3">
+                <img src="assets/identidad-visual/foto/14.jpg" alt="Hamburguesa individual sobre fondo blanco">
+                <img src="assets/identidad-visual/foto/15.jpg" alt="Pasta a la carbonara individual sobre fondo blanco">
+                <img src="assets/identidad-visual/foto/16.jpg" alt="Aguacate y cebolla sobre fondo blanco">
+              </div>
+            </div>
+
+            <div class="iv-photocat">
+              <h4>Grupal de producto · Fondo blanco</h4>
+              <div class="iv-pgrid c2">
+                <img src="assets/identidad-visual/foto/17.jpg" alt="Grupo de platos con salmón, sushi y noodles sobre fondo blanco">
+                <img src="assets/identidad-visual/foto/18.jpg" alt="Grupo de platos con pasta y salmón sobre fondo blanco">
+              </div>
+            </div>
+
+          </div>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.iv-tabbar button');
+  var panels = document.querySelectorAll('.iv-panel');
+  function show(tab){
+    tabs.forEach(function(b){ b.classList.toggle('on', b.dataset.ivTab === tab); });
+    panels.forEach(function(p){ p.hidden = p.dataset.ivPanel !== tab; });
+  }
+  tabs.forEach(function(b){ b.addEventListener('click', function(){ show(b.dataset.ivTab); }); });
+  window.ivShowTab = show;
+})();
+
+function ivCopy(btn, hex){
+  if(navigator.clipboard) navigator.clipboard.writeText(hex).catch(function(){});
+  var cp = btn.querySelector('.cp');
+  var prev = cp.textContent;
+  cp.textContent = '¡Copiado!';
+  btn.classList.add('copied');
+  clearTimeout(btn._t);
+  btn._t = setTimeout(function(){ cp.textContent = prev; btn.classList.remove('copied'); }, 1400);
+}
+</script>
+
+</body>
+</html>
