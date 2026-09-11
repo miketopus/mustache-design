@@ -1,0 +1,12 @@
+/* Shared design tokens — single source of truth for every page's :root.
+   Edit here, not per-page: a page-local :root should only add tokens
+   that page alone needs (see index.html's --neon / --maxw). */
+:root{
+  --bg:#08080A;--bg-2:#0C0C0E;--panel:#121214;--panel-2:#18181B;--tile:#0E0E10;
+  --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.15);
+  --text:#F5F5F6;--muted:#96969C;--muted-2:#65656B;--white:#FFFFFF;
+  --display:'Archivo Black',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --radius:16px;--topbar:64px;--side:288px;
+}
