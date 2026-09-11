@@ -401,7 +401,7 @@
         <div class="showcase-tile"></div>
       </div>
       <div class="showcase-center">
-        <img src="https://cdn.dribbble.com/userupload/31463061/file/original-2091f467e836bf240ecdc3d1169b8625.png?resize=1600x1200&amp;vertical=center" alt="Mustache Design System — product showcase" loading="lazy">
+        <img src="https://cdn.dribbble.com/userupload/31463061/file/original-2091f467e836bf240ecdc3d1169b8625.png?resize=1600x1200&amp;vertical=center" alt="Mustache Design System — reference shots" loading="lazy">
       </div>
     </div>
   </div>
@@ -891,6 +891,54 @@
     img.loading = 'lazy';
     tile.appendChild(img);
   });
+})();
+
+// showcase center flicker — as the big center card scrolls through the
+// pinned section, its image rapidly steps through a set of reference
+// shots (instead of sitting on one static image), always at the same
+// on-screen size since only `src` changes, never the CSS box/aspect-ratio.
+(function(){
+  var showcase = document.querySelector('.showcase');
+  var centerImg = showcase && showcase.querySelector('.showcase-center img');
+  if(!showcase || !centerImg) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var FRAMES = [
+    'https://cdn.dribbble.com/userupload/44680652/file/069898b339fbfaf0cf65e501057be552.png?resize=1024x768&vertical=center',
+    'https://cdn.dribbble.com/userupload/48891736/file/abb86868587e27d5e0147585d1135d7b.png?resize=1600x624&vertical=center',
+    'https://cdn.dribbble.com/userupload/48891921/file/43ed128e4094a2d229bb1201299ebd1f.png?resize=1024x399&vertical=center',
+    'https://cdn.dribbble.com/userupload/48891920/file/2d36c41c0404c252444e2c750d3452f4.png?resize=1024x399&vertical=center',
+    'https://cdn.dribbble.com/userupload/48891919/file/8be5f370cbb1cf782a69887ec19bff51.png?resize=1024x399&vertical=center',
+    'https://cdn.dribbble.com/userupload/25696234/file/original-a66f53d52c8c7a97306c90fe3f54bb35.jpg?resize=1600x1200&vertical=center'
+  ];
+
+  // Warm the cache up front so mid-scroll swaps are instant instead of a
+  // flash of blank space while each image loads for the first time.
+  FRAMES.forEach(function(src){ var im = new Image(); im.src = src; });
+  centerImg.src = FRAMES[0];
+
+  var STEPS = 42;   // quantized flips across the section's full scroll range
+  var lastStep = -1;
+  var ticking = false;
+
+  function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+
+  function update(){
+    ticking = false;
+    var rect = showcase.getBoundingClientRect();
+    var travel = showcase.offsetHeight - window.innerHeight;
+    var progress = travel > 0 ? clamp01(-rect.top / travel) : 0;
+    var step = Math.min(STEPS - 1, Math.floor(progress * STEPS));
+    if(step !== lastStep){
+      lastStep = step;
+      centerImg.src = FRAMES[step % FRAMES.length];
+    }
+  }
+
+  window.addEventListener('scroll', function(){
+    if(!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
 })();
 
 // scroll showcase — JS fallback for browsers without CSS scroll-driven
