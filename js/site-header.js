@@ -17,12 +17,13 @@
 (function () {
 
   const NAV = [
-    { id: 'design',     href: '/design.html',  label: 'Design'                  },
-    { id: 'content',    href: '/content.html', label: 'Content',    lock: true  },
-    { id: 'components', href: '#',             label: 'Components', lock: true  },
-    { id: 'ai',         href: '#',             label: 'AI'                      },
-    { id: 'brand',      href: '/brand.html',   label: 'Neon805'                },
-    { id: 'resources',  href: '#',             label: 'Resources'              },
+    { id: 'design',     href: '/design.html',   label: 'Design'                  },
+    { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
+    { id: 'content',    href: '/content.html',  label: 'Content',    lock: true  },
+    { id: 'components', href: '#',              label: 'Components', lock: true  },
+    { id: 'ai',         href: '#',              label: 'AI'                      },
+    { id: 'brand',      href: '/brand.html',    label: 'Brand'                   },
+    { id: 'resources',  href: '#',              label: 'Resources'              },
   ];
 
   const LOCK = `<svg class="tb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
