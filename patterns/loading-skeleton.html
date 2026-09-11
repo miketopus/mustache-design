@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design · Dialogs — Mustache Design System</title>
+<title>Design · Loading / Skeleton — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/site-header.css">
-<script src="js/site-header.js" defer></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site-header.css">
+<script src="../js/site-header.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -92,8 +92,8 @@
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Overview</div>
       <nav class="sb-links">
-        <a href="design.html#overview">Overview</a>
-        <a href="design.html#introduction">Introduction</a>
+        <a href="../design.html#overview">Overview</a>
+        <a href="../design.html#introduction">Introduction</a>
       </nav>
     </div>
 
@@ -121,9 +121,9 @@
         <a href="add-product.html">Add Product</a>
         <a href="onboarding.html">Onboarding</a>
         <a href="settings.html">Settings</a>
-        <a href="dialogs.html" class="on">Dialogs</a>
+        <a href="dialogs.html">Dialogs</a>
         <a href="empty-states.html">Empty states</a>
-        <a href="loading-skeleton.html">Loading / Skeleton</a>
+        <a href="loading-skeleton.html" class="on">Loading / Skeleton</a>
         <a href="transitions-to-stores.html">Transitions to stores</a>
         <a href="login.html">Login</a>
         <a href="modality.html">Modality</a>
@@ -134,34 +134,54 @@
       <div class="sb-title">On this page</div>
       <nav class="sb-links">
         <a href="#overview" class="on">Overview</a>
-        <a href="#overview2">Detalle</a>
+        <a href="#loading">Loading</a>
+        <a href="#skeleton">Skeleton states</a>
       </nav>
     </div>
   </aside>
 
   <main class="main">
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Patterns <span>/</span> Dialogs</div>
-      <h1 class="page-h1 display">Dialogs</h1>
-      <p class="page-lead">En nuestra interfaz, un diálogo es una \u201cconversación\u201d entre el sistema y las personas usuarias con el fin de solicitar o brindar información.</p>
+      <div class="crumb"><b>Design</b> <span>/</span> Patterns <span>/</span> Loading / Skeleton</div>
+      <h1 class="page-h1 display">Loading / Skeleton</h1>
+      <p class="page-lead">Elementos visuales que comunican a las personas usuarias la continuidad de un proceso en la interfaz o sistema.</p>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>
-        <h2>Dialogs</h2>
+        <h2>Loading / Skeleton</h2>
 
-        <p>En nuestra interfaz, un diálogo es una "conversación" entre el sistema y las personas usuarias con el fin de solicitar o brindar información.</p>
-        <p>Hay dos tipos de diálogos: modales y no modales; su uso dependerá de aquello que deseamos comunicar.</p>
+        <p>Los patrones de carga, o animaciones de espera, son elementos visuales que comunican a las personas usuarias la continuidad de un proceso en la interfaz o sistema.</p>
 
       </section>
-      <section class="doc" id="overview2">
+      <section class="doc" id="loading">
         <div class="sec-num">02</div>
         <h2>Overview</h2>
 
-        <p>Usar los diálogos en el momento adecuado y de forma clara, nos permite brindar a nuestras personas usuarias información relevante y pertinente. Su aplicación en diferentes escenarios hace del recorrido dentro de nuestra interfaz una experiencia más fluida.</p>
-        <p>El propósito de un diálogo surge de la acción realizada por la persona usuaria; su principal razón de ser es comunicar de manera clara, sencilla y concisa una información o acción.</p>
-        <h3>Anatomía de los diálogos</h3>
-        <h3>Mejores prácticas</h3>
-                <div class="note gap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Así está en la fuente.</b> Los títulos "Anatomía de los diálogos" y "Mejores prácticas" no tienen texto de cuerpo debajo en la página original; probablemente sea solo contenido visual.</p></div>
+        <p>Al aplicar las animaciones de carga en nuestra interfaz, podemos asegurarnos que nuestras personas usuarias podrán tener la tranquilidad de entender el proceso o tiempo de carga que está tomando su actividad en la app.</p>
+        <p>Nielsen Norman Group asegura en su artículo <em>Progress Indicators Make a Slow System Less Insufferable</em> que una correcta aplicación de estos procesos crea una experiencia en nuestra interfaz mucho más amigable.</p>
+        <p>A continuación encontrarás los diseños más usados en los estados de carga en nuestra interfaz y sus recomendaciones de uso:</p>
+        <ul>
+          <li><strong>Animaciones tipo loop</strong> — Recomendado para cargas rápidas o transiciones en el sistema; es conocido por su estilo circular y sencillo.</li>
+          <li><strong>Barras de progreso</strong> — Este tipo de diseño permite comunicarle de manera clara a nuestros usuarios que el sistema necesita unos segundos más para cargar su información o acción.</li>
+        </ul>
+
+      </section>
+      <section class="doc" id="skeleton">
+        <div class="sec-num">03</div>
+        <h2>Skeleton states</h2>
+
+        <p>Los estados de esqueleto son la manera simplificada y consistente de mostrar en nuestra interfaz que una acción o información se encuentra cargando.</p>
+        <p>La función y el uso correcto de los estados de esqueleto simplifica y comunica la información o acción que se está llevando a cabo de forma dinámica en la interfaz.</p>
+        <p>El uso principal de este estado es en:</p>
+        <ul>
+          <li>Componentes</li>
+          <li>Algunas tablas o tarjetas de datos</li>
+          <li>Contenedores (mosaicos)</li>
+          <li>Listas estructuradas</li>
+        </ul>
+        <p>En algunos componentes accionables como botones, casillas de relleno o campos dinámicos su aplicación no es del todo necesaria. De igual manera, es importante evitar su uso en modales como notificaciones, menús, etc.</p>
+        <p>La animación de carga del skeleton se visualiza a través de un reflejo blanco que se desplaza de derecha a izquierda, en un ángulo de 2º con una duración de 0,30s. Esta animación se repite con un intervalo de 1 segundo de duración, hasta que el contenido que se va a mostrar esté listo para ser mostrado.</p>
+        <p>Una vez el contenido que se presenta donde estaba el skeleton esté cargado, este aparece con una animación de desvanecimiento con un cambio de opacidad de 0% a 100% y una duración total de 0,25 segundos.</p>
 
       </section>
 

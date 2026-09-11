@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design · Loading / Skeleton — Mustache Design System</title>
+<title>Design · Layout — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/site-header.css">
-<script src="js/site-header.js" defer></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site-header.css">
+<script src="../js/site-header.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -92,8 +92,8 @@
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Overview</div>
       <nav class="sb-links">
-        <a href="design.html#overview">Overview</a>
-        <a href="design.html#introduction">Introduction</a>
+        <a href="../design.html#overview">Overview</a>
+        <a href="../design.html#introduction">Introduction</a>
       </nav>
     </div>
 
@@ -106,7 +106,7 @@
         <a href="elevation.html">Elevation</a>
         <a href="icons.html">Icons</a>
         <a href="illustrations-3d.html">Illustrations 3D's</a>
-        <a href="layout.html">Layout</a>
+        <a href="layout.html" class="on">Layout</a>
         <a href="motion.html">Motion</a>
         <a href="cards-border-radius.html">Cards/Border Radius</a>
         <a href="stroke.html">Stroke</a>
@@ -123,7 +123,7 @@
         <a href="settings.html">Settings</a>
         <a href="dialogs.html">Dialogs</a>
         <a href="empty-states.html">Empty states</a>
-        <a href="loading-skeleton.html" class="on">Loading / Skeleton</a>
+        <a href="loading-skeleton.html">Loading / Skeleton</a>
         <a href="transitions-to-stores.html">Transitions to stores</a>
         <a href="login.html">Login</a>
         <a href="modality.html">Modality</a>
@@ -134,54 +134,89 @@
       <div class="sb-title">On this page</div>
       <nav class="sb-links">
         <a href="#overview" class="on">Overview</a>
-        <a href="#loading">Loading</a>
-        <a href="#skeleton">Skeleton states</a>
+        <a href="#spacing">Spacing</a>
+        <a href="#grid">Grid</a>
       </nav>
     </div>
   </aside>
 
   <main class="main">
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Patterns <span>/</span> Loading / Skeleton</div>
-      <h1 class="page-h1 display">Loading / Skeleton</h1>
-      <p class="page-lead">Elementos visuales que comunican a las personas usuarias la continuidad de un proceso en la interfaz o sistema.</p>
+      <div class="crumb"><b>Design</b> <span>/</span> Foundation <span>/</span> Layout</div>
+      <h1 class="page-h1 display">Layout</h1>
+      <p class="page-lead">En Rappi todos los diseños deben tener como principio el uso correcto de los elementos y espacios, para crear consistencia y claridad en la marca.</p>
+      <div class="meta-row"><span class="meta-chip"><b>Tabs</b> Spacing · Grid</span></div>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>
-        <h2>Loading / Skeleton</h2>
+        <h2>Layout</h2>
 
-        <p>Los patrones de carga, o animaciones de espera, son elementos visuales que comunican a las personas usuarias la continuidad de un proceso en la interfaz o sistema.</p>
+        <p>En Rappi todos los diseños deben tener como principio, el uso correcto de los elementos y espacios; esto con el fin de crear consistencia y claridad en la marca.</p>
+        <p>Pestañas de esta sección en la fuente: Spacing | Grid.</p>
 
       </section>
-      <section class="doc" id="loading">
+      <section class="doc" id="spacing">
         <div class="sec-num">02</div>
-        <h2>Overview</h2>
+        <h2>Spacing</h2>
 
-        <p>Al aplicar las animaciones de carga en nuestra interfaz, podemos asegurarnos que nuestras personas usuarias podrán tener la tranquilidad de entender el proceso o tiempo de carga que está tomando su actividad en la app.</p>
-        <p>Nielsen Norman Group asegura en su artículo <em>Progress Indicators Make a Slow System Less Insufferable</em> que una correcta aplicación de estos procesos crea una experiencia en nuestra interfaz mucho más amigable.</p>
-        <p>A continuación encontrarás los diseños más usados en los estados de carga en nuestra interfaz y sus recomendaciones de uso:</p>
+        <p>El espaciado en un diseño, es una parte fundamental en la consistencia y funcionalidad de una pieza; por esta razón en Mustache, para evitar inconsistencias se establecieron algunos parámetros sobre el espaciado y su uso.</p>
+        <p>Para el caso de los métodos más usados como: Línea base, líneas claves, líneas de relleno y espaciado incremental; estos lineamientos también son aplicables.</p>
+        <p>Es necesario tener en cuenta que, la función de los métodos de espaciado es no solo ajustar las proporciones de los contenedores y elementos presentes en la interfaz de usuario, sino también otorgar una consistencia visual a la marca.</p>
+        <p>Recomendaciones de uso según el sistema operativo para los espaciados son:</p>
         <ul>
-          <li><strong>Animaciones tipo loop</strong> — Recomendado para cargas rápidas o transiciones en el sistema; es conocido por su estilo circular y sencillo.</li>
-          <li><strong>Barras de progreso</strong> — Este tipo de diseño permite comunicarle de manera clara a nuestros usuarios que el sistema necesita unos segundos más para cargar su información o acción.</li>
+          <li>En iOS los componentes deben alinearse a una cuadrícula de línea base (cuadrada) de 8px.</li>
+          <li>En el caso de Android, tablets o computadoras de escritorio debe ser de 8dp.</li>
         </ul>
+        <h3>Spacing scale</h3>
+        <p>Las escalas en el espaciado, son indispensables para crear proporciones adecuadas. Por esta razón siempre deben ser aplicadas en componentes individuales, organizando los elementos con distancias cortas que generen relaciones balanceadas y con detalles.</p>
+        <table class="spec">
+          <tr><th>Token</th><th>Spacing</th></tr>
+          <tr><td>Spacing - 0</td><td>0px</td></tr>
+          <tr><td>Spacing - 1</td><td>2px</td></tr>
+          <tr><td>Spacing - 2</td><td>4px</td></tr>
+          <tr><td>Spacing - 3</td><td>8px</td></tr>
+          <tr><td>Spacing - 4</td><td>12px</td></tr>
+          <tr><td>Spacing - 5</td><td>16px</td></tr>
+          <tr><td>Spacing - 6</td><td>20px</td></tr>
+          <tr><td>Spacing - 7</td><td>24px</td></tr>
+          <tr><td>Spacing - 8</td><td>28px</td></tr>
+          <tr><td>Spacing - 9</td><td>32px</td></tr>
+          <tr><td>Spacing - 10</td><td>36px</td></tr>
+          <tr><td>Spacing - 11</td><td>40px</td></tr>
+          <tr><td>Spacing - 12</td><td>44px</td></tr>
+          <tr><td>Spacing - 13</td><td>48px</td></tr>
+          <tr><td>Spacing - 14</td><td>52px</td></tr>
+          <tr><td>Spacing - 15</td><td>56px</td></tr>
+          <tr><td>Spacing - 16</td><td>60px</td></tr>
+        </table>
+        <h3>Margins</h3>
+        <p>Las márgenes, o más conocidas como áreas de seguridad en una pieza, son las propiedades que permiten visualizar de manera clara y sencilla cualquier diseño, haciéndolo más amigable con las personas usuarias.</p>
+        <p>Al momento de crear márgenes para espaciar y organizar los elementos, se debe tener en cuenta que estas son construidas con base a la cuadrícula y sus propiedades ej.: Una cuadrícula de 8px debe mantener estas mismas proporciones de izquierda a derecha.</p>
+        <p>Para mantener una consistencia visual, los píxeles mínimos en los costados son de 24px y, de ser necesario según la situación, estos aumentarán sus proporciones de 8px en adelante.</p>
+        <h3>Padding</h3>
+        <p>El Padding en nuestros diseños, hace referencia al espaciado presente entre algunos elementos entre sí de la interfaz de la app de Rappi. Este método de espaciado, establece la distancia entre cada elemento en incrementos de 8px o de 4px.</p>
+        <p>El Padding presente entre un objeto y otro puede ser medido tanto vertical como horizontalmente.</p>
+        <h3>Alignment</h3>
+        <p>Las alineaciones en Rappi, corresponden a la ubicación de los elementos dentro de un componente; su uso correcto en cada diseño, genera una mejor lecturabilidad y jerarquía de los objetos dentro de la interfaz.</p>
 
       </section>
-      <section class="doc" id="skeleton">
+      <section class="doc" id="grid">
         <div class="sec-num">03</div>
-        <h2>Skeleton states</h2>
+        <h2>Grid</h2>
 
-        <p>Los estados de esqueleto son la manera simplificada y consistente de mostrar en nuestra interfaz que una acción o información se encuentra cargando.</p>
-        <p>La función y el uso correcto de los estados de esqueleto simplifica y comunica la información o acción que se está llevando a cabo de forma dinámica en la interfaz.</p>
-        <p>El uso principal de este estado es en:</p>
+        <h3>Baseline grid</h3>
+        <p>Las cuadrículas base en cada diseño de nuestra app, tienen como finalidad, brindar experiencias más fluidas y claras para nuestras personas usuarias. Su uso en nuestra tipografía, nos garantiza como marca una mayor consistencia visual.</p>
+        <p>En el caso de los sistemas espaciales, este conjunto de reglas, está creado con el fin de establecer las medidas, espaciados y dimensiones correctas a implementar en nuestra interfaz de usuario.</p>
+        <p>Las recomendaciones de uso para una cuadrícula son:</p>
         <ul>
-          <li>Componentes</li>
-          <li>Algunas tablas o tarjetas de datos</li>
-          <li>Contenedores (mosaicos)</li>
-          <li>Listas estructuradas</li>
+          <li>Cada cuadrícula debe utilizar una línea base de 4px.</li>
+          <li>Su crecimiento debe ser exponencial en múltiplos de 4px (tanto en iconos como en componentes y dimensiones de cualquier diseño).</li>
+          <li>Los objetos dentro de una cuadrícula de 8px deben estar alineados a esta y, de ser necesario, pueden ser múltiplos de 4px.</li>
         </ul>
-        <p>En algunos componentes accionables como botones, casillas de relleno o campos dinámicos su aplicación no es del todo necesaria. De igual manera, es importante evitar su uso en modales como notificaciones, menús, etc.</p>
-        <p>La animación de carga del skeleton se visualiza a través de un reflejo blanco que se desplaza de derecha a izquierda, en un ángulo de 2º con una duración de 0,30s. Esta animación se repite con un intervalo de 1 segundo de duración, hasta que el contenido que se va a mostrar esté listo para ser mostrado.</p>
-        <p>Una vez el contenido que se presenta donde estaba el skeleton esté cargado, este aparece con una animación de desvanecimiento con un cambio de opacidad de 0% a 100% y una duración total de 0,25 segundos.</p>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Nota:</b> las cuadrículas de 4px dan mayor flexibilidad al momento de la creación de los componentes y la organización de la información en la interfaz de usuario.</p></div>
+        <h3>8pt spatial system</h3>
+        <p>Al momento de aplicar la escala espacial, en la interfaz de usuario, esta puede ser en la margen, espacio, altura y ancho de un elemento o sección.</p>
+        <p>En el siguiente ejemplo, podrás ver la altura de la línea del texto con 16px, el espaciado de 8px y en la parte superior e inferior, en el caso del botón, una altura de 40px.</p>
 
       </section>
 

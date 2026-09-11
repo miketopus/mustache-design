@@ -17,12 +17,12 @@
 (function () {
 
   const NAV = [
-    { id: 'design',     href: 'design.html',  label: 'Design'                  },
-    { id: 'content',    href: 'content.html', label: 'Content',    lock: true  },
-    { id: 'components', href: '#',            label: 'Components', lock: true  },
-    { id: 'ai',         href: '#',            label: 'AI'                      },
-    { id: 'brand',      href: 'brand.html',   label: 'Neon805'                },
-    { id: 'resources',  href: '#',            label: 'Resources'              },
+    { id: 'design',     href: '/design.html',  label: 'Design'                  },
+    { id: 'content',    href: '/content.html', label: 'Content',    lock: true  },
+    { id: 'components', href: '#',             label: 'Components', lock: true  },
+    { id: 'ai',         href: '#',             label: 'AI'                      },
+    { id: 'brand',      href: '/brand.html',   label: 'Neon805'                },
+    { id: 'resources',  href: '#',             label: 'Resources'              },
   ];
 
   const LOCK = `<svg class="tb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
@@ -31,7 +31,7 @@
   // wordmark. The wordmark is one asset (assets/mustache.svg) used as a CSS mask
   // over var(--text) in site-header.css, so it recolours from a single file.
   const BRAND = `
-    <img class="tb-mark" src="assets/isotype-mustache.svg" width="28" height="28" alt="" aria-hidden="true">
+    <img class="tb-mark" src="/assets/isotype-mustache.svg" width="28" height="28" alt="" aria-hidden="true">
     <span class="tb-word" role="img" aria-label="Mustache"></span>`;
 
   const LOGIN_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
@@ -95,7 +95,7 @@
 
       this.innerHTML = `
         <header class="topbar">
-          <a href="index.html" class="tb-brand" aria-label="Mustache Design System">${BRAND}</a>
+          <a href="/index.html" class="tb-brand" aria-label="Mustache Design System">${BRAND}</a>
           <nav class="tb-nav">${items}</nav>
           <div class="tb-right">
             <div class="tb-more" data-open="false">

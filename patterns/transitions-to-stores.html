@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design · Patterns — Mustache Design System</title>
+<title>Design · Transitions to stores — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/site-header.css">
-<script src="js/site-header.js" defer></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site-header.css">
+<script src="../js/site-header.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -92,8 +92,8 @@
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Overview</div>
       <nav class="sb-links">
-        <a href="design.html#overview">Overview</a>
-        <a href="design.html#introduction">Introduction</a>
+        <a href="../design.html#overview">Overview</a>
+        <a href="../design.html#introduction">Introduction</a>
       </nav>
     </div>
 
@@ -116,7 +116,7 @@
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Patterns</div>
       <nav class="sb-links">
-        <a href="patterns.html" class="on">Overview</a>
+        <a href="patterns.html">Overview</a>
         <a href="search.html">Search</a>
         <a href="add-product.html">Add Product</a>
         <a href="onboarding.html">Onboarding</a>
@@ -124,7 +124,7 @@
         <a href="dialogs.html">Dialogs</a>
         <a href="empty-states.html">Empty states</a>
         <a href="loading-skeleton.html">Loading / Skeleton</a>
-        <a href="transitions-to-stores.html">Transitions to stores</a>
+        <a href="transitions-to-stores.html" class="on">Transitions to stores</a>
         <a href="login.html">Login</a>
         <a href="modality.html">Modality</a>
         <a href="pull-and-refresh.html">Pull and refresh</a>
@@ -134,28 +134,48 @@
       <div class="sb-title">On this page</div>
       <nav class="sb-links">
         <a href="#overview" class="on">Overview</a>
+        <a href="#shop">Shop</a>
+        <a href="#restaurants">Restaurants</a>
       </nav>
     </div>
   </aside>
 
   <main class="main">
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Patterns <span>/</span> Overview</div>
-      <h1 class="page-h1 display">Patterns</h1>
-      <p class="page-lead">Conoce cómo crear mejores experiencias a través de acciones claras, sencillas y útiles.</p>
-      <div class="meta-row"><span class="meta-chip"><b>Grupo</b> Patterns</span></div>
+      <div class="crumb"><b>Design</b> <span>/</span> Patterns <span>/</span> Transitions to stores</div>
+      <h1 class="page-h1 display">Transitions to stores</h1>
+      <p class="page-lead">Conoce de manera detallada cómo ocurren las transiciones desde el Menú hacia una tienda dentro de la app.</p>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>
-        <h2>Patterns</h2>
+        <h2>Transitions to stores</h2>
 
-        <p>Conoce cómo crear mejores experiencias a través de acciones claras, sencillas y útiles.</p>
-        <h3>¿En qué se diferencia un Patrón a un Componente?</h3>
-        <p>La diferencia entre ambas soluciones, se encuentra en la necesidad de aplicación de cada una.</p>
-        <p>Para el caso de los Patrones, su uso es ideal en un conjunto de elementos que debe conservar una uniformidad visual, ej.: Listas, bullets points, etc. En el caso de los Componentes, su aplicación es ideal para un único elemento.</p>
-        <p>Los patrones de Rappi pueden encontrarse en:</p>
-                <div class="note gap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Así está en la fuente.</b> La frase queda inconclusa en la página original ("Los patrones de Rappi pueden encontrarse en:") — no continúa con más texto.</p></div>
-        <div class="tiles"><a href="search.html" class="tile"><div class="tk">Search</div></a><a href="add-product.html" class="tile"><div class="tk">Add Product</div></a><a href="onboarding.html" class="tile"><div class="tk">Onboarding</div></a><a href="settings.html" class="tile"><div class="tk">Settings</div></a><a href="dialogs.html" class="tile"><div class="tk">Dialogs</div></a><a href="empty-states.html" class="tile"><div class="tk">Empty states</div></a><a href="loading-skeleton.html" class="tile"><div class="tk">Loading / Skeleton</div></a><a href="transitions-to-stores.html" class="tile"><div class="tk">Transitions to stores</div></a><a href="login.html" class="tile"><div class="tk">Login</div></a><a href="modality.html" class="tile"><div class="tk">Modality</div></a><a href="pull-and-refresh.html" class="tile"><div class="tk">Pull and refresh</div></a></div>
+        <p>Conoce de manera detallada cómo ocurren las transiciones desde el Menú hacia una tienda dentro de la app.</p>
+        <h3>Tipos de entradas</h3>
+
+      </section>
+      <section class="doc" id="shop">
+        <div class="sec-num">02</div>
+        <h2>Shop</h2>
+
+        <p>Al momento de seleccionar y entrar a una tienda, entra la pantalla de la tienda con una transición de 0,40s de derecha a izquierda; en ese mismo lapso de tiempo la barra del buscador también cambia su opacidad de 0% a 100%.</p>
+        <p>Pasados 0,05 segundos desde que inicia la entrada de la pantalla de la tienda, inicia la animación de la tabla de información. Esta se desplaza de arriba hacia abajo, iniciando detrás de la imagen de la tienda y terminando en su posición final con una duración total de 0,40 segundos.</p>
+        <p>Pasados 0,30s desde que inicia la entrada de la pantalla, se da paso a la animación del Tab bar, la cual se desplaza desde la parte inferior de la pantalla hasta su posición final con una duración total de 0,3 segundos.</p>
+        <p>Pasados 0,05 segundos desde que inicia la entrada de la pantalla de la tienda, comienza la animación del Skeleton. Este se desplaza 20px de derecha a izquierda con una duración total de 1 segundo. A los 0,20s de empezar esta transición, al mismo tiempo, el componente cambia su opacidad de 0% a 100% con una duración de 0,40 segundos.</p>
+        <p>Ten en cuenta que, en caso tal de que el contenido demore en cargar, la animación del Skeleton debe ajustarse con base a las necesidades; para conocer más sobre estas adaptaciones visita la sección Loading / Skeleton states.</p>
+        <p>Una vez el contenido que se presenta donde estaba el skeleton termine de cargar, este aparece con una animación de desvanecimiento con un cambio de opacidad de 0% a 100% y una duración total de 0,25 segundos.</p>
+
+      </section>
+      <section class="doc" id="restaurants">
+        <div class="sec-num">03</div>
+        <h2>Restaurants</h2>
+
+        <p>Al seleccionar una tienda de restaurantes, la pantalla de este entra con movimientos de derecha a izquierda con una duración total de 0,40 segundos.</p>
+        <p>Pasados 0,05 segundos desde que inicia la entrada de la pantalla de la tienda, inicia la animación de la tabla de información. Esta se desplaza de arriba hacia abajo, iniciando detrás de la imagen de la tienda y terminando en su posición final con una duración total de 0,40 segundos.</p>
+        <p>Simultáneamente, comienza la animación del Skeleton. Este se desplaza 20px de derecha a izquierda con una duración total de 1 segundo.</p>
+        <p>A los 0,20s de empezar esta transición, al mismo tiempo, el componente cambia su opacidad de 0% a 100% con una duración de 0,40 segundos.</p>
+        <p>Ten en cuenta que, en caso tal de que el contenido demore en cargar, la animación del Skeleton debe ajustarse con base a las necesidades; para conocer más sobre estas adaptaciones visita la sección Loading / Skeleton states.</p>
+        <p>Una vez el contenido que se presenta donde estaba el skeleton termine de cargar, este aparece con una animación de desvanecimiento con un cambio de opacidad de 0% a 100% y una duración total de 0,25 segundos.</p>
 
       </section>
 
