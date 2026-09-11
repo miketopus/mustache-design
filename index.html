@@ -95,7 +95,7 @@
     background:linear-gradient(180deg,transparent 62%,var(--bg) 100%)}
   /* graph-paper grid, faded in on a diagonal — ported from jh3y's pen (CSS only) */
   .hero-grid{position:absolute;inset:0;pointer-events:none;
-    --gsize:46px;--gline:rgba(255,255,255,.08);
+    --gsize:46px;--gline:rgba(255,255,255,.12);
     background:
       linear-gradient(90deg,var(--gline) 1px,transparent 1px var(--gsize)) 50% 50% / var(--gsize) var(--gsize),
       linear-gradient(var(--gline) 1px,transparent 1px var(--gsize)) 50% 50% / var(--gsize) var(--gsize);
@@ -103,7 +103,7 @@
             mask:linear-gradient(-20deg,transparent 40%,#fff 90%)}
   .hero-stars{position:absolute;inset:0;width:100%;height:100%;opacity:.92;mix-blend-mode:plus-lighter;z-index:1}
   .hero-inner{position:relative;z-index:1}
-  .hero h1{font-size:clamp(64px,17vw,240px);line-height:.96;letter-spacing:-.04em;margin-bottom:26px;min-height:1.92em}
+  .hero h1{font-size:clamp(13px,3.4vw,48px);line-height:.96;letter-spacing:-.04em;margin-bottom:26px;min-height:1.92em}
   .hero p.lead{font-family:var(--mono);font-weight:400;font-size:clamp(16px,1.9vw,20px);color:var(--text);
     max-width:640px;line-height:1.55;min-height:3.3em}
 
@@ -203,7 +203,7 @@
   .showcase-tile::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.08),transparent 60%)}
   .showcase-center{position:relative;grid-area:2/3;z-index:2}
   .showcase-center img{position:absolute;top:50%;left:50%;translate:-50% -50%;width:100%;height:auto;
-    aspect-ratio:16/9;object-fit:cover;border-radius:var(--radius);box-shadow:0 40px 100px rgba(0,0,0,.55)}
+    aspect-ratio:16/9;object-fit:cover;border-radius:calc(var(--radius) * 2);box-shadow:0 40px 100px rgba(0,0,0,.55)}
   @media(max-width:720px){
     /* the mobile grid drops to 3 columns, so the center image moves to the
        true middle column — this must come after the base rule above to win
@@ -368,9 +368,9 @@
     <a href="#top" class="fn-brand" aria-label="Mustache Design System"><span class="fn-mark" role="img" aria-label="Mustache"></span><span class="fn-word" role="img" aria-label="Mustache Design System"></span></a>
     <nav class="fn-links">
       <a href="design.html">Design</a>
-      <a href="patterns.html">Patterns</a>
       <a href="content.html"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Content</a>
       <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Components</a>
+      <a href="patterns.html">Patterns</a>
       <a href="#">AI</a>
       <a href="brand.html">Brand</a>
       <a href="#">Resources</a>
@@ -381,6 +381,7 @@
         <a href="design.html">Design</a>
         <a href="content.html"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Content</a>
         <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Components</a>
+        <a href="patterns.html">Patterns</a>
         <a href="#">AI</a>
         <a href="brand.html">Brand</a>
         <a href="#">Resources</a>
@@ -1019,6 +1020,37 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   paint();
+})();
+
+// hero headline fade+blur — "Living. Evolving." dissolves out over the
+// scroll distance between page top and the showcase section, finishing
+// right as the showcase reveal is about to take over. Driven by absolute
+// scroll position (not viewport visibility) so it holds regardless of how
+// tall the hero itself ends up being; runs after the showcase min-height
+// (280vh, set above) is already in place so showcase.offsetTop is final.
+(function(){
+  var h1 = document.querySelector('.hero h1');
+  var showcase = document.querySelector('.showcase');
+  if(!h1 || !showcase) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var ticking = false;
+  function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+
+  function update(){
+    ticking = false;
+    var end = showcase.offsetTop;
+    var y = window.scrollY || window.pageYOffset;
+    var p = end > 0 ? clamp01(y / end) : 0;
+    h1.style.opacity = String(1 - p);
+    h1.style.filter = p > 0 ? 'blur(' + (p * 18).toFixed(2) + 'px)' : '';
+  }
+
+  window.addEventListener('scroll', function(){
+    if(!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
 })();
 
 // generic scroll reveal — fades each later section's content up into view

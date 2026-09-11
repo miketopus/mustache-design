@@ -18,9 +18,9 @@
 
   const NAV = [
     { id: 'design',     href: '/design.html',   label: 'Design'                  },
-    { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
     { id: 'content',    href: '/content.html',  label: 'Content',    lock: true  },
     { id: 'components', href: '#',              label: 'Components', lock: true  },
+    { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
     { id: 'ai',         href: '#',              label: 'AI'                      },
     { id: 'brand',      href: '/brand.html',    label: 'Brand'                   },
     { id: 'resources',  href: '#',              label: 'Resources'              },
