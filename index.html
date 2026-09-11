@@ -170,7 +170,7 @@
   .showcase-tile::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.08),transparent 60%)}
   .showcase-center{position:relative;grid-area:2/3;z-index:2}
   .showcase-center img{position:absolute;top:50%;left:50%;translate:-50% -50%;width:100%;height:auto;
-    aspect-ratio:16/9;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line-2);box-shadow:0 40px 100px rgba(0,0,0,.55)}
+    aspect-ratio:16/9;object-fit:cover;border-radius:var(--radius);box-shadow:0 40px 100px rgba(0,0,0,.55)}
   @media(max-width:720px){
     /* the mobile grid drops to 3 columns, so the center image moves to the
        true middle column — this must come after the base rule above to win
@@ -904,12 +904,15 @@
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   var FRAMES = [
+    'https://cdn.dribbble.com/userupload/31463061/file/original-2091f467e836bf240ecdc3d1169b8625.png?resize=1600x1200&vertical=center',
     'https://cdn.dribbble.com/userupload/44680652/file/069898b339fbfaf0cf65e501057be552.png?resize=1024x768&vertical=center',
-    'https://cdn.dribbble.com/userupload/48891736/file/abb86868587e27d5e0147585d1135d7b.png?resize=1600x624&vertical=center',
+    'https://cdn.dribbble.com/userupload/44232336/file/70439bd3be2a3347807cf9f2990f3dba.png?resize=1600x1200&vertical=center',
     'https://cdn.dribbble.com/userupload/48891921/file/43ed128e4094a2d229bb1201299ebd1f.png?resize=1024x399&vertical=center',
     'https://cdn.dribbble.com/userupload/48891920/file/2d36c41c0404c252444e2c750d3452f4.png?resize=1024x399&vertical=center',
     'https://cdn.dribbble.com/userupload/48891919/file/8be5f370cbb1cf782a69887ec19bff51.png?resize=1024x399&vertical=center',
-    'https://cdn.dribbble.com/userupload/25696234/file/original-a66f53d52c8c7a97306c90fe3f54bb35.jpg?resize=1600x1200&vertical=center'
+    'https://cdn.dribbble.com/userupload/25696234/file/original-a66f53d52c8c7a97306c90fe3f54bb35.jpg?resize=1600x1200&vertical=center',
+    'https://design.rappi.com/uploads/j2rQyklqE8hAlb6_5VnxsA.png',
+    'https://design.rappi.com/uploads/fGeTbO656OzMl-yNV1VPqA.png'
   ];
 
   // Warm the cache up front so mid-scroll swaps are instant instead of a
