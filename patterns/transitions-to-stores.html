@@ -25,14 +25,12 @@
   .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
   .sb-group{margin-bottom:24px}
   .sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
   .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
   .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
   .sb-links a:hover{color:var(--text);background:var(--panel-2)}
   .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
   .sb-onthis .sb-title{color:var(--muted-2);font-family:var(--body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
-  .sb-onthis .sb-title .dot{display:none}
-  .sb-onthis .sb-links a{font-size:13px}
+  .sb-onthis  .sb-onthis .sb-links a{font-size:13px}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:860px;margin:0 auto}
@@ -45,7 +43,6 @@
   .meta-chip b{color:var(--text);font-weight:600}
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em;margin:28px 0 12px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
@@ -93,11 +90,11 @@
     <div class="eyebrow" style="padding:0 12px 14px">Patterns</div>
 
     <div class="sb-group">
-      <a class="sb-title" href="../patterns.html#overview"><span class="dot"></span> Overview</a>
+      <a class="sb-title" href="../patterns.html#overview">Overview</a>
     </div>
 
     <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Patterns</div>
+      <div class="sb-title">Patterns</div>
       <nav class="sb-links">
         <a href="../patterns.html">Overview</a>
         <a href="search.html">Search</a>
@@ -139,7 +136,6 @@
     <div class="main-inner">
 
       <section class="doc" id="overview">
-        <div class="sec-num">01</div>
         <h2>Transitions to stores</h2>
 
         <p>Conoce de manera detallada cómo ocurren las transiciones desde el Menú hacia una tienda dentro de la app.</p>
@@ -147,7 +143,6 @@
 
       </section>
       <section class="doc" id="shop">
-        <div class="sec-num">02</div>
         <h2>Shop</h2>
 
         <p>Al momento de seleccionar y entrar a una tienda, entra la pantalla de la tienda con una transición de 0,40s de derecha a izquierda; en ese mismo lapso de tiempo la barra del buscador también cambia su opacidad de 0% a 100%.</p>
@@ -159,7 +154,6 @@
 
       </section>
       <section class="doc" id="restaurants">
-        <div class="sec-num">03</div>
         <h2>Restaurants</h2>
 
         <p>Al seleccionar una tienda de restaurantes, la pantalla de este entra con movimientos de derecha a izquierda con una duración total de 0,40 segundos.</p>

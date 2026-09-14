@@ -28,7 +28,6 @@
   .sb-group{margin-bottom:26px}
   .sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);
     font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
   .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
   .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
   .sb-links a:hover{color:var(--text);background:var(--panel-2)}
@@ -44,7 +43,6 @@
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
   section.doc:first-of-type{padding-top:40px}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
@@ -351,18 +349,18 @@
     <div class="eyebrow" style="padding:0 12px 14px">Brand</div>
 
     <div class="sb-group">
-      <a class="sb-title on" href="#overview"><span class="dot"></span> Overview</a>
+      <a class="sb-title on" href="#overview">Overview</a>
     </div>
 
     <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Herramientas</div>
+      <div class="sb-title">Herramientas</div>
       <nav class="sb-links">
         <a href="#promptmaker">PromptMaker Neon</a>
       </nav>
     </div>
 
     <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Identidad Visual</div>
+      <div class="sb-title">Identidad Visual</div>
       <nav class="sb-links">
         <a href="#identidad-visual" onclick="ivShowTab('logo')">Logo</a>
         <a href="#identidad-visual" onclick="ivShowTab('color')">Sistema de Color</a>
@@ -389,7 +387,6 @@
 
       <!-- OVERVIEW -->
       <section class="doc" id="overview">
-        <div class="sec-num">01</div>
         <h2>Overview</h2>
         <p class="lead">Esta sección reúne las herramientas y referencias que usa el equipo de marca día a día.</p>
         <div class="tiles">
@@ -410,7 +407,6 @@
 
       <!-- PROMPTMAKER NEON -->
       <section class="doc" id="promptmaker">
-        <div class="sec-num">02</div>
         <h2>PromptMaker Neon</h2>
         <p class="lead">El motor de prompts que arma los íconos 3D de la app. Cada fila del sheet es una fórmula: estilo + producto + especificaciones + color de fondo = prompt listo para MidJourney.</p>
 
@@ -470,7 +466,6 @@
       <!-- IDENTIDAD VISUAL -->
       <section class="doc" id="identidad-visual">
         <div class="main-inner">
-          <div class="sec-num">03</div>
           <h2>Identidad Visual</h2>
           <p class="lead">Réplica exacta del capítulo 04 del Brand Book 2026: logo, sistema de color, tipografía y fotografía de marca.</p>
         </div>

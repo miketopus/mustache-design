@@ -23,14 +23,12 @@
   .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
   .sb-group{margin-bottom:24px}
   .sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
   .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
   .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
   .sb-links a:hover{color:var(--text);background:var(--panel-2)}
   .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
   .sb-onthis .sb-title{color:var(--muted-2);font-family:var(--body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
-  .sb-onthis .sb-title .dot{display:none}
-  .sb-onthis .sb-links a{font-size:13px}
+  .sb-onthis  .sb-onthis .sb-links a{font-size:13px}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:860px;margin:0 auto}
@@ -43,7 +41,6 @@
   .meta-chip b{color:var(--text);font-weight:600}
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em;margin:28px 0 12px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
@@ -88,7 +85,7 @@
     <div class="eyebrow" style="padding:0 12px 14px">Design</div>
 
     <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Overview</div>
+      <div class="sb-title">Overview</div>
       <nav class="sb-links">
         <a href="../design.html#overview">Overview</a>
         <a href="../design.html#introduction">Introduction</a>
@@ -96,7 +93,7 @@
     </div>
 
     <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Foundations</div>
+      <div class="sb-title">Foundations</div>
       <nav class="sb-links">
         <a href="foundation.html">Overview</a>
         <a href="colors.html" class="on">Colors</a>
@@ -134,13 +131,11 @@
       </div>
 
       <section class="doc" id="intro">
-        <div class="sec-num">01</div>
         <h2>Introducción</h2>
         <p>Los colores se organizan en dos capas: <strong>Primitivos</strong> (escalas tonales crudas) y <strong>Semánticos</strong> (tokens por rol y uso). Sobre esa base, cada equipo de producto tiene un tema propio dentro de Semánticos, garantizando que todos usen exactamente los mismos nombres de token apuntando a su propia paleta de marca.</p>
       </section>
 
       <section class="doc" id="primitivos">
-        <div class="sec-num">02</div>
         <h2>Capa 1 · Primitivos</h2>
         <p>Los primitivos son las escalas tonales que alimentan todo el sistema. Cada color parte de un valor base validado, del cual se genera un rango completo de sombras y tintes, dando a cada matiz una escala predecible y consistente.</p>
         <p>Los primitivos <strong>nunca se usan directamente</strong> en diseño: existen como fuente de verdad que los tokens semánticos referencian. Actualizar un primitivo se propaga automáticamente a todos los tokens y componentes que lo usan.</p>
@@ -151,14 +146,12 @@
       </section>
 
       <section class="doc" id="semanticos">
-        <div class="sec-num">03</div>
         <h2>Capa 2 · Semánticos y temas</h2>
         <p>Los tokens semánticos le dan propósito al color. En lugar de referenciar un valor crudo, los componentes usan tokens como <strong>Ink.Strong</strong> o <strong>Background.disabled</strong>: nombres que describen el rol, no el color en sí.</p>
         <p>Semánticos también impulsa el sistema de temas multi-producto. Cada equipo en Rappi tiene un tema dentro de la librería; todos usan exactamente los mismos nombres de token, pero los mapean a una paleta de primitivos diferente. Así un componente funciona en todos los productos sin ninguna modificación.</p>
       </section>
 
       <section class="doc" id="accesibilidad">
-        <div class="sec-num">04</div>
         <h2>Accesibilidad</h2>
         <p>Todas las combinaciones de color en Mustache se validan contra <strong>WCAG 2.1 nivel AA</strong>. Cuando una combinación no alcanza el ratio de contraste requerido, ajustamos solo la luminosidad (preservando tono y saturación) para encontrar el valor más cercano que cumpla la norma.</p>
         <table class="cred">

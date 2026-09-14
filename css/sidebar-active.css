@@ -1,5 +1,5 @@
 /* Bright, edge-to-edge bar marking whichever sidebar group you're
-   currently in, replacing that group's plain dot.
+   currently in.
    Pure CSS via :has() — every page's existing scroll-spy script already
    toggles `.on` onto the matching link inside .sb-links as you scroll;
    this rule just restyles the ancestor group's title when that happens,
@@ -14,8 +14,6 @@
    `a.sb-title` rules below give that link the same hover/active/bar
    treatment as a normal .sb-links a. */
 .sb-title{position:relative}
-.sb-group:has(.sb-links a.on) .sb-title .dot,
-a.sb-title.on .dot{display:none}
 .sb-group:has(.sb-links a.on) .sb-title::before,
 a.sb-title.on::before{
   content:"";position:absolute;left:-20px;top:50%;translate:0 -50%;

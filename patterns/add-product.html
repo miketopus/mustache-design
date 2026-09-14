@@ -25,14 +25,12 @@
   .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
   .sb-group{margin-bottom:24px}
   .sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
   .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
   .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
   .sb-links a:hover{color:var(--text);background:var(--panel-2)}
   .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
   .sb-onthis .sb-title{color:var(--muted-2);font-family:var(--body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
-  .sb-onthis .sb-title .dot{display:none}
-  .sb-onthis .sb-links a{font-size:13px}
+  .sb-onthis  .sb-onthis .sb-links a{font-size:13px}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:860px;margin:0 auto}
@@ -45,7 +43,6 @@
   .meta-chip b{color:var(--text);font-weight:600}
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em;margin:28px 0 12px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
@@ -93,11 +90,11 @@
     <div class="eyebrow" style="padding:0 12px 14px">Patterns</div>
 
     <div class="sb-group">
-      <a class="sb-title" href="../patterns.html#overview"><span class="dot"></span> Overview</a>
+      <a class="sb-title" href="../patterns.html#overview">Overview</a>
     </div>
 
     <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Patterns</div>
+      <div class="sb-title">Patterns</div>
       <nav class="sb-links">
         <a href="../patterns.html">Overview</a>
         <a href="search.html">Search</a>
@@ -141,14 +138,12 @@
     <div class="main-inner">
 
       <section class="doc" id="overview">
-        <div class="sec-num">01</div>
         <h2>Add Product</h2>
 
         <p>Agregar los productos a la canasta en Rappi, al igual que como se hace en la vida real, es una de las experiencias que nos hace diferentes e innovadores.</p>
 
       </section>
       <section class="doc" id="stepper">
-        <div class="sec-num">02</div>
         <h2>Agregar producto con stepper - Shop</h2>
 
         <p>Al momento de agregar un producto a la canasta, los elementos visuales dentro de la card del producto viven una transición visual. Por esto, es necesario tener claro que al momento de dar tap en el signo (+) en la esquina superior derecha, el stepper modificará su tamaño de derecha a izquierda.</p>
@@ -158,7 +153,6 @@
 
       </section>
       <section class="doc" id="modal-shop">
-        <div class="sec-num">03</div>
         <h2>Agregar un producto desde su modal de detalle - Shop</h2>
 
         <p>Cuando agregamos un producto desde su modal de detalle, con el stepper del signo (+) ubicado en la parte inferior izquierda, suceden cambios en simultánea: el contador de unidades aumenta, el color del icono (-) cambia a negro y el monto que se visualiza en el botón de "Agregar" se modifica proporcionalmente.</p>
@@ -167,7 +161,6 @@
 
       </section>
       <section class="doc" id="modal-rest">
-        <div class="sec-num">04</div>
         <h2>Agregar un producto desde su modal de detalle en Restaurantes</h2>
 
         <p>En el caso de la vertical de Restaurantes, al momento de agregar un producto desde su modal de detalle, este puede presentar ciertas variaciones como lo es en el caso de los toppings "obligatorios", los cuales, hasta no ser seleccionados y agregados, no permitirán al botón de "Agregar" cambiar su color a verde y así ser accionable para continuar.</p>
@@ -176,7 +169,6 @@
 
       </section>
       <section class="doc" id="estados">
-        <div class="sec-num">05</div>
         <h2>Estados de canasta</h2>
 
         <h3>Transición de canasta vacía al agregar 1 producto</h3>

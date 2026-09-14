@@ -25,14 +25,12 @@
   .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
   .sb-group{margin-bottom:24px}
   .sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
   .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
   .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
   .sb-links a:hover{color:var(--text);background:var(--panel-2)}
   .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
   .sb-onthis .sb-title{color:var(--muted-2);font-family:var(--body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
-  .sb-onthis .sb-title .dot{display:none}
-  .sb-onthis .sb-links a{font-size:13px}
+  .sb-onthis  .sb-onthis .sb-links a{font-size:13px}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:860px;margin:0 auto}
@@ -45,7 +43,6 @@
   .meta-chip b{color:var(--text);font-weight:600}
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em;margin:28px 0 12px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
@@ -93,7 +90,7 @@
     <div class="eyebrow" style="padding:0 12px 14px">Design</div>
 
     <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Overview</div>
+      <div class="sb-title">Overview</div>
       <nav class="sb-links">
         <a href="../design.html#overview">Overview</a>
         <a href="../design.html#introduction">Introduction</a>
@@ -101,7 +98,7 @@
     </div>
 
     <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Foundations</div>
+      <div class="sb-title">Foundations</div>
       <nav class="sb-links">
         <a href="foundation.html">Overview</a>
         <a href="colors.html">Colors</a>
@@ -144,7 +141,6 @@
     <div class="main-inner">
 
       <section class="doc" id="overview">
-        <div class="sec-num">01</div>
         <h2>Elevation</h2>
 
         <p>In Rappi the elevations, also known as shadows or orientations, are the visual effect that simulates an elevation of a "floating" element on a surface.</p>
@@ -153,7 +149,6 @@
 
       </section>
       <section class="doc" id="niveles">
-        <div class="sec-num">02</div>
         <h2>Niveles de sombra y orientación en Mustache</h2>
 
         <p>En nuestro Sistema de Diseño contamos con 4 niveles de sombras y orientaciones para el uso correcto de las elevaciones.</p>
@@ -174,7 +169,6 @@
 
       </section>
       <section class="doc" id="style-buttons">
-        <div class="sec-num">03</div>
         <h2>Style Buttons</h2>
 
         <p>Las elevaciones, como hemos podido ver en secciones anteriores son un efecto visual versátil y de alta carga semántica, sin embargo, su aplicación en los botones solo es posibles en casos específicos como los botones principales de la app.</p>
@@ -188,7 +182,6 @@
 
       </section>
       <section class="doc" id="guidelines">
-        <div class="sec-num">04</div>
         <h2>Guidelines</h2>
 
         <p>El objetivo principal de las elevaciones, además de enfocar u otorgar una mayor jerarquía visual a cualquier componente, es igual mente simular un efecto similar al de la experiencia física que se tiene con los objetos en la realidad.</p>
@@ -205,7 +198,6 @@
 
       </section>
       <section class="doc" id="defecto">
-        <div class="sec-num">05</div>
         <h2>Elevaciones por defecto</h2>
 
         <p>Todos los elementos tienen valores predeterminados, en el caso de la elevación de reposo o los desplazamientos dinámicos; esto se ve reflejado en su jerarquía.</p>
