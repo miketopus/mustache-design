@@ -1,0 +1,16 @@
+/* Bright, edge-to-edge bar marking whichever sidebar group you're
+   currently in, replacing that group's plain dot.
+   Pure CSS via :has() — every page's existing scroll-spy script already
+   toggles `.on` onto the matching link inside .sb-links as you scroll;
+   this rule just restyles the ancestor group's title when that happens,
+   no JS changes needed.
+   Assumes .sidebar's own left padding is 20px (confirmed uniform across
+   pages) — the -20px below cancels exactly that, so the bar reaches the
+   true edge of the screen instead of stopping at the sidebar's inset. */
+.sb-title{position:relative}
+.sb-group:has(.sb-links a.on) .sb-title .dot{display:none}
+.sb-group:has(.sb-links a.on) .sb-title::before{
+  content:"";position:absolute;left:-20px;top:50%;translate:0 -50%;
+  width:3px;height:18px;border-radius:0 3px 3px 0;
+  background:var(--white);
+  box-shadow:0 0 1px rgba(255,255,255,.9),0 0 12px 2px rgba(255,255,255,.55)}
