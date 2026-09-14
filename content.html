@@ -118,9 +118,9 @@
   .doc ul li::before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--muted-2)}
   .doc ul li strong{color:var(--text);font-weight:600}
 
-  .backtop{display:inline-flex;align-items:center;gap:7px;margin-top:50px;font-size:13px;color:var(--muted-2);
-    border:1px solid var(--line);border-radius:10px;padding:8px 14px;transition:.16s}
-  .backtop:hover{color:var(--text);border-color:var(--line-2)}
+  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.85);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.16s}
+  .backtop:hover{background:rgba(20,20,23,.92);border-color:var(--line-2)}
 
   /* tables */
   .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:18px 0}
