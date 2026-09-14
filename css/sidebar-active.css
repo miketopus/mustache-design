@@ -36,6 +36,11 @@ a.sb-title.on{background:var(--panel-2);color:var(--text)}
    on the right for a 200px card without overlapping content. */
 .sb-onthis{position:fixed;top:calc(var(--topbar) + 32px);right:32px;width:200px;z-index:40}
 @media(max-width:1300px){.sb-onthis{display:none}}
+/* the edge-glow bar makes no sense once "On this page" floats on its
+   own — it has no screen edge to reach and its left offset would just
+   land inside the card. Suppress it here only (specificity must match
+   or beat the .sb-group:has(...) rule above, hence the repeated chain). */
+.sb-onthis.sb-group:has(.sb-links a.on) .sb-title::before{content:none}
 
 /* "On this page" mini-nav as a floating card, matching the topbar's
    mobile dropdown (.tb-menu in site-header.css) instead of the plain
