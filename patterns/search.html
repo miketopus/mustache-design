@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design · Stroke — Mustache Design System</title>
+<title>Patterns · Search — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/site-header.css">
-<script src="js/site-header.js" defer></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site-header.css">
+<script src="../js/site-header.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -83,41 +83,24 @@
 </head>
 <body id="top">
 
-<site-header active="design"></site-header>
+<site-header active="patterns"></site-header>
 
 <div class="shell">
   <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Design</div>
+    <div class="eyebrow" style="padding:0 12px 14px">Patterns</div>
 
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Overview</div>
       <nav class="sb-links">
-        <a href="design.html#overview">Overview</a>
-        <a href="design.html#introduction">Introduction</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Foundation</div>
-      <nav class="sb-links">
-        <a href="foundation.html">Overview</a>
-        <a href="colors.html">Colors</a>
-        <a href="typography.html">Typography</a>
-        <a href="elevation.html">Elevation</a>
-        <a href="icons.html">Icons</a>
-        <a href="illustrations-3d.html">Illustrations 3D's</a>
-        <a href="layout.html">Layout</a>
-        <a href="motion.html">Motion</a>
-        <a href="cards-border-radius.html">Cards/Border Radius</a>
-        <a href="stroke.html" class="on">Stroke</a>
+        <a href="../patterns.html#overview">Overview</a>
       </nav>
     </div>
 
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Patterns</div>
       <nav class="sb-links">
-        <a href="patterns.html">Overview</a>
-        <a href="search.html">Search</a>
+        <a href="../patterns.html">Overview</a>
+        <a href="search.html" class="on">Search</a>
         <a href="add-product.html">Add Product</a>
         <a href="onboarding.html">Onboarding</a>
         <a href="settings.html">Settings</a>
@@ -134,50 +117,51 @@
       <div class="sb-title">On this page</div>
       <nav class="sb-links">
         <a href="#overview" class="on">Overview</a>
-        <a href="#properties">Properties</a>
-        <a href="#escala">Stroke scale</a>
+        <a href="#vertical">En vertical</a>
+        <a href="#shop">En tienda</a>
+        <a href="#global">Global</a>
       </nav>
     </div>
   </aside>
 
   <main class="main">
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Foundation <span>/</span> Stroke</div>
-      <h1 class="page-h1 display">Stroke</h1>
-      <p class="page-lead">El objeto para definir el color, el ancho y el estilo de un borde o divisor.</p>
+      <div class="crumb"><b>Patterns</b> <span>/</span> Search</div>
+      <h1 class="page-h1 display">Search</h1>
+      <p class="page-lead">El principal objetivo de nuestros usuarios está en encontrar de manera rápida y sencilla aquello que necesitan en minutos.</p>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>
-        <h2>Stroke</h2>
+        <h2>Search</h2>
 
-        <p>El objeto para definir el color, el ancho y el estilo de un borde o divisor.</p>
-        <p>Puede especificar el color, el ancho y el estilo (sólido, discontinuo o punteado) de un trazo. Dichos trazos tienen muchos usos, incluidos los bordes de los componentes y los componentes divisores.</p>
+        <p>El principal objetivo de nuestros usuarios está en encontrar de manera rápida y sencilla aquello que necesitan en minutos.</p>
+        <p>El buen diseño e implementación de las barras de búsqueda, les ayudará a cumplir con su objetivo.</p>
+        <p>A search bar allows people to search through a large collection of values by typing text into a field. A search bar can be displayed alone, or in a navigation bar or content view. When displayed in a navigation bar, a search bar can be pinned to the navigation bar so it's always accessible, or it can be collapsed until the user swipes down to reveal it.</p>
 
       </section>
-      <section class="doc" id="properties">
+      <section class="doc" id="vertical">
         <div class="sec-num">02</div>
-        <h2>Properties</h2>
+        <h2>Buscador en vertical</h2>
 
-        <p><strong>color</strong> — The stroke color.</p>
-        <p><strong>style</strong> — Defines the style of the stroke. Valid values:</p>
-        <ul>
-          <li><strong>solid</strong> (default) — a solid stroke.</li>
-          <li><strong>dashed</strong> — a dashed stroke.</li>
-          <li><strong>dotted</strong> — a dotted stroke.</li>
-        </ul>
+        <p>Al momento de seleccionar el Buscador presente dentro del Home de una vertical, este se desplazará 20px hacia arriba con una duración total de 0,25s; al mismo momento la barra disminuye su tamaño de forma uniforme de 100% a 72%. En el mismo momento en el que la barra se desplaza viviendo estas transiciones, el ícono presente al interior de la barra se desvanece con una opacidad de 100% a 0%.</p>
+        <p>Simultáneamente, el contenido del Home de la vertical se desplaza hacia arriba con una duración total de 0,40s al mismo tiempo que se desvanece con una opacidad de 100% a 0% con fade de 0,25s de duración para salir de la pantalla. Paralelamente aparecen las sugerencias del buscador: estas se desplazan 120px hacia arriba y al mismo tiempo cambian su opacidad de 0% a 100% con una duración total de 0,30s.</p>
 
       </section>
-      <section class="doc" id="escala">
+      <section class="doc" id="shop">
         <div class="sec-num">03</div>
-        <h2>Stroke Scale</h2>
+        <h2>Buscador en tienda - Shop</h2>
 
-        <p>El tamaño del borde está en una escala de 0.5px min.</p>
-        <table class="spec">
-          <tr><th>Token</th><th>Thickness</th></tr>
-          <tr><td>strokeSmall</td><td>0.5px</td></tr>
-          <tr><td>strokeMedium</td><td>1px</td></tr>
-          <tr><td>strokeLarge</td><td>2px</td></tr>
-        </table>
+        <p>Al estar dentro de una tienda y seleccionar la barra del Buscador, esta se desplaza 235px hacia arriba con una duración de 0,25s hasta su posición final y simultáneamente desaparece el icono dentro de la barra con un desvanecimiento de 100% a 0%. En paralelo, el Header de la pantalla de búsqueda comienza su animación desplazándose 138px de arriba hacia abajo (desde la parte superior de la pantalla) hasta finalizar su recorrido.</p>
+        <p>Simultáneamente, el contenido del Home de la tienda se desplaza hacia arriba con una duración total de 0,40s al mismo tiempo que se desvanece con una opacidad de 100% a 0% con fade de 0,1s de duración para salir de la pantalla. Paralelamente aparecen las sugerencias del buscador: estas se desplazan 120px hacia arriba y al mismo tiempo cambian su opacidad de 0% a 100% con una duración total de 0,15s.</p>
+
+      </section>
+      <section class="doc" id="global">
+        <div class="sec-num">04</div>
+        <h2>Buscador global - Entrada a una tienda</h2>
+
+        <p>En el momento en que se selecciona una tienda en el listado de resultados del buscador global, la pantalla de la tienda ingresa de izquierda a derecha (para más detalles de esta transición ver la sección "Tipos de entradas").</p>
+        <p>Sin embargo, al ser una entrada que surge desde el Buscador Global, se diferencia pues al entrar a la pantalla aparece un pop up antes de dar paso a la tienda. El pop up presente en esta transición aparece con una escala de 90% a 100% con una duración de 0,20s con un desvanecimiento de 0% a 100%. Una vez el contenido de la tienda empieza a aparecer, el pop up desaparece cambiando su opacidad de 100% a 0% con una duración total de 0,25s.</p>
+        <p>Inmediatamente después de que carga por completo la pantalla de la tienda, automáticamente entra al buscador mostrando los resultados de la búsqueda previamente realizada en el buscador global. Los detalles de esta entrada al buscador la puedes encontrar en la sección "Buscador en tienda-shop".</p>
 
       </section>
 

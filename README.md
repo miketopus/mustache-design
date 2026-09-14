@@ -31,11 +31,16 @@ un paso de compilación entre "edito" y "veo".
 
 ```
 ├── index.html            Home público
-├── design.html           Foundations · Overview + Introduction
-├── colors.html           Foundations · Color
-├── typography.html       Foundations · Typography
-├── icons.html            Foundations · Iconografía
+├── design.html           Foundations · Overview + Introduction (enlaza a patterns/)
 ├── content.html          Content · Voice & tone, product content, gramática
+├── brand.html            Neon805 · PromptMaker Neon + Identidad Visual
+├── patterns/             Documentación secundaria: una página por tema
+│   ├── foundation.html   Foundation · Overview
+│   ├── colors.html       Foundation · Color
+│   ├── typography.html   Foundation · Typography
+│   ├── icons.html        Foundation · Iconografía
+│   ├── patterns.html     Patterns · Overview
+│   └── ...               (resto de Foundation/Patterns — ver sidebar de design.html)
 ├── css/
 │   └── site-header.css   Estilos del <site-header> — único CSS compartido
 ├── js/
@@ -45,8 +50,14 @@ un paso de compilación entre "edito" y "veo".
     ├── isotype-mustache-tint.svg   Isotipo monocromo (currentColor)
     ├── mustache.svg                Wordmark "Mustache" (currentColor)
     ├── system-DSystem.svg          Descriptor "Design System" + divisor (currentColor)
-    └── system-uxSystem.svg         Descriptor "UX System" + divisor (currentColor)
+    ├── system-uxSystem.svg         Descriptor "UX System" + divisor (currentColor)
+    └── identidad-visual/           Fuentes, fotos y logos usados en brand.html
 ```
+
+Las páginas dentro de `patterns/` cargan `css/` y `js/` compartidos con `../`
+(por ejemplo `../css/tokens.css`), y el `<site-header>` usa rutas absolutas
+(`/design.html`, `/assets/...`) para que el mismo componente funcione sin
+importar la profundidad de carpeta de la página que lo incluye.
 
 El fondo del hero del home es procedural (bubbles orgánicos en CSS +
 starfield en `<canvas>`), no una imagen.

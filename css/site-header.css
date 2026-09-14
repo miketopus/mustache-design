@@ -2,10 +2,12 @@
 .topbar{position:sticky;top:0;z-index:60;height:var(--topbar);display:flex;align-items:center;gap:20px;
   padding:0 22px;background:rgba(10,10,12,.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
 .tb-brand{display:flex;align-items:center;gap:4px;flex-shrink:0}
-.tb-mark{width:28px;height:28px;display:block;flex-shrink:0}
-.tb-word{width:90px;height:28px;display:block;flex-shrink:0;background:var(--text);
-  -webkit-mask:url(../assets/mustache.svg) left center/contain no-repeat;
-          mask:url(../assets/mustache.svg) left center/contain no-repeat}
+.tb-mark{width:28px;height:28px;display:block;flex-shrink:0;background:#fff;
+  -webkit-mask:url(../assets/isotype-mustache-tint.svg) center/contain no-repeat;
+          mask:url(../assets/isotype-mustache-tint.svg) center/contain no-repeat}
+.tb-word{width:79px;height:28px;display:block;flex-shrink:0;background:var(--text);
+  -webkit-mask:url(../assets/mustache-lockup.svg) left center/contain no-repeat;
+          mask:url(../assets/mustache-lockup.svg) left center/contain no-repeat}
 .tb-nav{display:flex;gap:2px;margin-left:14px}
 .tb-nav a{display:inline-flex;align-items:center;gap:5px;font-size:14px;color:var(--muted);font-weight:500;padding:9px 13px;border-radius:11px;transition:.16s;white-space:nowrap}
 .tb-nav a:hover{color:var(--text);background:var(--panel-2)}

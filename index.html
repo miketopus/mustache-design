@@ -30,13 +30,15 @@
   /* ---------- floating hybrid nav ---------- */
   .floatnav{position:fixed;top:20px;left:0;right:0;z-index:80;display:flex;justify-content:center;padding:0 16px;pointer-events:none}
   .fn-inner{position:relative;pointer-events:auto;display:flex;align-items:center;gap:6px;background:rgba(20,20,23,.82);
-    backdrop-filter:blur(18px);border:1px solid var(--line-2);border-radius:22px;padding:8px;
+    backdrop-filter:blur(18px);border-radius:22px;padding:8px;
     box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05)}
   .fn-brand{display:flex;align-items:center;gap:4px;flex-shrink:0;padding:0 10px 0 2px;margin-right:2px}
-  .fn-mark{width:30px;height:30px;display:block;flex-shrink:0}
-  .fn-word{width:96px;height:30px;display:block;flex-shrink:0;background:var(--text);
-    -webkit-mask:url(assets/mustache.svg) left center/contain no-repeat;
-            mask:url(assets/mustache.svg) left center/contain no-repeat}
+  .fn-mark{width:30px;height:30px;display:block;flex-shrink:0;background:#fff;
+    -webkit-mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat;
+            mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat}
+  .fn-word{width:85px;height:30px;display:block;flex-shrink:0;background:var(--text);
+    -webkit-mask:url(assets/mustache-lockup.svg) left center/contain no-repeat;
+            mask:url(assets/mustache-lockup.svg) left center/contain no-repeat}
   @media(max-width:560px){.fn-word{display:none}}
   .fn-links{display:flex;gap:4px}
   .fn-links a{display:inline-flex;align-items:center;gap:5px;font-size:14px;color:var(--muted);font-weight:500;padding:12px 15px;border-radius:14px;
@@ -93,7 +95,7 @@
     background:linear-gradient(180deg,transparent 62%,var(--bg) 100%)}
   /* graph-paper grid, faded in on a diagonal — ported from jh3y's pen (CSS only) */
   .hero-grid{position:absolute;inset:0;pointer-events:none;
-    --gsize:46px;--gline:rgba(255,255,255,.08);
+    --gsize:46px;--gline:rgba(255,255,255,.12);
     background:
       linear-gradient(90deg,var(--gline) 1px,transparent 1px var(--gsize)) 50% 50% / var(--gsize) var(--gsize),
       linear-gradient(var(--gline) 1px,transparent 1px var(--gsize)) 50% 50% / var(--gsize) var(--gsize);
@@ -101,7 +103,6 @@
             mask:linear-gradient(-20deg,transparent 40%,#fff 90%)}
   .hero-stars{position:absolute;inset:0;width:100%;height:100%;opacity:.92;mix-blend-mode:plus-lighter;z-index:1}
   .hero-inner{position:relative;z-index:1}
-  .hero .eyebrow{display:block;margin-bottom:18px;color:var(--muted)}
   .hero h1{font-size:clamp(46px,12vw,132px);line-height:.96;letter-spacing:-.04em;margin-bottom:26px;min-height:1.92em}
   .hero p.lead{font-family:var(--mono);font-weight:400;font-size:clamp(16px,1.9vw,20px);color:var(--text);
     max-width:640px;line-height:1.55;min-height:3.3em}
@@ -112,13 +113,13 @@
   .preload .floatnav{opacity:0;transform:translateY(-12px)}
   .langbar{transition:opacity .55s ease}
   .preload .langbar{opacity:0}
-  .preload .hero .eyebrow,.preload .hero h1,.preload .hero p.lead{visibility:hidden}
+  .preload .hero h1,.preload .hero p.lead{visibility:hidden}
   .tw-caret::after{content:"";display:inline-block;width:.09em;min-width:2px;height:1em;background:currentColor;
     margin-left:.06em;vertical-align:-.12em;animation:tw-blink .7s step-end infinite}
   @keyframes tw-blink{50%{opacity:0}}
   @media(prefers-reduced-motion:reduce){
     .preload .hero-bg,.preload .floatnav,.preload .langbar{opacity:1;transform:none}
-    .preload .hero .eyebrow,.preload .hero h1,.preload .hero p.lead{visibility:visible}
+    .preload .hero h1,.preload .hero p.lead{visibility:visible}
   }
 
   /* section right after the hero — waits for the type sequence to finish, then fades up */
@@ -129,11 +130,43 @@
   }
 
   /* generic scroll reveal — later sections fade + slide up as they enter the
-     viewport (one-shot, via IntersectionObserver below) */
+     viewport (one-shot, via IntersectionObserver below), Apple-style: the
+     block itself fades up, and card/grid children cascade in right after
+     with a short stagger instead of popping in as one flat rectangle. */
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
   .reveal.in{opacity:1;transform:none}
+
+  .reveal .cards3>*,.reveal .craft-grid>*,.reveal .timeline>*{
+    opacity:0;transform:translateY(18px);
+    transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in .cards3>*,.reveal.in .craft-grid>*,.reveal.in .timeline>*{
+    opacity:1;transform:none}
+  .reveal .cards3>*:nth-child(1),.reveal .craft-grid>*:nth-child(1),.reveal .timeline>*:nth-child(1){transition-delay:0ms}
+  .reveal .cards3>*:nth-child(2),.reveal .craft-grid>*:nth-child(2),.reveal .timeline>*:nth-child(2){transition-delay:80ms}
+  .reveal .cards3>*:nth-child(3),.reveal .craft-grid>*:nth-child(3),.reveal .timeline>*:nth-child(3){transition-delay:160ms}
+  .reveal .craft-grid>*:nth-child(4),.reveal .timeline>*:nth-child(4){transition-delay:240ms}
+  .reveal .craft-grid>*:nth-child(5){transition-delay:320ms}
+
   @media(prefers-reduced-motion:reduce){
-    .reveal{opacity:1;transform:none;transition:none}
+    .reveal,.reveal .cards3>*,.reveal .craft-grid>*,.reveal .timeline>*{
+      opacity:1;transform:none;transition:none}
+  }
+
+  /* scroll-scrub text — metalab.com/work/the-atlantic style: body copy
+     sits dim and brightens continuously as it moves through the reading
+     zone of the viewport (not a one-shot reveal — scrolling back dims it
+     again). Native scroll-driven animation where supported; the JS below
+     drives the same --p custom property by hand everywhere else. */
+  @property --p{syntax:'<number>';inherits:true;initial-value:0}
+  .scrub{--p:0;color:color-mix(in srgb,var(--muted-2),var(--text) calc(var(--p) * 100%))}
+  @supports (animation-timeline: view()){
+    @media(prefers-reduced-motion:no-preference){
+      .scrub{animation:scrub-p linear both;animation-timeline:view();animation-range:entry 0% cover 40%}
+    }
+  }
+  @keyframes scrub-p{from{--p:0}to{--p:1}}
+  @media(prefers-reduced-motion:reduce){
+    .scrub{--p:1}
   }
 
   /* ---------- scroll showcase ----------
@@ -170,7 +203,7 @@
   .showcase-tile::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.08),transparent 60%)}
   .showcase-center{position:relative;grid-area:2/3;z-index:2}
   .showcase-center img{position:absolute;top:50%;left:50%;translate:-50% -50%;width:100%;height:auto;
-    aspect-ratio:16/9;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line-2);box-shadow:0 40px 100px rgba(0,0,0,.55)}
+    aspect-ratio:16/9;object-fit:cover;border-radius:calc(var(--radius) * 2);box-shadow:0 40px 100px rgba(0,0,0,.55)}
   @media(max-width:720px){
     /* the mobile grid drops to 3 columns, so the center image moves to the
        true middle column — this must come after the base rule above to win
@@ -204,7 +237,7 @@
 
   /* ---------- home intro + cards ---------- */
   .home-intro{max-width:640px;margin-bottom:46px}
-  .home-intro p{font-family:var(--mono);font-weight:400;font-size:clamp(15px,1.8vw,19px);color:var(--text);line-height:1.6}
+  .home-intro p{font-family:var(--mono);font-weight:400;font-size:clamp(15px,1.8vw,19px);line-height:1.6}
   .home-intro a{color:var(--muted);border-bottom:1px solid var(--line-2);padding-bottom:1px;font-size:15px;
     display:inline-block;margin-top:20px;transition:.16s}
   .home-intro a:hover{color:var(--text);border-color:var(--text)}
@@ -234,8 +267,7 @@
   .mfield-grid span{display:flex;align-items:center;justify-content:center;color:#0b0b0b;
     font-variation-settings:'wght' 400}
   .mfield-iso{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;
-    width:clamp(104px,14vw,176px);height:auto;color:rgba(255,255,255,.2);opacity:1;pointer-events:none;z-index:3;
-    backdrop-filter:blur(16px) brightness(1.15);-webkit-backdrop-filter:blur(16px) brightness(1.15)}
+    width:clamp(104px,14vw,176px);height:auto;pointer-events:none;z-index:3}
   .mfield-fade{position:absolute;inset:0;pointer-events:none;z-index:2;
     background:radial-gradient(66% 66% at 50% 50%,transparent 34%,rgba(8,8,10,.4) 100%),
                linear-gradient(180deg,transparent 82%,var(--bg) 100%)}
@@ -254,7 +286,7 @@
   .craft{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .craft-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
   .craft-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
-  .craft-head p{color:var(--muted);max-width:420px;font-size:15px}
+  .craft-head p{max-width:420px;font-size:15px}
   .craft-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:156px;gap:16px;margin-top:40px}
   .cx{border:1px solid var(--line);border-radius:16px;background:var(--panel);position:relative;overflow:hidden;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .25s,transform .25s}
   .cx:hover{border-color:var(--line-2);transform:translateY(-3px)}
@@ -333,13 +365,14 @@
 <!-- ===================== HYBRID FLOATING NAV ===================== -->
 <div class="floatnav">
   <div class="fn-inner">
-    <a href="#top" class="fn-brand" aria-label="Mustache Design System"><img class="fn-mark" src="assets/isotype-mustache.svg" width="30" height="30" alt="" aria-hidden="true"><span class="fn-word" role="img" aria-label="Mustache"></span></a>
+    <a href="#top" class="fn-brand" aria-label="Mustache Design System"><span class="fn-mark" role="img" aria-label="Mustache"></span><span class="fn-word" role="img" aria-label="Mustache Design System"></span></a>
     <nav class="fn-links">
       <a href="design.html">Design</a>
       <a href="content.html"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Content</a>
       <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Components</a>
+      <a href="patterns.html">Patterns</a>
       <a href="#">AI</a>
-      <a href="brand.html">Neon805</a>
+      <a href="brand.html">Brand</a>
       <a href="#">Resources</a>
     </nav>
     <div class="fn-more" data-open="false">
@@ -348,8 +381,9 @@
         <a href="design.html">Design</a>
         <a href="content.html"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Content</a>
         <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Components</a>
+        <a href="patterns.html">Patterns</a>
         <a href="#">AI</a>
-        <a href="brand.html">Neon805</a>
+        <a href="brand.html">Brand</a>
         <a href="#">Resources</a>
       </nav>
     </div>
@@ -370,7 +404,6 @@
     <canvas class="hero-stars" aria-hidden="true"></canvas>
   </div>
   <div class="wrap hero-inner">
-    <span class="eyebrow" data-en="Mustache Design System" data-es="Mustache Design System">Mustache Design System</span>
     <h1 class="display" data-html data-en="Living.<br>Evolving." data-es="Vivo.<br>Evolucionando.">Living.<br>Evolving.</h1>
     <p class="lead" data-en="A unique approach to design systems, products and digital experiences." data-es="Un enfoque único para design systems, productos y experiencias digitales.">A unique approach to design systems, products and digital experiences.</p>
   </div>
@@ -401,7 +434,7 @@
         <div class="showcase-tile"></div>
       </div>
       <div class="showcase-center">
-        <img src="https://cdn.dribbble.com/userupload/31463061/file/original-2091f467e836bf240ecdc3d1169b8625.png?resize=1600x1200&amp;vertical=center" alt="Mustache Design System — product showcase" loading="lazy">
+        <img src="https://cdn.dribbble.com/userupload/31463061/file/original-2091f467e836bf240ecdc3d1169b8625.png?resize=1600x1200&amp;vertical=center" alt="Mustache Design System — reference shots" loading="lazy">
       </div>
     </div>
   </div>
@@ -411,7 +444,7 @@
 <section class="section next-reveal" id="start">
   <div class="wrap">
     <div class="home-intro">
-      <p data-en="Mustache is a functional design system that lets every team member connect and grow in an organized way." data-es="Mustache es un design system funcional que permite que cada persona del equipo se conecte y crezca de forma ordenada.">Mustache is a functional design system that lets every team member connect and grow in an organized way.</p>
+      <p class="scrub" data-en="Mustache is a functional design system that lets every team member connect and grow in an organized way." data-es="Mustache es un design system funcional que permite que cada persona del equipo se conecte y crezca de forma ordenada.">Mustache is a functional design system that lets every team member connect and grow in an organized way.</p>
       <a href="design.html" data-en="Introduction" data-es="Introducción">Introduction</a>
     </div>
     <div class="home-cards">
@@ -441,7 +474,7 @@
           <svg class="hcard-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true"><path d="M222,67.34a33.81,33.81,0,0,0-10.64-24.25C198.12,30.56,176.68,31,163.54,44.18L142.82,65l-.63-.63a22,22,0,0,0-31.11,0l-9,9a14,14,0,0,0,0,19.81l3.47,3.47L53.14,149.1a37.81,37.81,0,0,0-9.84,36.73l-8.31,19a11.68,11.68,0,0,0,2.46,13A13.91,13.91,0,0,0,47.32,222,14.15,14.15,0,0,0,53,220.82L71,212.92a37.92,37.92,0,0,0,35.84-10.07l52.44-52.46,3.47,3.48a14,14,0,0,0,19.8,0l9-9a22.06,22.06,0,0,0,0-31.13l-.66-.65L212,91.85A33.76,33.76,0,0,0,222,67.34Zm-123.61,127a26,26,0,0,1-26,6.47,6,6,0,0,0-4.17.24l-20,8.75a2,2,0,0,1-2.09-.31l9.12-20.9a5.94,5.94,0,0,0,.19-4.31A25.91,25.91,0,0,1,56,166h70.78ZM138.78,154H65.24l48.83-48.84,36.76,36.78Zm64.77-70.59L178.17,108.9a6,6,0,0,0,0,8.47l4.88,4.89a10,10,0,0,1,0,14.15l-9,9a2,2,0,0,1-2.82,0l-60.69-60.7a2,2,0,0,1,0-2.83l9-9a10,10,0,0,1,14.14,0l4.89,4.89a6,6,0,0,0,4.24,1.75h0a6,6,0,0,0,4.25-1.77L172,52.66c8.57-8.58,22.51-9,31.07-.85a22,22,0,0,1,.44,31.57Z"/></svg>
         </div>
         <div class="hcard-body">
-          <h3>Neon805</h3>
+          <h3>Brand</h3>
           <p data-en="Logo, identity and how Mustache shows up everywhere." data-es="Logo, identidad y cómo se presenta Mustache en todos lados.">Logo, identity and how Mustache shows up everywhere.</p>
         </div>
       </a>
@@ -450,10 +483,10 @@
 </section>
 
 <!-- ===================== M LETTER FIELD ===================== -->
-<section class="mfield" aria-label="Mustache">
+<section class="mfield reveal" aria-label="Mustache">
   <div class="mfield-grid" aria-hidden="true"></div>
   <div class="mfield-fade" aria-hidden="true"></div>
-  <svg class="mfield-iso" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M24 0C26.2091 0 28 1.79086 28 4V24C28 24.4259 27.9319 24.8357 27.8086 25.2207C26.7806 25.5199 25.7584 25.256 24.6133 24.418C23.7887 23.8149 23.0503 23.097 22.2236 22.4971C21.5841 22.0329 20.9074 21.5726 20.1777 21.2861C18.9147 20.7891 17.6332 20.9573 16.4795 21.6543C15.6961 22.1279 14.9828 22.7181 14.2559 23.2803C14.154 23.3582 14.0764 23.4016 13.999 23.3984C13.9218 23.4014 13.8454 23.3581 13.7432 23.2803C13.0168 22.7181 12.303 22.1274 11.5195 21.6543C10.3674 20.9573 9.08435 20.7892 7.82129 21.2861C7.09159 21.5726 6.41494 22.0335 5.77539 22.4971C4.94868 23.097 4.21033 23.8149 3.38574 24.418C2.2406 25.256 1.21844 25.5199 0.19043 25.2207C0.0672023 24.8358 1.86263e-08 24.4258 0 24V4C0 1.79086 1.79086 9.66384e-08 4 0H24ZM6 4V17H9.94141V12.3135C9.94139 11.7343 9.91601 11.1425 9.86426 10.5381C9.81248 9.92084 9.75418 9.40994 9.68945 9.00684C9.63773 8.59156 9.60475 8.32729 9.5918 8.21387H9.66992L12.1553 17H15.5146L17.9805 8.19434H18.0586C18.0456 8.3077 18.0127 8.57262 17.9609 8.98828C17.9092 9.40398 17.8574 9.92084 17.8057 10.5381C17.7669 11.1425 17.7481 11.7343 17.748 12.3135V17H22V4H16.1553L14.1553 11.501H14.0781L12.0586 4H6Z" fill="currentColor"/></svg>
+  <img class="mfield-iso" src="assets/isotype-mustache.svg" alt="" aria-hidden="true">
 </section>
 
 <!-- ===================== PRINCIPLES ===================== -->
@@ -479,7 +512,7 @@
         <div class="sec-eyebrow-row"><span class="eyebrow" data-en="The signature look" data-es="El sello visual">The signature look</span><span class="ln"></span></div>
         <h2 class="display" data-en="Craft you can recognize" data-es="Un craft que se reconoce">Craft you can recognize</h2>
       </div>
-      <p data-en="Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon." data-es="Nuestro lenguaje visual es lo que hace que una pantalla de Rappi se sienta Rappi: 3D, glossy, expresiva y consistente hasta el último ícono.">Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon.</p>
+      <p class="scrub" data-en="Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon." data-es="Nuestro lenguaje visual es lo que hace que una pantalla de Rappi se sienta Rappi: 3D, glossy, expresiva y consistente hasta el último ícono.">Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon.</p>
     </div>
     <div class="craft-grid">
       <div class="cx big"><div class="art art-3d"></div><b data-en="3D Illustrations" data-es="Ilustraciones 3D">3D Illustrations</b><span data-en="Our signature glossy look" data-es="Nuestro sello glossy">Our signature glossy look</span></div>
@@ -582,12 +615,11 @@
     clearTimeout(safety);
     // release the locked box now that typing is done — restores normal flow
     // for any later resize, the fixed height/clip was only needed mid-type
-    [eyebrow, h1, lead].forEach(function(el){ if(el){ el.style.height = ''; el.style.overflow = ''; } });
+    [h1, lead].forEach(function(el){ if(el){ el.style.height = ''; el.style.overflow = ''; } });
     root.classList.remove('preload');
     revealNext();
   }
 
-  var eyebrow = document.querySelector('.hero .eyebrow');
   var h1      = document.querySelector('.hero h1');
   var lead    = document.querySelector('.hero p.lead');
   var bg      = document.querySelector('.hero-bg');
@@ -595,7 +627,7 @@
   var langbar = document.querySelector('.langbar');
   var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if(reduce || !eyebrow || !h1 || !lead){ finish(); return; }
+  if(reduce || !h1 || !lead){ finish(); return; }
 
   function type(el, cps){
     return new Promise(function(resolve){
@@ -633,18 +665,16 @@
   var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(function(){}) : Promise.resolve();
   setTimeout(function(){
     fontsReady.then(function(){
-      [eyebrow, h1, lead].forEach(function(el){
+      [h1, lead].forEach(function(el){
         el.style.height = el.getBoundingClientRect().height + 'px';
         el.style.overflow = 'hidden';
       });
       // stash full content, then blank the fields so the caret starts from zero
-      eyebrow.dataset.tw = eyebrow.textContent.trim();
-      h1.dataset.tw      = h1.innerHTML.replace(/<br\s*\/?>/gi, '<br>').trim();
-      lead.dataset.tw    = lead.textContent.trim();
-      eyebrow.textContent = h1.textContent = lead.textContent = '';
+      h1.dataset.tw   = h1.innerHTML.replace(/<br\s*\/?>/gi, '<br>').trim();
+      lead.dataset.tw = lead.textContent.trim();
+      h1.textContent = lead.textContent = '';
 
-      type(eyebrow, 45)
-        .then(function(){ return type(h1, 24); })
+      type(h1, 24)
         .then(function(){ return type(lead, 55); })
         .then(finish);
     });
@@ -893,6 +923,57 @@
   });
 })();
 
+// showcase center flicker — as the big center card scrolls through the
+// pinned section, its image rapidly steps through a set of reference
+// shots (instead of sitting on one static image), always at the same
+// on-screen size since only `src` changes, never the CSS box/aspect-ratio.
+(function(){
+  var showcase = document.querySelector('.showcase');
+  var centerImg = showcase && showcase.querySelector('.showcase-center img');
+  if(!showcase || !centerImg) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var FRAMES = [
+    'https://cdn.dribbble.com/userupload/31463061/file/original-2091f467e836bf240ecdc3d1169b8625.png?resize=1600x1200&vertical=center',
+    'https://cdn.dribbble.com/userupload/44680652/file/069898b339fbfaf0cf65e501057be552.png?resize=1024x768&vertical=center',
+    'https://cdn.dribbble.com/userupload/44232336/file/70439bd3be2a3347807cf9f2990f3dba.png?resize=1600x1200&vertical=center',
+    'https://cdn.dribbble.com/userupload/48891921/file/43ed128e4094a2d229bb1201299ebd1f.png?resize=1024x399&vertical=center',
+    'https://cdn.dribbble.com/userupload/48891920/file/2d36c41c0404c252444e2c750d3452f4.png?resize=1024x399&vertical=center',
+    'https://cdn.dribbble.com/userupload/48891919/file/8be5f370cbb1cf782a69887ec19bff51.png?resize=1024x399&vertical=center',
+    'https://cdn.dribbble.com/userupload/25696234/file/original-a66f53d52c8c7a97306c90fe3f54bb35.jpg?resize=1600x1200&vertical=center',
+    'https://design.rappi.com/uploads/j2rQyklqE8hAlb6_5VnxsA.png',
+    'https://design.rappi.com/uploads/fGeTbO656OzMl-yNV1VPqA.png'
+  ];
+
+  // Warm the cache up front so mid-scroll swaps are instant instead of a
+  // flash of blank space while each image loads for the first time.
+  FRAMES.forEach(function(src){ var im = new Image(); im.src = src; });
+  centerImg.src = FRAMES[0];
+
+  var STEPS = 42;   // quantized flips across the section's full scroll range
+  var lastStep = -1;
+  var ticking = false;
+
+  function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+
+  function update(){
+    ticking = false;
+    var rect = showcase.getBoundingClientRect();
+    var travel = showcase.offsetHeight - window.innerHeight;
+    var progress = travel > 0 ? clamp01(-rect.top / travel) : 0;
+    var step = Math.min(STEPS - 1, Math.floor(progress * STEPS));
+    if(step !== lastStep){
+      lastStep = step;
+      centerImg.src = FRAMES[step % FRAMES.length];
+    }
+  }
+
+  window.addEventListener('scroll', function(){
+    if(!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+})();
+
 // scroll showcase — JS fallback for browsers without CSS scroll-driven
 // animations (animation-timeline: scroll(), e.g. Firefox and older Safari).
 // The @supports block above handles Chrome/Edge natively; without it the
@@ -941,6 +1022,37 @@
   paint();
 })();
 
+// hero headline fade+blur — "Living. Evolving." dissolves out over the
+// scroll distance between page top and the showcase section, finishing
+// right as the showcase reveal is about to take over. Driven by absolute
+// scroll position (not viewport visibility) so it holds regardless of how
+// tall the hero itself ends up being; runs after the showcase min-height
+// (280vh, set above) is already in place so showcase.offsetTop is final.
+(function(){
+  var h1 = document.querySelector('.hero h1');
+  var showcase = document.querySelector('.showcase');
+  if(!h1 || !showcase) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var ticking = false;
+  function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+
+  function update(){
+    ticking = false;
+    var end = showcase.offsetTop;
+    var y = window.scrollY || window.pageYOffset;
+    var p = end > 0 ? clamp01(y / end) : 0;
+    h1.style.opacity = String(1 - p);
+    h1.style.filter = p > 0 ? 'blur(' + (p * 18).toFixed(2) + 'px)' : '';
+  }
+
+  window.addEventListener('scroll', function(){
+    if(!ticking){ ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
 // generic scroll reveal — fades each later section's content up into view
 // as it's scrolled to, one-shot (stays visible once shown)
 (function(){
@@ -957,6 +1069,38 @@
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
   els.forEach(function(el){ io.observe(el); });
+})();
+
+// scroll-scrub text fallback — for browsers without CSS
+// animation-timeline: view() (Firefox, older Safari), drives the same
+// --p custom property by hand on every scroll frame so .scrub paragraphs
+// still brighten (and re-dim on scroll-up) as they pass through the
+// reading zone, matching the native path 1:1.
+(function(){
+  var els = document.querySelectorAll('.scrub');
+  if(!els.length) return;
+  var supported = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'view()');
+  if(supported) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    els.forEach(function(el){ el.style.setProperty('--p', 1); });
+    return;
+  }
+
+  function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+  var raf = 0;
+  function update(){
+    raf = 0;
+    var vh = window.innerHeight;
+    var start = vh, end = vh * 0.6;   // brightens from the bottom edge up into the reading zone
+    els.forEach(function(el){
+      var top = el.getBoundingClientRect().top;
+      el.style.setProperty('--p', clamp01((start - top) / (start - end)));
+    });
+  }
+  function onScroll(){ if(!raf) raf = requestAnimationFrame(update); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
 })();
 
 </script>

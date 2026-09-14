@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design · Loading / Skeleton — Mustache Design System</title>
+<title>Patterns · Settings — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/site-header.css">
-<script src="js/site-header.js" defer></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site-header.css">
+<script src="../js/site-header.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -83,47 +83,30 @@
 </head>
 <body id="top">
 
-<site-header active="design"></site-header>
+<site-header active="patterns"></site-header>
 
 <div class="shell">
   <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Design</div>
+    <div class="eyebrow" style="padding:0 12px 14px">Patterns</div>
 
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Overview</div>
       <nav class="sb-links">
-        <a href="design.html#overview">Overview</a>
-        <a href="design.html#introduction">Introduction</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Foundation</div>
-      <nav class="sb-links">
-        <a href="foundation.html">Overview</a>
-        <a href="colors.html">Colors</a>
-        <a href="typography.html">Typography</a>
-        <a href="elevation.html">Elevation</a>
-        <a href="icons.html">Icons</a>
-        <a href="illustrations-3d.html">Illustrations 3D's</a>
-        <a href="layout.html">Layout</a>
-        <a href="motion.html">Motion</a>
-        <a href="cards-border-radius.html">Cards/Border Radius</a>
-        <a href="stroke.html">Stroke</a>
+        <a href="../patterns.html#overview">Overview</a>
       </nav>
     </div>
 
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Patterns</div>
       <nav class="sb-links">
-        <a href="patterns.html">Overview</a>
+        <a href="../patterns.html">Overview</a>
         <a href="search.html">Search</a>
         <a href="add-product.html">Add Product</a>
         <a href="onboarding.html">Onboarding</a>
-        <a href="settings.html">Settings</a>
+        <a href="settings.html" class="on">Settings</a>
         <a href="dialogs.html">Dialogs</a>
         <a href="empty-states.html">Empty states</a>
-        <a href="loading-skeleton.html" class="on">Loading / Skeleton</a>
+        <a href="loading-skeleton.html">Loading / Skeleton</a>
         <a href="transitions-to-stores.html">Transitions to stores</a>
         <a href="login.html">Login</a>
         <a href="modality.html">Modality</a>
@@ -134,54 +117,35 @@
       <div class="sb-title">On this page</div>
       <nav class="sb-links">
         <a href="#overview" class="on">Overview</a>
-        <a href="#loading">Loading</a>
-        <a href="#skeleton">Skeleton states</a>
+        <a href="#practicas">Mejores prácticas</a>
       </nav>
     </div>
   </aside>
 
   <main class="main">
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Patterns <span>/</span> Loading / Skeleton</div>
-      <h1 class="page-h1 display">Loading / Skeleton</h1>
-      <p class="page-lead">Elementos visuales que comunican a las personas usuarias la continuidad de un proceso en la interfaz o sistema.</p>
+      <div class="crumb"><b>Patterns</b> <span>/</span> Settings</div>
+      <h1 class="page-h1 display">Settings</h1>
+      <p class="page-lead">Las personas prefieren las aplicaciones que se adaptan cada vez mejor a sus necesidades a través de sus ajustes personalizados.</p>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>
-        <h2>Loading / Skeleton</h2>
+        <h2>Settings</h2>
 
-        <p>Los patrones de carga, o animaciones de espera, son elementos visuales que comunican a las personas usuarias la continuidad de un proceso en la interfaz o sistema.</p>
+        <p>Las personas prefieren las aplicaciones que se adaptan cada vez mejor a sus necesidades a través de sus ajustes personalizados, conoce cómo hacerlo.</p>
 
       </section>
-      <section class="doc" id="loading">
+      <section class="doc" id="practicas">
         <div class="sec-num">02</div>
-        <h2>Overview</h2>
+        <h2>Mejores prácticas</h2>
 
-        <p>Al aplicar las animaciones de carga en nuestra interfaz, podemos asegurarnos que nuestras personas usuarias podrán tener la tranquilidad de entender el proceso o tiempo de carga que está tomando su actividad en la app.</p>
-        <p>Nielsen Norman Group asegura en su artículo <em>Progress Indicators Make a Slow System Less Insufferable</em> que una correcta aplicación de estos procesos crea una experiencia en nuestra interfaz mucho más amigable.</p>
-        <p>A continuación encontrarás los diseños más usados en los estados de carga en nuestra interfaz y sus recomendaciones de uso:</p>
         <ul>
-          <li><strong>Animaciones tipo loop</strong> — Recomendado para cargas rápidas o transiciones en el sistema; es conocido por su estilo circular y sencillo.</li>
-          <li><strong>Barras de progreso</strong> — Este tipo de diseño permite comunicarle de manera clara a nuestros usuarios que el sistema necesita unos segundos más para cargar su información o acción.</li>
+          <li>Ofrece al momento de cada personalización en los ajustes un contexto breve y claro que le permita a las personas usuarias personalizar esas acciones con base a sus necesidades.</li>
+          <li>Permítele a las personas usuarias de forma específica y clara hacer los ajustes y personalizaciones en la interfaz que requieran necesarios para tener una mejor experiencia de uso.</li>
+          <li>Elige un elemento gráfico que represente claramente esta función de "ajustes".</li>
+          <li>Mantén las configuraciones de sistemas globales, pero adaptables a las personas según su ubicación y cultura. Ej: Accesibilidad, Navegación, Métodos de autenticación, lenguaje, etc.</li>
+          <li>Haz de la selección de configuraciones como los Inapp algo de fácil selección sin influenciar o interferir en la activación y vista de estos.</li>
         </ul>
-
-      </section>
-      <section class="doc" id="skeleton">
-        <div class="sec-num">03</div>
-        <h2>Skeleton states</h2>
-
-        <p>Los estados de esqueleto son la manera simplificada y consistente de mostrar en nuestra interfaz que una acción o información se encuentra cargando.</p>
-        <p>La función y el uso correcto de los estados de esqueleto simplifica y comunica la información o acción que se está llevando a cabo de forma dinámica en la interfaz.</p>
-        <p>El uso principal de este estado es en:</p>
-        <ul>
-          <li>Componentes</li>
-          <li>Algunas tablas o tarjetas de datos</li>
-          <li>Contenedores (mosaicos)</li>
-          <li>Listas estructuradas</li>
-        </ul>
-        <p>En algunos componentes accionables como botones, casillas de relleno o campos dinámicos su aplicación no es del todo necesaria. De igual manera, es importante evitar su uso en modales como notificaciones, menús, etc.</p>
-        <p>La animación de carga del skeleton se visualiza a través de un reflejo blanco que se desplaza de derecha a izquierda, en un ángulo de 2º con una duración de 0,30s. Esta animación se repite con un intervalo de 1 segundo de duración, hasta que el contenido que se va a mostrar esté listo para ser mostrado.</p>
-        <p>Una vez el contenido que se presenta donde estaba el skeleton esté cargado, este aparece con una animación de desvanecimiento con un cambio de opacidad de 0% a 100% y una duración total de 0,25 segundos.</p>
 
       </section>
 

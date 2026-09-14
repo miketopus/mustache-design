@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design · Search — Mustache Design System</title>
+<title>Design · Cards/Border Radius — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/site-header.css">
-<script src="js/site-header.js" defer></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site-header.css">
+<script src="../js/site-header.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -92,8 +92,8 @@
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Overview</div>
       <nav class="sb-links">
-        <a href="design.html#overview">Overview</a>
-        <a href="design.html#introduction">Introduction</a>
+        <a href="../design.html#overview">Overview</a>
+        <a href="../design.html#introduction">Introduction</a>
       </nav>
     </div>
 
@@ -108,77 +108,52 @@
         <a href="illustrations-3d.html">Illustrations 3D's</a>
         <a href="layout.html">Layout</a>
         <a href="motion.html">Motion</a>
-        <a href="cards-border-radius.html">Cards/Border Radius</a>
+        <a href="cards-border-radius.html" class="on">Cards/Border Radius</a>
         <a href="stroke.html">Stroke</a>
       </nav>
     </div>
 
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Patterns</div>
-      <nav class="sb-links">
-        <a href="patterns.html">Overview</a>
-        <a href="search.html" class="on">Search</a>
-        <a href="add-product.html">Add Product</a>
-        <a href="onboarding.html">Onboarding</a>
-        <a href="settings.html">Settings</a>
-        <a href="dialogs.html">Dialogs</a>
-        <a href="empty-states.html">Empty states</a>
-        <a href="loading-skeleton.html">Loading / Skeleton</a>
-        <a href="transitions-to-stores.html">Transitions to stores</a>
-        <a href="login.html">Login</a>
-        <a href="modality.html">Modality</a>
-        <a href="pull-and-refresh.html">Pull and refresh</a>
-      </nav>
-    </div>
     <div class="sb-group sb-onthis">
       <div class="sb-title">On this page</div>
       <nav class="sb-links">
         <a href="#overview" class="on">Overview</a>
-        <a href="#vertical">En vertical</a>
-        <a href="#shop">En tienda</a>
-        <a href="#global">Global</a>
+        <a href="#escala">Card scale</a>
       </nav>
     </div>
   </aside>
 
   <main class="main">
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Patterns <span>/</span> Search</div>
-      <h1 class="page-h1 display">Search</h1>
-      <p class="page-lead">El principal objetivo de nuestros usuarios está en encontrar de manera rápida y sencilla aquello que necesitan en minutos.</p>
+      <div class="crumb"><b>Design</b> <span>/</span> Foundation <span>/</span> Cards/Border Radius</div>
+      <h1 class="page-h1 display">Cards/Border Radius</h1>
+      <p class="page-lead">El uso de tarjetas o contenedores en nuestros diseños es la manera más sencilla de integrar y organizar imágenes, textos, botones y listas.</p>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>
-        <h2>Search</h2>
+        <h2>Cards/Border Radius</h2>
 
-        <p>El principal objetivo de nuestros usuarios está en encontrar de manera rápida y sencilla aquello que necesitan en minutos.</p>
-        <p>El buen diseño e implementación de las barras de búsqueda, les ayudará a cumplir con su objetivo.</p>
-        <p>A search bar allows people to search through a large collection of values by typing text into a field. A search bar can be displayed alone, or in a navigation bar or content view. When displayed in a navigation bar, a search bar can be pinned to the navigation bar so it's always accessible, or it can be collapsed until the user swipes down to reveal it.</p>
+        <p>El uso de tarjetas o contenedores en nuestros diseños, es la manera más sencilla de integrar y organizar imágenes, textos, botones, listas, etc.</p>
+        <h3>Anatomy</h3>
+        <p>On top of white background — lightmode. On top of black background — darkmode.</p>
 
       </section>
-      <section class="doc" id="vertical">
+      <section class="doc" id="escala">
         <div class="sec-num">02</div>
-        <h2>Buscador en vertical</h2>
+        <h2>Card Scale/Border Radius</h2>
 
-        <p>Al momento de seleccionar el Buscador presente dentro del Home de una vertical, este se desplazará 20px hacia arriba con una duración total de 0,25s; al mismo momento la barra disminuye su tamaño de forma uniforme de 100% a 72%. En el mismo momento en el que la barra se desplaza viviendo estas transiciones, el ícono presente al interior de la barra se desvanece con una opacidad de 100% a 0%.</p>
-        <p>Simultáneamente, el contenido del Home de la vertical se desplaza hacia arriba con una duración total de 0,40s al mismo tiempo que se desvanece con una opacidad de 100% a 0% con fade de 0,25s de duración para salir de la pantalla. Paralelamente aparecen las sugerencias del buscador: estas se desplazan 120px hacia arriba y al mismo tiempo cambian su opacidad de 0% a 100% con una duración total de 0,30s.</p>
-
-      </section>
-      <section class="doc" id="shop">
-        <div class="sec-num">03</div>
-        <h2>Buscador en tienda - Shop</h2>
-
-        <p>Al estar dentro de una tienda y seleccionar la barra del Buscador, esta se desplaza 235px hacia arriba con una duración de 0,25s hasta su posición final y simultáneamente desaparece el icono dentro de la barra con un desvanecimiento de 100% a 0%. En paralelo, el Header de la pantalla de búsqueda comienza su animación desplazándose 138px de arriba hacia abajo (desde la parte superior de la pantalla) hasta finalizar su recorrido.</p>
-        <p>Simultáneamente, el contenido del Home de la tienda se desplaza hacia arriba con una duración total de 0,40s al mismo tiempo que se desvanece con una opacidad de 100% a 0% con fade de 0,1s de duración para salir de la pantalla. Paralelamente aparecen las sugerencias del buscador: estas se desplazan 120px hacia arriba y al mismo tiempo cambian su opacidad de 0% a 100% con una duración total de 0,15s.</p>
-
-      </section>
-      <section class="doc" id="global">
-        <div class="sec-num">04</div>
-        <h2>Buscador global - Entrada a una tienda</h2>
-
-        <p>En el momento en que se selecciona una tienda en el listado de resultados del buscador global, la pantalla de la tienda ingresa de izquierda a derecha (para más detalles de esta transición ver la sección "Tipos de entradas").</p>
-        <p>Sin embargo, al ser una entrada que surge desde el Buscador Global, se diferencia pues al entrar a la pantalla aparece un pop up antes de dar paso a la tienda. El pop up presente en esta transición aparece con una escala de 90% a 100% con una duración de 0,20s con un desvanecimiento de 0% a 100%. Una vez el contenido de la tienda empieza a aparecer, el pop up desaparece cambiando su opacidad de 100% a 0% con una duración total de 0,25s.</p>
-        <p>Inmediatamente después de que carga por completo la pantalla de la tienda, automáticamente entra al buscador mostrando los resultados de la búsqueda previamente realizada en el buscador global. Los detalles de esta entrada al buscador la puedes encontrar en la sección "Buscador en tienda-shop".</p>
+        <p>Al momento de usar una card para la construcción de un componente, es necesario tener en cuenta que el "Border radius" de esta se adaptará según la interfaz de usuario.</p>
+        <p>Hay que tener en cuenta que el tamaño de una Card siempre está en una escala de 4px min. a 32px máx.</p>
+        <table class="spec">
+          <tr><th>Token</th><th>Border Radius</th></tr>
+          <tr><td>borderRadius1</td><td>4px</td></tr>
+          <tr><td>borderRadius2</td><td>8px</td></tr>
+          <tr><td>borderRadius3</td><td>12px</td></tr>
+          <tr><td>borderRadius4</td><td>16px</td></tr>
+          <tr><td>borderRadius5</td><td>20px</td></tr>
+          <tr><td>borderRadius6</td><td>24px</td></tr>
+          <tr><td>borderRadius7</td><td>28px</td></tr>
+          <tr><td>borderRadius8</td><td>32px</td></tr>
+        </table>
 
       </section>
 

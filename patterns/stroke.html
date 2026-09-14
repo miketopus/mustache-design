@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design · Transitions to stores — Mustache Design System</title>
+<title>Design · Stroke — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/site-header.css">
-<script src="js/site-header.js" defer></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site-header.css">
+<script src="../js/site-header.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -92,8 +92,8 @@
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Overview</div>
       <nav class="sb-links">
-        <a href="design.html#overview">Overview</a>
-        <a href="design.html#introduction">Introduction</a>
+        <a href="../design.html#overview">Overview</a>
+        <a href="../design.html#introduction">Introduction</a>
       </nav>
     </div>
 
@@ -109,73 +109,58 @@
         <a href="layout.html">Layout</a>
         <a href="motion.html">Motion</a>
         <a href="cards-border-radius.html">Cards/Border Radius</a>
-        <a href="stroke.html">Stroke</a>
+        <a href="stroke.html" class="on">Stroke</a>
       </nav>
     </div>
 
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Patterns</div>
-      <nav class="sb-links">
-        <a href="patterns.html">Overview</a>
-        <a href="search.html">Search</a>
-        <a href="add-product.html">Add Product</a>
-        <a href="onboarding.html">Onboarding</a>
-        <a href="settings.html">Settings</a>
-        <a href="dialogs.html">Dialogs</a>
-        <a href="empty-states.html">Empty states</a>
-        <a href="loading-skeleton.html">Loading / Skeleton</a>
-        <a href="transitions-to-stores.html" class="on">Transitions to stores</a>
-        <a href="login.html">Login</a>
-        <a href="modality.html">Modality</a>
-        <a href="pull-and-refresh.html">Pull and refresh</a>
-      </nav>
-    </div>
     <div class="sb-group sb-onthis">
       <div class="sb-title">On this page</div>
       <nav class="sb-links">
         <a href="#overview" class="on">Overview</a>
-        <a href="#shop">Shop</a>
-        <a href="#restaurants">Restaurants</a>
+        <a href="#properties">Properties</a>
+        <a href="#escala">Stroke scale</a>
       </nav>
     </div>
   </aside>
 
   <main class="main">
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Patterns <span>/</span> Transitions to stores</div>
-      <h1 class="page-h1 display">Transitions to stores</h1>
-      <p class="page-lead">Conoce de manera detallada cómo ocurren las transiciones desde el Menú hacia una tienda dentro de la app.</p>
+      <div class="crumb"><b>Design</b> <span>/</span> Foundation <span>/</span> Stroke</div>
+      <h1 class="page-h1 display">Stroke</h1>
+      <p class="page-lead">El objeto para definir el color, el ancho y el estilo de un borde o divisor.</p>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>
-        <h2>Transitions to stores</h2>
+        <h2>Stroke</h2>
 
-        <p>Conoce de manera detallada cómo ocurren las transiciones desde el Menú hacia una tienda dentro de la app.</p>
-        <h3>Tipos de entradas</h3>
+        <p>El objeto para definir el color, el ancho y el estilo de un borde o divisor.</p>
+        <p>Puede especificar el color, el ancho y el estilo (sólido, discontinuo o punteado) de un trazo. Dichos trazos tienen muchos usos, incluidos los bordes de los componentes y los componentes divisores.</p>
 
       </section>
-      <section class="doc" id="shop">
+      <section class="doc" id="properties">
         <div class="sec-num">02</div>
-        <h2>Shop</h2>
+        <h2>Properties</h2>
 
-        <p>Al momento de seleccionar y entrar a una tienda, entra la pantalla de la tienda con una transición de 0,40s de derecha a izquierda; en ese mismo lapso de tiempo la barra del buscador también cambia su opacidad de 0% a 100%.</p>
-        <p>Pasados 0,05 segundos desde que inicia la entrada de la pantalla de la tienda, inicia la animación de la tabla de información. Esta se desplaza de arriba hacia abajo, iniciando detrás de la imagen de la tienda y terminando en su posición final con una duración total de 0,40 segundos.</p>
-        <p>Pasados 0,30s desde que inicia la entrada de la pantalla, se da paso a la animación del Tab bar, la cual se desplaza desde la parte inferior de la pantalla hasta su posición final con una duración total de 0,3 segundos.</p>
-        <p>Pasados 0,05 segundos desde que inicia la entrada de la pantalla de la tienda, comienza la animación del Skeleton. Este se desplaza 20px de derecha a izquierda con una duración total de 1 segundo. A los 0,20s de empezar esta transición, al mismo tiempo, el componente cambia su opacidad de 0% a 100% con una duración de 0,40 segundos.</p>
-        <p>Ten en cuenta que, en caso tal de que el contenido demore en cargar, la animación del Skeleton debe ajustarse con base a las necesidades; para conocer más sobre estas adaptaciones visita la sección Loading / Skeleton states.</p>
-        <p>Una vez el contenido que se presenta donde estaba el skeleton termine de cargar, este aparece con una animación de desvanecimiento con un cambio de opacidad de 0% a 100% y una duración total de 0,25 segundos.</p>
+        <p><strong>color</strong> — The stroke color.</p>
+        <p><strong>style</strong> — Defines the style of the stroke. Valid values:</p>
+        <ul>
+          <li><strong>solid</strong> (default) — a solid stroke.</li>
+          <li><strong>dashed</strong> — a dashed stroke.</li>
+          <li><strong>dotted</strong> — a dotted stroke.</li>
+        </ul>
 
       </section>
-      <section class="doc" id="restaurants">
+      <section class="doc" id="escala">
         <div class="sec-num">03</div>
-        <h2>Restaurants</h2>
+        <h2>Stroke Scale</h2>
 
-        <p>Al seleccionar una tienda de restaurantes, la pantalla de este entra con movimientos de derecha a izquierda con una duración total de 0,40 segundos.</p>
-        <p>Pasados 0,05 segundos desde que inicia la entrada de la pantalla de la tienda, inicia la animación de la tabla de información. Esta se desplaza de arriba hacia abajo, iniciando detrás de la imagen de la tienda y terminando en su posición final con una duración total de 0,40 segundos.</p>
-        <p>Simultáneamente, comienza la animación del Skeleton. Este se desplaza 20px de derecha a izquierda con una duración total de 1 segundo.</p>
-        <p>A los 0,20s de empezar esta transición, al mismo tiempo, el componente cambia su opacidad de 0% a 100% con una duración de 0,40 segundos.</p>
-        <p>Ten en cuenta que, en caso tal de que el contenido demore en cargar, la animación del Skeleton debe ajustarse con base a las necesidades; para conocer más sobre estas adaptaciones visita la sección Loading / Skeleton states.</p>
-        <p>Una vez el contenido que se presenta donde estaba el skeleton termine de cargar, este aparece con una animación de desvanecimiento con un cambio de opacidad de 0% a 100% y una duración total de 0,25 segundos.</p>
+        <p>El tamaño del borde está en una escala de 0.5px min.</p>
+        <table class="spec">
+          <tr><th>Token</th><th>Thickness</th></tr>
+          <tr><td>strokeSmall</td><td>0.5px</td></tr>
+          <tr><td>strokeMedium</td><td>1px</td></tr>
+          <tr><td>strokeLarge</td><td>2px</td></tr>
+        </table>
 
       </section>
 

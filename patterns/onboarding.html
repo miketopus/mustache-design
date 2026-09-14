@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design · Motion — Mustache Design System</title>
+<title>Patterns · Onboarding — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/site-header.css">
-<script src="js/site-header.js" defer></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/site-header.css">
+<script src="../js/site-header.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -83,43 +83,26 @@
 </head>
 <body id="top">
 
-<site-header active="design"></site-header>
+<site-header active="patterns"></site-header>
 
 <div class="shell">
   <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Design</div>
+    <div class="eyebrow" style="padding:0 12px 14px">Patterns</div>
 
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Overview</div>
       <nav class="sb-links">
-        <a href="design.html#overview">Overview</a>
-        <a href="design.html#introduction">Introduction</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Foundation</div>
-      <nav class="sb-links">
-        <a href="foundation.html">Overview</a>
-        <a href="colors.html">Colors</a>
-        <a href="typography.html">Typography</a>
-        <a href="elevation.html">Elevation</a>
-        <a href="icons.html">Icons</a>
-        <a href="illustrations-3d.html">Illustrations 3D's</a>
-        <a href="layout.html">Layout</a>
-        <a href="motion.html" class="on">Motion</a>
-        <a href="cards-border-radius.html">Cards/Border Radius</a>
-        <a href="stroke.html">Stroke</a>
+        <a href="../patterns.html#overview">Overview</a>
       </nav>
     </div>
 
     <div class="sb-group">
       <div class="sb-title"><span class="dot"></span> Patterns</div>
       <nav class="sb-links">
-        <a href="patterns.html">Overview</a>
+        <a href="../patterns.html">Overview</a>
         <a href="search.html">Search</a>
         <a href="add-product.html">Add Product</a>
-        <a href="onboarding.html">Onboarding</a>
+        <a href="onboarding.html" class="on">Onboarding</a>
         <a href="settings.html">Settings</a>
         <a href="dialogs.html">Dialogs</a>
         <a href="empty-states.html">Empty states</a>
@@ -134,47 +117,34 @@
       <div class="sb-title">On this page</div>
       <nav class="sb-links">
         <a href="#overview" class="on">Overview</a>
-        <a href="#principios">Principles</a>
-        <a href="#do-dont">Do & Don't</a>
+        <a href="#practicas">Mejores prácticas</a>
       </nav>
     </div>
   </aside>
 
   <main class="main">
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Foundation <span>/</span> Motion</div>
-      <h1 class="page-h1 display">Motion</h1>
-      <p class="page-lead">El movimiento puede dar vida a la pantalla, guiar a los usuarios a través de experiencias complejas y ayudarlos a progresar.</p>
+      <div class="crumb"><b>Patterns</b> <span>/</span> Onboarding</div>
+      <h1 class="page-h1 display">Onboarding</h1>
+      <p class="page-lead">Brindarle a nuestras personas usuarias una primera experiencia sencilla, rápida e intuitiva en nuestra app nos acercará a cautivarlos.</p>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>
-        <h2>Motion</h2>
+        <h2>Onboarding</h2>
 
-        <p>El movimiento puede dar vida a la pantalla, guiar a los usuarios a través de experiencias complejas y ayudarlos a avanzar, de aquí para allá, de allá a aquí, de principio a fin, y progresar.</p>
-        <p>Motion ayuda a que una interfaz de usuario sea expresiva y fácil de usar.</p>
+        <p>Brindarle a nuestras personas usuarias una primera experiencia sencilla, rápida e intuitiva en nuestra app nos acercará a cautivarlos.</p>
 
       </section>
-      <section class="doc" id="principios">
+      <section class="doc" id="practicas">
         <div class="sec-num">02</div>
-        <h2>Principles</h2>
+        <h2>Mejores prácticas</h2>
 
+        <p>Para brindar esta primera gran experiencia en nuestra app, es ideal tener en cuenta estas acciones a través de los contenidos y elementos implementados:</p>
         <ul>
-          <li><strong>Movimientos suaves y realistas</strong> — Al momento de crear la animación ideal, es necesario a través de las transiciones o movimientos en una composición, narrar de forma coherente y realista el contenido para nuestras personas usuarias.</li>
-          <li><strong>El timing correcto</strong> — Aplicar de manera correcta el tiempo en una transición, permite que la información o mensaje que buscamos comunicar visualmente sea clara y coherente, evitando saltos de tiempo en la narrativa que puedan confundir a las personas usuarias.</li>
-          <li><strong>Coherencia visual</strong> — Lograr sorprender y guiar a nuestras personas usuarias a través del movimiento correcto de los elementos en una composición, aporta además de consistencia, y coherencia una atención diferencial en los contenidos de la marca.</li>
-          <li><strong>Consistencia y carácter</strong> — La personalidad de Rappi vive en todas sus interacciones y comunicaciones, por esta razón cada frame, movimiento o detalle debe reflejar su estilo solucionador, innovador y disruptivo.</li>
-        </ul>
-
-      </section>
-      <section class="doc" id="do-dont">
-        <div class="sec-num">03</div>
-        <h2>Do & Don't</h2>
-
-        <ul>
-          <li><strong>Evita la deformación</strong> — No distorsiones en las dimensiones de los componentes; en el caso de los elementos de aspecto "sólido" su adaptación debe darse de manera realista y controlada sin alterar la calidad visual de la pieza.</li>
-          <li><strong>Aplica una velocidad realista y controlada</strong> — Controlar la aceleración y el frenado en cada gráfica es la forma perfecta para crear en los elementos un efecto de movimiento realista y fresco; por esta razón debemos evitar aplicar acciones que puedan verse rígidas y bruscas en las composiciones.</li>
-          <li><strong>Dibujos sólidos y proporcionados</strong> — Crear objetos o composiciones que reflejen de manera realista su peso, masa o volumen nos asegura que cada diseño sea realista, consistente y pulido.</li>
-          <li><strong>Crea contenidos basados en un objetivo</strong> — El mejor contenido es aquel que guía a nuestras personas usuarias, responde a sus necesidades y tiene un objetivo de negocio; por eso, al momento de crear una animación, cuenta siempre una historia coherente y clara.</li>
+          <li>Crea una experiencia disfrutable que no requiera que las personas deban recordar pasos o información que le solicitarás después.</li>
+          <li>Guía y ayuda a través de los elementos y el contenido ideal a las nuevas personas usuarias con el fin de lograr su propósito en el app de una forma sencilla y entretenida.</li>
+          <li>Enseña a través de elementos interactivos y un buen storytelling cómo la persona usuaria puede lograr sus objetivos en nuestra app, ya sea desde pedir su hamburguesa favorita, hasta su mercado del mes.</li>
+          <li>Integra elementos visuales que guíen el proceso y gestionen paso a paso el recorrido del usuario en el app.</li>
         </ul>
 
       </section>
