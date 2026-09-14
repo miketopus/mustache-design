@@ -124,11 +124,11 @@
   @font-face{font-family:'PP Object Sans';src:url(assets/identidad-visual/fonts/PPObjectSans-Heavy.otf) format('opentype');font-weight:900;font-display:swap}
 
   .iv{font-family:'PP Object Sans',var(--body);color:#141414;background:#fff;border-radius:24px;overflow:hidden;
-    margin-top:8px;box-shadow:0 0 0 1px var(--line)}
+    margin:8px -56px 0;box-shadow:0 0 0 1px var(--line)}
 
   .iv-hero{position:relative;padding:56px 44px 44px;color:#fff;
     background:linear-gradient(-45deg,#FF7A4D 0%,#FF2526 52%,#FF4583 100%)}
-  .iv-hero .iv-mustache{width:34px;height:auto;fill:#fff;opacity:.92;margin-bottom:22px;display:block}
+  .iv-hero .iv-logo{width:110px;height:auto;margin-bottom:26px;display:block}
   .iv-hero .iv-eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.9;margin-bottom:14px}
   .iv-hero .iv-eyebrow::before{content:"";width:22px;height:1px;background:rgba(255,255,255,.65)}
   .iv-hero h2{font-family:'PP Object Sans',var(--display);font-weight:900;font-size:clamp(30px,5vw,48px);letter-spacing:-.01em;margin:0}
@@ -336,6 +336,7 @@
     .main{padding:32px 22px 90px}
     .pm{padding:22px}
     .iv-hero,.iv-tabbar,.iv-content{padding-left:22px;padding-right:22px}
+    .iv{margin-left:-22px;margin-right:-22px}
     .iv-patterns,.iv-formats{grid-template-columns:1fr}
   }
 </style>
@@ -473,13 +474,12 @@
         <h2>Identidad Visual</h2>
         <p class="lead">Réplica exacta del capítulo 04 del Brand Book 2026: logo, sistema de color, tipografía y fotografía de marca.</p>
 
+        </div>
+
         <div class="iv">
 
           <div class="iv-hero">
-            <svg class="iv-mustache" viewBox="0 0 120 46" xmlns="http://www.w3.org/2000/svg"><path d="M60 15 C56 9 49 8 42 10 C33 12.5 26 18 17 26 C12 30.5 7 33 4 31.5 C1.5 30.2 3 26 8 22
-              C2 27 0.5 33 5 35.5 C9 37.7 15 34 21 29 C29 22.5 37 20.5 45 23 C50.5 24.7 55.5 26 60 24
-              C64.5 26 69.5 24.7 75 23 C83 20.5 91 22.5 99 29 C105 34 111 37.7 115 35.5 C119.5 33 118 27 112 22
-              C117 26 118.5 30.2 116 31.5 C113 33 108 30.5 103 26 C94 18 87 12.5 78 10 C71 8 64 9 60 15 Z"/></svg>
+            <span class="rp-logo white iv-logo"></span>
             <div class="iv-eyebrow">Capítulo 04</div>
             <h2>Identidad Visual</h2>
           </div>
@@ -957,7 +957,6 @@
         </div>
       </section>
 
-    </div>
   </main>
 </div>
 
