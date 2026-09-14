@@ -9,7 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="../css/site-header.css">
+<link rel="stylesheet" href="../css/hero-particles.css">
 <script src="../js/site-header.js" defer></script>
+<script src="../js/hero-particles.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -124,10 +126,18 @@
   </aside>
 
   <main class="main">
+    <!-- HERO -->
+    <div class="hero">
+      <canvas class="hero-particles" aria-hidden="true"></canvas>
+      <div class="hero-fade" aria-hidden="true"></div>
+      <div class="hero-in">
+        <div class="crumb"><b>Design</b> <span>/</span> Foundation <span>/</span> Motion</div>
+        <h1 class="page-h1 display">Motion</h1>
+        <p class="page-lead">El movimiento puede dar vida a la pantalla, guiar a los usuarios a través de experiencias complejas y ayudarlos a progresar.</p>
+      </div>
+    </div>
+
     <div class="main-inner">
-      <div class="crumb"><b>Design</b> <span>/</span> Foundation <span>/</span> Motion</div>
-      <h1 class="page-h1 display">Motion</h1>
-      <p class="page-lead">El movimiento puede dar vida a la pantalla, guiar a los usuarios a través de experiencias complejas y ayudarlos a progresar.</p>
 
       <section class="doc" id="overview">
         <div class="sec-num">01</div>

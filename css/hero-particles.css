@@ -1,0 +1,17 @@
+/* Hero / title particle field — shared by every page whose header carries
+   a <canvas class="hero-particles"> (see js/hero-particles.js).
+   .hero breaks out of .main-inner's centered column and cancels .main's
+   own 44px/56px padding to bleed edge-to-edge across .main, while
+   .hero-in keeps the actual crumb/heading/lead at the page's normal
+   left-aligned position. Markup requirement: .hero must be a direct
+   child of .main, placed BEFORE .main-inner (not nested inside it). */
+.hero{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;
+  margin:-44px -56px 28px;padding:48px 56px 36px}
+.hero-particles{position:absolute;inset:0;z-index:0;width:100%;height:100%}
+.hero-fade{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(100deg,var(--bg) 0%,rgba(8,8,10,.6) 42%,rgba(8,8,10,.08) 75%,transparent 100%)}
+.hero-in{position:relative;z-index:2}
+
+@media(max-width:760px){
+  .hero{margin:-30px -22px 22px;padding:32px 22px 26px}
+}
