@@ -26,3 +26,21 @@ a.sb-title.on::before{
 a.sb-title{display:flex;cursor:pointer;border-radius:9px;transition:.15s}
 a.sb-title:hover{background:var(--panel-2)}
 a.sb-title.on{background:var(--panel-2);color:var(--text)}
+
+/* "On this page" mini-nav as a floating card, matching the topbar's
+   mobile dropdown (.tb-menu in site-header.css) instead of the plain
+   indented list every other sidebar group uses. */
+.sb-onthis .sb-links{
+  border-left:none;margin-left:0;padding:6px;border-radius:14px;
+  background:rgba(9,9,11,.98);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05)}
+.sb-onthis .sb-links a{
+  padding:10px 12px;border-radius:10px;
+  transition:transform .22s cubic-bezier(.34,1.55,.64,1),background .14s,color .14s}
+.sb-onthis .sb-links a:hover{transform:scale(1.025)}
+.sb-onthis .sb-links a:active{transform:scale(.965)}
+@media(prefers-reduced-motion:reduce){
+  .sb-onthis .sb-links a{transition:background .14s,color .14s}
+  .sb-onthis .sb-links a:hover,.sb-onthis .sb-links a:active{transform:none}
+}
