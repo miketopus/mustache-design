@@ -466,12 +466,14 @@
         </div>
       </section>
 
+      </div>
+
       <!-- IDENTIDAD VISUAL -->
       <section class="doc" id="identidad-visual">
-        <div class="sec-num">03</div>
-        <h2>Identidad Visual</h2>
-        <p class="lead">Réplica exacta del capítulo 04 del Brand Book 2026: logo, sistema de color, tipografía y fotografía de marca.</p>
-
+        <div class="main-inner">
+          <div class="sec-num">03</div>
+          <h2>Identidad Visual</h2>
+          <p class="lead">Réplica exacta del capítulo 04 del Brand Book 2026: logo, sistema de color, tipografía y fotografía de marca.</p>
         </div>
 
         <div class="iv">
@@ -959,6 +961,18 @@
 </div>
 
 <script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-links a[href^="#"], a.sb-title[href^="#"]'));
+  var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ links.forEach(function(a){ a.classList.remove('on'); }); if(map[e.target.id]) map[e.target.id].classList.add('on'); }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+  secs.forEach(function(s){ obs.observe(s); });
+})();
+
 (function(){
   var tabs = document.querySelectorAll('.iv-tabbar button');
   var panels = document.querySelectorAll('.iv-panel');
