@@ -18,12 +18,12 @@
 
   const NAV = [
     { id: 'design',     href: '/design.html',   label: 'Design'                  },
-    { id: 'content',    href: '/content.html',  label: 'Content',    lock: true  },
+    { id: 'content',    href: '/content.html',  label: 'Content'                 },
     { id: 'components', href: '#',              label: 'Components', lock: true  },
     { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
-    { id: 'ai',         href: '#',              label: 'AI'                      },
+    { id: 'ai',         href: '#',              label: 'AI',          lock: true  },
     { id: 'brand',      href: '/brand.html',    label: 'Brand'                   },
-    { id: 'resources',  href: '#',              label: 'Resources'              },
+    { id: 'resources',  href: '#',              label: 'Resources',   lock: true  },
   ];
 
   const LOCK = `<svg class="tb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
