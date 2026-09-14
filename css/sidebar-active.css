@@ -27,6 +27,16 @@ a.sb-title{display:flex;cursor:pointer;border-radius:9px;transition:.15s}
 a.sb-title:hover{background:var(--panel-2)}
 a.sb-title.on{background:var(--panel-2);color:var(--text)}
 
+/* "On this page" lives as a floating card on the right edge of the
+   viewport instead of inside the left .sidebar — markup is a sibling
+   of <aside class="sidebar">, right after it closes, so position:fixed
+   here is relative to the viewport regardless of the sidebar's own
+   overflow/scroll. Hidden below 1300px: at that width the 860px
+   content column plus the 288px left sidebar leaves too little room
+   on the right for a 200px card without overlapping content. */
+.sb-onthis{position:fixed;top:calc(var(--topbar) + 32px);right:32px;width:200px;z-index:40}
+@media(max-width:1300px){.sb-onthis{display:none}}
+
 /* "On this page" mini-nav as a floating card, matching the topbar's
    mobile dropdown (.tb-menu in site-header.css) instead of the plain
    indented list every other sidebar group uses. */
