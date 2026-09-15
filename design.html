@@ -64,6 +64,12 @@
   .doc p strong{color:var(--text);font-weight:600}
   .lead{font-size:17px;color:var(--muted)!important;max-width:640px}
 
+  /* design principles — bilingual pairs copied from design.rappi.com */
+  .principle{border-top:1px solid var(--line);padding-top:24px;margin-top:24px}
+  .principle:first-of-type{border-top:none;padding-top:0;margin-top:8px}
+  .principle-en{color:var(--muted-2);font-style:italic}
+  .principle-en strong{color:var(--muted-2);font-weight:600}
+
   /* tiles */
   .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
   .tile{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 18px;transition:.2s;position:relative}
@@ -182,13 +188,33 @@
       <!-- DESIGN PRINCIPLES -->
       <section class="doc" id="design-principles">
         <h2>Design Principles</h2>
-        <p class="lead">These are the pillars of every design we make for our app. They are like Jedi Code, and we must apply them in all creations.</p>
-        <div class="tiles">
-          <a href="#" class="tile"><svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg><div class="tk">Colors</div><p>Sistema de color y tokens semánticos.</p></a>
-          <a href="#" class="tile"><svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg><div class="tk">Typography</div><p>Escala tipográfica y jerarquía.</p></a>
-          <a href="#" class="tile"><svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg><div class="tk">Icons</div><p>Librería de iconos: activa las libraries.</p></a>
+        <p class="lead">Product principles are the basics of the brand in the design area. With them, we create more than a cool brand, we do a consistent and scalable one that responds to the user's necessities and our business.</p>
+
+        <div class="principle">
+          <h3>La data es nuestra principal aliada</h3>
+          <p>Por eso creamos nuestras soluciones basadas en la data y la aplicamos con creatividad en cada uno de nuestros diseños.</p>
+          <p class="principle-en"><strong>Data, our principal ally.</strong> That's why we create our solutions based on the data and mix them up with the creativity to achieve amazing products.</p>
         </div>
-        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p>En el sitio, los tiles de <b>Colors</b> y <b>Typography</b> son shortcuts aún por enlazar, e <b>Icons</b> requiere activar las libraries. Los dejé como accesos a las páginas de foundations que siguen.</p></div>
+
+        <div class="principle">
+          <h3>Consistencia y UX</h3>
+          <p>En la búsqueda de brindarle la mejor experiencia a todas nuestras personas usuarias, los diseños que creamos, deben ser fieles a los principios de usabilidad y consistencia básicos como: la simpleza, la relevancia, la eficiencia y la claridad.</p>
+          <p class="principle-en"><strong>Consistency and UX.</strong> To give our users the best experience, the designs that we create should be human-centered, also respond to basic usability principles like: Simplicity, relevance, efficiency, and clearness.</p>
+        </div>
+
+        <div class="principle">
+          <h3>Soluciones innovadoras</h3>
+          <p>Cuando hablamos de soluciones innovadoras en nuestros diseños, hacemos referencia a los principios del Design Thinking, en donde a través de las preguntas correctas y las ideas colaborativas se obtienen grandes resultados.</p>
+          <p>¡Crear soluciones innovadoras, requiere juntar la creatividad con las herramientas y la data correcta!</p>
+          <p class="principle-en"><strong>Innovate solutions.</strong> What we're referring to innovated solutions in our designs, we talk about of the Designs Thinking principles. That's because, through the correct questions and collaborative ideas, we can achieve remarkable goals. ¡To make innovative solutions, we need to co-create in a team with the perfect tools like: data, technology, and creativity!</p>
+        </div>
+
+        <div class="principle">
+          <h3>Los detalles son nuestra prioridad</h3>
+          <p>Para lograr un gran producto o entregable, se requiere del conjunto ideal de elementos. Por esta razón, cada detalle incluido en una pieza o flujo contribuye a obtener el mejor resultado posible con la misma.</p>
+          <p>¡Porque un gran diseño no solo luce bien, también es de gran utilidad!</p>
+          <p class="principle-en"><strong>Details are our priority.</strong> Create a great product or piece, require the perfect set of elements. That's why any detail includes in a piece or flow contributes to having the best result. ¡Remember, a great design does not just look good, it's also much useful!</p>
+        </div>
       </section>
 
       <a href="#top" class="backtop"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg> Volver arriba</a>
