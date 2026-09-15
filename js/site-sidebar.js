@@ -143,15 +143,37 @@
       links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
       var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc')).filter(function (s) { return map[s.id]; });
       if (!secs.length) return;
-      var obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            links.forEach(function (a) { a.classList.remove('on'); });
-            if (map[e.target.id]) map[e.target.id].classList.add('on');
-          }
-        });
-      }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-      secs.forEach(function (s) { obs.observe(s); });
+
+      // Recomputed directly from live positions on every scroll frame,
+      // rather than driven by IntersectionObserver enter/exit entries: a
+      // short section sandwiched between two tall ones can cross an
+      // observer's threshold band in the same batch as its neighbor, and
+      // deciding from whichever entries fired is order-dependent (and can
+      // freeze on a mid-animation snapshot if no further crossing ever
+      // fires once a smooth scroll settles). A plain "last section whose
+      // top has passed the trigger line" check has neither failure mode.
+      var topbar = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar')) || 0;
+      var triggerY = topbar + 30;
+      var ticking = false;
+
+      function recompute() {
+        ticking = false;
+        var active = secs[0];
+        for (var i = 0; i < secs.length; i++) {
+          if (secs[i].getBoundingClientRect().top <= triggerY) active = secs[i];
+        }
+        links.forEach(function (a) { a.classList.remove('on'); });
+        if (map[active.id]) map[active.id].classList.add('on');
+      }
+
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(recompute);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      recompute();
     }
   }
 
