@@ -30,7 +30,16 @@
   .sb-links a:hover{color:var(--text);background:var(--panel-2)}
   .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
   .sb-soon .sb-title{color:var(--muted-2)}
-  .sb-soon  .sb-lock{width:11px;height:11px;color:var(--muted-2);margin-left:auto}
+  .sb-lock{width:11px;height:11px;color:var(--muted-2);flex-shrink:0}
+
+  /* collapsible sidebar groups — Designing/Developing/Contributing */
+  .sb-collapse-btn{width:100%;background:none;border:none;font:inherit;cursor:pointer;text-align:left}
+  .sb-collapse-btn:hover{background:var(--panel-2);border-radius:9px}
+  .sb-chev{width:14px;height:14px;color:var(--muted-2);flex-shrink:0;margin-left:auto;transition:transform .18s}
+  .sb-collapse[data-open="true"] .sb-chev{transform:rotate(180deg)}
+  .sb-collapse-body{overflow:hidden;max-height:0;transition:max-height .2s ease}
+  .sb-collapse[data-open="true"] .sb-collapse-body{max-height:60px}
+  .sb-collapse-soon{padding:2px 12px 10px;font-size:12.5px;color:var(--muted-2);font-style:italic}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:800px;margin:0 auto}
@@ -91,6 +100,10 @@
     </div>
 
     <div class="sb-group">
+      <a class="sb-title" href="#design-principles">Design Principles</a>
+    </div>
+
+    <div class="sb-group">
       <div class="sb-title">Foundations</div>
       <nav class="sb-links">
         <a href="patterns/foundation.html">Overview</a>
@@ -104,6 +117,33 @@
         <a href="patterns/cards-border-radius.html">Cards/Border Radius</a>
         <a href="patterns/stroke.html">Stroke</a>
       </nav>
+    </div>
+
+    <div class="sb-group sb-collapse sb-soon" data-open="false">
+      <button type="button" class="sb-title sb-collapse-btn" aria-expanded="false">
+        Designing
+        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
+    </div>
+
+    <div class="sb-group sb-collapse sb-soon" data-open="false">
+      <button type="button" class="sb-title sb-collapse-btn" aria-expanded="false">
+        Developing
+        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
+    </div>
+
+    <div class="sb-group sb-collapse sb-soon" data-open="false">
+      <button type="button" class="sb-title sb-collapse-btn" aria-expanded="false">
+        Contributing
+        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
     </div>
   </aside>
 
@@ -141,8 +181,12 @@
           <a href="#" class="tile"><div class="tk">Copy &amp; Translations</div><p>Guía de copy y traducciones para el sistema.</p></a>
         </div>
 
-        <h3>Principles / Style</h3>
-        <p>These are the pillars of every design we make for our app. They are like Jedi Code, and we must apply them in all creations.</p>
+      </section>
+
+      <!-- DESIGN PRINCIPLES -->
+      <section class="doc" id="design-principles">
+        <h2>Design Principles</h2>
+        <p class="lead">These are the pillars of every design we make for our app. They are like Jedi Code, and we must apply them in all creations.</p>
         <div class="tiles">
           <a href="#" class="tile"><svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg><div class="tk">Colors</div><p>Sistema de color y tokens semánticos.</p></a>
           <a href="#" class="tile"><svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg><div class="tk">Typography</div><p>Escala tipográfica y jerarquía.</p></a>
@@ -159,7 +203,7 @@
 
 <script>
 (function(){
-  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-links a[href^="#"]'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-links a[href^="#"], a.sb-title[href^="#"]'));
   var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
   var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
   var obs = new IntersectionObserver(function(entries){
@@ -170,6 +214,17 @@
   secs.forEach(function(s){ obs.observe(s); });
 })();
 
+(function(){
+  var buttons = document.querySelectorAll('.sb-collapse-btn');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var group = btn.closest('.sb-collapse');
+      var open = group.dataset.open === 'true';
+      group.dataset.open = String(!open);
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+})();
 </script>
 </body>
 </html>
