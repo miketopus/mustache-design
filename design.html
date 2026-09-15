@@ -29,17 +29,19 @@
   .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
   .sb-links a:hover{color:var(--text);background:var(--panel-2)}
   .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
-  .sb-soon .sb-title{color:var(--muted-2)}
   .sb-lock{width:11px;height:11px;color:var(--muted-2);flex-shrink:0}
 
-  /* collapsible sidebar groups — Designing/Developing/Contributing */
-  .sb-collapse-btn{width:100%;background:none;border:none;font:inherit;cursor:pointer;text-align:left}
-  .sb-collapse-btn:hover{background:var(--panel-2);border-radius:9px}
+  /* collapsible sub-items nested inside a .sb-links list — Designing/
+     Developing/Contributing, sitting alongside plain <a> siblings, so
+     they're styled to match .sb-links a rather than a group .sb-title */
+  .sb-collapse-btn{display:flex;align-items:center;gap:6px;width:100%;background:none;border:none;font:inherit;
+    font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;cursor:pointer;text-align:left;transition:.15s}
+  .sb-collapse-btn:hover{color:var(--text);background:var(--panel-2)}
   .sb-chev{width:14px;height:14px;color:var(--muted-2);flex-shrink:0;margin-left:auto;transition:transform .18s}
-  .sb-collapse[data-open="true"] .sb-chev{transform:rotate(180deg)}
+  .sb-collapse-item[data-open="true"] .sb-chev{transform:rotate(180deg)}
   .sb-collapse-body{overflow:hidden;max-height:0;transition:max-height .2s ease}
-  .sb-collapse[data-open="true"] .sb-collapse-body{max-height:60px}
-  .sb-collapse-soon{padding:2px 12px 10px;font-size:12.5px;color:var(--muted-2);font-style:italic}
+  .sb-collapse-item[data-open="true"] .sb-collapse-body{max-height:60px}
+  .sb-collapse-soon{padding:2px 14px 10px 34px;font-size:12.5px;color:var(--muted-2);font-style:italic}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:800px;margin:0 auto}
@@ -96,11 +98,35 @@
     <div class="eyebrow" style="padding:0 12px 14px">Design</div>
 
     <div class="sb-group">
-      <a class="sb-title on" href="#get-started">Get Started</a>
-    </div>
-
-    <div class="sb-group">
-      <a class="sb-title" href="#design-principles">Design Principles</a>
+      <div class="sb-title">Get Started</div>
+      <nav class="sb-links">
+        <a href="#get-started" class="on">Get Started</a>
+        <a href="#design-principles">Design Principles</a>
+        <div class="sb-collapse-item" data-open="false">
+          <button type="button" class="sb-collapse-btn" aria-expanded="false">
+            Designing
+            <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
+        </div>
+        <div class="sb-collapse-item" data-open="false">
+          <button type="button" class="sb-collapse-btn" aria-expanded="false">
+            Developing
+            <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
+        </div>
+        <div class="sb-collapse-item" data-open="false">
+          <button type="button" class="sb-collapse-btn" aria-expanded="false">
+            Contributing
+            <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
+        </div>
+      </nav>
     </div>
 
     <div class="sb-group">
@@ -117,33 +143,6 @@
         <a href="patterns/cards-border-radius.html">Cards/Border Radius</a>
         <a href="patterns/stroke.html">Stroke</a>
       </nav>
-    </div>
-
-    <div class="sb-group sb-collapse sb-soon" data-open="false">
-      <button type="button" class="sb-title sb-collapse-btn" aria-expanded="false">
-        Designing
-        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-      <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
-    </div>
-
-    <div class="sb-group sb-collapse sb-soon" data-open="false">
-      <button type="button" class="sb-title sb-collapse-btn" aria-expanded="false">
-        Developing
-        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-      <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
-    </div>
-
-    <div class="sb-group sb-collapse sb-soon" data-open="false">
-      <button type="button" class="sb-title sb-collapse-btn" aria-expanded="false">
-        Contributing
-        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-      <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
     </div>
   </aside>
 
@@ -218,7 +217,7 @@
   var buttons = document.querySelectorAll('.sb-collapse-btn');
   buttons.forEach(function(btn){
     btn.addEventListener('click', function(){
-      var group = btn.closest('.sb-collapse');
+      var group = btn.closest('.sb-collapse-item');
       var open = group.dataset.open === 'true';
       group.dataset.open = String(!open);
       btn.setAttribute('aria-expanded', String(!open));
