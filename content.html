@@ -9,9 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/site-header.css">
-<link rel="stylesheet" href="css/sidebar-active.css">
+<link rel="stylesheet" href="css/site-sidebar.css">
 <link rel="stylesheet" href="css/hero-particles.css">
 <script src="js/site-header.js" defer></script>
+<script src="js/site-sidebar.js" defer></script>
 <script src="js/hero-particles.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
@@ -25,18 +26,6 @@
 
   /* ---------- shell ---------- */
   .shell{display:flex;align-items:flex-start}
-  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));
-    overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
-  .sb-group{margin-bottom:26px}
-  .sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);
-    font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
-  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
-  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
-  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
-  .sb-soon .sb-title{color:var(--muted-2)}
-  .sb-soon  .sb-soon .tag{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
-    border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-weight:600;margin-left:auto}
   .sb-lock{width:11px;height:11px;color:var(--muted-2)}
 
   /* ---------- main ---------- */
@@ -140,7 +129,7 @@
   .quote{border-left:3px solid var(--line-2);padding:6px 0 6px 18px;margin:14px 0;color:var(--text);font-family:var(--display);font-weight:600;font-size:16px}
 
   @media(max-width:760px){
-    .sidebar{display:none}
+    
     .main{padding:32px 22px 90px}
   }
 </style>
@@ -153,52 +142,122 @@
 <div class="shell">
 
   <!-- ============ SIDEBAR ============ -->
-  <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Content</div>
+  <script>
+    window.SIDEBAR_CONFIG = {
+  "eyebrow": "Content",
+  "groups": [
+    {
+      "items": [
+        {
+          "label": "Tone of voice &amp; UX guidelines",
+          "href": "#tone-ux"
+        },
+        {
+          "label": "Los arquetipos de Rappi",
+          "href": "#arquetipos"
+        },
+        {
+          "label": "La voz de Rappi",
+          "href": "#voz"
+        },
+        {
+          "label": "El tono de Rappi",
+          "href": "#tono"
+        },
+        {
+          "label": "Nuestro tono en cada etapa",
+          "href": "#etapas"
+        },
+        {
+          "label": "B2B Voice &amp; Tone",
+          "href": "#b2b"
+        }
+      ],
+      "title": "Voice and tone"
+    },
+    {
+      "items": [
+        {
+          "label": "Qué es y para qué sirve",
+          "href": "#pc-que"
+        },
+        {
+          "label": "Content Principles",
+          "href": "#pc-principios"
+        },
+        {
+          "label": "Tips",
+          "href": "#pc-tips"
+        }
+      ],
+      "title": "Product content"
+    },
+    {
+      "items": [
+        {
+          "label": "Ortografía",
+          "href": "#gr-orto"
+        },
+        {
+          "label": "Estilo",
+          "href": "#gr-estilo"
+        },
+        {
+          "label": "Voz activa y pasiva",
+          "href": "#gr-voz"
+        },
+        {
+          "label": "Abreviaciones",
+          "href": "#gr-abrev"
+        },
+        {
+          "label": "Lenguaje simple",
+          "href": "#gr-lenguaje"
+        },
+        {
+          "label": "Títulos y subtítulos",
+          "href": "#gr-titulos"
+        },
+        {
+          "label": "Nombres de productos",
+          "href": "#gr-nombres"
+        },
+        {
+          "label": "Microcopy",
+          "href": "#gr-microcopy"
+        },
+        {
+          "label": "Botones y links",
+          "href": "#gr-botones"
+        },
+        {
+          "label": "Fechas y números",
+          "href": "#gr-fechas"
+        },
+        {
+          "label": "Unidades de medida",
+          "href": "#gr-unidades"
+        },
+        {
+          "label": "Moneda",
+          "href": "#gr-moneda"
+        },
+        {
+          "label": "Tropicalización",
+          "href": "#gr-tropicalizacion"
+        },
+        {
+          "label": "Palabras restringidas",
+          "href": "#gr-restringidas"
+        }
+      ],
+      "title": "Grammar guidelines"
+    }
+  ]
+};
+  </script>
+  <site-sidebar></site-sidebar>
 
-    <div class="sb-group">
-      <div class="sb-title">Voice and tone</div>
-      <nav class="sb-links">
-        <a href="#tone-ux" class="on">Tone of voice &amp; UX guidelines</a>
-        <a href="#arquetipos">Los arquetipos de Rappi</a>
-        <a href="#voz">La voz de Rappi</a>
-        <a href="#tono">El tono de Rappi</a>
-        <a href="#etapas">Nuestro tono en cada etapa</a>
-        <a href="#b2b">B2B Voice &amp; Tone</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title">Product content</div>
-      <nav class="sb-links">
-        <a href="#pc-que">Qué es y para qué sirve</a>
-        <a href="#pc-principios">Content Principles</a>
-        <a href="#pc-tips">Tips</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title">Grammar guidelines</div>
-      <nav class="sb-links">
-        <a href="#gr-orto">Ortografía</a>
-        <a href="#gr-estilo">Estilo</a>
-        <a href="#gr-voz">Voz activa y pasiva</a>
-        <a href="#gr-abrev">Abreviaciones</a>
-        <a href="#gr-lenguaje">Lenguaje simple</a>
-        <a href="#gr-titulos">Títulos y subtítulos</a>
-        <a href="#gr-nombres">Nombres de productos</a>
-        <a href="#gr-microcopy">Microcopy</a>
-        <a href="#gr-botones">Botones y links</a>
-        <a href="#gr-fechas">Fechas y números</a>
-        <a href="#gr-unidades">Unidades de medida</a>
-        <a href="#gr-moneda">Moneda</a>
-        <a href="#gr-tropicalizacion">Tropicalización</a>
-        <a href="#gr-restringidas">Palabras restringidas</a>
-      </nav>
-    </div>
-  </aside>
-
-  <!-- ============ MAIN ============ -->
   <main class="main">
     <!-- HERO -->
     <div class="hero">

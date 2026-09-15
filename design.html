@@ -9,9 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/site-header.css">
-<link rel="stylesheet" href="css/sidebar-active.css">
+<link rel="stylesheet" href="css/site-sidebar.css">
 <link rel="stylesheet" href="css/hero-particles.css">
 <script src="js/site-header.js" defer></script>
+<script src="js/site-sidebar.js" defer></script>
 <script src="js/hero-particles.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
@@ -22,26 +23,6 @@
   .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
 
   .shell{display:flex;align-items:flex-start}
-  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
-  .sb-group{margin-bottom:26px}
-  .sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
-  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
-  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
-  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
-  .sb-lock{width:11px;height:11px;color:var(--muted-2);flex-shrink:0}
-
-  /* collapsible sub-items nested inside a .sb-links list — Designing/
-     Developing/Contributing, sitting alongside plain <a> siblings, so
-     they're styled to match .sb-links a rather than a group .sb-title */
-  .sb-collapse-btn{display:flex;align-items:center;gap:6px;width:100%;background:none;border:none;font:inherit;
-    font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;cursor:pointer;text-align:left;transition:.15s}
-  .sb-collapse-btn:hover{color:var(--text);background:var(--panel-2)}
-  .sb-chev{width:14px;height:14px;color:var(--muted-2);flex-shrink:0;margin-left:auto;transition:transform .18s}
-  .sb-collapse-item[data-open="true"] .sb-chev{transform:rotate(180deg)}
-  .sb-collapse-body{overflow:hidden;max-height:0;transition:max-height .2s ease}
-  .sb-collapse-item[data-open="true"] .sb-collapse-body{max-height:60px}
-  .sb-collapse-soon{padding:2px 14px 10px 34px;font-size:12.5px;color:var(--muted-2);font-style:italic}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:800px;margin:0 auto}
@@ -93,7 +74,7 @@
   .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.16s}
   .backtop:hover{background:rgba(20,20,23,.92);border-color:var(--line-2)}
 
-  @media(max-width:760px){.sidebar{display:none}.main{padding:30px 22px 90px}.hero{padding:44px 22px 36px;min-height:clamp(260px,38vh,360px)}}
+  @media(max-width:760px){.main{padding:30px 22px 90px}.hero{padding:44px 22px 36px;min-height:clamp(260px,38vh,360px)}}
 </style>
 </head>
 <body id="top">
@@ -101,57 +82,33 @@
 <site-header active="design"></site-header>
 
 <div class="shell">
-  <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Design</div>
-
-    <div class="sb-group">
-      <div class="sb-title">Get Started</div>
-      <nav class="sb-links">
-        <a href="#how-foundations-works" class="on">How Foundations works</a>
-        <a href="#design-principles">Design Principles</a>
-        <div class="sb-collapse-item" data-open="false">
-          <button type="button" class="sb-collapse-btn" aria-expanded="false">
-            Designing
-            <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-            <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
-        </div>
-        <div class="sb-collapse-item" data-open="false">
-          <button type="button" class="sb-collapse-btn" aria-expanded="false">
-            Developing
-            <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-            <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
-        </div>
-        <div class="sb-collapse-item" data-open="false">
-          <button type="button" class="sb-collapse-btn" aria-expanded="false">
-            Contributing
-            <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-            <svg class="sb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="sb-collapse-body"><p class="sb-collapse-soon">Coming soon</p></div>
-        </div>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title">Foundations</div>
-      <nav class="sb-links">
-        <a href="patterns/foundation.html">Overview</a>
-        <a href="patterns/colors.html">Colors</a>
-        <a href="patterns/typography.html">Typography</a>
-        <a href="patterns/elevation.html">Elevation</a>
-        <a href="patterns/icons.html">Icons</a>
-        <a href="patterns/illustrations-3d.html">Illustrations 3D's</a>
-        <a href="patterns/layout.html">Layout</a>
-        <a href="patterns/motion.html">Motion</a>
-        <a href="patterns/cards-border-radius.html">Cards/Border Radius</a>
-        <a href="patterns/stroke.html">Stroke</a>
-      </nav>
-    </div>
-  </aside>
+  <script>
+    window.SIDEBAR_CONFIG = {
+      eyebrow: 'Design',
+      groups: [
+        { title: 'Get Started', items: [
+          { label: 'How Foundations works', href: '#how-foundations-works' },
+          { label: 'Design Principles', href: '#design-principles' },
+          { label: 'Designing', collapse: true, locked: true },
+          { label: 'Developing', collapse: true, locked: true },
+          { label: 'Contributing', collapse: true, locked: true }
+        ]},
+        { title: 'Foundations', items: [
+          { label: 'Overview', href: 'patterns/foundation.html' },
+          { label: 'Colors', href: 'patterns/colors.html' },
+          { label: 'Typography', href: 'patterns/typography.html' },
+          { label: 'Elevation', href: 'patterns/elevation.html' },
+          { label: 'Icons', href: 'patterns/icons.html' },
+          { label: "Illustrations 3D's", href: 'patterns/illustrations-3d.html' },
+          { label: 'Layout', href: 'patterns/layout.html' },
+          { label: 'Motion', href: 'patterns/motion.html' },
+          { label: 'Cards/Border Radius', href: 'patterns/cards-border-radius.html' },
+          { label: 'Stroke', href: 'patterns/stroke.html' }
+        ]}
+      ]
+    };
+  </script>
+  <site-sidebar></site-sidebar>
 
   <main class="main">
     <!-- HERO -->
@@ -226,30 +183,5 @@
   </main>
 </div>
 
-<script>
-(function(){
-  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-links a[href^="#"], a.sb-title[href^="#"]'));
-  var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
-  var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
-  var obs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){ links.forEach(function(a){ a.classList.remove('on'); }); if(map[e.target.id]) map[e.target.id].classList.add('on'); }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-  secs.forEach(function(s){ obs.observe(s); });
-})();
-
-(function(){
-  var buttons = document.querySelectorAll('.sb-collapse-btn');
-  buttons.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var group = btn.closest('.sb-collapse-item');
-      var open = group.dataset.open === 'true';
-      group.dataset.open = String(!open);
-      btn.setAttribute('aria-expanded', String(!open));
-    });
-  });
-})();
-</script>
 </body>
 </html>

@@ -9,9 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="../css/site-header.css">
-<link rel="stylesheet" href="../css/sidebar-active.css">
+<link rel="stylesheet" href="../css/site-sidebar.css">
 <link rel="stylesheet" href="../css/hero-particles.css">
 <script src="../js/site-header.js" defer></script>
+<script src="../js/site-sidebar.js" defer></script>
 <script src="../js/hero-particles.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
@@ -22,15 +23,6 @@
   .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
 
   .shell{display:flex;align-items:flex-start}
-  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
-  .sb-group{margin-bottom:24px}
-  .sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
-  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
-  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
-  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
-  .sb-onthis .sb-title{color:var(--muted-2);font-family:var(--body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
-  .sb-onthis  .sb-onthis .sb-links a{font-size:13px}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:860px;margin:0 auto}
@@ -78,7 +70,7 @@
 
   .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.16s}
   .backtop:hover{background:rgba(20,20,23,.92);border-color:var(--line-2)}
-  @media(max-width:760px){.sidebar{display:none}.main{padding:30px 22px 90px}}
+  @media(max-width:760px){.main{padding:30px 22px 90px}}
 </style>
 </head>
 <body id="top">
@@ -86,38 +78,81 @@
 <site-header active="design"></site-header>
 
 <div class="shell">
-  <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Design</div>
-
-    <div class="sb-group">
-      <a class="sb-title" href="../design.html#how-foundations-works">How Foundations works</a>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title">Foundations</div>
-      <nav class="sb-links">
-        <a href="foundation.html">Overview</a>
-        <a href="colors.html">Colors</a>
-        <a href="typography.html">Typography</a>
-        <a href="elevation.html">Elevation</a>
-        <a href="icons.html">Icons</a>
-        <a href="illustrations-3d.html">Illustrations 3D's</a>
-        <a href="layout.html">Layout</a>
-        <a href="motion.html" class="on">Motion</a>
-        <a href="cards-border-radius.html">Cards/Border Radius</a>
-        <a href="stroke.html">Stroke</a>
-      </nav>
-    </div>
-  </aside>
-
-    <div class="sb-group sb-onthis">
-      <div class="sb-title">On this page</div>
-      <nav class="sb-links">
-        <a href="#overview" class="on">Overview</a>
-        <a href="#principios">Principles</a>
-        <a href="#do-dont">Do & Don't</a>
-      </nav>
-    </div>
+  <script>
+    window.SIDEBAR_CONFIG = {
+  "eyebrow": "Design",
+  "groups": [
+    {
+      "items": [
+        {
+          "label": "How Foundations works",
+          "href": "../design.html#how-foundations-works"
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "label": "Overview",
+          "href": "foundation.html"
+        },
+        {
+          "label": "Colors",
+          "href": "colors.html"
+        },
+        {
+          "label": "Typography",
+          "href": "typography.html"
+        },
+        {
+          "label": "Elevation",
+          "href": "elevation.html"
+        },
+        {
+          "label": "Icons",
+          "href": "icons.html"
+        },
+        {
+          "label": "Illustrations 3D's",
+          "href": "illustrations-3d.html"
+        },
+        {
+          "label": "Layout",
+          "href": "layout.html"
+        },
+        {
+          "label": "Motion",
+          "href": "motion.html"
+        },
+        {
+          "label": "Cards/Border Radius",
+          "href": "cards-border-radius.html"
+        },
+        {
+          "label": "Stroke",
+          "href": "stroke.html"
+        }
+      ],
+      "title": "Foundations"
+    }
+  ],
+  "onThisPage": [
+    {
+      "label": "Overview",
+      "href": "#overview"
+    },
+    {
+      "label": "Principles",
+      "href": "#principios"
+    },
+    {
+      "label": "Do & Don't",
+      "href": "#do-dont"
+    }
+  ]
+};
+  </script>
+  <site-sidebar></site-sidebar>
 
   <main class="main">
     <!-- HERO -->
@@ -169,13 +204,6 @@
 </div>
 
 <script>
-(function(){
-  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-onthis .sb-links a'));
-  var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
-  var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
-  var obs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(a){a.classList.remove('on');}); if(map[e.target.id]) map[e.target.id].classList.add('on'); } }); }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-  secs.forEach(function(s){ obs.observe(s); });
-})();
 </script>
 </body>
 </html>
