@@ -110,13 +110,6 @@
     </div>
   </aside>
 
-    <div class="sb-group sb-onthis">
-      <div class="sb-title">On this page</div>
-      <nav class="sb-links">
-        <a href="#overview" class="on">Overview</a>
-      </nav>
-    </div>
-
   <main class="main">
     <!-- HERO -->
     <div class="hero">
@@ -146,14 +139,5 @@
   </main>
 </div>
 
-<script>
-(function(){
-  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-onthis .sb-links a'));
-  var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
-  var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
-  var obs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(a){a.classList.remove('on');}); if(map[e.target.id]) map[e.target.id].classList.add('on'); } }); }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-  secs.forEach(function(s){ obs.observe(s); });
-})();
-</script>
 </body>
 </html>
