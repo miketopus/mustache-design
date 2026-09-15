@@ -9,7 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="../css/site-header.css">
+<link rel="stylesheet" href="../css/site-sidebar.css">
 <script src="../js/site-header.js" defer></script>
+<script src="../js/site-sidebar.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -19,17 +21,6 @@
   .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
 
   .shell{display:flex;align-items:flex-start}
-  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
-  .sb-group{margin-bottom:24px}
-  .sb-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text);font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
-  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
-  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
-  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
-  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
-  .sb-onthis .sb-title{color:var(--muted-2);font-family:var(--body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
-  .sb-onthis .sb-title .dot{display:none}
-  .sb-onthis .sb-links a{font-size:13px}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:860px;margin:0 auto}
@@ -42,7 +33,6 @@
   .meta-chip b{color:var(--text);font-weight:600}
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em;margin:28px 0 12px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
@@ -73,9 +63,9 @@
   table.cred td:first-child{color:var(--muted-2);width:120px}
   table.cred td strong{color:var(--text);font-weight:600}
 
-  .backtop{display:inline-flex;align-items:center;gap:7px;margin-top:50px;font-size:13px;color:var(--muted-2);border:1px solid var(--line);border-radius:10px;padding:8px 14px;transition:.16s}
-  .backtop:hover{color:var(--text);border-color:var(--line-2)}
-  @media(max-width:760px){.sidebar{display:none}.main{padding:30px 22px 90px}}
+  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.16s}
+  .backtop:hover{background:rgba(20,20,23,.92);border-color:var(--line-2)}
+  @media(max-width:760px){.main{padding:30px 22px 90px}}
 </style>
 </head>
 <body id="top">
@@ -83,43 +73,33 @@
 <site-header active="design"></site-header>
 
 <div class="shell">
-  <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Design</div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Overview</div>
-      <nav class="sb-links">
-        <a href="../design.html#overview">Overview</a>
-        <a href="../design.html#introduction">Introduction</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Foundation</div>
-      <nav class="sb-links">
-        <a href="foundation.html">Overview</a>
-        <a href="colors.html" class="on">Colors</a>
-        <a href="typography.html">Typography</a>
-        <a href="elevation.html">Elevation</a>
-        <a href="icons.html">Icons</a>
-        <a href="illustrations-3d.html">Illustrations 3D's</a>
-        <a href="layout.html">Layout</a>
-        <a href="motion.html">Motion</a>
-        <a href="cards-border-radius.html">Cards/Border Radius</a>
-        <a href="stroke.html">Stroke</a>
-      </nav>
-    </div>
-
-    <div class="sb-group sb-onthis">
-      <div class="sb-title">On this page</div>
-      <nav class="sb-links">
-        <a href="#intro" class="on">Introducción</a>
-        <a href="#primitivos">Primitivos</a>
-        <a href="#semanticos">Semánticos y temas</a>
-        <a href="#accesibilidad">Accesibilidad</a>
-      </nav>
-    </div>
-  </aside>
+  <script>
+    window.SIDEBAR_CONFIG = {
+      eyebrow: 'Design',
+      groups: [
+        { items: [{ label: 'How Foundations works', href: '../design.html#how-foundations-works' }] },
+        { title: 'Foundations', items: [
+          { label: 'Overview', href: 'foundation.html' },
+          { label: 'Colors', href: 'colors.html' },
+          { label: 'Typography', href: 'typography.html' },
+          { label: 'Elevation', href: 'elevation.html' },
+          { label: 'Icons', href: 'icons.html' },
+          { label: "Illustrations 3D's", href: 'illustrations-3d.html' },
+          { label: 'Layout', href: 'layout.html' },
+          { label: 'Motion', href: 'motion.html' },
+          { label: 'Cards/Border Radius', href: 'cards-border-radius.html' },
+          { label: 'Stroke', href: 'stroke.html' }
+        ]}
+      ],
+      onThisPage: [
+        { label: 'Introducción', href: '#intro' },
+        { label: 'Primitivos', href: '#primitivos' },
+        { label: 'Semánticos y temas', href: '#semanticos' },
+        { label: 'Accesibilidad', href: '#accesibilidad' }
+      ]
+    };
+  </script>
+  <site-sidebar></site-sidebar>
 
   <main class="main">
     <div class="main-inner">
@@ -133,31 +113,25 @@
       </div>
 
       <section class="doc" id="intro">
-        <div class="sec-num">01</div>
         <h2>Introducción</h2>
         <p>Los colores se organizan en dos capas: <strong>Primitivos</strong> (escalas tonales crudas) y <strong>Semánticos</strong> (tokens por rol y uso). Sobre esa base, cada equipo de producto tiene un tema propio dentro de Semánticos, garantizando que todos usen exactamente los mismos nombres de token apuntando a su propia paleta de marca.</p>
       </section>
 
       <section class="doc" id="primitivos">
-        <div class="sec-num">02</div>
         <h2>Capa 1 · Primitivos</h2>
         <p>Los primitivos son las escalas tonales que alimentan todo el sistema. Cada color parte de un valor base validado, del cual se genera un rango completo de sombras y tintes, dando a cada matiz una escala predecible y consistente.</p>
         <p>Los primitivos <strong>nunca se usan directamente</strong> en diseño: existen como fuente de verdad que los tokens semánticos referencian. Actualizar un primitivo se propaga automáticamente a todos los tokens y componentes que lo usan.</p>
-
-        <div class="note warn" id="palette-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Paleta parcial.</b> Estos swatches usan el layout real del componente <code>_color</code> de Figma, pero por ahora solo tengo las familias que pude leer del nodo seleccionado. Selecciona el frame completo de primitives en Figma y con eso lleno todas las familias y steps con sus hex exactos.</p></div>
 
         <div id="palette"></div>
       </section>
 
       <section class="doc" id="semanticos">
-        <div class="sec-num">03</div>
         <h2>Capa 2 · Semánticos y temas</h2>
         <p>Los tokens semánticos le dan propósito al color. En lugar de referenciar un valor crudo, los componentes usan tokens como <strong>Ink.Strong</strong> o <strong>Background.disabled</strong>: nombres que describen el rol, no el color en sí.</p>
         <p>Semánticos también impulsa el sistema de temas multi-producto. Cada equipo en Rappi tiene un tema dentro de la librería; todos usan exactamente los mismos nombres de token, pero los mapean a una paleta de primitivos diferente. Así un componente funciona en todos los productos sin ninguna modificación.</p>
       </section>
 
       <section class="doc" id="accesibilidad">
-        <div class="sec-num">04</div>
         <h2>Accesibilidad</h2>
         <p>Todas las combinaciones de color en Mustache se validan contra <strong>WCAG 2.1 nivel AA</strong>. Cuando una combinación no alcanza el ratio de contraste requerido, ajustamos solo la luminosidad (preservando tono y saturación) para encontrar el valor más cercano que cumpla la norma.</p>
         <table class="cred">
@@ -173,20 +147,143 @@
 </div>
 
 <script>
-  // === Paleta de primitivos (PARCIAL — se llena con el frame de Figma) ===
+  // === Paleta de primitivos — leída 1:1 de las variables de Figma
+  // (Colors/<familia>/<step>), archivo primitives, nodo tonal-palettes ===
   // Cada familia: { name, steps: [{step, hex}] }. El número usa un tono derivado.
   var PALETTE = [
     { name: 'neutrals', steps: [
-      { step: '10', hex: '#F7F8F9' },
       { step: 'white', hex: '#FFFFFF' },
-      { step: '100', hex: '#171A1E' }
-    ]},
-    { name: 'green', steps: [
-      { step: '10', hex: '#DFF9ED' }
+      { step: '10', hex: '#F7F8F9' },
+      { step: '20', hex: '#ECEFF3' },
+      { step: '30', hex: '#D6D9DF' },
+      { step: '40', hex: '#C8CDD5' },
+      { step: '50', hex: '#919AAA' },
+      { step: '60', hex: '#758195' },
+      { step: '70', hex: '#5E6777' },
+      { step: '80', hex: '#464D59' },
+      { step: '90', hex: '#2F343C' },
+      { step: '100', hex: '#171A1E' },
+      { step: 'black', hex: '#000000' }
     ]},
     { name: 'olive-green', steps: [
       { step: '10', hex: '#E1F7E7' },
-      { step: '40', hex: '#4ED16F' }
+      { step: '20', hex: '#C4F0CF' },
+      { step: '30', hex: '#89E19F' },
+      { step: '40', hex: '#4ED16F' },
+      { step: '50', hex: '#34C85A' },
+      { step: '60', hex: '#2CAA4C' },
+      { step: '70', hex: '#258E3F' },
+      { step: '80', hex: '#1D7232' },
+      { step: '90', hex: '#165526' },
+      { step: '100', hex: '#0B2B13' }
+    ]},
+    { name: 'green', steps: [
+      { step: '10', hex: '#DFF9ED' },
+      { step: '20', hex: '#CBF6E2' },
+      { step: '30', hex: '#A0EEC8' },
+      { step: '40', hex: '#64E3A6' },
+      { step: '50', hex: '#29D884' },
+      { step: '60', hex: '#00A86C' },
+      { step: '70', hex: '#177749' },
+      { step: '80', hex: '#105635' },
+      { step: '90', hex: '#083410' },
+      { step: '100', hex: '#062014' }
+    ]},
+    { name: 'yellow', steps: [
+      { step: '10', hex: '#FDFAE3' },
+      { step: '20', hex: '#FBF2B7' },
+      { step: '30', hex: '#F9EB8F' },
+      { step: '40', hex: '#F7E36B' },
+      { step: '50', hex: '#FBDC25' },
+      { step: '60', hex: '#D7BD3F' },
+      { step: '70', hex: '#9C892B' },
+      { step: '80', hex: '#625618' },
+      { step: '90', hex: '#272206' },
+      { step: '100', hex: '#141102' }
+    ]},
+    { name: 'orange', steps: [
+      { step: '10', hex: '#FCF0DF' },
+      { step: '20', hex: '#FFD8AC' },
+      { step: '30', hex: '#FFBB6D' },
+      { step: '40', hex: '#FFA640' },
+      { step: '50', hex: '#FE8F10' },
+      { step: '60', hex: '#DA7400' },
+      { step: '70', hex: '#AE5D00' },
+      { step: '80', hex: '#7A4100' },
+      { step: '90', hex: '#432400' },
+      { step: '100', hex: '#241603' }
+    ]},
+    { name: 'red', steps: [
+      { step: '10', hex: '#FFE3E3' },
+      { step: '20', hex: '#FFC7C7' },
+      { step: '30', hex: '#FF9797' },
+      { step: '40', hex: '#FF7171' },
+      { step: '50', hex: '#FF4242' },
+      { step: '60', hex: '#C43333' },
+      { step: '70', hex: '#8C2424' },
+      { step: '80', hex: '#661A1A' },
+      { step: '90', hex: '#401010' },
+      { step: '100', hex: '#260A0A' }
+    ]},
+    { name: 'teal', steps: [
+      { step: '10', hex: '#DFF4F3' },
+      { step: '20', hex: '#BFE8E6' },
+      { step: '30', hex: '#89D5D1' },
+      { step: '40', hex: '#5EC5C0' },
+      { step: '50', hex: '#28B2AB' },
+      { step: '60', hex: '#1F8984' },
+      { step: '70', hex: '#16625E' },
+      { step: '80', hex: '#104744' },
+      { step: '90', hex: '#0A2C2B' },
+      { step: '100', hex: '#061B1A' }
+    ]},
+    { name: 'blue', steps: [
+      { step: '10', hex: '#EFF6FE' },
+      { step: '20', hex: '#BDD8FB' },
+      { step: '30', hex: '#8DBBF9' },
+      { step: '40', hex: '#478CF7' },
+      { step: '50', hex: '#007AFF' },
+      { step: '60', hex: '#2C68D4' },
+      { step: '70', hex: '#1F4E9E' },
+      { step: '80', hex: '#133469' },
+      { step: '90', hex: '#061935' },
+      { step: '100', hex: '#020911' }
+    ]},
+    { name: 'indigo', steps: [
+      { step: '10', hex: '#E8E9FA' },
+      { step: '20', hex: '#D0D2F5' },
+      { step: '30', hex: '#A8ACEB' },
+      { step: '40', hex: '#898EE4' },
+      { step: '50', hex: '#6168DB' },
+      { step: '60', hex: '#4B50A9' },
+      { step: '70', hex: '#353978' },
+      { step: '80', hex: '#272A58' },
+      { step: '90', hex: '#181A37' },
+      { step: '100', hex: '#0F1021' }
+    ]},
+    { name: 'purple', steps: [
+      { step: '10', hex: '#E8E2FB' },
+      { step: '20', hex: '#D1C5F7' },
+      { step: '30', hex: '#AA95EF' },
+      { step: '40', hex: '#8B6EE9' },
+      { step: '50', hex: '#643DE2' },
+      { step: '60', hex: '#4D2FAE' },
+      { step: '70', hex: '#37227C' },
+      { step: '80', hex: '#28185A' },
+      { step: '90', hex: '#190F38' },
+      { step: '100', hex: '#0F0922' }
+    ]},
+    { name: 'magenta', steps: [
+      { step: '10', hex: '#FFE5F0' },
+      { step: '20', hex: '#FFCCE1' },
+      { step: '30', hex: '#FFA0C8' },
+      { step: '40', hex: '#FF7DB3' },
+      { step: '50', hex: '#FF529A' },
+      { step: '60', hex: '#C43F77' },
+      { step: '70', hex: '#8C2D55' },
+      { step: '80', hex: '#66213E' },
+      { step: '90', hex: '#401426' },
+      { step: '100', hex: '#260C17' }
     ]}
   ];
 
@@ -213,15 +310,6 @@
     });
     wrap.appendChild(grid); root.appendChild(wrap);
   });
-
-  // scroll-spy
-  (function(){
-    var links = Array.prototype.slice.call(document.querySelectorAll('.sb-onthis .sb-links a'));
-    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
-    var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
-    var obs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(a){a.classList.remove('on');}); if(map[e.target.id]) map[e.target.id].classList.add('on'); } }); }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-    secs.forEach(function(s){ obs.observe(s); });
-  })();
 </script>
 </body>
 </html>

@@ -9,7 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="../css/site-header.css">
+<link rel="stylesheet" href="../css/site-sidebar.css">
 <script src="../js/site-header.js" defer></script>
+<script src="../js/site-sidebar.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -19,17 +21,6 @@
   .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
 
   .shell{display:flex;align-items:flex-start}
-  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
-  .sb-group{margin-bottom:24px}
-  .sb-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text);font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
-  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
-  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
-  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
-  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
-  .sb-onthis .sb-title{color:var(--muted-2);font-family:var(--body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
-  .sb-onthis .sb-title .dot{display:none}
-  .sb-onthis .sb-links a{font-size:13px}
 
   .main{flex:1;min-width:0;padding:44px 56px 120px}
   .main-inner{max-width:820px;margin:0 auto}
@@ -42,7 +33,6 @@
   .meta-chip b{color:var(--text);font-weight:600}
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
   .doc h4{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);margin:24px 0 10px}
@@ -99,10 +89,10 @@
   .cats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
   .cats span{font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:7px 12px}
 
-  .backtop{display:inline-flex;align-items:center;gap:7px;margin-top:50px;font-size:13px;color:var(--muted-2);border:1px solid var(--line);border-radius:10px;padding:8px 14px;transition:.16s}
-  .backtop:hover{color:var(--text);border-color:var(--line-2)}
+  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.16s}
+  .backtop:hover{background:rgba(20,20,23,.92);border-color:var(--line-2)}
 
-  @media(max-width:760px){.sidebar{display:none}.main{padding:30px 22px 90px}}
+  @media(max-width:760px){.main{padding:30px 22px 90px}}
 </style>
 </head>
 <body id="top">
@@ -110,49 +100,109 @@
 <site-header active="design"></site-header>
 
 <div class="shell">
-  <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Design</div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Overview</div>
-      <nav class="sb-links">
-        <a href="../design.html#overview">Overview</a>
-        <a href="../design.html#introduction">Introduction</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Foundation</div>
-      <nav class="sb-links">
-        <a href="foundation.html">Overview</a>
-        <a href="colors.html">Colors</a>
-        <a href="typography.html">Typography</a>
-        <a href="elevation.html">Elevation</a>
-        <a href="icons.html" class="on">Icons</a>
-        <a href="illustrations-3d.html">Illustrations 3D's</a>
-        <a href="layout.html">Layout</a>
-        <a href="motion.html">Motion</a>
-        <a href="cards-border-radius.html">Cards/Border Radius</a>
-        <a href="stroke.html">Stroke</a>
-      </nav>
-    </div>
-
-    <div class="sb-group sb-onthis">
-      <div class="sb-title">On this page</div>
-      <nav class="sb-links">
-        <a href="#que" class="on">¿Qué es un ícono?</a>
-        <a href="#principios">Principios de diseño</a>
-        <a href="#anatomia">Anatomía</a>
-        <a href="#estilos">Estilos</a>
-        <a href="#construccion">Construcción</a>
-        <a href="#nombrado">Nombrado y organización</a>
-        <a href="#categorias">Categorías</a>
-        <a href="#exportacion">Exportación</a>
-        <a href="#gobernanza">Gobernanza</a>
-        <a href="#checklist">Checklist de calidad</a>
-      </nav>
-    </div>
-  </aside>
+  <script>
+    window.SIDEBAR_CONFIG = {
+  "eyebrow": "Design",
+  "groups": [
+    {
+      "items": [
+        {
+          "label": "How Foundations works",
+          "href": "../design.html#how-foundations-works"
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "label": "Overview",
+          "href": "foundation.html"
+        },
+        {
+          "label": "Colors",
+          "href": "colors.html"
+        },
+        {
+          "label": "Typography",
+          "href": "typography.html"
+        },
+        {
+          "label": "Elevation",
+          "href": "elevation.html"
+        },
+        {
+          "label": "Icons",
+          "href": "icons.html"
+        },
+        {
+          "label": "Illustrations 3D's",
+          "href": "illustrations-3d.html"
+        },
+        {
+          "label": "Layout",
+          "href": "layout.html"
+        },
+        {
+          "label": "Motion",
+          "href": "motion.html"
+        },
+        {
+          "label": "Cards/Border Radius",
+          "href": "cards-border-radius.html"
+        },
+        {
+          "label": "Stroke",
+          "href": "stroke.html"
+        }
+      ],
+      "title": "Foundations"
+    }
+  ],
+  "onThisPage": [
+    {
+      "label": "¿Qué es un ícono?",
+      "href": "#que"
+    },
+    {
+      "label": "Principios de diseño",
+      "href": "#principios"
+    },
+    {
+      "label": "Anatomía",
+      "href": "#anatomia"
+    },
+    {
+      "label": "Estilos",
+      "href": "#estilos"
+    },
+    {
+      "label": "Construcción",
+      "href": "#construccion"
+    },
+    {
+      "label": "Nombrado y organización",
+      "href": "#nombrado"
+    },
+    {
+      "label": "Categorías",
+      "href": "#categorias"
+    },
+    {
+      "label": "Exportación",
+      "href": "#exportacion"
+    },
+    {
+      "label": "Gobernanza",
+      "href": "#gobernanza"
+    },
+    {
+      "label": "Checklist de calidad",
+      "href": "#checklist"
+    }
+  ]
+};
+  </script>
+  <site-sidebar></site-sidebar>
 
   <main class="main">
     <div class="main-inner">
@@ -167,7 +217,6 @@
       </div>
 
       <section class="doc" id="que">
-        <div class="sec-num">01</div>
         <h2>¿Qué es un ícono?</h2>
         <p>Los íconos son símbolos visuales que representan objetos, acciones o conceptos de forma inmediata y universal. Son independientes del idioma, ocupan poco espacio y reducen la carga cognitiva del usuario cuando se usan correctamente.</p>
         <p>Un ícono efectivo es:</p>
@@ -181,7 +230,6 @@
       </section>
 
       <section class="doc" id="principios">
-        <div class="sec-num">02</div>
         <h2>Principios de diseño</h2>
         <p>Los íconos son una extensión visual de la marca. <strong>Rappi es directa, accesible, dinámica y cercana</strong>, y eso se traduce en íconos que:</p>
         <ul>
@@ -200,7 +248,6 @@
       </section>
 
       <section class="doc" id="anatomia">
-        <div class="sec-num">03</div>
         <h2>Anatomía del ícono</h2>
         <h3>Grilla base</h3>
         <p>Todos los íconos se construyen sobre una grilla de <strong>24×24px</strong>, con un área viva de <strong>20×20px</strong> y un margen de contenedor de <strong>2px</strong> por lado.</p>
@@ -233,7 +280,6 @@
       </section>
 
       <section class="doc" id="estilos">
-        <div class="sec-num">04</div>
         <h2>Estilos</h2>
         <p>Rappi tiene dos estilos de íconos; la elección depende del contexto y la necesidad de comunicación.</p>
         <div class="cards">
@@ -258,7 +304,6 @@
       </section>
 
       <section class="doc" id="construccion">
-        <div class="sec-num">05</div>
         <h2>Construcción</h2>
         <h3>Color</h3>
         <p>Los íconos de producto usan <strong>un solo color: negro</strong> (o el color de texto del sistema), para que sean fáciles de reutilizar y adaptar.</p>
@@ -309,7 +354,6 @@
       </section>
 
       <section class="doc" id="nombrado">
-        <div class="sec-num">06</div>
         <h2>Nombrado y organización</h2>
         <p>Nombra los íconos por <strong>lo que representan visualmente</strong>, no por su función conceptual.</p>
         <div class="tbl-wrap"><table>
@@ -333,7 +377,6 @@
       </section>
 
       <section class="doc" id="categorias">
-        <div class="sec-num">07</div>
         <h2>Categorías del sistema</h2>
         <p>El set de íconos de Rappi está organizado en las siguientes categorías:</p>
         <div class="cats">
@@ -342,7 +385,6 @@
       </section>
 
       <section class="doc" id="exportacion">
-        <div class="sec-num">08</div>
         <h2>Exportación y formatos</h2>
         <div class="tbl-wrap"><table>
           <thead><tr><th>Formato</th><th>Uso</th></tr></thead>
@@ -356,7 +398,6 @@
       </section>
 
       <section class="doc" id="gobernanza">
-        <div class="sec-num">09</div>
         <h2>Gobernanza y colaboración</h2>
         <h3>Quién puede editar</h3>
         <p>El archivo maestro tiene edición <strong>solo para el equipo de Design Systems</strong>; el resto tiene acceso de visualización y uso de librería. Así cada ícono se audita antes de entrar, no hay duplicados y los cambios se propagan a todos los usos.</p>
@@ -374,7 +415,6 @@
       </section>
 
       <section class="doc" id="checklist">
-        <div class="sec-num">10</div>
         <h2>Checklist de calidad</h2>
         <p>Antes de agregar un ícono al sistema, verifica:</p>
         <ul>
@@ -396,17 +436,5 @@
     </div>
   </main>
 </div>
-
-<script>
-(function(){
-  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-onthis .sb-links a'));
-  var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
-  var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
-  var obs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(a){a.classList.remove('on');}); if(map[e.target.id]) map[e.target.id].classList.add('on'); } });
-  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-  secs.forEach(function(s){ obs.observe(s); });
-})();
-</script>
 </body>
 </html>

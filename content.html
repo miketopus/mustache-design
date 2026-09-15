@@ -9,7 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/site-header.css">
+<link rel="stylesheet" href="css/site-sidebar.css">
+<link rel="stylesheet" href="css/hero-particles.css">
 <script src="js/site-header.js" defer></script>
+<script src="js/site-sidebar.js" defer></script>
+<script src="js/hero-particles.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -22,20 +26,6 @@
 
   /* ---------- shell ---------- */
   .shell{display:flex;align-items:flex-start}
-  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));
-    overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
-  .sb-group{margin-bottom:26px}
-  .sb-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text);
-    font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
-  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
-  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
-  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
-  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
-  .sb-soon .sb-title{color:var(--muted-2)}
-  .sb-soon .sb-title .dot{background:var(--muted-2)}
-  .sb-soon .tag{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
-    border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-weight:600;margin-left:auto}
   .sb-lock{width:11px;height:11px;color:var(--muted-2)}
 
   /* ---------- main ---------- */
@@ -49,7 +39,6 @@
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
   section.doc:first-of-type{padding-top:40px}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
   .doc h4{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);margin:26px 0 12px}
@@ -115,9 +104,9 @@
   .doc ul li::before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--muted-2)}
   .doc ul li strong{color:var(--text);font-weight:600}
 
-  .backtop{display:inline-flex;align-items:center;gap:7px;margin-top:50px;font-size:13px;color:var(--muted-2);
-    border:1px solid var(--line);border-radius:10px;padding:8px 14px;transition:.16s}
-  .backtop:hover{color:var(--text);border-color:var(--line-2)}
+  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.85);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.16s}
+  .backtop:hover{background:rgba(20,20,23,.92);border-color:var(--line-2)}
 
   /* tables */
   .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:18px 0}
@@ -140,7 +129,7 @@
   .quote{border-left:3px solid var(--line-2);padding:6px 0 6px 18px;margin:14px 0;color:var(--text);font-family:var(--display);font-weight:600;font-size:16px}
 
   @media(max-width:760px){
-    .sidebar{display:none}
+    
     .main{padding:32px 22px 90px}
   }
 </style>
@@ -153,63 +142,139 @@
 <div class="shell">
 
   <!-- ============ SIDEBAR ============ -->
-  <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Content</div>
+  <script>
+    window.SIDEBAR_CONFIG = {
+  "eyebrow": "Content",
+  "groups": [
+    {
+      "items": [
+        {
+          "label": "Tone of voice &amp; UX guidelines",
+          "href": "#tone-ux"
+        },
+        {
+          "label": "Los arquetipos de Rappi",
+          "href": "#arquetipos"
+        },
+        {
+          "label": "La voz de Rappi",
+          "href": "#voz"
+        },
+        {
+          "label": "El tono de Rappi",
+          "href": "#tono"
+        },
+        {
+          "label": "Nuestro tono en cada etapa",
+          "href": "#etapas"
+        },
+        {
+          "label": "B2B Voice &amp; Tone",
+          "href": "#b2b"
+        }
+      ],
+      "title": "Voice and tone"
+    },
+    {
+      "items": [
+        {
+          "label": "Qué es y para qué sirve",
+          "href": "#pc-que"
+        },
+        {
+          "label": "Content Principles",
+          "href": "#pc-principios"
+        },
+        {
+          "label": "Tips",
+          "href": "#pc-tips"
+        }
+      ],
+      "title": "Product content"
+    },
+    {
+      "items": [
+        {
+          "label": "Ortografía",
+          "href": "#gr-orto"
+        },
+        {
+          "label": "Estilo",
+          "href": "#gr-estilo"
+        },
+        {
+          "label": "Voz activa y pasiva",
+          "href": "#gr-voz"
+        },
+        {
+          "label": "Abreviaciones",
+          "href": "#gr-abrev"
+        },
+        {
+          "label": "Lenguaje simple",
+          "href": "#gr-lenguaje"
+        },
+        {
+          "label": "Títulos y subtítulos",
+          "href": "#gr-titulos"
+        },
+        {
+          "label": "Nombres de productos",
+          "href": "#gr-nombres"
+        },
+        {
+          "label": "Microcopy",
+          "href": "#gr-microcopy"
+        },
+        {
+          "label": "Botones y links",
+          "href": "#gr-botones"
+        },
+        {
+          "label": "Fechas y números",
+          "href": "#gr-fechas"
+        },
+        {
+          "label": "Unidades de medida",
+          "href": "#gr-unidades"
+        },
+        {
+          "label": "Moneda",
+          "href": "#gr-moneda"
+        },
+        {
+          "label": "Tropicalización",
+          "href": "#gr-tropicalizacion"
+        },
+        {
+          "label": "Palabras restringidas",
+          "href": "#gr-restringidas"
+        }
+      ],
+      "title": "Grammar guidelines"
+    }
+  ]
+};
+  </script>
+  <site-sidebar></site-sidebar>
 
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Voice and tone</div>
-      <nav class="sb-links">
-        <a href="#tone-ux" class="on">Tone of voice &amp; UX guidelines</a>
-        <a href="#arquetipos">Los arquetipos de Rappi</a>
-        <a href="#voz">La voz de Rappi</a>
-        <a href="#tono">El tono de Rappi</a>
-        <a href="#etapas">Nuestro tono en cada etapa</a>
-        <a href="#b2b">B2B Voice &amp; Tone</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Product content</div>
-      <nav class="sb-links">
-        <a href="#pc-que">Qué es y para qué sirve</a>
-        <a href="#pc-principios">Content Principles</a>
-        <a href="#pc-tips">Tips</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Grammar guidelines</div>
-      <nav class="sb-links">
-        <a href="#gr-orto">Ortografía</a>
-        <a href="#gr-estilo">Estilo</a>
-        <a href="#gr-voz">Voz activa y pasiva</a>
-        <a href="#gr-abrev">Abreviaciones</a>
-        <a href="#gr-lenguaje">Lenguaje simple</a>
-        <a href="#gr-titulos">Títulos y subtítulos</a>
-        <a href="#gr-nombres">Nombres de productos</a>
-        <a href="#gr-microcopy">Microcopy</a>
-        <a href="#gr-botones">Botones y links</a>
-        <a href="#gr-fechas">Fechas y números</a>
-        <a href="#gr-unidades">Unidades de medida</a>
-        <a href="#gr-moneda">Moneda</a>
-        <a href="#gr-tropicalizacion">Tropicalización</a>
-        <a href="#gr-restringidas">Palabras restringidas</a>
-      </nav>
-    </div>
-  </aside>
-
-  <!-- ============ MAIN ============ -->
   <main class="main">
-    <div class="main-inner">
+    <!-- HERO -->
+    <div class="hero">
+      <canvas class="hero-particles" aria-hidden="true"></canvas>
+      <div class="hero-fade" aria-hidden="true"></div>
+      <div class="hero-in">
+        <div class="crumb"><b>Content</b> <span>/</span> Voice and tone</div>
+        <h1 class="page-h1 display">Voice and tone</h1>
+        <p class="page-lead">Conoce cómo es la voz (personalidad) y el tono (estilo) de Rappi.</p>
+        <p class="page-lead">Encuentra, paso a paso, la manera ideal para hacer de nuestra marca una más consistente en todos los productos, servicios y formatos en los que tiene presencia.</p>
+      </div>
+    </div>
 
-      <div class="crumb"><b>Content</b> <span>/</span> Voice and tone</div>
-      <h1 class="page-h1 display">Voice and tone</h1>
-      <p class="page-lead">Conoce cómo es la voz (personalidad) y el tono (estilo) de Rappi.</p>
-      <p class="page-lead">Encuentra, paso a paso, la manera ideal para hacer de nuestra marca una más consistente en todos los productos, servicios y formatos en los que tiene presencia.</p>
+    <div class="main-inner">
 
       <!-- 1 -->
       <section class="doc" id="tone-ux">
-        <div class="sec-num">01</div>
         <h2>Tone of voice and UX guidelines</h2>
         <p>Conoce cómo es la voz (personalidad) y el tono (estilo) de Rappi.</p>
 
@@ -221,7 +286,6 @@
 
       <!-- 2 -->
       <section class="doc" id="arquetipos">
-        <div class="sec-num">02</div>
         <h2>Los arquetipos de Rappi</h2>
         <p>Cuando hablamos de los arquetipos de una marca, hacemos referencia a esos rasgos de su personalidad que la hacen única a través de su voz y tono.</p>
         <p>En Rappi, nuestros arquetipos reflejan aquello que nos hace ser innovadores, disruptivos y diferentes en cualquier acción.</p>
@@ -245,7 +309,6 @@
 
       <!-- 3 -->
       <section class="doc" id="voz">
-        <div class="sec-num">03</div>
         <h2>La voz de Rappi</h2>
         <p>Rappi se caracteriza por tener una personalidad <strong>honesta, valiente y práctica</strong>.</p>
         <p>A través de ella representamos que somos la superapp que le ayuda a hacer su vida más fácil a las personas; por eso cada frase, botón o pantalla, tanto dentro como fuera de la app, debe demostrarlo.</p>
@@ -270,7 +333,6 @@
 
       <!-- 4 -->
       <section class="doc" id="tono">
-        <div class="sec-num">04</div>
         <h2>El tono de Rappi</h2>
         <p>En una marca tan diversa y con diferentes etapas como Rappi, debemos tener presente sus diversas formas de comunicar para lograr que nuestra interfaz guíe y conecte con nuestras personas usuarias.</p>
         <p>El tono de Rappi se adapta según el contexto, sentimientos y emociones de los usuarios; cada etapa es un punto de partida para conectar y brindar la mejor solución.</p>
@@ -291,7 +353,6 @@
 
       <!-- 5 -->
       <section class="doc" id="etapas">
-        <div class="sec-num">05</div>
         <h2>Nuestro tono en cada etapa</h2>
         <p>Aquí las palabras son nuestras aliadas: a través de ellas conectamos con las emociones y sentimientos de nuestras personas usuarias en los diferentes momentos del app.</p>
 
@@ -346,7 +407,6 @@
 
       <!-- 6 -->
       <section class="doc" id="b2b">
-        <div class="sec-num">06</div>
         <h2>B2B Voice &amp; Tone</h2>
         <p>Conoce la voz y el tono de Rappi con nuestros aliados: cómo se siente en todos los productos, servicios y formatos en los que tenemos presencia.</p>
 
@@ -409,14 +469,12 @@
       </div>
 
       <section class="doc" id="pc-que">
-        <div class="sec-num">01</div>
         <h2>Qué es y para qué sirve</h2>
         <p>Cuando hablamos de product content, no solo nos referimos a los textos que los productos contienen dentro de su card o ficha técnica, sino también al diseño en general que se crea en conjunto con el contenido y la UI en toda la interfaz.</p>
         <p>A continuación te damos algunos consejos para ser más consistentes, estratégicos y claros en el product content de nuestra app, y así brindarle una mejor experiencia a nuestras personas usuarias.</p>
       </section>
 
       <section class="doc" id="pc-principios">
-        <div class="sec-num">02</div>
         <h2>Content Principles</h2>
         <div class="cards two">
           <div class="acard"><div class="k">01 · Demuéstrales que son nuestra prioridad</div><p>Cada palabra dentro de nuestra interfaz es una oportunidad para demostrarle a las personas usuarias que realmente nos fijamos en cada detalle para brindarles la mejor experiencia.</p></div>
@@ -427,7 +485,6 @@
       </section>
 
       <section class="doc" id="pc-tips">
-        <div class="sec-num">03</div>
         <h2>Tips</h2>
         <ul>
           <li>Escribe <strong>frases cortas</strong>: 3 renglones es el largo ideal.</li>
@@ -450,7 +507,6 @@
       </div>
 
       <section class="doc" id="gr-orto">
-        <div class="sec-num">01</div>
         <h2>Ortografía</h2>
         <h3>Uso de mayúsculas y minúsculas</h3>
         <p>El uso de mayúsculas siempre debe aplicarse en:</p>
@@ -463,14 +519,12 @@
       </section>
 
       <section class="doc" id="gr-estilo">
-        <div class="sec-num">02</div>
         <h2>Estilo</h2>
         <p>El manual de estilo de la marca es una guía para diseñadores UI/UX, developers, researchers, content writers y demás colaboradores que escriben al público con la voz de Rappi desde sus diferentes funciones.</p>
         <p>Nos ayuda a mantener como marca una redacción consistente, empática y clara con las personas usuarias a través de la interfaz.</p>
       </section>
 
       <section class="doc" id="gr-voz">
-        <div class="sec-num">03</div>
         <h2>Voz activa y voz pasiva</h2>
         <h3>Voz activa</h3>
         <p>Es el tipo de voz gramatical donde el sujeto de la oración realiza, ejecuta o controla la acción. En Rappi, para la mayoría de situaciones, usamos voz activa: expresamos las acciones que nuestros colaboradores, RT's o aliados están realizando.</p>
@@ -487,7 +541,6 @@
       </section>
 
       <section class="doc" id="gr-abrev">
-        <div class="sec-num">04</div>
         <h2>Abreviaciones</h2>
         <p>Su objetivo es ser más puntuales, cercanos y casuales al comunicarnos con las personas usuarias, haciendo más entendibles y precisos nuestros mensajes.</p>
         <p class="tcap">La etiqueta de cuál ejemplo es "correcto" y cuál "evitar" es visual en el sitio; se conservan como pares de comparación.</p>
@@ -514,7 +567,6 @@
       </section>
 
       <section class="doc" id="gr-lenguaje">
-        <div class="sec-num">05</div>
         <h2>Lenguaje explicativo y simple</h2>
         <p>Usar un lenguaje cercano y común al explicar cualquier situación nos hace sencillos y fáciles de entender; por eso evitamos tecnicismos y localismos.</p>
         <p>Cada frase que comuniquemos debe tener:</p>
@@ -543,7 +595,6 @@
       </section>
 
       <section class="doc" id="gr-titulos">
-        <div class="sec-num">06</div>
         <h2>Títulos y subtítulos</h2>
         <p>Su función es comunicar de manera concisa, rápida y jerárquica la información que las personas encontrarán a continuación. Ten en cuenta que:</p>
         <ul>
@@ -575,7 +626,6 @@
       </section>
 
       <section class="doc" id="gr-nombres">
-        <div class="sec-num">07</div>
         <h2>Nombres de productos y tooltips</h2>
         <p>Al mencionar un producto propio, funcionalidad o nombre específico, sigue estos lineamientos para lograr uniformidad y estándares de calidad:</p>
         <ul>
@@ -588,7 +638,6 @@
       </section>
 
       <section class="doc" id="gr-microcopy">
-        <div class="sec-num">08</div>
         <h2>Microcopy</h2>
         <p>El microcopy es el mensaje específico, corto y detonador usado en una web o interfaz. Es el responsable de impulsar al usuario a realizar una acción o de entenderla de forma rápida. Es ideal para:</p>
         <ul>
@@ -602,7 +651,6 @@
       </section>
 
       <section class="doc" id="gr-botones">
-        <div class="sec-num">09</div>
         <h2>Botones y links</h2>
         <p>Los botones o CTA son los elementos clickeables que, mediante un lenguaje imperativo, guían a los usuarios a tomar una decisión. Al crearlos, recuerda:</p>
         <ul>
@@ -616,7 +664,6 @@
       </section>
 
       <section class="doc" id="gr-fechas">
-        <div class="sec-num">10</div>
         <h2>Fechas y números</h2>
         <p>Organizar correctamente cifras numéricas, telefónicas y fechas permite una experiencia de uso mucho más sencilla.</p>
         <h3>Números telefónicos</h3>
@@ -646,7 +693,6 @@
       </section>
 
       <section class="doc" id="gr-unidades">
-        <div class="sec-num">11</div>
         <h2>Unidades de medida</h2>
         <p>Guía trilingüe (Español · Português · English) de uso correcto e incorrecto.</p>
         <h3>Fechas</h3>
@@ -684,7 +730,6 @@
       </section>
 
       <section class="doc" id="gr-moneda">
-        <div class="sec-num">12</div>
         <h2>Moneda</h2>
         <div class="tbl-wrap"><table>
           <thead><tr><th>País</th><th>Símbolo</th><th>ISO</th><th>Uso correcto</th><th>Uso incorrecto</th></tr></thead>
@@ -703,13 +748,11 @@
       </section>
 
       <section class="doc" id="gr-tropicalizacion">
-        <div class="sec-num">13</div>
         <h2>Tropicalización</h2>
         <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Pendiente por llenar:</b> al momento de la extracción, esta página del sitio mostraba contenido placeholder de zeroheight (texto de plantilla en inglés sobre design principles), no contenido real de Rappi.</p></div>
       </section>
 
       <section class="doc" id="gr-restringidas">
-        <div class="sec-num">14</div>
         <h2>Palabras con restricción de uso</h2>
         <h3>Soy Rappi</h3>
         <p>En Soy Rappi no tenemos un vínculo laboral directo con los repartidores. Por eso existen palabras o expresiones que no debemos usar, para evitar inconvenientes legales.</p>

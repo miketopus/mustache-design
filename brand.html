@@ -9,7 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/site-header.css">
+<link rel="stylesheet" href="css/site-sidebar.css">
+<link rel="stylesheet" href="css/hero-particles.css">
 <script src="js/site-header.js" defer></script>
+<script src="js/site-sidebar.js" defer></script>
+<script src="js/hero-particles.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -20,16 +24,6 @@
 
   /* ---------- shell ---------- */
   .shell{display:flex;align-items:flex-start}
-  .sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));
-    overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
-  .sb-group{margin-bottom:26px}
-  .sb-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text);
-    font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px}
-  .sb-title .dot{width:6px;height:6px;border-radius:50%;background:var(--white)}
-  .sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
-  .sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
-  .sb-links a:hover{color:var(--text);background:var(--panel-2)}
-  .sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
 
   /* ---------- main ---------- */
   .main{flex:1;min-width:0;padding:44px 56px 120px}
@@ -41,7 +35,6 @@
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
   section.doc:first-of-type{padding-top:40px}
-  .sec-num{font-family:var(--display);font-size:12px;font-weight:700;color:var(--muted-2);letter-spacing:.04em;margin-bottom:10px}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
@@ -121,12 +114,12 @@
   @font-face{font-family:'PP Object Sans';src:url(assets/identidad-visual/fonts/PPObjectSans-Bold.otf) format('opentype');font-weight:700;font-display:swap}
   @font-face{font-family:'PP Object Sans';src:url(assets/identidad-visual/fonts/PPObjectSans-Heavy.otf) format('opentype');font-weight:900;font-display:swap}
 
-  .iv{font-family:'PP Object Sans',var(--body);color:#141414;background:#fff;border-radius:24px;overflow:hidden;
-    margin-top:8px;box-shadow:0 0 0 1px var(--line)}
+  .iv{font-family:'PP Object Sans',var(--body);color:#141414;background:#fff;border-radius:0 0 24px 24px;overflow:hidden;
+    margin:0 -56px 0;box-shadow:0 0 0 1px var(--line)}
 
   .iv-hero{position:relative;padding:56px 44px 44px;color:#fff;
     background:linear-gradient(-45deg,#FF7A4D 0%,#FF2526 52%,#FF4583 100%)}
-  .iv-hero .iv-mustache{width:34px;height:auto;fill:#fff;opacity:.92;margin-bottom:22px;display:block}
+  .iv-hero .iv-logo{width:110px;height:auto;margin-bottom:26px;display:block}
   .iv-hero .iv-eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.9;margin-bottom:14px}
   .iv-hero .iv-eyebrow::before{content:"";width:22px;height:1px;background:rgba(255,255,255,.65)}
   .iv-hero h2{font-family:'PP Object Sans',var(--display);font-weight:900;font-size:clamp(30px,5vw,48px);letter-spacing:-.01em;margin:0}
@@ -141,8 +134,7 @@
   .iv-panel[hidden]{display:none}
   .iv-block{margin-bottom:52px}
   .iv-block:last-child{margin-bottom:0}
-  .iv-eyebrow-sm{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b7b7bb;margin-bottom:12px}
-  .iv-eyebrow-sm .dot{width:6px;height:6px;border-radius:50%;background:#FF2526;flex-shrink:0}
+  .iv-eyebrow-sm{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b7b7bb;margin-bottom:12px}
   .iv-block h3.iv-h{font-family:'PP Object Sans',var(--display);font-weight:900;font-size:clamp(22px,3vw,28px);margin-bottom:8px;letter-spacing:-.01em;color:#141414}
   .iv-block > p.iv-desc{color:#6b6b6f;font-size:14.5px;max-width:600px;margin-bottom:22px}
 
@@ -330,10 +322,11 @@
   .lg-cobrand-note{font-size:12px;color:#9a9a9e}
 
   @media(max-width:760px){
-    .sidebar{display:none}
+    
     .main{padding:32px 22px 90px}
     .pm{padding:22px}
     .iv-hero,.iv-tabbar,.iv-content{padding-left:22px;padding-right:22px}
+    .iv{margin-left:-22px;margin-right:-22px}
     .iv-patterns,.iv-formats{grid-template-columns:1fr}
   }
 </style>
@@ -344,45 +337,74 @@
 
 <div class="shell">
 
-  <aside class="sidebar">
-    <div class="eyebrow" style="padding:0 12px 14px">Brand</div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Overview</div>
-      <nav class="sb-links">
-        <a href="#overview" class="on">Overview</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Herramientas</div>
-      <nav class="sb-links">
-        <a href="#promptmaker">PromptMaker Neon</a>
-      </nav>
-    </div>
-
-    <div class="sb-group">
-      <div class="sb-title"><span class="dot"></span> Identidad Visual</div>
-      <nav class="sb-links">
-        <a href="#identidad-visual" onclick="ivShowTab('logo')">Logo</a>
-        <a href="#identidad-visual" onclick="ivShowTab('color')">Sistema de Color</a>
-        <a href="#identidad-visual" onclick="ivShowTab('tipo')">Tipografía</a>
-        <a href="#identidad-visual" onclick="ivShowTab('foto')">Fotografía</a>
-      </nav>
-    </div>
-  </aside>
+  <script>
+    window.SIDEBAR_CONFIG = {
+  "eyebrow": "Brand",
+  "groups": [
+    {
+      "items": [
+        {
+          "label": "Overview",
+          "href": "#overview"
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "label": "PromptMaker Neon",
+          "href": "#promptmaker"
+        }
+      ],
+      "title": "Herramientas"
+    },
+    {
+      "items": [
+        {
+          "label": "Logo",
+          "href": "#identidad-visual",
+          "onclick": "ivShowTab('logo')"
+        },
+        {
+          "label": "Sistema de Color",
+          "href": "#identidad-visual",
+          "onclick": "ivShowTab('color')"
+        },
+        {
+          "label": "Tipografía",
+          "href": "#identidad-visual",
+          "onclick": "ivShowTab('tipo')"
+        },
+        {
+          "label": "Fotografía",
+          "href": "#identidad-visual",
+          "onclick": "ivShowTab('foto')"
+        }
+      ],
+      "title": "Identidad Visual"
+    }
+  ]
+};
+  </script>
+  <site-sidebar></site-sidebar>
 
   <main class="main">
-    <div class="main-inner">
+    <!-- HERO -->
+    <div class="hero">
+      <canvas class="hero-particles" aria-hidden="true"></canvas>
+      <div class="hero-fade" aria-hidden="true"></div>
+      <div class="hero-in">
+        <div class="crumb"><b>Brand</b> <span>/</span> Overview</div>
+        <h1 class="page-h1 display">Brand</h1>
+        <div class="eyebrow" style="margin:-10px 0 18px">Content Power House</div>
+        <p class="page-lead">Todo lo que sostiene la marca Rappi: cómo se genera el sistema de íconos con IA y la identidad visual que define logo, color, tipografía y fotografía.</p>
+      </div>
+    </div>
 
-      <div class="crumb"><b>Brand</b> <span>/</span> Overview</div>
-      <h1 class="page-h1 display">Brand</h1>
-      <div class="eyebrow" style="margin:-10px 0 18px">Content Power House</div>
-      <p class="page-lead">Todo lo que sostiene la marca Rappi: cómo se genera el sistema de íconos con IA y la identidad visual que define logo, color, tipografía y fotografía.</p>
+    <div class="main-inner">
 
       <!-- OVERVIEW -->
       <section class="doc" id="overview">
-        <div class="sec-num">01</div>
         <h2>Overview</h2>
         <p class="lead">Esta sección reúne las herramientas y referencias que usa el equipo de marca día a día.</p>
         <div class="tiles">
@@ -403,7 +425,6 @@
 
       <!-- PROMPTMAKER NEON -->
       <section class="doc" id="promptmaker">
-        <div class="sec-num">02</div>
         <h2>PromptMaker Neon</h2>
         <p class="lead">El motor de prompts que arma los íconos 3D de la app. Cada fila del sheet es una fórmula: estilo + producto + especificaciones + color de fondo = prompt listo para MidJourney.</p>
 
@@ -458,19 +479,19 @@
         </div>
       </section>
 
+      </div>
+
       <!-- IDENTIDAD VISUAL -->
       <section class="doc" id="identidad-visual">
-        <div class="sec-num">03</div>
-        <h2>Identidad Visual</h2>
-        <p class="lead">Réplica exacta del capítulo 04 del Brand Book 2026: logo, sistema de color, tipografía y fotografía de marca.</p>
+        <div class="main-inner">
+          <h2>Identidad Visual</h2>
+          <p class="lead">Réplica exacta del capítulo 04 del Brand Book 2026: logo, sistema de color, tipografía y fotografía de marca.</p>
+        </div>
 
         <div class="iv">
 
           <div class="iv-hero">
-            <svg class="iv-mustache" viewBox="0 0 120 46" xmlns="http://www.w3.org/2000/svg"><path d="M60 15 C56 9 49 8 42 10 C33 12.5 26 18 17 26 C12 30.5 7 33 4 31.5 C1.5 30.2 3 26 8 22
-              C2 27 0.5 33 5 35.5 C9 37.7 15 34 21 29 C29 22.5 37 20.5 45 23 C50.5 24.7 55.5 26 60 24
-              C64.5 26 69.5 24.7 75 23 C83 20.5 91 22.5 99 29 C105 34 111 37.7 115 35.5 C119.5 33 118 27 112 22
-              C117 26 118.5 30.2 116 31.5 C113 33 108 30.5 103 26 C94 18 87 12.5 78 10 C71 8 64 9 60 15 Z"/></svg>
+            <span class="rp-logo white iv-logo"></span>
             <div class="iv-eyebrow">Capítulo 04</div>
             <h2>Identidad Visual</h2>
           </div>
@@ -488,7 +509,7 @@
           <div class="iv-panel" data-iv-panel="logo">
 
             <div class="iv-block">
-              <div class="iv-eyebrow-sm"><span class="dot"></span>01 · Masterbrand</div>
+              <div class="iv-eyebrow-sm">01 · Masterbrand</div>
               <h3 class="iv-h">Rappi</h3>
 
               <div class="lg-card">
@@ -577,7 +598,7 @@
             </div>
 
             <div class="iv-block">
-              <div class="iv-eyebrow-sm"><span class="dot"></span>02 · Submarca</div>
+              <div class="iv-eyebrow-sm">02 · Submarca</div>
               <h3 class="iv-h">Rappi Turbo</h3>
               <p class="iv-desc">Sin vector oficial en la librería de Figma consultada — lockup construido en HTML con PP Object Sans y el token <strong style="color:#141414">Turbo Green</strong>.</p>
               <div class="lg-card">
@@ -601,7 +622,7 @@
             </div>
 
             <div class="iv-block">
-              <div class="iv-eyebrow-sm"><span class="dot"></span>03 · Submarca</div>
+              <div class="iv-eyebrow-sm">03 · Submarca</div>
               <h3 class="iv-h">Rappi Pro</h3>
               <p class="iv-desc">Rappi en vector real + "Pro"/corona construidos en HTML — sin vector oficial de Pro en la librería consultada.</p>
               <div class="lg-card">
@@ -624,7 +645,7 @@
             </div>
 
             <div class="iv-block">
-              <div class="iv-eyebrow-sm"><span class="dot"></span>04 · Submarca</div>
+              <div class="iv-eyebrow-sm">04 · Submarca</div>
               <h3 class="iv-h">SoyRappi</h3>
               <div class="lg-card">
                 <div class="lg-card-label">Logo submarca (vector real)</div>
@@ -642,7 +663,7 @@
             </div>
 
             <div class="iv-block">
-              <div class="iv-eyebrow-sm"><span class="dot"></span>05 · Cobranding</div>
+              <div class="iv-eyebrow-sm">05 · Cobranding</div>
               <h3 class="iv-h">Rappi + Aliado</h3>
               <p class="iv-desc">El ejemplo con Rappi Travel usa un vector real de la librería. El bloque "Aliado" es un placeholder deliberado — el logo del partner real se coloca ahí en cada pieza, nunca se reconstruye a mano.</p>
 
@@ -702,7 +723,7 @@
               </ul>
             </div>
 
-            <div class="iv-eyebrow-sm" style="margin:34px 0 -6px"><span class="dot"></span>Submarcas — Nivel 2</div>
+            <div class="iv-eyebrow-sm" style="margin:34px 0 -6px">Submarcas — Nivel 2</div>
 
             <div class="iv-level">
               <div class="iv-level-head"><h4>Rappi Turbo</h4><span class="iv-level-tag">Nivel 2 · Solo dentro de la app</span></div>
@@ -948,11 +969,22 @@
         </div>
       </section>
 
-    </div>
   </main>
 </div>
 
 <script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-links a[href^="#"], a.sb-title[href^="#"]'));
+  var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section.doc'));
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ links.forEach(function(a){ a.classList.remove('on'); }); if(map[e.target.id]) map[e.target.id].classList.add('on'); }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+  secs.forEach(function(s){ obs.observe(s); });
+})();
+
 (function(){
   var tabs = document.querySelectorAll('.iv-tabbar button');
   var panels = document.querySelectorAll('.iv-panel');
