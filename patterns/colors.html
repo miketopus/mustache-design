@@ -136,8 +136,6 @@
         <p>Los primitivos son las escalas tonales que alimentan todo el sistema. Cada color parte de un valor base validado, del cual se genera un rango completo de sombras y tintes, dando a cada matiz una escala predecible y consistente.</p>
         <p>Los primitivos <strong>nunca se usan directamente</strong> en diseño: existen como fuente de verdad que los tokens semánticos referencian. Actualizar un primitivo se propaga automáticamente a todos los tokens y componentes que lo usan.</p>
 
-        <div class="note warn" id="palette-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Paleta parcial.</b> Estos swatches usan el layout real del componente <code>_color</code> de Figma, pero por ahora solo tengo las familias que pude leer del nodo seleccionado. Selecciona el frame completo de primitives en Figma y con eso lleno todas las familias y steps con sus hex exactos.</p></div>
-
         <div id="palette"></div>
       </section>
 
@@ -163,20 +161,143 @@
 </div>
 
 <script>
-  // === Paleta de primitivos (PARCIAL — se llena con el frame de Figma) ===
+  // === Paleta de primitivos — leída 1:1 de las variables de Figma
+  // (Colors/<familia>/<step>), archivo primitives, nodo tonal-palettes ===
   // Cada familia: { name, steps: [{step, hex}] }. El número usa un tono derivado.
   var PALETTE = [
     { name: 'neutrals', steps: [
-      { step: '10', hex: '#F7F8F9' },
       { step: 'white', hex: '#FFFFFF' },
-      { step: '100', hex: '#171A1E' }
-    ]},
-    { name: 'green', steps: [
-      { step: '10', hex: '#DFF9ED' }
+      { step: '10', hex: '#F7F8F9' },
+      { step: '20', hex: '#ECEFF3' },
+      { step: '30', hex: '#D6D9DF' },
+      { step: '40', hex: '#C8CDD5' },
+      { step: '50', hex: '#919AAA' },
+      { step: '60', hex: '#758195' },
+      { step: '70', hex: '#5E6777' },
+      { step: '80', hex: '#464D59' },
+      { step: '90', hex: '#2F343C' },
+      { step: '100', hex: '#171A1E' },
+      { step: 'black', hex: '#000000' }
     ]},
     { name: 'olive-green', steps: [
       { step: '10', hex: '#E1F7E7' },
-      { step: '40', hex: '#4ED16F' }
+      { step: '20', hex: '#C4F0CF' },
+      { step: '30', hex: '#89E19F' },
+      { step: '40', hex: '#4ED16F' },
+      { step: '50', hex: '#34C85A' },
+      { step: '60', hex: '#2CAA4C' },
+      { step: '70', hex: '#258E3F' },
+      { step: '80', hex: '#1D7232' },
+      { step: '90', hex: '#165526' },
+      { step: '100', hex: '#0B2B13' }
+    ]},
+    { name: 'green', steps: [
+      { step: '10', hex: '#DFF9ED' },
+      { step: '20', hex: '#CBF6E2' },
+      { step: '30', hex: '#A0EEC8' },
+      { step: '40', hex: '#64E3A6' },
+      { step: '50', hex: '#29D884' },
+      { step: '60', hex: '#00A86C' },
+      { step: '70', hex: '#177749' },
+      { step: '80', hex: '#105635' },
+      { step: '90', hex: '#083410' },
+      { step: '100', hex: '#062014' }
+    ]},
+    { name: 'yellow', steps: [
+      { step: '10', hex: '#FDFAE3' },
+      { step: '20', hex: '#FBF2B7' },
+      { step: '30', hex: '#F9EB8F' },
+      { step: '40', hex: '#F7E36B' },
+      { step: '50', hex: '#FBDC25' },
+      { step: '60', hex: '#D7BD3F' },
+      { step: '70', hex: '#9C892B' },
+      { step: '80', hex: '#625618' },
+      { step: '90', hex: '#272206' },
+      { step: '100', hex: '#141102' }
+    ]},
+    { name: 'orange', steps: [
+      { step: '10', hex: '#FCF0DF' },
+      { step: '20', hex: '#FFD8AC' },
+      { step: '30', hex: '#FFBB6D' },
+      { step: '40', hex: '#FFA640' },
+      { step: '50', hex: '#FE8F10' },
+      { step: '60', hex: '#DA7400' },
+      { step: '70', hex: '#AE5D00' },
+      { step: '80', hex: '#7A4100' },
+      { step: '90', hex: '#432400' },
+      { step: '100', hex: '#241603' }
+    ]},
+    { name: 'red', steps: [
+      { step: '10', hex: '#FFE3E3' },
+      { step: '20', hex: '#FFC7C7' },
+      { step: '30', hex: '#FF9797' },
+      { step: '40', hex: '#FF7171' },
+      { step: '50', hex: '#FF4242' },
+      { step: '60', hex: '#C43333' },
+      { step: '70', hex: '#8C2424' },
+      { step: '80', hex: '#661A1A' },
+      { step: '90', hex: '#401010' },
+      { step: '100', hex: '#260A0A' }
+    ]},
+    { name: 'teal', steps: [
+      { step: '10', hex: '#DFF4F3' },
+      { step: '20', hex: '#BFE8E6' },
+      { step: '30', hex: '#89D5D1' },
+      { step: '40', hex: '#5EC5C0' },
+      { step: '50', hex: '#28B2AB' },
+      { step: '60', hex: '#1F8984' },
+      { step: '70', hex: '#16625E' },
+      { step: '80', hex: '#104744' },
+      { step: '90', hex: '#0A2C2B' },
+      { step: '100', hex: '#061B1A' }
+    ]},
+    { name: 'blue', steps: [
+      { step: '10', hex: '#EFF6FE' },
+      { step: '20', hex: '#BDD8FB' },
+      { step: '30', hex: '#8DBBF9' },
+      { step: '40', hex: '#478CF7' },
+      { step: '50', hex: '#007AFF' },
+      { step: '60', hex: '#2C68D4' },
+      { step: '70', hex: '#1F4E9E' },
+      { step: '80', hex: '#133469' },
+      { step: '90', hex: '#061935' },
+      { step: '100', hex: '#020911' }
+    ]},
+    { name: 'indigo', steps: [
+      { step: '10', hex: '#E8E9FA' },
+      { step: '20', hex: '#D0D2F5' },
+      { step: '30', hex: '#A8ACEB' },
+      { step: '40', hex: '#898EE4' },
+      { step: '50', hex: '#6168DB' },
+      { step: '60', hex: '#4B50A9' },
+      { step: '70', hex: '#353978' },
+      { step: '80', hex: '#272A58' },
+      { step: '90', hex: '#181A37' },
+      { step: '100', hex: '#0F1021' }
+    ]},
+    { name: 'purple', steps: [
+      { step: '10', hex: '#E8E2FB' },
+      { step: '20', hex: '#D1C5F7' },
+      { step: '30', hex: '#AA95EF' },
+      { step: '40', hex: '#8B6EE9' },
+      { step: '50', hex: '#643DE2' },
+      { step: '60', hex: '#4D2FAE' },
+      { step: '70', hex: '#37227C' },
+      { step: '80', hex: '#28185A' },
+      { step: '90', hex: '#190F38' },
+      { step: '100', hex: '#0F0922' }
+    ]},
+    { name: 'magenta', steps: [
+      { step: '10', hex: '#FFE5F0' },
+      { step: '20', hex: '#FFCCE1' },
+      { step: '30', hex: '#FFA0C8' },
+      { step: '40', hex: '#FF7DB3' },
+      { step: '50', hex: '#FF529A' },
+      { step: '60', hex: '#C43F77' },
+      { step: '70', hex: '#8C2D55' },
+      { step: '80', hex: '#66213E' },
+      { step: '90', hex: '#401426' },
+      { step: '100', hex: '#260C17' }
     ]}
   ];
 
