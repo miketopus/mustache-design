@@ -1,0 +1,88 @@
+/* <site-sidebar> — shared left-nav + floating "on this page" card.
+   See js/site-sidebar.js for the component that renders this markup
+   from each page's own `window.SIDEBAR_CONFIG`.
+
+   display:contents makes the custom element itself invisible to layout,
+   so its rendered <aside class="sidebar"> and (optional) .sb-onthis
+   card act as direct children of .shell, exactly as if they'd been
+   written inline — .shell's flex layout is unaffected. */
+site-sidebar{display:contents}
+
+.sidebar{position:sticky;top:var(--topbar);width:var(--side);flex-shrink:0;height:calc(100vh - var(--topbar));
+  overflow-y:auto;padding:30px 20px 60px;border-right:1px solid var(--line)}
+@media(max-width:760px){.sidebar{display:none}}
+
+.sb-group{margin-bottom:26px}
+.sb-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text);
+  font-family:var(--display);letter-spacing:-.01em;padding:6px 12px;margin-bottom:4px;position:relative}
+.sb-links{display:flex;flex-direction:column;gap:1px;border-left:1px solid var(--line);margin-left:14px;padding-left:2px}
+.sb-links a{font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;transition:.15s;line-height:1.4}
+.sb-links a:hover{color:var(--text);background:var(--panel-2)}
+.sb-links a.on{color:var(--text);background:var(--panel-2);font-weight:600}
+.sb-lock{width:11px;height:11px;color:var(--muted-2);flex-shrink:0}
+
+/* solo-link groups (one item, no sub-nav) render <a class="sb-title">
+   directly — same look as a group header, but clickable/hoverable. */
+a.sb-title{display:flex;cursor:pointer;border-radius:9px;transition:.15s}
+a.sb-title:hover{background:var(--panel-2)}
+a.sb-title.on{background:var(--panel-2);color:var(--text)}
+
+/* collapsible sub-items nested inside a .sb-links list (e.g. Designing/
+   Developing/Contributing) — styled to match plain .sb-links a rather
+   than a group .sb-title, since they sit alongside <a> siblings. */
+.sb-collapse-btn{display:flex;align-items:center;gap:6px;width:100%;background:none;border:none;font:inherit;
+  font-size:13.5px;color:var(--muted);padding:7px 14px;border-radius:9px;cursor:pointer;text-align:left;transition:.15s}
+.sb-collapse-btn:hover{color:var(--text);background:var(--panel-2)}
+.sb-chev{width:14px;height:14px;color:var(--muted-2);flex-shrink:0;margin-left:auto;transition:transform .18s}
+.sb-collapse-item[data-open="true"] .sb-chev{transform:rotate(180deg)}
+.sb-collapse-body{overflow:hidden;max-height:0;transition:max-height .2s ease}
+.sb-collapse-item[data-open="true"] .sb-collapse-body{max-height:60px}
+.sb-collapse-soon{padding:2px 14px 10px 34px;font-size:12.5px;color:var(--muted-2);font-style:italic}
+
+/* Bright, edge-to-edge bar marking whichever sidebar group you're
+   currently in. Pure CSS via :has() — the component's own scroll-spy
+   toggles `.on` onto the matching link inside .sb-links as you scroll;
+   this rule just restyles the ancestor group's title when that happens.
+   Assumes .sidebar's own left padding is 20px (set above) — the -20px
+   below cancels exactly that, so the bar reaches the true edge of the
+   screen instead of stopping at the sidebar's inset. */
+.sb-group:has(.sb-links a.on) .sb-title::before,
+a.sb-title.on::before{
+  content:"";position:absolute;left:-20px;top:50%;translate:0 -50%;
+  width:2px;height:26px;border-radius:0 2px 2px 0;
+  background:var(--white);
+  box-shadow:0 0 1px rgba(255,255,255,.9),0 0 12px 2px rgba(255,255,255,.55)}
+
+/* "On this page" lives as a floating card on the right edge of the
+   viewport instead of inside the left .sidebar — the component renders
+   it as a sibling of <aside>, so position:fixed here is relative to the
+   viewport regardless of the sidebar's own overflow/scroll. Hidden
+   below 1300px: at that width the 860px content column plus the 288px
+   left sidebar leaves too little room on the right for a 200px card
+   without overlapping content. */
+.sb-onthis{position:fixed;top:calc(var(--topbar) + 32px);right:32px;width:200px;z-index:40}
+.sb-onthis .sb-title{color:var(--muted-2);font-family:var(--body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+@media(max-width:1300px){.sb-onthis{display:none}}
+/* the edge-glow bar makes no sense once "On this page" floats on its
+   own — it has no screen edge to reach and its left offset would just
+   land inside the card. Suppress it here only (specificity must match
+   or beat the .sb-group:has(...) rule above, hence the repeated chain). */
+.sb-onthis.sb-group:has(.sb-links a.on) .sb-title::before{content:none}
+
+/* "On this page" mini-nav as a floating card, matching the topbar's
+   mobile dropdown (.tb-menu in site-header.css) instead of the plain
+   indented list every other sidebar group uses. */
+.sb-onthis .sb-links{
+  border-left:none;margin-left:0;padding:6px;border-radius:14px;
+  background:rgba(9,9,11,.98);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05)}
+.sb-onthis .sb-links a{
+  padding:10px 12px;border-radius:10px;
+  transition:transform .22s cubic-bezier(.34,1.55,.64,1),background .14s,color .14s}
+.sb-onthis .sb-links a:hover{transform:scale(1.025)}
+.sb-onthis .sb-links a:active{transform:scale(.965)}
+@media(prefers-reduced-motion:reduce){
+  .sb-onthis .sb-links a{transition:background .14s,color .14s}
+  .sb-onthis .sb-links a:hover,.sb-onthis .sb-links a:active{transform:none}
+}
