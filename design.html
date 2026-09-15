@@ -41,10 +41,28 @@
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
   .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
   .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
+  .doc h4{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.01em;margin:22px 0 10px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
   .doc p strong{color:var(--text);font-weight:600}
-  .doc-img{display:block;width:100%;max-height:420px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line);margin:20px 0 8px}
+  .doc-img{display:block;width:100%;max-height:420px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line);margin:0}
   .lead{font-size:17px;color:var(--muted)!important;max-width:640px}
+
+  .img-card{position:relative;margin:20px 0 8px}
+  .img-card::after{content:"";position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;
+    background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,0) 55%)}
+  .img-card-mark{position:absolute;top:18px;left:18px;width:32px;height:32px;background:#fff;z-index:1;
+    -webkit-mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat;
+            mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat}
+  .img-card p.img-card-caption{position:absolute;left:22px;right:22px;bottom:18px;z-index:1;color:#fff;font-size:15.5px;
+    line-height:1.5;margin:0;max-width:520px}
+
+  table.spec{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  table.spec thead th{text-align:left;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);padding:12px 16px;background:var(--panel-2)}
+  table.spec thead th:not(:last-child){border-right:1px solid var(--line)}
+  table.spec tbody td{padding:12px 16px;color:var(--muted);border-top:1px solid var(--line)}
+  table.spec tbody td:not(:last-child){border-right:1px solid var(--line)}
+  table.spec tbody td:first-child{color:var(--text);font-family:var(--mono);font-weight:500}
+  table.spec tbody tr:nth-child(even){background:var(--panel)}
 
   /* design principles — bilingual pairs copied from design.rappi.com */
   .principle{border-top:1px solid var(--line);padding-top:24px;margin-top:24px}
@@ -131,10 +149,11 @@
         <p class="lead">Foundations is a framework for a group of dynamic components that ensure efficiency-boosting and reflect our way of working.</p>
         <p>To improve that, we made the Foundations segment for nurturing, collaborating, and unifying all the components of the system in our amazing brand.</p>
 
-        <img class="doc-img" src="https://images.unsplash.com/photo-1635776062764-e025521e3df3?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-
-        <h3>About Mustache</h3>
-        <p>Mustache is a functional Design System that centralizes and organizes every component in the app, allowing every team to find them easily and create a high-quality digital experience.</p>
+        <div class="img-card">
+          <img class="doc-img" src="https://images.unsplash.com/photo-1635776062764-e025521e3df3?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+          <span class="img-card-mark" role="img" aria-label="Mustache"></span>
+          <p class="img-card-caption">Mustache is a functional Design System that centralizes and organizes every component in the app, allowing every team to find them easily and create a high-quality digital experience.</p>
+        </div>
 
         <h3>Onboarding</h3>
         <div class="tiles">
@@ -142,6 +161,74 @@
           <a href="#" class="tile"><div class="tk">How we work?</div><p>Cómo trabajamos con Figma &amp; Mustache.</p></a>
           <a href="#" class="tile"><div class="tk">Copy &amp; Translations</div><p>Guía de copy y traducciones para el sistema.</p></a>
         </div>
+
+        <h3>Cómo está estructurado Mustache</h3>
+        <p>Mustache da soporte a una amplia variedad de productos B2C y B2B, tanto en web como en mobile, así que cada decisión debe considerar la escala y complejidad de este ecosistema.</p>
+        <p>A continuación, un resumen de cómo está organizado nuestro Design System, con el detalle de cada capa y su propósito.</p>
+
+        <div class="tiles">
+          <div class="tile"><div class="tk">Foundations</div><p>Tipografía, íconos, colores…</p></div>
+          <div class="tile"><div class="tk">Miscelánea</div><p>Assets vectoriales y 3D · Covers y slides · Utilidades para diseño</p></div>
+          <div class="tile"><div class="tk">App mobile</div><p>Librería de componentes</p></div>
+          <div class="tile"><div class="tk">App web</div><p>Librería de componentes</p></div>
+          <div class="tile"><div class="tk">Otros productos</div><p>Archivos de specs · Diseños pixel perfect</p></div>
+        </div>
+
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Foco de este documento.</b> Nos enfocamos en el trabajo de Foundations y en la librería de componentes de nuestra app mobile: nuestro producto de mayor impacto, usado por decenas de millones de personas que hacen pedidos todos los días.</p></div>
+
+        <h3>Principios de Foundations</h3>
+        <p>Estos son los principios que guían nuestras decisiones dentro de Foundations:</p>
+        <div class="tiles">
+          <div class="tile"><div class="tk">Estética</div><p>Una UI pulida genera confianza y reduce la fricción.</p></div>
+          <div class="tile"><div class="tk">Enfoque Gestalt</div><p>Usamos los principios de Gestalt para crear componentes intuitivos y coherentes.</p></div>
+          <div class="tile"><div class="tk">Baja carga cognitiva</div><p>Opciones y estructuras claras permiten tomar decisiones sin esfuerzo.</p></div>
+          <div class="tile"><div class="tk">Jerarquía visual</div><p>Contraste, tamaño y espaciado mejoran el foco y la lectura.</p></div>
+          <div class="tile"><div class="tk">Consistencia</div><p>Los patrones predecibles aceleran el aprendizaje y logran una UX fluida.</p></div>
+          <div class="tile"><div class="tk">Adaptabilidad</div><p>Los componentes evolucionan para soportar nuevos casos sin perder consistencia.</p></div>
+        </div>
+
+        <h3>Organización del archivo de Foundations</h3>
+        <p>En nuestro archivo de Foundations seguimos las mejores prácticas de la industria para estructurar Design Systems, con páginas dedicadas a cada elemento esencial del diseño.</p>
+        <p>Cada página se organiza con un layout claro: una sección introductoria a la izquierda que da contexto y lineamientos, y un área de contenido principal a la derecha que muestra todos los assets y especificaciones de diseño en detalle.</p>
+        <p>Esta estructura garantiza claridad, facilidad de navegación y una colaboración eficiente entre equipos.</p>
+
+        <h3>Mejoras generales</h3>
+
+        <h4>Tokens</h4>
+        <p>Mejoramos la definición y estructura de nuestros tokens de diseño, haciéndolos más escalables y adaptables a las diversas necesidades de todos los productos de Rappi. Este nuevo sistema garantiza consistencia en todo el ecosistema, sin dejar de lado la flexibilidad para soportar el crecimiento futuro y la evolución de los requerimientos de diseño.</p>
+        <table class="spec">
+          <thead><tr><th>Token</th><th>Uso</th><th>Primitivo</th></tr></thead>
+          <tbody>
+            <tr><td>colors/ink primary</td><td>Para titulares e íconos</td><td>black</td></tr>
+            <tr><td>colors/ink standard</td><td>Para párrafos</td><td>neutral.80</td></tr>
+            <tr><td>colors/ink weak</td><td>Para labels o placeholder text</td><td>neutral.50</td></tr>
+            <tr><td>…</td><td>…</td><td>…</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Colores</h4>
+        <p>Ampliamos y ajustamos nuestra paleta de colores para mejorar el contraste y garantizar la accesibilidad, logrando interfaces más inclusivas y visualmente consistentes.</p>
+        <table class="spec">
+          <thead><tr><th>Token</th><th>Hex anterior</th><th>Hex nuevo</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>line.blank</td><td>&mdash;</td><td>#FFFFFF</td><td>Nuevo</td></tr>
+            <tr><td>ink.accent</td><td>#29D884</td><td>#34C85A</td><td>Actualizado</td></tr>
+            <tr><td>background.weak</td><td>#F0F1F3</td><td>#ECEFF3</td><td>Actualizado</td></tr>
+            <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Tipografía</h4>
+        <p>Introdujimos el peso Medium en reemplazo del Bold en muchas pantallas para reducir la carga visual y mejorar la legibilidad. También ajustamos el line-height de algunos estilos para lograr un mejor balance y claridad en el texto.</p>
+        <table class="spec">
+          <thead><tr><th>Token</th><th>Peso</th><th>Tamaño</th><th>Line height</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>h4Bold</td><td>Bold</td><td>24px</td><td>32px</td><td>Actualizado</td></tr>
+            <tr><td>h4Medium</td><td>Medium</td><td>24px</td><td>32px</td><td>Nuevo</td></tr>
+            <tr><td>h4Regular</td><td>Regular</td><td>24px</td><td>32px</td><td>Actualizado</td></tr>
+            <tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+          </tbody>
+        </table>
 
       </section>
 
