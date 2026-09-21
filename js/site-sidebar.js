@@ -11,8 +11,8 @@
  *       groups: [
  *         // group with a header + sub-links
  *         { title: 'Foundations', items: [
- *           { label: 'Overview', href: 'patterns/foundation.html' },
- *           { label: 'Colors', href: 'patterns/colors.html' }
+ *           { label: 'Overview', href: 'foundations/foundation.html' },
+ *           { label: 'Colors', href: 'foundations/colors.html' }
  *         ]},
  *         // a group with exactly one plain-link item and no title
  *         // collapses into a single `<a class="sb-title">` instead of

@@ -31,16 +31,17 @@ un paso de compilación entre "edito" y "veo".
 
 ```
 ├── index.html            Home público
-├── design.html           Foundations · Overview + Introduction (enlaza a patterns/)
+├── design.html           Foundations · Overview + Introduction (enlaza a foundations/)
 ├── content.html          Content · Voice & tone, product content, gramática
 ├── brand.html            Neon805 · PromptMaker Neon + Identidad Visual
-├── patterns/             Documentación secundaria: una página por tema
+├── patterns.html         Patterns · Overview (enlaza a patterns/)
+├── foundations/          Foundations: una página por tema
 │   ├── foundation.html   Foundation · Overview
 │   ├── colors.html       Foundation · Color
 │   ├── typography.html   Foundation · Typography
 │   ├── icons.html        Foundation · Iconografía
-│   ├── patterns.html     Patterns · Overview
-│   └── ...               (resto de Foundation/Patterns — ver sidebar de design.html)
+│   └── ...               (resto de Foundations — ver sidebar de design.html)
+├── patterns/             Patterns: una página por tema (search, onboarding, dialogs…)
 ├── css/
 │   └── site-header.css   Estilos del <site-header> — único CSS compartido
 ├── js/
@@ -54,10 +55,11 @@ un paso de compilación entre "edito" y "veo".
     └── identidad-visual/           Fuentes, fotos y logos usados en brand.html
 ```
 
-Las páginas dentro de `patterns/` cargan `css/` y `js/` compartidos con `../`
-(por ejemplo `../css/tokens.css`), y el `<site-header>` usa rutas absolutas
-(`/design.html`, `/assets/...`) para que el mismo componente funcione sin
-importar la profundidad de carpeta de la página que lo incluye.
+Las páginas dentro de `foundations/` y `patterns/` cargan `css/` y `js/`
+compartidos con `../` (por ejemplo `../css/tokens.css`), y el `<site-header>`
+usa rutas absolutas (`/design.html`, `/assets/...`) para que el mismo
+componente funcione sin importar la profundidad de carpeta de la página que
+lo incluye.
 
 El fondo del hero del home es procedural (bubbles orgánicos en CSS +
 starfield en `<canvas>`), no una imagen.

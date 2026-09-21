@@ -19,7 +19,7 @@
   const NAV = [
     { id: 'design',     href: '/design.html',   label: 'Design'                  },
     { id: 'content',    href: '/content.html',  label: 'Content'                 },
-    { id: 'components', href: '#',              label: 'Components', lock: true  },
+    { id: 'components', href: '/components.html', label: 'Components'            },
     { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
     { id: 'ai',         href: '#',              label: 'AI',          lock: true  },
     { id: 'brand',      href: '/brand.html',    label: 'Brand'                   },
