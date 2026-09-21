@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,10 @@
 
   .shell{display:flex;align-items:flex-start}
 
-  .main{flex:1;min-width:0;padding:44px 56px 120px}
+  .main{flex:1;min-width:0;padding:44px 56px 120px;min-height:100vh;
+    --bg:#F7F8F9;--bg-2:#FFFFFF;--panel:#FFFFFF;--panel-2:#F2F3F5;--tile:#FFFFFF;
+    --line:#E4E4E7;--line-2:#D6D9DF;--text:#171A1E;--muted:#5E6777;--muted-2:#8B93A1;
+    background:var(--bg);color:var(--text)}
   .main-inner{max-width:800px;margin:0 auto}
   .crumb{font-size:13px;color:var(--muted-2);margin-bottom:22px;display:flex;gap:8px;align-items:center}
   .crumb b{color:var(--muted);font-weight:500}
@@ -32,8 +35,12 @@
   /* hero — no card: the particle field is the background, full-bleed across
      .main (see css/hero-particles.css for the shared .hero/.hero-particles/
      .hero-fade/.hero-in rules; this page just overrides the taller size) */
-  .hero{padding:70px 56px 58px;min-height:clamp(320px,42vh,440px)}
-  .hero h1{font-size:clamp(30px,4.6vw,46px);max-width:640px;margin-bottom:14px}
+  .hero{padding:70px 56px 58px;min-height:clamp(320px,42vh,440px);
+    --bg:#08080A;--panel:#121214;--panel-2:#18181B;--tile:#0E0E10;
+    --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.15);
+    --text:#F5F5F6;--muted:#96969C;--muted-2:#65656B;
+    background:var(--bg);color:var(--text)}
+  .hero h1{font-size:clamp(30px,5.5vw,64px);max-width:640px;margin-bottom:14px}
   .hero p{color:var(--muted);font-size:16px;max-width:560px}
   .hero .credit{margin-top:22px;display:inline-flex;align-items:center;gap:9px;font-size:12.5px;color:var(--muted-2);border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 14px}
   .hero .credit .sw{width:14px;height:14px;border-radius:4px;background:linear-gradient(135deg,#FF2526,#FF4583 55%,#FF7A4D)}
@@ -44,10 +51,11 @@
   .doc h4{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.01em;margin:22px 0 10px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
   .doc p strong{color:var(--text);font-weight:600}
-  .doc-img{display:block;width:100%;max-height:420px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line);margin:0}
+  .doc-img{display:block;width:100%;max-height:420px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line);margin:20px 0 8px}
+  .img-card .doc-img{margin:0}
   .lead{font-size:17px;color:var(--muted)!important;max-width:640px}
 
-  .img-card{position:relative;margin:20px 0 8px}
+  .img-card{position:relative;margin:20px 0 200px}
   .img-card::after{content:"";position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;
     background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,0) 55%)}
   .img-card-mark{position:absolute;top:18px;left:18px;width:32px;height:32px;background:#fff;z-index:1;
@@ -56,19 +64,76 @@
   .img-card p.img-card-caption{position:absolute;left:22px;right:22px;bottom:18px;z-index:1;color:#fff;font-size:15.5px;
     line-height:1.5;margin:0;max-width:520px}
 
-  table.spec{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
-  table.spec thead th{text-align:left;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);padding:12px 16px;background:var(--panel-2)}
-  table.spec thead th:not(:last-child){border-right:1px solid var(--line)}
-  table.spec tbody td{padding:12px 16px;color:var(--muted);border-top:1px solid var(--line)}
-  table.spec tbody td:not(:last-child){border-right:1px solid var(--line)}
-  table.spec tbody td:first-child{color:var(--text);font-family:var(--mono);font-weight:500}
-  table.spec tbody tr:nth-child(even){background:var(--panel)}
+  /* structure diagram — dark grid stage */
+  .ds-diagram{background:#000;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+    background-size:24px 24px;border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:32px 28px;margin:20px 0}
+  .ds-row{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .ds-arrow{display:flex;align-items:center;justify-content:center;width:36px;height:36px;
+    background:#242428;border-radius:50%;color:#fff;margin:14px auto}
+  .ds-arrow svg{width:16px;height:16px;display:block}
+  .ds-card{background:#242428;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;min-width:160px}
+  .ds-card-t{font-family:var(--display);font-weight:700;font-size:16px;color:#fff;margin-bottom:3px}
+  .ds-card-s{font-size:13px;color:#9a9aa2}
+  .ds-subcards{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
 
-  /* design principles — bilingual pairs copied from design.rappi.com */
-  .principle{border-top:1px solid var(--line);padding-top:24px;margin-top:24px}
-  .principle:first-of-type{border-top:none;padding-top:0;margin-top:8px}
-  .principle-en{color:var(--muted-2);font-style:italic}
-  .principle-en strong{color:var(--muted-2);font-weight:600}
+  /* connector — 3 bezier lines from the cards converging into the arrow below,
+     adapted from https://codepen.io/krutie/pen/eoRXWP (tree-diagram branches),
+     mirrored: converging down into one point instead of fanning out from one) */
+  .ds-connector-wrap{position:relative}
+  .ds-connector{display:block;width:100%;height:40px}
+  .ds-connector path{fill:none;stroke:url(#ds-line-grad);stroke-width:1.5;vector-effect:non-scaling-stroke}
+  /* dots use % left instead of SVG coords so preserveAspectRatio="none"
+     (which lets the bezier paths stretch full-width) can't squash them */
+  .ds-connector-dot{position:absolute;top:0;width:8px;height:8px;background:#FF441F;border-radius:50%;
+    box-shadow:0 0 8px rgba(255,68,31,.9),0 0 16px rgba(255,68,31,.5);transform:translate(-50%,-50%)}
+
+  /* mustache mark + "Foundations" pill, inside the black diagram box */
+  .ds-graphic-head{display:flex;flex-direction:column;align-items:center;gap:12px;margin:0 0 20px}
+  .ds-mark{width:32px;height:32px;background:#fff;
+    -webkit-mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat;
+            mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat}
+  .ds-foundations-label{display:inline-flex;font-family:var(--display);font-weight:700;font-size:13px;
+    color:#fff;background:#242428;border-radius:999px;padding:8px 16px}
+
+  /* "magic card" — rotating gradient border + blurred glow, adapted from
+     https://codepen.io/gayane-gasparyan/pen/jOmaBQK (CSS Houdini @property
+     lets a custom property hold an <angle> that animates smoothly; the
+     same gradient, redrawn each frame at a new angle, is used both as the
+     card's own border (via the padding-box/border-box trick) and, blurred
+     behind it, as the glow — inherits:false means each element needs its
+     own animation to drive its own copy of --rotate). */
+  @property --rotate{syntax:"<angle>";initial-value:0deg;inherits:false}
+  .ds-neon{flex:1 1 200px;position:relative;border-radius:16px;padding:16px 18px;border:1.5px solid transparent;
+    background:linear-gradient(#0a0a0d,#0a0a0d) padding-box,
+               linear-gradient(var(--rotate),#FF2526,#FF4583 50%,#FF2526) border-box;
+    animation:ds-rotate 3s linear infinite}
+  .ds-neon::after{content:"";position:absolute;inset:-12px;z-index:-1;border-radius:22px;pointer-events:none;
+    background:linear-gradient(var(--rotate),#FF2526,#FF4583 50%,#FF2526);
+    filter:blur(20px);opacity:.55;
+    animation:ds-rotate 3s linear infinite}
+  @keyframes ds-rotate{to{--rotate:360deg}}
+  .ds-neon-code{font-family:var(--mono);font-size:12.5px;line-height:1.9;color:#d4d4d8}
+  .ds-neon-code .k{color:#FF6B8A}
+  .ds-neon-name{margin-bottom:4px}
+  .ds-neon-name .v{font-size:19px;font-weight:700;color:#fff}
+  .ds-neon-list{padding-left:2px;color:#a1a1aa}
+  .ds-sep{align-self:center;color:#a1a1aa;font-size:18px;padding:0 2px}
+  @media(max-width:600px){.ds-row{flex-direction:column;align-items:stretch}.ds-sep{display:none}}
+
+  .spec-wrap{background:#fff;border:1px solid #e4e4e7;border-radius:var(--radius);overflow:hidden;margin:16px 0}
+  table.spec{width:100%;border-collapse:collapse;font-size:14px}
+  table.spec thead th{text-align:left;font-family:var(--display);font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#8b93a1;padding:11px 16px;background:#fafafb;border-bottom:1px solid #e4e4e7}
+  table.spec tbody td{padding:12px 16px;color:#5e6777;border-top:1px solid #eceff3}
+  table.spec tbody tr:first-child td{border-top:none}
+  table.spec tbody td:first-child{color:#171a1e}
+  table.spec code.tok-name{display:inline-block;font-family:var(--mono);font-size:12.5px;font-weight:500;background:#eceff3;color:#171a1e;border-radius:6px;padding:3px 8px;white-space:nowrap}
+
+  /* design principles — cada uno en su propia caja */
+  .principles{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
+  .principle{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px}
+  .principle h3{margin-top:0}
+  .principle-en{display:none}
+  @media(max-width:720px){.principles{grid-template-columns:1fr}}
 
   /* tiles */
   .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
@@ -89,8 +154,9 @@
   .visual b{color:var(--muted);font-weight:600}
   .quote{border-left:3px solid var(--line-2);padding:6px 0 6px 18px;margin:16px 0;color:var(--text);font-family:var(--display);font-weight:600;font-size:17px}
 
-  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.16s}
-  .backtop:hover{background:rgba(20,20,23,.92);border-color:var(--line-2)}
+  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:999px;padding:10px 16px;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s;pointer-events:none}
+  .backtop.show{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+  .backtop:hover{background:rgba(20,20,23,.82)}
 
   @media(max-width:760px){.main{padding:30px 22px 90px}.hero{padding:44px 22px 36px;min-height:clamp(260px,38vh,360px)}}
 </style>
@@ -105,23 +171,23 @@
       eyebrow: 'Design',
       groups: [
         { title: 'Get Started', items: [
-          { label: 'How Foundations works', href: '#how-foundations-works' },
+          { label: 'Cómo funciona Mustache', href: '#how-foundations-works' },
           { label: 'Design Principles', href: '#design-principles' },
           { label: 'Designing', collapse: true, locked: true },
           { label: 'Developing', collapse: true, locked: true },
           { label: 'Contributing', collapse: true, locked: true }
         ]},
         { title: 'Foundations', items: [
-          { label: 'Overview', href: 'patterns/foundation.html' },
-          { label: 'Colors', href: 'patterns/colors.html' },
-          { label: 'Typography', href: 'patterns/typography.html' },
-          { label: 'Elevation', href: 'patterns/elevation.html' },
-          { label: 'Icons', href: 'patterns/icons.html' },
-          { label: "Illustrations 3D's", href: 'patterns/illustrations-3d.html' },
-          { label: 'Layout', href: 'patterns/layout.html' },
-          { label: 'Motion', href: 'patterns/motion.html' },
-          { label: 'Cards/Border Radius', href: 'patterns/cards-border-radius.html' },
-          { label: 'Stroke', href: 'patterns/stroke.html' }
+          { label: 'Overview', href: 'foundations/foundation.html' },
+          { label: 'Colors', href: 'foundations/colors.html' },
+          { label: 'Typography', href: 'foundations/typography.html' },
+          { label: 'Elevation', href: 'foundations/elevation.html' },
+          { label: 'Icons', href: 'foundations/icons.html' },
+          { label: "Illustrations 3D's", href: 'foundations/illustrations-3d.html' },
+          { label: 'Layout', href: 'foundations/layout.html' },
+          { label: 'Motion', href: 'foundations/motion.html' },
+          { label: 'Cards/Border Radius', href: 'foundations/cards-border-radius.html' },
+          { label: 'Stroke', href: 'foundations/stroke.html' }
         ]}
       ]
     };
@@ -135,8 +201,8 @@
       <div class="hero-fade" aria-hidden="true"></div>
       <div class="hero-in">
         <div class="crumb"><b>Design</b> <span>/</span> Foundations</div>
-        <h1 class="display">A place where something powerful, amazing, stunning, and uncommon begins.</h1>
-        <p>The foundation of Mustache: what it is, how it started, and the pillars behind every design we make.</p>
+        <h1 class="display">Hecho para mover millones de pedidos cada día.</h1>
+        <p>Detrás de cada pantalla que ves en Rappi hay un mismo sistema. Esta es su historia, sus pilares y cómo lo construimos.</p>
         <span class="credit"><span class="sw"></span> Mustache Glossy by Miguel Ángel Ávila</span>
       </div>
     </div>
@@ -145,33 +211,100 @@
 
       <!-- GET STARTED -->
       <section class="doc" id="how-foundations-works">
-        <h2>How Foundations works</h2>
-        <p class="lead">Foundations is a framework for a group of dynamic components that ensure efficiency-boosting and reflect our way of working.</p>
-        <p>To improve that, we made the Foundations segment for nurturing, collaborating, and unifying all the components of the system in our amazing brand.</p>
+        <h2>Cómo funciona Mustache</h2>
+        <p class="lead">Foundations es un framework para un grupo de componentes dinámicos que garantizan eficiencia y reflejan nuestra forma de trabajar.</p>
+        <p>Para lograrlo, creamos el segmento de Foundations: un espacio para nutrir, colaborar y unificar todos los componentes del sistema dentro de nuestra marca.</p>
 
         <div class="img-card">
           <img class="doc-img" src="https://images.unsplash.com/photo-1635776062764-e025521e3df3?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
           <span class="img-card-mark" role="img" aria-label="Mustache"></span>
-          <p class="img-card-caption">Mustache is a functional Design System that centralizes and organizes every component in the app, allowing every team to find them easily and create a high-quality digital experience.</p>
+          <p class="img-card-caption">Mustache es un Design System funcional que centraliza y organiza cada componente de la app, permitiendo que cualquier equipo los encuentre fácilmente y cree experiencias digitales de alta calidad.</p>
         </div>
 
-        <h3>Onboarding</h3>
-        <div class="tiles">
-          <a href="#" class="tile"><div class="tk">Welcome to the Team</div><p>¡Bienvenido al equipo! Desde hoy haces parte de una Start-up que crece y evoluciona día a día.</p></a>
-          <a href="#" class="tile"><div class="tk">How we work?</div><p>Cómo trabajamos con Figma &amp; Mustache.</p></a>
-          <a href="#" class="tile"><div class="tk">Copy &amp; Translations</div><p>Guía de copy y traducciones para el sistema.</p></a>
-        </div>
-
-        <h3>Cómo está estructurado Mustache</h3>
+        <h3>Estructura</h3>
         <p>Mustache da soporte a una amplia variedad de productos B2C y B2B, tanto en web como en mobile, así que cada decisión debe considerar la escala y complejidad de este ecosistema.</p>
         <p>A continuación, un resumen de cómo está organizado nuestro Design System, con el detalle de cada capa y su propósito.</p>
 
-        <div class="tiles">
-          <div class="tile"><div class="tk">Foundations</div><p>Tipografía, íconos, colores…</p></div>
-          <div class="tile"><div class="tk">Miscelánea</div><p>Assets vectoriales y 3D · Covers y slides · Utilidades para diseño</p></div>
-          <div class="tile"><div class="tk">App mobile</div><p>Librería de componentes</p></div>
-          <div class="tile"><div class="tk">App web</div><p>Librería de componentes</p></div>
-          <div class="tile"><div class="tk">Otros productos</div><p>Archivos de specs · Diseños pixel perfect</p></div>
+        <div class="ds-diagram">
+          <div class="ds-graphic-head">
+            <span class="ds-mark" role="img" aria-label="Mustache"></span>
+            <div class="ds-foundations-label">Foundations</div>
+          </div>
+          <div class="ds-subcards">
+            <div class="ds-neon">
+              <div class="ds-neon-code">
+                <div class="ds-neon-name"><span class="v">primitives</span></div>
+                <div><span class="k">#valores:</span></div>
+                <div class="ds-neon-list">
+                  <div>- Tipografía (Size, Line Height, etc.)</div>
+                  <div>- Border Radius</div>
+                  <div>- Colores (hexas)</div>
+                  <div>- Spacing</div>
+                  <div>- Stroke</div>
+                </div>
+              </div>
+            </div>
+            <div class="ds-neon">
+              <div class="ds-neon-code">
+                <div class="ds-neon-name"><span class="v">semantics</span></div>
+                <div><span class="k">tokens semánticos:</span></div>
+                <div class="ds-neon-list">
+                  <div>- Tipografía (tokens)</div>
+                  <div>- Colores (tokens)</div>
+                  <div>- Border Radius (tokens)</div>
+                  <div>- Stroke (tokens)</div>
+                </div>
+              </div>
+            </div>
+            <div class="ds-neon">
+              <div class="ds-neon-code">
+                <div class="ds-neon-name"><span class="v">icons</span></div>
+                <div><span class="k">#categorías:</span></div>
+                <div class="ds-neon-list">
+                  <div>- Navegación</div>
+                  <div>- Comercio</div>
+                  <div>- Comunicación</div>
+                  <div>- Sistema</div>
+                  <div>- Multimedia</div>
+                  <div>- Etc.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ds-connector-wrap">
+            <svg class="ds-connector" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="ds-line-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="40">
+                  <stop offset="0%" stop-color="#FF2526"/>
+                  <stop offset="100%" stop-color="#FF4583"/>
+                </linearGradient>
+              </defs>
+              <path d="M50,0 C50,22 150,18 150,40"/>
+              <path d="M150,0 L150,40"/>
+              <path d="M250,0 C250,22 150,18 150,40"/>
+            </svg>
+            <span class="ds-connector-dot" style="left:16.6667%"></span>
+            <span class="ds-connector-dot" style="left:50%"></span>
+            <span class="ds-connector-dot" style="left:83.3333%"></span>
+          </div>
+          <div class="ds-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+          <div class="ds-row">
+            <div class="ds-card"><div class="ds-card-t">Miscelánea</div><div class="ds-card-s">Assets vectoriales y 3D</div></div>
+            <div class="ds-sep">/</div>
+            <div class="ds-card"><div class="ds-card-t">Covers y slides</div><div class="ds-card-s">Utilidades para diseño</div></div>
+          </div>
+          <div class="ds-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+          <div class="ds-row">
+            <div class="ds-card"><div class="ds-card-t">App mobile</div><div class="ds-card-s">Librería de componentes</div></div>
+            <div class="ds-sep">/</div>
+            <div class="ds-card"><div class="ds-card-t">App web</div><div class="ds-card-s">Librería de componentes</div></div>
+            <div class="ds-sep">/</div>
+            <div class="ds-card"><div class="ds-card-t">Otros&hellip;</div><div class="ds-card-s">Más productos</div></div>
+          </div>
+          <div class="ds-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+          <div class="ds-row">
+            <div class="ds-card"><div class="ds-card-t">Archivos de specs</div><div class="ds-card-s">Diseños pixel perfect</div></div>
+          </div>
         </div>
 
         <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Foco de este documento.</b> Nos enfocamos en el trabajo de Foundations y en la librería de componentes de nuestra app mobile: nuestro producto de mayor impacto, usado por decenas de millones de personas que hacen pedidos todos los días.</p></div>
@@ -196,71 +329,79 @@
 
         <h4>Tokens</h4>
         <p>Mejoramos la definición y estructura de nuestros tokens de diseño, haciéndolos más escalables y adaptables a las diversas necesidades de todos los productos de Rappi. Este nuevo sistema garantiza consistencia en todo el ecosistema, sin dejar de lado la flexibilidad para soportar el crecimiento futuro y la evolución de los requerimientos de diseño.</p>
-        <table class="spec">
-          <thead><tr><th>Token</th><th>Uso</th><th>Primitivo</th></tr></thead>
-          <tbody>
-            <tr><td>colors/ink primary</td><td>Para titulares e íconos</td><td>black</td></tr>
-            <tr><td>colors/ink standard</td><td>Para párrafos</td><td>neutral.80</td></tr>
-            <tr><td>colors/ink weak</td><td>Para labels o placeholder text</td><td>neutral.50</td></tr>
-            <tr><td>…</td><td>…</td><td>…</td></tr>
-          </tbody>
-        </table>
+        <div class="spec-wrap">
+          <table class="spec">
+            <thead><tr><th>Token</th><th>Uso</th><th>Primitivo</th></tr></thead>
+            <tbody>
+              <tr><td><code class="tok-name">colors/ink primary</code></td><td>Para titulares e íconos</td><td>black</td></tr>
+              <tr><td><code class="tok-name">colors/ink standard</code></td><td>Para párrafos</td><td>neutral.80</td></tr>
+              <tr><td><code class="tok-name">colors/ink weak</code></td><td>Para labels o placeholder text</td><td>neutral.50</td></tr>
+              <tr><td>…</td><td>…</td><td>…</td></tr>
+            </tbody>
+          </table>
+        </div>
 
         <h4>Colores</h4>
         <p>Ampliamos y ajustamos nuestra paleta de colores para mejorar el contraste y garantizar la accesibilidad, logrando interfaces más inclusivas y visualmente consistentes.</p>
-        <table class="spec">
-          <thead><tr><th>Token</th><th>Hex anterior</th><th>Hex nuevo</th><th>Estado</th></tr></thead>
-          <tbody>
-            <tr><td>line.blank</td><td>&mdash;</td><td>#FFFFFF</td><td>Nuevo</td></tr>
-            <tr><td>ink.accent</td><td>#29D884</td><td>#34C85A</td><td>Actualizado</td></tr>
-            <tr><td>background.weak</td><td>#F0F1F3</td><td>#ECEFF3</td><td>Actualizado</td></tr>
-            <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
-          </tbody>
-        </table>
+        <div class="spec-wrap">
+          <table class="spec">
+            <thead><tr><th>Token</th><th>Hex anterior</th><th>Hex nuevo</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td><code class="tok-name">line.blank</code></td><td>&mdash;</td><td>#FFFFFF</td><td>Nuevo</td></tr>
+              <tr><td><code class="tok-name">ink.accent</code></td><td>#29D884</td><td>#34C85A</td><td>Actualizado</td></tr>
+              <tr><td><code class="tok-name">background.weak</code></td><td>#F0F1F3</td><td>#ECEFF3</td><td>Actualizado</td></tr>
+              <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+            </tbody>
+          </table>
+        </div>
 
         <h4>Tipografía</h4>
         <p>Introdujimos el peso Medium en reemplazo del Bold en muchas pantallas para reducir la carga visual y mejorar la legibilidad. También ajustamos el line-height de algunos estilos para lograr un mejor balance y claridad en el texto.</p>
-        <table class="spec">
-          <thead><tr><th>Token</th><th>Peso</th><th>Tamaño</th><th>Line height</th><th>Estado</th></tr></thead>
-          <tbody>
-            <tr><td>h4Bold</td><td>Bold</td><td>24px</td><td>32px</td><td>Actualizado</td></tr>
-            <tr><td>h4Medium</td><td>Medium</td><td>24px</td><td>32px</td><td>Nuevo</td></tr>
-            <tr><td>h4Regular</td><td>Regular</td><td>24px</td><td>32px</td><td>Actualizado</td></tr>
-            <tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
-          </tbody>
-        </table>
+        <div class="spec-wrap">
+          <table class="spec">
+            <thead><tr><th>Token</th><th>Peso</th><th>Tamaño</th><th>Line height</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td><code class="tok-name">h4Bold</code></td><td>Bold</td><td>24px</td><td>32px</td><td>Actualizado</td></tr>
+              <tr><td><code class="tok-name">h4Medium</code></td><td>Medium</td><td>24px</td><td>32px</td><td>Nuevo</td></tr>
+              <tr><td><code class="tok-name">h4Regular</code></td><td>Regular</td><td>24px</td><td>32px</td><td>Actualizado</td></tr>
+              <tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+            </tbody>
+          </table>
+        </div>
 
       </section>
 
       <!-- DESIGN PRINCIPLES -->
       <section class="doc" id="design-principles">
-        <h2>Design Principles</h2>
-        <p class="lead">Product principles are the basics of the brand in the design area. With them, we create more than a cool brand, we do a consistent and scalable one that responds to the user's necessities and our business.</p>
+        <h2>Principios de Diseño</h2>
+        <p class="lead">Los principios de producto son la base de la marca en el área de diseño. Con ellos no solo creamos una marca atractiva, sino una consistente y escalable que responde a las necesidades de las personas usuarias y de nuestro negocio.</p>
 
-        <div class="principle">
-          <h3>La data es nuestra principal aliada</h3>
-          <p>Por eso creamos nuestras soluciones basadas en la data y la aplicamos con creatividad en cada uno de nuestros diseños.</p>
-          <p class="principle-en"><strong>Data, our principal ally.</strong> That's why we create our solutions based on the data and mix them up with the creativity to achieve amazing products.</p>
-        </div>
+        <div class="principles">
+          <div class="principle">
+            <h3>La data es nuestra principal aliada</h3>
+            <p>Por eso creamos nuestras soluciones basadas en la data y la aplicamos con creatividad en cada uno de nuestros diseños.</p>
+            <p class="principle-en"><strong>Data, our principal ally.</strong> That's why we create our solutions based on the data and mix them up with the creativity to achieve amazing products.</p>
+          </div>
 
-        <div class="principle">
-          <h3>Consistencia y UX</h3>
-          <p>En la búsqueda de brindarle la mejor experiencia a todas nuestras personas usuarias, los diseños que creamos, deben ser fieles a los principios de usabilidad y consistencia básicos como: la simpleza, la relevancia, la eficiencia y la claridad.</p>
-          <p class="principle-en"><strong>Consistency and UX.</strong> To give our users the best experience, the designs that we create should be human-centered, also respond to basic usability principles like: Simplicity, relevance, efficiency, and clearness.</p>
-        </div>
+          <div class="principle">
+            <h3>Consistencia y UX</h3>
+            <p>En la búsqueda de brindarle la mejor experiencia a todas nuestras personas usuarias, los diseños que creamos, deben ser fieles a los principios de usabilidad y consistencia básicos como: la simpleza, la relevancia, la eficiencia y la claridad.</p>
+            <p class="principle-en"><strong>Consistency and UX.</strong> To give our users the best experience, the designs that we create should be human-centered, also respond to basic usability principles like: Simplicity, relevance, efficiency, and clearness.</p>
+          </div>
 
-        <div class="principle">
-          <h3>Soluciones innovadoras</h3>
-          <p>Cuando hablamos de soluciones innovadoras en nuestros diseños, hacemos referencia a los principios del Design Thinking, en donde a través de las preguntas correctas y las ideas colaborativas se obtienen grandes resultados.</p>
-          <p>¡Crear soluciones innovadoras, requiere juntar la creatividad con las herramientas y la data correcta!</p>
-          <p class="principle-en"><strong>Innovate solutions.</strong> What we're referring to innovated solutions in our designs, we talk about of the Designs Thinking principles. That's because, through the correct questions and collaborative ideas, we can achieve remarkable goals. ¡To make innovative solutions, we need to co-create in a team with the perfect tools like: data, technology, and creativity!</p>
-        </div>
+          <div class="principle">
+            <h3>Soluciones innovadoras</h3>
+            <p>Cuando hablamos de soluciones innovadoras en nuestros diseños, hacemos referencia a los principios del Design Thinking, en donde a través de las preguntas correctas y las ideas colaborativas se obtienen grandes resultados.</p>
+            <p>¡Crear soluciones innovadoras, requiere juntar la creatividad con las herramientas y la data correcta!</p>
+            <p class="principle-en"><strong>Innovate solutions.</strong> What we're referring to innovated solutions in our designs, we talk about of the Designs Thinking principles. That's because, through the correct questions and collaborative ideas, we can achieve remarkable goals. ¡To make innovative solutions, we need to co-create in a team with the perfect tools like: data, technology, and creativity!</p>
+          </div>
 
-        <div class="principle">
-          <h3>Los detalles son nuestra prioridad</h3>
-          <p>Para lograr un gran producto o entregable, se requiere del conjunto ideal de elementos. Por esta razón, cada detalle incluido en una pieza o flujo contribuye a obtener el mejor resultado posible con la misma.</p>
-          <p>¡Porque un gran diseño no solo luce bien, también es de gran utilidad!</p>
-          <p class="principle-en"><strong>Details are our priority.</strong> Create a great product or piece, require the perfect set of elements. That's why any detail includes in a piece or flow contributes to having the best result. ¡Remember, a great design does not just look good, it's also much useful!</p>
+          <div class="principle">
+            <h3>Los detalles son nuestra prioridad</h3>
+            <p>Para lograr un gran producto o entregable, se requiere del conjunto ideal de elementos. Por esta razón, cada detalle incluido en una pieza o flujo contribuye a obtener el mejor resultado posible con la misma.</p>
+            <p>¡Porque un gran diseño no solo luce bien, también es de gran utilidad!</p>
+            <p class="principle-en"><strong>Details are our priority.</strong> Create a great product or piece, require the perfect set of elements. That's why any detail includes in a piece or flow contributes to having the best result. ¡Remember, a great design does not just look good, it's also much useful!</p>
+          </div>
         </div>
       </section>
 
@@ -270,5 +411,14 @@
   </main>
 </div>
 
+<script>
+  (function () {
+    var btn = document.querySelector('.backtop');
+    if (!btn) return;
+    function onScroll() { btn.classList.toggle('show', window.scrollY > 200); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
 </body>
 </html>

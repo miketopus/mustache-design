@@ -22,10 +22,14 @@
 
   .shell{display:flex;align-items:flex-start}
 
-  .main{flex:1;min-width:0;padding:44px 56px 120px}
+  .main{flex:1;min-width:0;padding:44px 56px 120px;min-height:100vh;
+    --bg:#F7F8F9;--bg-2:#FFFFFF;--panel:#FFFFFF;--panel-2:#F2F3F5;--tile:#FFFFFF;
+    --line:#E4E4E7;--line-2:#D6D9DF;--text:#171A1E;--muted:#5E6777;--muted-2:#8B93A1;
+    background:var(--bg);color:var(--text)}
   .main-inner{max-width:860px;margin:0 auto}
   .crumb{font-size:13px;color:var(--muted-2);margin-bottom:20px;display:flex;gap:8px;align-items:center}
   .crumb b{color:var(--muted);font-weight:500}
+  .page-cover{display:block;width:100%;max-height:340px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line);margin-bottom:28px}
   .page-h1{font-size:clamp(34px,5vw,52px);margin-bottom:16px}
   .page-lead{font-size:18px;color:var(--muted);max-width:660px;margin-bottom:14px}
   .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
@@ -63,8 +67,30 @@
   table.cred td:first-child{color:var(--muted-2);width:120px}
   table.cred td strong{color:var(--text);font-weight:600}
 
-  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;box-shadow:0 12px 30px rgba(0,0,0,.45);transition:.16s}
-  .backtop:hover{background:rgba(20,20,23,.92);border-color:var(--line-2)}
+  /* semantics token tables — white, 1:1 con la tabla del archivo Figma
+     "semantics" (fondo blanco fijo: son capturas de estado, no deben
+     invertir en modo oscuro del sitio) */
+  .tok-cat{margin:30px 0 12px}
+  .tok-cat:first-child{margin-top:6px}
+  .tok-cat h3{font-family:var(--display);font-weight:700;font-size:16px;color:var(--text);margin-bottom:2px;text-transform:none}
+  .tok-cat span{font-family:var(--mono);font-size:12px;color:var(--muted-2)}
+  .tok-table-wrap{background:#fff;border:1px solid #e4e4e7;border-radius:var(--radius);overflow:hidden;margin:10px 0 0}
+  table.tok{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.tok thead th{text-align:left;font-family:var(--display);font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#8b93a1;padding:11px 18px;background:#fafafb;border-bottom:1px solid #e4e4e7}
+  table.tok tbody td{padding:12px 18px;color:#171a1e;border-top:1px solid #eceff3;vertical-align:top}
+  table.tok tbody tr:first-child td{border-top:none}
+  table.tok tbody td.tok-usage{color:#5e6777}
+  table.tok code.tok-name{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:500;background:#eceff3;color:#171a1e;border-radius:6px;padding:3px 8px;white-space:nowrap}
+  .tok-prim{display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .tok-swatch{width:26px;height:26px;border-radius:7px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+  .tok-prim-meta{line-height:1.35}
+  .tok-prim-name{font-size:13px;color:#171a1e;font-weight:500}
+  .tok-prim-alpha{font-size:11.5px;color:#8b93a1}
+  @media(max-width:640px){table.tok thead{display:none}table.tok,table.tok tbody,table.tok tr,table.tok td{display:block;width:100%}table.tok tbody tr{padding:12px 18px;border-top:1px solid #eceff3}table.tok tbody td{padding:3px 0;border-top:none}}
+
+  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text);background:rgba(9,9,11,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:999px;padding:10px 16px;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s;pointer-events:none}
+  .backtop.show{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+  .backtop:hover{background:rgba(20,20,23,.82)}
   @media(max-width:760px){.main{padding:30px 22px 90px}}
 </style>
 </head>
@@ -77,7 +103,13 @@
     window.SIDEBAR_CONFIG = {
       eyebrow: 'Design',
       groups: [
-        { items: [{ label: 'How Foundations works', href: '../design.html#how-foundations-works' }] },
+        { title: 'Get Started', items: [
+          { label: 'How Foundations works', href: '../design.html#how-foundations-works' },
+          { label: 'Design Principles', href: '../design.html#design-principles' },
+          { label: 'Designing', collapse: true, locked: true },
+          { label: 'Developing', collapse: true, locked: true },
+          { label: 'Contributing', collapse: true, locked: true }
+        ]},
         { title: 'Foundations', items: [
           { label: 'Overview', href: 'foundation.html' },
           { label: 'Colors', href: 'colors.html' },
@@ -95,6 +127,7 @@
         { label: 'Introducción', href: '#intro' },
         { label: 'Primitivos', href: '#primitivos' },
         { label: 'Semánticos y temas', href: '#semanticos' },
+        { label: 'Semantics', href: '#semantics' },
         { label: 'Accesibilidad', href: '#accesibilidad' }
       ]
     };
@@ -104,6 +137,7 @@
   <main class="main">
     <div class="main-inner">
       <div class="crumb"><b>Design</b> <span>/</span> Foundations <span>/</span> Colors</div>
+      <img class="page-cover" src="../assets/identidad-visual/foundations/colors.png" alt="">
       <h1 class="page-h1 display">Colors</h1>
       <p class="page-lead">El color es el lenguaje visual de Mustache. Cada tono tiene un propósito: comunicar identidad de marca, jerarquía, estados de feedback y accesibilidad.</p>
       <div class="meta-row">
@@ -129,6 +163,12 @@
         <h2>Capa 2 · Semánticos y temas</h2>
         <p>Los tokens semánticos le dan propósito al color. En lugar de referenciar un valor crudo, los componentes usan tokens como <strong>Ink.Strong</strong> o <strong>Background.disabled</strong>: nombres que describen el rol, no el color en sí.</p>
         <p>Semánticos también impulsa el sistema de temas multi-producto. Cada equipo en Rappi tiene un tema dentro de la librería; todos usan exactamente los mismos nombres de token, pero los mapean a una paleta de primitivos diferente. Así un componente funciona en todos los productos sin ninguna modificación.</p>
+      </section>
+
+      <section class="doc" id="semantics">
+        <h2>Semantics</h2>
+        <p>Listado 1:1 de la librería <strong>semantics</strong> en Figma: cada token, su uso y el primitivo al que apunta hoy. Se diseña y se nombra con el token de la izquierda, nunca con el valor de la derecha.</p>
+        <div id="semantics-tables"></div>
       </section>
 
       <section class="doc" id="accesibilidad">
@@ -310,6 +350,145 @@
     });
     wrap.appendChild(grid); root.appendChild(wrap);
   });
+
+  // === Semantics — leído 1:1 del archivo Figma "semantics"
+  // (fileKey pgoeJOdI0goJC5nwxYlEi3, node "User app" 74053:2055).
+  // Cada fila: token, uso y el primitivo (familia.step) al que apunta hoy. ===
+  var FAM_ALIAS = { neutral: 'neutrals', olivegreen: 'olive-green', bluesky: 'blue' };
+  var SPECIAL_HEX = { rappiNeon: '#FF441F' };
+  function resolvePrimitive(p){
+    if(SPECIAL_HEX[p]) return { hex: SPECIAL_HEX[p] };
+    var dot = p.indexOf('.');
+    if(dot === -1) return { hex: hexFor('neutrals', p) };
+    var fam = p.slice(0, dot), step = p.slice(dot + 1);
+    fam = FAM_ALIAS[fam] || fam;
+    return { hex: hexFor(fam, step) };
+  }
+  function hexFor(fam, step){
+    var f = PALETTE.find(function(p){ return p.name === fam; });
+    if(!f) return null;
+    var s = f.steps.find(function(st){ return st.step === step; });
+    return s ? s.hex : null;
+  }
+
+  var CHART_USE = 'Gráficos o detalles como tags, estados, etc.';
+  var SEMANTICS = [
+    { name: 'Ink — texto e íconos', rows: [
+      ['ink.strong', 'Para titulares', 'black'],
+      ['ink.standard', 'Para párrafos', 'neutral.80'],
+      ['ink.weak', 'Para labels o texto placeholder', 'neutral.50'],
+      ['ink.disabled', 'Para acciones que deben representar un estado deshabilitado', 'neutral.50', 80],
+      ['ink.inverse', 'Para resaltar un elemento con fondo invertido, por ejemplo un componente con fondo de color', 'white'],
+      ['ink.inverse-on', 'Se aplica a contenido (íconos, texto, etc.) que va sobre accent, error, warning, etc. Mantiene el blanco también en dark mode', 'white'],
+      ['ink.accent', 'Color primario: el que más se repite en pantallas y componentes de la app', 'olivegreen.50'],
+      ['ink.positive', 'El color primario también puede usarse para acentuar elementos', 'olivegreen.50'],
+      ['ink.warning', 'Para mensajes de alerta', 'orange.60'],
+      ['ink.error', 'Para mensajes de error', 'red.50'],
+      ['ink.recommendation', 'Para textos de links secundarios', 'bluesky.50']
+    ]},
+    { name: 'Background — fondos', rows: [
+      ['background.standard', 'Para fondos', 'white'],
+      ['background.weak', 'Para fondos', 'neutral.20'],
+      ['background.mild', 'Para fondos', 'neutral.10'],
+      ['background.on.top', 'Para la elevación de un componente en dark mode (en light mode el Background se mantiene blanco)', 'white'],
+      ['background.inverse', 'Para fondos que deben ser negros, por ejemplo el fill de un botón que en dark mode invierte a blanco', 'black'],
+      ['background.inverse.on', 'Para fondos donde el color se debe mantener negro en dark mode', 'black'],
+      ['background.disabled', 'Para fondo deshabilitado', 'neutral.20'],
+      ['background.accent', 'Para fondo tipo botón primario', 'olivegreen.50'],
+      ['background.accent.weak', 'Para fondo tipo botón primario, versión weak', 'green.10'],
+      ['background.positive', 'Para fondo', 'olivegreen.50'],
+      ['background.positive.weak', 'Para fondo, versión weak', 'green.10'],
+      ['background.warning', 'Para fondo', 'orange.60'],
+      ['background.warning.weak', 'Para fondo, versión weak', 'orange.10'],
+      ['background.error', 'Para fondo', 'red.50'],
+      ['background.error.weak', 'Para fondo, versión weak', 'red.10'],
+      ['background.recommendation', 'Para fondo', 'blue.50'],
+      ['background.recommendation.weak', 'Para fondo, versión weak', 'blue.10'],
+      ['background.offer', 'Para fondo de promos', 'yellow.50'],
+      ['background.offer.weak', 'Para fondo de promos, versión weak', 'yellow.10']
+    ]},
+    { name: 'Surface — overlays', rows: [
+      ['surface.overlay', 'Overlay negro, útil para resaltar cards o texto blanco grande', 'black', 80],
+      ['surface.overlay.weak', 'Overlay blanco, útil para resaltar cards o texto negro grande', 'white', 80]
+    ]},
+    { name: 'Line / Borders — bordes y dividers', rows: [
+      ['border.blank', 'Divider blanco', 'white'],
+      ['border.standard', 'Línea de input en su estado default, o borde de cards', 'neutral.20'],
+      ['border.strong', 'Para líneas de text fields o radio buttons', 'neutral.100'],
+      ['border.non-opaque', 'Divider con opacidad', 'neutral.50', 20],
+      ['border.block', 'Divider entre áreas de contenido', 'neutral.10'],
+      ['border.accent', 'Bordes de botones outline o text fields', 'olivegreen.50'],
+      ['border.positive', 'Bordes de botones outline o text fields', 'olivegreen.50'],
+      ['border.warning', 'Bordes de botones outline o text fields', 'orange.60'],
+      ['border.error', 'Bordes de botones outline o text fields', 'red.50']
+    ]},
+    { name: 'Programs — marca y sub-marcas', rows: [
+      ['rappi', 'Logo o detalles de UI', 'rappiNeon'],
+      ['turbo', 'Logo o detalles de UI', 'green.90'],
+      ['pro.gold', 'Logo o detalles de íconos', { gradient: 'linear-gradient(135deg,#FFC468,#B9790A)', label: 'grdnt.prime-gold' }],
+      ['pro.black', 'Logo o detalles de fondos', { gradient: 'linear-gradient(135deg,#2F343C,#000000)', label: 'grdnt.prime-black' }]
+    ]},
+    { name: 'Skeleton', rows: [
+      ['skeleton.standard', 'Para cargas rápidas o transiciones del sistema', 'neutral.20'],
+      ['skeleton.weak', 'Para cargas rápidas o transiciones del sistema', 'neutral.10']
+    ]},
+    { name: 'Chart', rows: [
+      ['chart.blue.01', CHART_USE, 'blue.10'], ['chart.blue.02', CHART_USE, 'blue.30'], ['chart.blue.03', CHART_USE, 'blue.50'], ['chart.blue.04', CHART_USE, 'blue.80'],
+      ['chart.green.01', CHART_USE, 'green.10'], ['chart.green.02', CHART_USE, 'green.30'], ['chart.green.03', CHART_USE, 'green.60'], ['chart.green.04', CHART_USE, 'green.70'],
+      ['chart.red.01', CHART_USE, 'red.10'], ['chart.red.02', CHART_USE, 'red.30'], ['chart.red.03', CHART_USE, 'red.60'], ['chart.red.04', CHART_USE, 'red.70'],
+      ['chart.orange.01', CHART_USE, 'orange.10'], ['chart.orange.02', CHART_USE, 'orange.30'], ['chart.orange.03', CHART_USE, 'orange.50'], ['chart.orange.04', CHART_USE, 'orange.80'],
+      ['chart.yellow.01', CHART_USE, 'yellow.10'], ['chart.yellow.02', CHART_USE, 'yellow.30'], ['chart.yellow.03', CHART_USE, 'yellow.50'], ['chart.yellow.04', CHART_USE, 'yellow.80'],
+      ['chart.teal.01', CHART_USE, 'teal.10'], ['chart.teal.02', CHART_USE, 'teal.30'], ['chart.teal.03', CHART_USE, 'teal.50'], ['chart.teal.04', CHART_USE, 'teal.70'],
+      ['chart.purple.01', CHART_USE, 'purple.10'], ['chart.purple.02', CHART_USE, 'purple.30'], ['chart.purple.03', CHART_USE, 'purple.60'], ['chart.purple.04', CHART_USE, 'purple.70'],
+      ['chart.indigo.01', CHART_USE, 'indigo.20'], ['chart.indigo.02', CHART_USE, 'indigo.30'], ['chart.indigo.03', CHART_USE, 'indigo.60'], ['chart.indigo.04', CHART_USE, 'indigo.80'],
+      ['chart.magenta.01', CHART_USE, 'magenta.10'], ['chart.magenta.02', CHART_USE, 'magenta.30'], ['chart.magenta.03', CHART_USE, 'magenta.50'], ['chart.magenta.04', CHART_USE, 'magenta.70']
+    ]}
+  ];
+
+  var semRoot = document.getElementById('semantics-tables');
+  SEMANTICS.forEach(function(cat){
+    var block = document.createElement('div'); block.className = 'tok-cat';
+    var head = document.createElement('div');
+    head.innerHTML = '<h3>' + cat.name + '</h3><span>' + cat.rows.length + ' token' + (cat.rows.length > 1 ? 's' : '') + '</span>';
+    block.appendChild(head);
+
+    var tableWrap = document.createElement('div'); tableWrap.className = 'tok-table-wrap';
+    var table = document.createElement('table'); table.className = 'tok';
+    table.innerHTML = '<thead><tr><th>Token</th><th>Uso</th><th>Primitivo</th></tr></thead>';
+    var tbody = document.createElement('tbody');
+    cat.rows.forEach(function(row){
+      var token = row[0], usage = row[1], prim = row[2], alpha = row[3] || 100;
+      var swatchStyle, primLabel;
+      if(typeof prim === 'object'){
+        swatchStyle = 'background:' + prim.gradient;
+        primLabel = prim.label;
+      } else {
+        var resolved = resolvePrimitive(prim);
+        swatchStyle = 'background:' + (resolved.hex || '#e4e4e7');
+        primLabel = prim;
+      }
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><code class="tok-name">' + token + '</code></td>' +
+        '<td class="tok-usage">' + usage + '</td>' +
+        '<td><div class="tok-prim"><span class="tok-swatch" style="' + swatchStyle + '"></span>' +
+          '<div class="tok-prim-meta"><div class="tok-prim-name">' + primLabel + '</div><div class="tok-prim-alpha">alpha.' + alpha + '%</div></div></div></td>';
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    tableWrap.appendChild(table);
+    block.appendChild(tableWrap);
+    semRoot.appendChild(block);
+  });
+</script>
+<script>
+  (function () {
+    var btn = document.querySelector('.backtop');
+    if (!btn) return;
+    function onScroll() { btn.classList.toggle('show', window.scrollY > 200); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
 </script>
 </body>
 </html>
