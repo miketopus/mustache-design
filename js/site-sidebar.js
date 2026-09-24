@@ -158,11 +158,15 @@
 
       function recompute() {
         ticking = false;
-        var active = secs[0];
-        for (var i = 0; i < secs.length; i++) {
-          if (secs[i].getBoundingClientRect().top <= triggerY) active = secs[i];
-        }
+        // Skip sections hidden by the page (e.g. inactive tab panels): their
+        // rect is all zeros, which would always read as "scrolled past".
+        var visible = secs.filter(function (s) { return s.getClientRects().length; });
         links.forEach(function (a) { a.classList.remove('on'); });
+        if (!visible.length) return;
+        var active = visible[0];
+        for (var i = 0; i < visible.length; i++) {
+          if (visible[i].getBoundingClientRect().top <= triggerY) active = visible[i];
+        }
         if (map[active.id]) map[active.id].classList.add('on');
       }
 
