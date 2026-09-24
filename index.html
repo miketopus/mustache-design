@@ -90,7 +90,7 @@
 
   /* ---------- hero ---------- */
   .hero{position:relative;padding:220px 0 120px;overflow:hidden;isolation:isolate}
-  .hero-bg{position:absolute;inset:0;z-index:-1;background:var(--bg);transition:opacity .9s ease}
+  .hero-bg{position:absolute;inset:0;z-index:-1;background:var(--bg)}
   .hero-bg::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
     background:linear-gradient(180deg,transparent 62%,var(--bg) 100%)}
   /* graph-paper grid, faded in on a diagonal — ported from jh3y's pen (CSS only) */
@@ -100,26 +100,28 @@
       linear-gradient(90deg,var(--gline) 1px,transparent 1px var(--gsize)) 50% 50% / var(--gsize) var(--gsize),
       linear-gradient(var(--gline) 1px,transparent 1px var(--gsize)) 50% 50% / var(--gsize) var(--gsize);
     -webkit-mask:linear-gradient(-20deg,transparent 40%,#fff 90%);
-            mask:linear-gradient(-20deg,transparent 40%,#fff 90%)}
-  .hero-stars{position:absolute;inset:0;width:100%;height:100%;opacity:.92;mix-blend-mode:plus-lighter;z-index:1}
+            mask:linear-gradient(-20deg,transparent 40%,#fff 90%);
+    transition:opacity .9s ease}
+  .hero-stars{position:absolute;inset:0;width:100%;height:100%;opacity:.92;mix-blend-mode:plus-lighter;z-index:1;
+    transition:opacity 1.1s ease}
   .hero-inner{position:relative;z-index:1}
-  .hero h1{font-size:clamp(46px,12vw,132px);line-height:.96;letter-spacing:-.04em;margin-bottom:26px;min-height:1.92em}
+  .hero h1{font-size:clamp(46px,12vw,132px);line-height:.96;letter-spacing:-.04em;margin-bottom:26px}
   .hero p.lead{font-family:var(--mono);font-weight:400;font-size:clamp(16px,1.9vw,20px);color:var(--text);
-    max-width:640px;line-height:1.55;min-height:3.3em}
+    max-width:640px;line-height:1.55}
 
-  /* hero entrance animation */
-  .preload .hero-bg{opacity:0}
+  /* hero entrance animation — step 1: particles fade in on their own
+     timing, decoupled from the grid behind them */
+  .preload .hero-grid{opacity:0}
+  .preload .hero-stars{opacity:0}
   .floatnav{transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
   .preload .floatnav{opacity:0;transform:translateY(-12px)}
   .langbar{transition:opacity .55s ease}
   .preload .langbar{opacity:0}
-  .preload .hero h1,.preload .hero p.lead{visibility:hidden}
-  .tw-caret::after{content:"";display:inline-block;width:.09em;min-width:2px;height:1em;background:currentColor;
-    margin-left:.06em;vertical-align:-.12em;animation:tw-blink .7s step-end infinite}
-  @keyframes tw-blink{50%{opacity:0}}
+  .hero h1,.hero p.lead{transition:opacity 1.6s ease,transform 1.6s cubic-bezier(.2,.8,.2,1)}
+  .preload .hero h1,.preload .hero p.lead{opacity:0;transform:translateY(16px)}
+  .hero p.lead{transition-delay:.35s}
   @media(prefers-reduced-motion:reduce){
-    .preload .hero-bg,.preload .floatnav,.preload .langbar{opacity:1;transform:none}
-    .preload .hero h1,.preload .hero p.lead{visibility:visible}
+    .preload .hero-grid,.preload .hero-stars,.preload .floatnav,.preload .langbar,.preload .hero h1,.preload .hero p.lead{opacity:1;transform:none}
   }
 
   /* section right after the hero — waits for the type sequence to finish, then fades up */
@@ -212,7 +214,7 @@
   }
   @media(prefers-reduced-motion:no-preference){
     @supports (animation-timeline: scroll()) and (animation-range: 0% 100%){
-      .showcase{min-height:280vh;view-timeline:--showcase}
+      .showcase{min-height:380vh;view-timeline:--showcase}
       .showcase-center img{
         animation:sw-scale-x linear;animation-fill-mode:both;
         animation-timeline:--showcase;animation-range:entry 100% exit -20%}
@@ -603,82 +605,46 @@
   mq.addEventListener('change', function(){ if(mq.matches) setOpen(false); });
 })();
 
-// hero entrance — 1) bg fades in, 2) nav appears, 3) texts type themselves in,
-// 4) once typing ends, the section right below fades up
+// hero entrance — 1) bg fades in, 2) nav appears, 3) texts fade up,
+// 4) once the fade settles, the section right below fades up
 (function(){
   var root = document.documentElement;
   var next = document.querySelector('.next-reveal');
   function revealNext(){ if(next) setTimeout(function(){ next.classList.add('in'); }, 160); }
 
-  var safety = setTimeout(function(){ root.classList.remove('preload'); revealNext(); }, 6000);
+  var safety = setTimeout(function(){ root.classList.remove('preload'); revealNext(); }, 4000);
   function finish(){
     clearTimeout(safety);
-    // release the locked box now that typing is done — restores normal flow
-    // for any later resize, the fixed height/clip was only needed mid-type
-    [h1, lead].forEach(function(el){ if(el){ el.style.height = ''; el.style.overflow = ''; } });
     root.classList.remove('preload');
     revealNext();
   }
 
   var h1      = document.querySelector('.hero h1');
   var lead    = document.querySelector('.hero p.lead');
-  var bg      = document.querySelector('.hero-bg');
+  var grid    = document.querySelector('.hero-grid');
+  var stars   = document.querySelector('.hero-stars');
   var nav     = document.querySelector('.floatnav');
   var langbar = document.querySelector('.langbar');
   var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if(reduce || !h1 || !lead){ finish(); return; }
 
-  function type(el, cps){
-    return new Promise(function(resolve){
-      var parts = (el.dataset.tw || '').split(/(<br>)/).filter(function(s){ return s.length; });
-      var delay = 1000 / cps, ti = 0, ci = 0, committed = '';
-      el.classList.add('tw-caret');
-      el.style.visibility = 'visible';
-      (function step(){
-        if(ti >= parts.length){ el.classList.remove('tw-caret'); return resolve(); }
-        var p = parts[ti];
-        if(p === '<br>'){ committed += '<br>'; el.innerHTML = committed; ti++; ci = 0; return setTimeout(step, delay); }
-        ci++;
-        el.innerHTML = committed + p.slice(0, ci);
-        if(ci >= p.length){ committed += p; ti++; ci = 0; }
-        setTimeout(step, delay);
-      })();
-    });
-  }
-
-  // 1) background fade
-  setTimeout(function(){ if(bg) bg.style.opacity = '1'; }, 120);
+  // 1) particles fade in, a beat after the flat grid behind them —
+  // each on its own timing/duration instead of riding one shared fade
+  setTimeout(function(){ if(grid) grid.style.opacity = '1'; }, 120);
+  setTimeout(function(){ if(stars) stars.style.opacity = '0.92'; }, 260);
   // 2) nav + language toggle drop in
   setTimeout(function(){
     if(nav){ nav.style.opacity = '1'; nav.style.transform = 'none'; }
     if(langbar) langbar.style.opacity = '1';
   }, 560);
-  // 3) type the texts, one after another — wait for the real webfonts to be
-  // in first (Archivo/Plex Mono, loaded with display:swap), then measure each
-  // field's fully-typed height and lock it as a fixed height + overflow:hidden.
-  // A fixed clipped box (not just min-height) matters because the blinking
-  // caret is an inline ::after — near a wrap boundary its extra width can
-  // shove a mid-word onto a transient extra line while typing, which briefly
-  // grows the box and shoves every section below down and back up. Clipping
-  // hides that transient overflow instead of letting it reflow the page.
-  var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(function(){}) : Promise.resolve();
+  // 3) headline + lead fade up together (lead trails h1 via its own
+  // transition-delay in CSS); wait for the lead's transition to end
+  // before revealing the section right below the hero
   setTimeout(function(){
-    fontsReady.then(function(){
-      [h1, lead].forEach(function(el){
-        el.style.height = el.getBoundingClientRect().height + 'px';
-        el.style.overflow = 'hidden';
-      });
-      // stash full content, then blank the fields so the caret starts from zero
-      h1.dataset.tw   = h1.innerHTML.replace(/<br\s*\/?>/gi, '<br>').trim();
-      lead.dataset.tw = lead.textContent.trim();
-      h1.textContent = lead.textContent = '';
-
-      type(h1, 24)
-        .then(function(){ return type(lead, 55); })
-        .then(finish);
-    });
-  }, 1050);
+    root.classList.remove('preload');
+    lead.addEventListener('transitionend', finish, { once: true });
+  }, 700);
 })();
 
 // hero — circumference of circles: particles spiral inward toward a core ring,
@@ -900,15 +866,18 @@
 })();
 
 // showcase photo fill — pulls real product photography from Identidad
-// Visual (assets/identidad-visual/foto/1..18.jpg) and drops a different
-// random one into every surrounding tile on each load. The center hero
-// shot stays the fixed Dribbble reference image.
+// Visual (assets/identidad-visual/foto/1..18.jpg), plus a couple of team/
+// office shots so the grid isn't only food, and drops a different random
+// one into every surrounding tile on each load. The center hero shot
+// stays the fixed Dribbble reference image.
 (function(){
   var tiles = document.querySelectorAll('.showcase-tile');
   if(!tiles.length) return;
 
   var pool = [];
   for(var i = 1; i <= 18; i++) pool.push('assets/identidad-visual/foto/' + i + '.jpg');
+  pool.push('assets/identidad-visual/foto/desk-rappi-6.png');
+  pool.push('assets/identidad-visual/foto/elevator-rappi-6.png');
   for(var i = pool.length - 1; i > 0; i--){
     var j = Math.floor(Math.random() * (i + 1));
     var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
@@ -1050,7 +1019,10 @@
     if(!ticking){ ticking = true; requestAnimationFrame(update); }
   }, { passive: true });
   window.addEventListener('resize', update);
-  update();
+  // no eager update() on init — at scrollY 0 it would force h1's inline
+  // opacity to 1 immediately via style, stomping the hero entrance fade
+  // (which drives the same property via a class). Real scroll/resize
+  // events take over once the entrance has had time to play out.
 })();
 
 // generic scroll reveal — fades each later section's content up into view

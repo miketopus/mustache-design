@@ -1,0 +1,10 @@
+{
+  "name": "mustache-design",
+  "private": true,
+  "description": "Mustache Design System site (static HTML/CSS/JS).",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build:nav": "node scripts/build-foundations-nav.js",
+    "watch:nav": "node scripts/build-foundations-nav.js --watch"
+  }
+}
