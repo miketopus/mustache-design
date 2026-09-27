@@ -1,12 +1,25 @@
 /* Shared design tokens — single source of truth for every page's :root.
    Edit here, not per-page: a page-local :root should only add tokens
    that page alone needs (see index.html's --neon / --maxw). */
+@font-face{
+  font-family:'PP Object Sans';
+  src:url('../assets/identidad-visual/fonts/PPObjectSans-Variable.ttf') format('truetype');
+  font-weight:100 900;font-style:normal;font-display:swap;
+}
 :root{
   --bg:#08080A;--bg-2:#0C0C0E;--panel:#121214;--panel-2:#18181B;--tile:#0E0E10;
   --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.15);
   --text:#F5F5F6;--muted:#96969C;--muted-2:#65656B;--white:#FFFFFF;
   --display:'Archivo Black',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --heading:'PP Object Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   --body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  /* heading scale — the only title sizes the site uses */
+  --fs-display:clamp(46px,12vw,132px); /* home hero only */
+  --fs-h1:clamp(34px,5vw,64px);        /* page hero */
+  --fs-h2-lg:clamp(32px,4vw,48px);     /* landing sections (home, brand) */
+  --fs-h2:clamp(24px,3vw,32px);        /* doc sections */
+  --fs-h3:clamp(22px,2.4vw,28px);      /* cards, featured blocks */
+  --fs-h3-sm:18px;                     /* doc subsections, tables */
   --radius:16px;--topbar:64px;--side:288px;
 }

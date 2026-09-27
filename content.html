@@ -40,14 +40,14 @@
   .main-inner{max-width:800px;margin:0 auto}
   .crumb{font-size:13px;color:var(--muted-2);margin-bottom:20px;display:flex;gap:8px;align-items:center}
   .crumb b{color:var(--muted);font-weight:500}
-  .page-h1{font-size:clamp(34px,5vw,52px);margin-bottom:18px}
+  .page-h1{font-size:var(--fs-h1);margin-bottom:18px}
   .page-lead{font-size:18px;color:var(--muted);max-width:640px;margin-bottom:16px}
   .page-lead + .page-lead{margin-top:-4px}
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
   section.doc:first-of-type{padding-top:40px}
-  .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
-  .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
+  .doc h2{font-family:var(--display);font-weight:800;font-size:var(--fs-h2);letter-spacing:-.02em;margin-bottom:14px}
+  .doc h3{font-family:var(--display);font-weight:700;font-size:var(--fs-h3-sm);letter-spacing:-.01em;margin:30px 0 12px}
   .doc h4{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);margin:26px 0 12px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
   .doc p strong{color:var(--text);font-weight:600}
@@ -83,7 +83,7 @@
   /* stages */
   .stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px 24px;margin-bottom:14px}
   .stage .st-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px}
-  .stage h3{margin:0;font-size:20px}
+  .stage h3{margin:0;font-size:var(--fs-h3)}
   .stage .tone-pill{font-size:12.5px;color:var(--text);background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;font-weight:600;white-space:nowrap}
   .stage p{font-size:14.5px;margin-bottom:10px}
   .stage p:last-child{margin-bottom:0}
@@ -470,7 +470,7 @@
       <!-- ============================================================ -->
       <div style="border-top:1px solid var(--line);margin-top:80px;padding-top:60px">
         <div class="eyebrow" style="margin-bottom:14px">Content</div>
-        <h1 class="page-h1 display" style="font-size:clamp(30px,4.4vw,46px)">Product content</h1>
+        <h1 class="page-h1 display" style="font-size:var(--fs-h2-lg)">Product content</h1>
         <p class="page-lead">Consistencia, claridad y simpleza son la base fundamental para crear una gran experiencia a través del contenido.</p>
         <p class="page-lead">Conoce cómo, desde el product content y nuestros principios, podrás lograrlo.</p>
       </div>
@@ -508,7 +508,7 @@
       <!-- ============================================================ -->
       <div style="border-top:1px solid var(--line);margin-top:80px;padding-top:60px">
         <div class="eyebrow" style="margin-bottom:14px">Content</div>
-        <h1 class="page-h1 display" style="font-size:clamp(30px,4.4vw,46px)">Grammar guidelines</h1>
+        <h1 class="page-h1 display" style="font-size:var(--fs-h2-lg)">Grammar guidelines</h1>
         <p class="page-lead">Una guía para diseñadores UI/UX, developers, researchers, content writers y demás colaboradores que escriben al público con la voz de Rappi.</p>
         <p class="page-lead">Nos ayuda a tener una redacción consistente, empática y clara con nuestras personas usuarias a través de la interfaz.</p>
       </div>
