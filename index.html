@@ -8,7 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<script>document.documentElement.classList.add('preload')</script>
+<script>document.documentElement.classList.add('preload');
+  // no CSS scroll-driven animations (e.g. Firefox): the showcase runs a JS twin
+  if(!(window.CSS && CSS.supports('animation-timeline: scroll()') && CSS.supports('animation-range: 0% 100%'))
+     && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('sw-js');</script>
 <script src="js/pixel-canvas.js" defer></script>
 <style>
   :root{
@@ -21,6 +24,9 @@
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
   section[id]{scroll-margin-top:110px}
   .display{font-family:var(--display);letter-spacing:-.02em;font-weight:800;line-height:1.02}
+  /* headings: PP Object Sans variable, fixed -2px tracking */
+  h1,h2,h3,h1.display,h2.display,h3.display{font-family:var(--heading);font-weight:700;letter-spacing:-2px}
+  h3,h3.display{letter-spacing:0}
   .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
   .silver{background:linear-gradient(180deg,#fff 0%,#fff 40%,#8a8a90 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
   .sec-eyebrow-row{display:flex;align-items:center;gap:12px}
@@ -105,7 +111,7 @@
   .hero-stars{position:absolute;inset:0;width:100%;height:100%;opacity:.92;mix-blend-mode:plus-lighter;z-index:1;
     transition:opacity 1.1s ease}
   .hero-inner{position:relative;z-index:1}
-  .hero h1{font-size:clamp(46px,12vw,132px);line-height:.96;letter-spacing:-.04em;margin-bottom:26px}
+  .hero h1{font-size:var(--fs-display);line-height:.96;margin-bottom:26px}
   .hero p.lead{font-family:var(--mono);font-weight:400;font-size:clamp(16px,1.9vw,20px);color:var(--text);
     max-width:640px;line-height:1.55}
 
@@ -138,19 +144,19 @@
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
-  .reveal .cards3>*,.reveal .craft-grid>*,.reveal .timeline>*{
+  .reveal .pillars>*,.reveal .craft-grid>*,.reveal .timeline>*{
     opacity:0;transform:translateY(18px);
     transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
-  .reveal.in .cards3>*,.reveal.in .craft-grid>*,.reveal.in .timeline>*{
+  .reveal.in .pillars>*,.reveal.in .craft-grid>*,.reveal.in .timeline>*{
     opacity:1;transform:none}
-  .reveal .cards3>*:nth-child(1),.reveal .craft-grid>*:nth-child(1),.reveal .timeline>*:nth-child(1){transition-delay:0ms}
-  .reveal .cards3>*:nth-child(2),.reveal .craft-grid>*:nth-child(2),.reveal .timeline>*:nth-child(2){transition-delay:80ms}
-  .reveal .cards3>*:nth-child(3),.reveal .craft-grid>*:nth-child(3),.reveal .timeline>*:nth-child(3){transition-delay:160ms}
+  .reveal .pillars>*:nth-child(1),.reveal .craft-grid>*:nth-child(1),.reveal .timeline>*:nth-child(1){transition-delay:0ms}
+  .reveal .pillars>*:nth-child(2),.reveal .craft-grid>*:nth-child(2),.reveal .timeline>*:nth-child(2){transition-delay:80ms}
+  .reveal .pillars>*:nth-child(3),.reveal .craft-grid>*:nth-child(3),.reveal .timeline>*:nth-child(3){transition-delay:160ms}
   .reveal .craft-grid>*:nth-child(4),.reveal .timeline>*:nth-child(4){transition-delay:240ms}
   .reveal .craft-grid>*:nth-child(5){transition-delay:320ms}
 
   @media(prefers-reduced-motion:reduce){
-    .reveal,.reveal .cards3>*,.reveal .craft-grid>*,.reveal .timeline>*{
+    .reveal,.reveal .pillars>*,.reveal .craft-grid>*,.reveal .timeline>*{
       opacity:1;transform:none;transition:none}
   }
 
@@ -180,11 +186,15 @@
      view-timeline, with no JS and a plain static grid as the fallback. */
   .showcase{position:relative;background:var(--bg)}
   .showcase-pin{min-height:100vh;width:100%;display:flex;place-items:center;position:sticky;top:0;overflow:hidden}
-  .showcase-grid{--sw-gap:clamp(10px,3.6vw,40px);--sw-gutter:2rem;width:min(1360px,calc(100vw - (2 * var(--sw-gutter))));
+  /* width is also capped by the viewport height so all 3 rows of 4:5 tiles
+     fit inside the pinned 100vh frame (5 cols: height ~= .75 x width) */
+  .showcase-grid{--sw-gap:clamp(10px,3.6vw,40px);--sw-gutter:2rem;
+    width:min(1360px,calc(100vw - (2 * var(--sw-gutter))),calc((100svh - (2 * var(--sw-gutter))) * 4 / 3));
     display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:var(--sw-gap);
     position:absolute;top:50%;left:50%;translate:-50% -50%}
   @media(max-width:720px){
-    .showcase-grid{grid-template-columns:repeat(3,1fr)}
+    .showcase-grid{grid-template-columns:repeat(3,1fr);
+      width:min(calc(100vw - (2 * var(--sw-gutter))),calc((100svh - (2 * var(--sw-gutter))) * .8))}
     .showcase-grid>.showcase-layer:nth-of-type(1){display:none}
   }
   .showcase-layer{display:grid;grid-column:1/-1;grid-row:1/-1;grid-template-columns:subgrid;grid-template-rows:subgrid}
@@ -201,11 +211,15 @@
   }
   .showcase-tile{aspect-ratio:4/5;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel);
     position:relative;overflow:hidden;isolation:isolate}
-  .showcase-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .showcase-tile img,.showcase-tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .showcase-tile::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.08),transparent 60%)}
   .showcase-center{position:relative;grid-area:2/3;z-index:2}
-  .showcase-center img{position:absolute;top:50%;left:50%;translate:-50% -50%;width:100%;height:auto;
+  .showcase-center img,.showcase-center video{position:absolute;top:50%;left:50%;translate:-50% -50%;width:100%;height:auto;
     aspect-ratio:16/9;object-fit:cover;border-radius:calc(var(--radius) * 2);box-shadow:0 40px 100px rgba(0,0,0,.55)}
+  /* frames stack and swap by visibility, never display:none — hiding with
+     display restarts the scroll-driven scale on re-show, so a video would
+     come back at the wrong (small) size */
+  .showcase-center .off{visibility:hidden}
   @media(max-width:720px){
     /* the mobile grid drops to 3 columns, so the center image moves to the
        true middle column — this must come after the base rule above to win
@@ -214,18 +228,27 @@
   }
   @media(prefers-reduced-motion:no-preference){
     @supports (animation-timeline: scroll()) and (animation-range: 0% 100%){
-      .showcase{min-height:380vh;view-timeline:--showcase}
-      .showcase-center img{
+      /* 480vh = the original 380vh assemble phase + 100vh of column
+         parallax at the end (see "showcase column parallax" script); every
+         range below ends 100% of a viewport earlier so the assemble pacing
+         is unchanged */
+      .showcase{min-height:480vh;view-timeline:--showcase}
+      .showcase-center img,.showcase-center video{
         animation:sw-scale-x linear;animation-fill-mode:both;
-        animation-timeline:--showcase;animation-range:entry 100% exit -20%}
+        animation-timeline:--showcase;animation-range:entry 100% exit -120%}
       .showcase-layer{
         animation:sw-fade linear,sw-reveal linear;animation-fill-mode:both;
         animation-timeline:--showcase,--showcase}
-      .showcase-layer:nth-of-type(1){animation-range:entry 100% exit 0%}
-      .showcase-layer:nth-of-type(2){animation-range:entry 100% exit -10%}
-      .showcase-layer:nth-of-type(3){animation-range:entry 100% exit -20%}
+      .showcase-layer:nth-of-type(1){animation-range:entry 100% exit -100%}
+      .showcase-layer:nth-of-type(2){animation-range:entry 100% exit -110%}
+      .showcase-layer:nth-of-type(3){animation-range:entry 100% exit -120%}
+      .showcase-tile{will-change:translate}
     }
   }
+  /* JS fallback (html.sw-js): same 480vh pin; the script "showcase scroll
+     fallback" drives width / opacity / scale from scroll position */
+  .sw-js .showcase{min-height:480vh}
+  .sw-js .showcase-layer{opacity:0;scale:0}
   @-webkit-keyframes sw-scale-x{0%,10%{width:calc(100vw - (2 * var(--sw-gutter)))}}
   @keyframes sw-scale-x{0%,10%{width:calc(100vw - (2 * var(--sw-gutter)))}}
   @-webkit-keyframes sw-fade{0%,55%{opacity:0}}
@@ -257,7 +280,7 @@
     transition:color .3s ease,scale .3s ease}
   .hcard:where(:hover,:focus-within) .hcard-icon{color:var(--hc-active,var(--text));scale:1.12}
   .hcard-body{padding:24px 24px 30px}
-  .hcard-body h3{font-family:var(--display);font-weight:700;font-size:clamp(22px,2.4vw,28px);letter-spacing:-.02em;margin-bottom:10px}
+  .hcard-body h3{font-size:var(--fs-h3);margin-bottom:10px}
   .hcard-body p{color:var(--muted);font-size:15.5px;line-height:1.5}
   @media(max-width:860px){.home-cards{grid-template-columns:1fr;max-width:420px}}
 
@@ -277,17 +300,30 @@
   /* ---------- sections ---------- */
   .section{padding:84px 0}
   .divtop{border-top:1px solid var(--line)}
-  .prin-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
-  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
-  .card{background:var(--panel);border-radius:var(--radius);padding:30px 26px;min-height:220px;display:flex;flex-direction:column}
-  .card .num{font-family:var(--display);font-weight:800;font-size:15px;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;margin-bottom:22px;color:#0A0A0C;background:var(--white)}
-  .card h3{font-family:var(--display);font-weight:700;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
-  .card p{color:var(--muted);font-size:15px}
-  @media(max-width:820px){.cards3{grid-template-columns:1fr}}
+  /* principles: full-bleed dithered photo rows (Figma site-DS 4270:6541) */
+  .prin-head h2{font-size:var(--fs-h1);line-height:1.03;max-width:816px}
+  .pillars{display:flex;flex-direction:column;gap:80px;margin-top:48px}
+  .pillar{position:relative;height:495px;overflow:hidden}
+  #principles{padding-top:clamp(120px,14vw,200px)}
+  /* photos ship pre-darkened; taller than the row so the vertical parallax
+     (--py, set by the script below) never reveals an edge */
+  .pillar-img{position:absolute;left:0;right:0;top:-15%;bottom:-15%;background-size:cover;background-position:center;background-repeat:no-repeat;
+    transform:translate3d(0,var(--py,0px),0);will-change:transform}
+  .pillar-fade{position:absolute;left:0;right:0;top:0;height:298px;background:linear-gradient(to bottom,var(--bg),transparent)}
+  .pillar-fade.bottom{top:auto;bottom:0;background:linear-gradient(to top,var(--bg),transparent)}
+  .pillar .wrap{position:relative;z-index:1;padding-top:322px}
+  .pillar h3{font-size:var(--fs-h2-lg);line-height:1.04;letter-spacing:-2px;margin-bottom:22px}
+  .pillar p{font-family:var(--heading);font-size:16px;color:var(--white);max-width:391px;margin-left:70px}
+  @media(max-width:720px){
+    .pillars{gap:40px}
+    .pillar{height:440px}
+    .pillar .wrap{padding-top:250px}
+    .pillar p{margin-left:0}
+  }
 
-  .craft{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .craft{background:var(--bg-2);border-bottom:1px solid var(--line)}
   .craft-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
-  .craft-head h2{font-size:clamp(26px,3.6vw,38px);margin-top:12px}
+  .craft-head h2{font-size:var(--fs-h2-lg);margin-top:12px}
   .craft-head p{max-width:420px;font-size:15px}
   .craft-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:156px;gap:16px;margin-top:40px}
   .cx{border:1px solid var(--line);border-radius:16px;background:var(--panel);position:relative;overflow:hidden;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .25s,transform .25s}
@@ -324,7 +360,7 @@
   .acc .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:20px;border:1px solid var(--line-2)}
   .acc.pub .tag{background:rgba(255,255,255,.10);color:#fff}
   .acc.priv .tag{background:transparent;color:var(--muted)}
-  .acc h3{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:12px}
+  .acc h3{font-size:var(--fs-h3);margin-bottom:12px}
   .acc p{color:var(--muted);font-size:15px;margin-bottom:18px}
   .acc ul{list-style:none;display:flex;flex-direction:column;gap:10px}
   .acc li{font-size:14.5px;color:var(--text);display:flex;gap:10px;align-items:flex-start}
@@ -436,7 +472,9 @@
         <div class="showcase-tile"></div>
       </div>
       <div class="showcase-center">
-        <img src="https://cdn.dribbble.com/userupload/31463061/file/original-2091f467e836bf240ecdc3d1169b8625.png?resize=1600x1200&amp;vertical=center" alt="Mustache Design System — reference shots" loading="lazy">
+        <img src="assets/identidad-visual/foto/waves-rappi-cursor.png" alt="Mustache Design System — reference shots">
+        <video class="off" src="assets/identidad-visual/foto/mes-del-taco-rappi.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <video class="off" src="assets/identidad-visual/foto/la-doble-vida-de-la-bolsa.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video>
       </div>
     </div>
   </div>
@@ -492,17 +530,35 @@
 </section>
 
 <!-- ===================== PRINCIPLES ===================== -->
-<section class="section" id="principles">
-  <div class="wrap reveal">
-    <div class="prin-head">
-      <span class="eyebrow" data-en="The 3 pillars" data-es="Los 3 pilares">The 3 pillars</span>
-      <h2 class="display" data-en="Principles that hold it together" data-es="Principios que lo sostienen">Principles that hold it together</h2>
-    </div>
-    <div class="cards3">
-      <div class="card"><div class="num">01</div><h3 data-en="Beautiful &amp; scalable" data-es="Bello y escalable">Beautiful &amp; scalable</h3><p data-en="We build products that look great and grow gracefully, from a single button to an entire platform." data-es="Construimos productos que se ven muy bien y crecen con elegancia, desde un botón hasta una plataforma entera.">We build products that look great and grow gracefully, from a single button to an entire platform.</p></div>
-      <div class="card"><div class="num">02</div><h3 data-en="Holistic by design" data-es="Holístico por diseño">Holistic by design</h3><p data-en="We create holistic designs where every piece works as part of one coherent, connected whole." data-es="Creamos diseños holísticos donde cada pieza funciona como parte de un todo coherente y conectado.">We create holistic designs where every piece works as part of one coherent, connected whole.</p></div>
-      <div class="card"><div class="num">03</div><h3 data-en="Experience first" data-es="La experiencia primero">Experience first</h3><p data-en="We prioritize our users' experience in every decision, because the details are the product." data-es="Priorizamos la experiencia de nuestros usuarios en cada decisión, porque los detalles son el producto.">We prioritize our users' experience in every decision, because the details are the product.</p></div>
-    </div>
+<section class="section reveal" id="principles">
+  <div class="wrap prin-head">
+    <h2 class="display" data-html data-en="Principles<br>that hold it together" data-es="Principios<br>que lo sostienen">Principles<br>that hold it together</h2>
+  </div>
+  <div class="pillars">
+    <article class="pillar">
+      <div class="pillar-img" style="background-image:url('assets/identidad-visual/foto/beautiful-scalable.png')" aria-hidden="true"></div>
+      <div class="pillar-fade" aria-hidden="true"></div>
+      <div class="wrap">
+        <h3 data-en="Beautiful &amp; scalable" data-es="Bello y escalable">Beautiful &amp; scalable</h3>
+        <p data-en="We build products that look great and grow gracefully, from a single button to an entire platform." data-es="Construimos productos que se ven muy bien y crecen con elegancia, desde un botón hasta una plataforma entera.">We build products that look great and grow gracefully, from a single button to an entire platform.</p>
+      </div>
+    </article>
+    <article class="pillar">
+      <div class="pillar-img" style="background-image:url('assets/identidad-visual/foto/holistic-by-design.png')" aria-hidden="true"></div>
+      <div class="pillar-fade" aria-hidden="true"></div>
+      <div class="wrap">
+        <h3 data-en="Holistic by design" data-es="Holístico por diseño">Holistic by design</h3>
+        <p data-en="We create holistic designs where every piece works as part of one coherent, connected whole." data-es="Creamos diseños holísticos donde cada pieza funciona como parte de un todo coherente y conectado.">We create holistic designs where every piece works as part of one coherent, connected whole.</p>
+      </div>
+    </article>
+    <article class="pillar">
+      <div class="pillar-img" style="background-image:url('assets/identidad-visual/foto/experience-first.png')" aria-hidden="true"></div>
+      <div class="pillar-fade bottom" aria-hidden="true"></div>
+      <div class="wrap">
+        <h3 data-en="Experience first" data-es="La experiencia primero">Experience first</h3>
+        <p data-en="We prioritize our users' experience in every decision, because the details are the product." data-es="Priorizamos la experiencia de nuestros usuarios en cada decisión, porque los detalles son el producto.">We prioritize our users' experience in every decision, because the details are the product.</p>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -535,7 +591,7 @@
 <section class="section divtop" id="story">
   <div class="wrap reveal">
     <div class="sec-eyebrow-row"><span class="eyebrow" data-en="Our story" data-es="Nuestra historia">Our story</span><span class="ln"></span></div>
-    <h2 class="display" style="font-size:clamp(26px,3.6vw,38px);margin-top:12px" data-en="A system that keeps evolving" data-es="Un sistema que sigue evolucionando">A system that keeps evolving</h2>
+    <h2 class="display" style="font-size:var(--fs-h2-lg);margin-top:12px" data-en="A system that keeps evolving" data-es="Un sistema que sigue evolucionando">A system that keeps evolving</h2>
     <div class="timeline">
       <div class="tl"><b>2019</b><span data-en="Mustache is born to unify Rappi's products." data-es="Nace Mustache para unificar los productos de Rappi.">Mustache is born to unify Rappi's products.</span></div>
       <div class="tl"><b data-en="Foundations" data-es="Fundación">Foundations</b><span data-en="Color, type, icons and 3D come together." data-es="Color, tipografía, iconos y 3D se unen.">Color, type, icons and 3D come together.</span></div>
@@ -874,22 +930,69 @@
   var tiles = document.querySelectorAll('.showcase-tile');
   if(!tiles.length) return;
 
-  var pool = [];
-  for(var i = 1; i <= 18; i++) pool.push('assets/identidad-visual/foto/' + i + '.jpg');
-  pool.push('assets/identidad-visual/foto/desk-rappi-6.png');
-  pool.push('assets/identidad-visual/foto/elevator-rappi-6.png');
-  for(var i = pool.length - 1; i > 0; i--){
-    var j = Math.floor(Math.random() * (i + 1));
-    var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+  var DIR = 'assets/identidad-visual/foto/';
+  function shuffle(a){
+    for(var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
   }
 
+  var pool = [];
+  for(var i = 1; i <= 19; i++) pool.push(DIR + i + '.jpg');
+  ['desk-rappi-6.png', 'elevator-rappi-6.png', 'figma R8 mockup.png',
+   'mural-mockup-rappi.png', 'shopper-premium-city.png', '_cover-file-R8.png',
+   'rappicard-prp-olimpicos.png', 'rappipay-wallpaper.jpg', 'splash-turbo.jpg']
+    .forEach(function(f){ pool.push(DIR + encodeURI(f)); });
+  shuffle(pool);
+
+  // campaign loops (converted from Behance GIFs) — every load puts each one
+  // in a random tile, the rest get photos
+  var VIDEOS = ['mes-del-taco-rappi.mp4', 'la-doble-vida-de-la-bolsa.mp4'];
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var slots = shuffle([].map.call(tiles, function(_, i){ return i; }));
+  var videoAt = {};
+  VIDEOS.forEach(function(v, k){ videoAt[slots[k]] = DIR + v; });
+
+  var p = 0, videos = [];
   tiles.forEach(function(tile, idx){
-    var img = document.createElement('img');
-    img.src = pool[idx % pool.length];
-    img.alt = '';
-    img.loading = 'lazy';
-    tile.appendChild(img);
+    var media;
+    if(videoAt[idx]){
+      media = document.createElement('video');
+      media.src = videoAt[idx];
+      media.muted = true;
+      media.loop = true;
+      media.playsInline = true;
+      media.preload = reduce ? 'metadata' : 'auto';
+      media.setAttribute('aria-hidden', 'true');
+      // autoplay policies need `muted` as an attribute, not just the property
+      media.setAttribute('muted', '');
+      media.setAttribute('playsinline', '');
+      if(!reduce){
+        media.autoplay = true;
+        videos.push(media);
+      }
+    } else {
+      media = document.createElement('img');
+      media.src = pool[p++ % pool.length];
+      media.alt = '';
+      media.loading = 'lazy';
+    }
+    tile.appendChild(media);
   });
+
+  // play only while on screen: the tiles start at scale(0) in the scroll
+  // animation, where Chrome pauses muted autoplay and may not resume it
+  if(videos.length && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ var pr = e.target.play(); if(pr && pr.catch) pr.catch(function(){}); }
+        else e.target.pause();
+      });
+    }, { threshold: 0.01 });
+    videos.forEach(function(v){ io.observe(v); });
+  }
 })();
 
 // showcase center flicker — as the big center card scrolls through the
@@ -902,7 +1005,7 @@
   if(!showcase || !centerImg) return;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  var FRAMES = [
+  var IMAGES = [
     'https://cdn.dribbble.com/userupload/31463061/file/original-2091f467e836bf240ecdc3d1169b8625.png?resize=1600x1200&vertical=center',
     'https://cdn.dribbble.com/userupload/44680652/file/069898b339fbfaf0cf65e501057be552.png?resize=1024x768&vertical=center',
     'https://cdn.dribbble.com/userupload/44232336/file/70439bd3be2a3347807cf9f2990f3dba.png?resize=1600x1200&vertical=center',
@@ -913,17 +1016,50 @@
     'https://design.rappi.com/uploads/j2rQyklqE8hAlb6_5VnxsA.png',
     'https://design.rappi.com/uploads/fGeTbO656OzMl-yNV1VPqA.png'
   ];
+  // local landscape shots (portrait ones only suit the 4:5 tiles)
+  ['_cover-file-R8.png', 'rappicard-prp-olimpicos.png', 'rappipay-wallpaper.jpg',
+   'mural-mockup-rappi.png', 'shopper-premium-city.png', 'figma R8 mockup.png',
+   'desk-rappi-6.png'].forEach(function(f){
+    IMAGES.push('assets/identidad-visual/foto/' + encodeURI(f));
+  });
+  var VIDEOS = [].slice.call(showcase.querySelectorAll('.showcase-center video'));
+
+  // a frame is an image URL or a center <video>; order is shuffled per load
+  var FRAMES = IMAGES.concat(VIDEOS);
+  for(var i = FRAMES.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = FRAMES[i]; FRAMES[i] = FRAMES[j]; FRAMES[j] = t;
+  }
+  // the opening frame is always the Rappi waves shot (also the static
+  // markup src, so reduced-motion users see it too)
+  var FIRST = 'assets/identidad-visual/foto/waves-rappi-cursor.png';
+  FRAMES.unshift(FIRST);
 
   // Warm the cache up front so mid-scroll swaps are instant instead of a
   // flash of blank space while each image loads for the first time.
-  FRAMES.forEach(function(src){ var im = new Image(); im.src = src; });
-  centerImg.src = FRAMES[0];
+  IMAGES.forEach(function(src){ var im = new Image(); im.src = src; });
+  centerImg.src = FIRST;
 
   var STEPS = 42;   // quantized flips across the section's full scroll range
   var lastStep = -1;
   var ticking = false;
 
   function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+
+  function show(frame){
+    var isVideo = typeof frame !== 'string';
+    VIDEOS.forEach(function(v){
+      if(v === frame){
+        v.classList.remove('off');
+        var pr = v.play(); if(pr && pr.catch) pr.catch(function(){});
+      } else if(!v.classList.contains('off')){
+        v.classList.add('off');
+        v.pause();
+      }
+    });
+    centerImg.classList.toggle('off', isVideo);
+    if(!isVideo) centerImg.src = frame;
+  }
 
   function update(){
     ticking = false;
@@ -933,7 +1069,7 @@
     var step = Math.min(STEPS - 1, Math.floor(progress * STEPS));
     if(step !== lastStep){
       lastStep = step;
-      centerImg.src = FRAMES[step % FRAMES.length];
+      show(FRAMES[step % FRAMES.length]);
     }
   }
 
@@ -1077,5 +1213,132 @@
 
 </script>
 
+<script>
+/* principles — vertical-only parallax on each pillar photo */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var imgs = [].slice.call(document.querySelectorAll('.pillar-img'));
+  if(!imgs.length) return;
+  var raf = 0;
+  function update(){
+    raf = 0;
+    var vh = window.innerHeight;
+    imgs.forEach(function(img){
+      var r = img.parentElement.getBoundingClientRect();
+      if(r.bottom < 0 || r.top > vh) return;
+      // +1 as the row enters from below, -1 as it leaves at the top; the photo
+      // drifts opposite to the scroll so it trails the content
+      var p = ((r.top + r.height / 2) - vh / 2) / ((vh + r.height) / 2);
+      var range = r.height * 0.15;
+      img.style.setProperty('--py', (-p * range).toFixed(1) + 'px');
+    });
+  }
+  function onScroll(){ if(!raf) raf = requestAnimationFrame(update); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+// showcase column parallax — once the center shot has settled into its
+// cell, each grid column (center shot included) drifts up at its own
+// speed and the items inside a column pull apart as they rise.
+(function(){
+  var showcase = document.querySelector('.showcase');
+  var grid = showcase && showcase.querySelector('.showcase-grid');
+  if(!grid) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var START = 0.70;              // pin progress where the grid is assembled
+  // one speed per column, alternating fast / slow but never equal, so no
+  // two columns leave together (3-col mobile grid uses the first three)
+  var SPEEDS = [1.2, 0.5, 0.85, 0.6, 1.05];
+  var SPREAD = 140;              // extra px between rows at full progress
+  var tiles = [].slice.call(grid.querySelectorAll('.showcase-tile, .showcase-center'));
+  var map = [];
+
+  function measure(){
+    // offsetLeft/Top ignore the layers' scale animation, so this is the
+    // resting grid position of every tile
+    var cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+    var gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+    var colW = (grid.clientWidth - gap * (cols - 1)) / cols;
+    var tops = [];
+    map = tiles.map(function(t){
+      if(!t.offsetParent) return null;           // hidden layer (mobile)
+      if(tops.indexOf(t.offsetTop) < 0) tops.push(t.offsetTop);
+      return { el: t, col: Math.round(t.offsetLeft / (colW + gap)), top: t.offsetTop };
+    }).filter(Boolean);
+    tops.sort(function(a, b){ return a - b; });
+    map.forEach(function(m){ m.rowsBelow = tops.length - 1 - tops.indexOf(m.top); });
+  }
+
+  var ticking = false;
+  function update(){
+    ticking = false;
+    var rect = showcase.getBoundingClientRect();
+    var travel = showcase.offsetHeight - window.innerHeight;
+    var progress = travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 0;
+    var p = Math.max(0, (progress - START) / (1 - START));
+    p = p * p * (3 - 2 * p);                     // smoothstep: ease in and out
+    var dist = window.innerHeight * 1.15;
+    map.forEach(function(m){
+      var y = -p * (dist * SPEEDS[m.col % SPEEDS.length] + SPREAD * m.rowsBelow);
+      m.el.style.translate = y ? '0 ' + y.toFixed(1) + 'px' : '';
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+
+  measure();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function(){ measure(); onScroll(); });
+  update();
+})();
+// showcase scroll fallback — for browsers without CSS scroll-driven
+// animations (Firefox). Mirrors the view-timeline setup above:
+//   center media: sw-scale-x over [entry 100%, exit -120%]
+//   layers 1/2/3: sw-fade + sw-reveal over [entry 100%, exit -100/-110/-120%]
+// For this 480vh section: entry 100% = section top at viewport top, and
+// exit -N% = section bottom N% of a viewport above the viewport bottom.
+(function(){
+  if(!document.documentElement.classList.contains('sw-js')) return;
+  var showcase = document.querySelector('.showcase');
+  if(!showcase) return;
+  var center = showcase.querySelector('.showcase-center');
+  var media = [].slice.call(center.querySelectorAll('img, video'));
+  var layers = [].slice.call(showcase.querySelectorAll('.showcase-layer'));
+  var EXIT = [1.0, 1.1, 1.2];      // layer ranges end at exit -100/-110/-120%
+
+  function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+  function t(y, start, end){ return clamp01((y - start) / (end - start)); }
+
+  var ticking = false;
+  function update(){
+    ticking = false;
+    var vh = window.innerHeight;
+    var top = showcase.getBoundingClientRect().top + window.scrollY;
+    var y = window.scrollY;
+    var exit0 = top + showcase.offsetHeight - vh;   // exit 0%
+
+    // center: full-bleed until 10%, then shrinks into its grid cell
+    var tc = t(y, top, exit0 - 1.2 * vh);
+    var gutter = parseFloat(getComputedStyle(showcase.querySelector('.showcase-grid')).getPropertyValue('--sw-gutter')) * 16 || 32;
+    var full = document.documentElement.clientWidth - 2 * gutter;
+    var cell = center.clientWidth;
+    var k = tc <= 0.1 ? 0 : (tc - 0.1) / 0.9;
+    var w = full + (cell - full) * k;
+    media.forEach(function(m){ m.style.width = w.toFixed(1) + 'px'; });
+
+    // layers: invisible until 55% (fade) / 30% (scale), then ramp to 1
+    layers.forEach(function(l, i){
+      var tl = t(y, top, exit0 - EXIT[i] * vh);
+      l.style.opacity = tl <= 0.55 ? 0 : ((tl - 0.55) / 0.45).toFixed(3);
+      l.style.scale = tl <= 0.3 ? 0 : ((tl - 0.3) / 0.7).toFixed(3);
+    });
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+</script>
 </body>
 </html>

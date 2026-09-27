@@ -41,13 +41,13 @@
     --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.15);
     --text:#F5F5F6;--muted:#96969C;--muted-2:#65656B;
     background:var(--bg);color:var(--text)}
-  .hero h1{font-size:clamp(30px,5.5vw,64px);max-width:640px;margin-bottom:14px}
+  .hero h1{font-size:var(--fs-h1);max-width:640px;margin-bottom:14px}
   .hero p{color:var(--muted);font-size:16px;max-width:560px}
 
   section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
-  .doc h2{font-family:var(--display);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;margin-bottom:14px}
-  .doc h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:30px 0 12px}
-  .doc h3.h3-lg{font-size:26px}
+  .doc h2{font-family:var(--display);font-weight:800;font-size:var(--fs-h2);letter-spacing:-.02em;margin-bottom:14px}
+  .doc h3{font-family:var(--display);font-weight:700;font-size:var(--fs-h3-sm);letter-spacing:-.01em;margin:30px 0 12px}
+  .doc h3.h3-lg{font-size:var(--fs-h3)}
   .doc h4{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.01em;margin:22px 0 10px}
   .doc p{color:var(--muted);font-size:15.5px;margin-bottom:14px}
   .doc p strong{color:var(--text);font-weight:600}
@@ -306,10 +306,12 @@
           <div class="tile"><img class="tile-img" src="assets/identidad-visual/foto/waves-rappi-cursor.png" alt=""><div class="tk">Adaptabilidad</div><p>Los componentes evolucionan para soportar nuevos casos sin perder consistencia.</p></div>
         </div>
 
+        <!-- hidden for now — restore by removing this comment wrapper
         <h3>Organización del archivo de Foundations</h3>
         <p>En nuestro archivo de Foundations seguimos las mejores prácticas de la industria para estructurar Design Systems, con páginas dedicadas a cada elemento esencial del diseño.</p>
         <p>Cada página se organiza con un layout claro: una sección introductoria a la izquierda que da contexto y lineamientos, y un área de contenido principal a la derecha que muestra todos los assets y especificaciones de diseño en detalle.</p>
         <p>Esta estructura garantiza claridad, facilidad de navegación y una colaboración eficiente entre equipos.</p>
+        -->
 
         <h3>Mejoras generales</h3>
 
