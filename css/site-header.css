@@ -13,6 +13,10 @@
 .tb-nav a:hover{color:var(--text);background:var(--panel-2)}
 .tb-nav a.on{color:var(--text);background:var(--panel-2);border:1px solid var(--line)}
 .tb-lock{width:12px;height:12px;flex-shrink:0;opacity:.65}
+.tb-ai{width:14px;height:14px;flex-shrink:0}
+/* white divider that sets Stash apart from the doc sections */
+.tb-divider{width:1px;height:18px;background:var(--white);align-self:center;margin:0 8px;flex-shrink:0}
+.tb-menu .tb-divider{width:auto;height:1px;margin:6px 8px}
 .tb-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .tb-login{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#0A0A0C;background:var(--white);padding:9px 15px;border-radius:11px;white-space:nowrap}
 .tb-login svg{width:12px;height:12px}

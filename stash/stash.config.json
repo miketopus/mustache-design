@@ -1,0 +1,17 @@
+{
+  "appVersion": "Rappi 8",
+  "skillName": "mustache-ds",
+  "theme": "User App · light + dark",
+  "sections": [
+    { "id": "foundations", "title": "Foundations", "dir": "foundations", "exclude": ["foundation.html"] },
+    { "id": "patterns", "title": "Patterns", "dir": "patterns" },
+    { "id": "components", "title": "Components", "dir": "components" },
+    { "id": "principles", "title": "Principios de diseño", "files": ["design-principles.html"] }
+  ],
+  "guidelinesAnnexes": [
+    { "file": "colors.md", "title": "Anexo A · Color" },
+    { "file": "typography.md", "title": "Anexo B · Tipografía" },
+    { "file": "spacing-shape.md", "title": "Anexo C · Spacing, radius y stroke" },
+    { "file": "components.md", "title": "Anexo D · Componentes" }
+  ]
+}

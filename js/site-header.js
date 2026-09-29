@@ -23,8 +23,11 @@
     { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
     { id: 'ai',         href: '#',              label: 'AI',          lock: true  },
     { id: 'brand',      href: '/brand.html',    label: 'Brand'                   },
-    { id: 'resources',  href: '#',              label: 'Resources',   lock: true  },
+    { id: 'stash',      href: '/stash.html',    label: 'Stash',       ai: true, divider: true },
   ];
+
+  // AI mark for Stash — a Claude-style starburst drawn for this site
+  const AI = `<svg class="tb-ai" viewBox="0 0 24 24" aria-hidden="true"><g fill="#D97757" transform="translate(12 12)"><rect x="-1.25" y="-10.6" width="2.5" height="10.6" rx="1.25" transform="rotate(0)"/><rect x="-1.25" y="-8.6" width="2.5" height="8.6" rx="1.25" transform="rotate(30)"/><rect x="-1.25" y="-10.0" width="2.5" height="10.0" rx="1.25" transform="rotate(60)"/><rect x="-1.25" y="-9.2" width="2.5" height="9.2" rx="1.25" transform="rotate(90)"/><rect x="-1.25" y="-10.8" width="2.5" height="10.8" rx="1.25" transform="rotate(120)"/><rect x="-1.25" y="-8.4" width="2.5" height="8.4" rx="1.25" transform="rotate(150)"/><rect x="-1.25" y="-9.8" width="2.5" height="9.8" rx="1.25" transform="rotate(180)"/><rect x="-1.25" y="-9.0" width="2.5" height="9.0" rx="1.25" transform="rotate(210)"/><rect x="-1.25" y="-10.4" width="2.5" height="10.4" rx="1.25" transform="rotate(240)"/><rect x="-1.25" y="-8.8" width="2.5" height="8.8" rx="1.25" transform="rotate(270)"/><rect x="-1.25" y="-10.2" width="2.5" height="10.2" rx="1.25" transform="rotate(300)"/><rect x="-1.25" y="-9.4" width="2.5" height="9.4" rx="1.25" transform="rotate(330)"/></g></svg>`;
 
   const LOCK = `<svg class="tb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
 
@@ -42,7 +45,9 @@
 
   function navItem(item, active) {
     const on = item.id === active;
-    return `<a href="${item.href}"${on ? ' class="on"' : ''}>${item.lock ? LOCK : ''}${item.label}</a>`;
+    const divider = item.divider ? '<span class="tb-divider" aria-hidden="true"></span>' : '';
+    const icon = item.lock ? LOCK : item.ai ? AI : '';
+    return `${divider}<a href="${item.href}"${on ? ' class="on" aria-current="page"' : ''}>${icon}${item.label}</a>`;
   }
 
   class SiteHeader extends HTMLElement {

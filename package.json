@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "node scripts/dev.js",
     "build:nav": "node scripts/build-foundations-nav.js",
-    "watch:nav": "node scripts/build-foundations-nav.js --watch"
+    "watch:nav": "node scripts/build-foundations-nav.js --watch",
+    "build:stash": "node scripts/build-stash.js"
   }
 }
