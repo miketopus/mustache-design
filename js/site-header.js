@@ -23,11 +23,14 @@
     { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
     { id: 'ai',         href: '#',              label: 'AI',          lock: true  },
     { id: 'brand',      href: '/brand.html',    label: 'Brand'                   },
-    { id: 'stash',      href: '/stash.html',    label: 'Stash',       ai: true, divider: true },
+    { id: 'stash',      href: '/stash.html',    label: 'Stash/Resources', ai: true, divider: true, lockAfter: true },
   ];
 
-  // AI mark for Stash — a Claude-style starburst drawn for this site
-  const AI = `<svg class="tb-ai" viewBox="0 0 24 24" aria-hidden="true"><g fill="#D97757" transform="translate(12 12)"><rect x="-1.25" y="-10.6" width="2.5" height="10.6" rx="1.25" transform="rotate(0)"/><rect x="-1.25" y="-8.6" width="2.5" height="8.6" rx="1.25" transform="rotate(30)"/><rect x="-1.25" y="-10.0" width="2.5" height="10.0" rx="1.25" transform="rotate(60)"/><rect x="-1.25" y="-9.2" width="2.5" height="9.2" rx="1.25" transform="rotate(90)"/><rect x="-1.25" y="-10.8" width="2.5" height="10.8" rx="1.25" transform="rotate(120)"/><rect x="-1.25" y="-8.4" width="2.5" height="8.4" rx="1.25" transform="rotate(150)"/><rect x="-1.25" y="-9.8" width="2.5" height="9.8" rx="1.25" transform="rotate(180)"/><rect x="-1.25" y="-9.0" width="2.5" height="9.0" rx="1.25" transform="rotate(210)"/><rect x="-1.25" y="-10.4" width="2.5" height="10.4" rx="1.25" transform="rotate(240)"/><rect x="-1.25" y="-8.8" width="2.5" height="8.8" rx="1.25" transform="rotate(270)"/><rect x="-1.25" y="-10.2" width="2.5" height="10.2" rx="1.25" transform="rotate(300)"/><rect x="-1.25" y="-9.4" width="2.5" height="9.4" rx="1.25" transform="rotate(330)"/></g></svg>`;
+  // AI mark for Stash/Resources — the Claude Code "thinking" glyph: it
+  // cycles · ✢ ✳ ✶ ✻ ✽ back and forth every 250ms (after
+  // https://codepen.io/levimluke/pen/OPMJrvv). U+FE0E forces text
+  // presentation so ✳ doesn't turn into an emoji on Apple platforms.
+  const AI = `<span class="tb-ai" data-ai-spin aria-hidden="true">✻\uFE0E</span>`;
 
   const LOCK = `<svg class="tb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
 
@@ -47,7 +50,9 @@
     const on = item.id === active;
     const divider = item.divider ? '<span class="tb-divider" aria-hidden="true"></span>' : '';
     const icon = item.lock ? LOCK : item.ai ? AI : '';
-    return `${divider}<a href="${item.href}"${on ? ' class="on" aria-current="page"' : ''}>${icon}${item.label}</a>`;
+    // lockAfter: link stays active, the padlock just flags it as internal
+    const after = item.lockAfter ? LOCK.replace('tb-lock', 'tb-lock tb-lock-after') : '';
+    return `${divider}<a href="${item.href}"${on ? ' class="on" aria-current="page"' : ''}>${icon}${item.label}${after}</a>`;
   }
 
   class SiteHeader extends HTMLElement {
@@ -120,5 +125,19 @@
   }
 
   customElements.define('site-header', SiteHeader);
+
+  // one timer drives every [data-ai-spin] glyph on the page (header, menu,
+  // and any other copy), so they stay in sync
+  const AI_FRAMES = ['·', '✢', '✳', '✶', '✻', '✽'];
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let frame = 0, dir = 1;
+    setInterval(function () {
+      frame += dir;
+      if (frame >= AI_FRAMES.length - 1 || frame <= 0) dir = -dir;
+      document.querySelectorAll('[data-ai-spin]').forEach(function (el) {
+        el.textContent = AI_FRAMES[frame] + '\uFE0E';
+      });
+    }, 250);
+  }
 
 })();

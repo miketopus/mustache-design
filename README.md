@@ -1,208 +1,234 @@
-# Mustache — Sitio de documentación
+# Mustache — Sitio del Design System de Rappi
 
-Sitio web de referencia del **Mustache Design System** de Rappi. No es la fuente
-de verdad del sistema (eso vive en Figma); es el sitio público/interno que
-documenta foundations, contenido y marca.
+**Mustache** es el Design System de Rappi. Este repo es su **sitio de documentación**: explica cómo diseñar y construir con el sistema, y empaqueta ese conocimiento para usarlo con Claude (**Stash**).
+
+La fuente de verdad del sistema vive en **Figma** (librerías `primitives`, `semantics` e `icons`). Este repo documenta y distribuye; no define valores.
 
 - **Producción:** https://mustache-ds.vercel.app _(confirmar dominio canónico)_
-- **Diseño:** Figma — 3 librerías: `primitives`, `icons`, `semantics`
+- **Versión de la app documentada:** Rappi 8 (ver `stash/stash.config.json`)
 
 ---
 
-## Stack
+## Panorama
 
-Sitio 100% estático. **Sin build, sin framework, sin dependencias, sin `package.json`.**
+| Sección | Página | Qué tiene |
+|---|---|---|
+| Home | `index.html` | Portada: showcase animado, principios, "The signature look" |
+| Design | `design.html`, `foundations/`, `design-principles.html` | Cómo funciona Mustache, principios y foundations (color, tipografía, íconos, layout, motion…) |
+| Content | `content.html` | Voz y tono, product content, gramática |
+| Components | `components.html`, `components/` | Componentes con uso, variantes y tokens |
+| Patterns | `patterns.html`, `patterns/` | Patrones de UX (búsqueda, onboarding, diálogos…) |
+| AI | — | En construcción (bloqueado en el menú) |
+| Brand | `brand.html` | Neon805, PromptMaker e identidad visual |
+| **Stash/Resources** | `stash.html`, `claude-md.html`, `resources.html` | **Overview** de la sección · **AI › Claude.MD:** Mustache for Claude (skill, guía y tokens para diseñar con IA) · **Otros recursos:** PromptMaker Neon, Rappi Icon Studio, librerías de Figma y guías |
 
-| Capa    | Implementación                                                                 |
-| ------- | ----------------------------------------------------------------------------- |
-| Markup  | HTML plano. Una página = un archivo `.html` autocontenido                     |
-| Estilos | `<style>` en el `<head>` de cada página + `css/site-header.css` compartido    |
-| JS      | Vanilla, `<script>` al final del `<body>` + `js/site-header.js` compartido    |
-| Fuentes | Google Fonts CDN — Archivo Black (display), Inter (texto), IBM Plex Mono      |
-| Deploy  | Vercel, zero-config, auto-deploy en `main`                                    |
+---
 
-**Por qué sin build:** el sitio es chico, tiene que poder editarlo cualquier
-diseñador con un editor de texto, y no queremos ni superficie de supply-chain ni
-un paso de compilación entre "edito" y "veo".
+## Correr local
+
+Necesitas Node 18+.
+
+```bash
+npm run dev
+```
+
+Abre http://localhost:5173. El comando levanta un servidor estático y, mientras corre, regenera el menú de Foundations cuando agregas una página nueva.
+
+Ábrelo siempre por `http://`, no con doble clic (`file://`): los logos y máscaras SVG no cargan bien fuera de un servidor.
+
+### Scripts
+
+| Comando | Qué hace |
+|---|---|
+| `npm run dev` | Servidor local en el puerto 5173 + menú de Foundations en vivo |
+| `npm run build:nav` | Regenera `js/foundations-nav.js` desde los `<title>` de `foundations/` |
+| `npm run build:stash` | Regenera el kit de Stash (ver abajo) |
+
+---
+
+## Stash: Mustache for Claude
+
+En el menú aparece como **Stash/Resources**. Su sidebar tiene **Overview** (`stash.html`), la sección **AI** con **Claude.MD** (`claude-md.html`, donde vive el kit) y **Otros recursos** (`resources.html`: PromptMaker Neon y Rappi Icon Studio).
+
+Stash es la sección del sitio donde cualquier persona de Rappi descarga el sistema **listo para Claude**, para que diseñe, prototipe y escriba con nuestras reglas (tokens, no hex; copies que suenan a Rappi).
+
+### Qué se descarga
+
+| Archivo | Para qué |
+|---|---|
+| `downloads/mustache-ds-skill.zip` | **Skill** para claude.ai o Claude Code. Claude la activa sola y lee solo lo que necesita. |
+| `downloads/mustache-ds-guidelines.md` | Todo en un archivo, para el conocimiento de un **Project** |
+| `downloads/tokens.css` y `rappi-design-tokens.json` | Tokens `--rp-*` para prototipos en código |
+
+### Cómo se mantiene al día
+
+```mermaid
+flowchart TD
+  F["Figma<br/>primitives · semantics · icons"] -->|tokens exportados| S["stash/src/assets"]
+  W["Sitio<br/>foundations · patterns · components · principios"] --> B
+  S --> B
+  R["stash/src<br/>SKILL.md · voz y tono · guías a mano<br/>versión: Rappi 8"] --> B
+  B["npm run build:stash"] --> Z["Skill .zip"]
+  B --> M["Guía .md"]
+  B --> T["tokens.css · .json"]
+  B --> P["claude-md.html<br/>versión, fecha, pesos, árbol"]
+  Z --> C["Claude<br/>claude.ai · Projects · Claude Code"]
+  M --> C
+  T --> C
+```
+
+La misma idea está dibujada en la página, en **Stash/Resources → AI → Claude.MD → Preguntas frecuentes → "¿Cómo se mantiene al día Stash?"**.
+
+1. **Nadie edita `downloads/` a mano.** Todo sale de `npm run build:stash`.
+2. El script convierte a Markdown las páginas del sitio (foundations, patterns, components y principios) y las mete en la skill, en `references/site/`, con un índice en `SKILL.md`.
+3. Arma el `.zip` y el `.md`, copia los tokens y actualiza en `claude-md.html` la versión, la fecha, los pesos, la cantidad de archivos y el árbol de la skill (todo elemento con `data-stash="…"`).
+
+### Qué editar para cambiar el kit
+
+| Quiero cambiar… | Edito |
+|---|---|
+| La versión de la app (Rappi 8 → Rappi 9) | `stash/stash.config.json` → `appVersion` |
+| Qué páginas del sitio entran | `stash/stash.config.json` → `sections` |
+| Reglas, cheat sheet y flujo de la skill | `stash/src/SKILL.md` |
+| Guías escritas a mano (color, tipografía, voz y tono, íconos…) | `stash/src/references/` |
+| Tokens | `stash/src/assets/` (exportados de Figma) |
+| Foundations, patterns, components | Las páginas del sitio, como siempre |
+
+**Regla:** si tu PR toca el sitio o `stash/src/`, corre `npm run build:stash` antes del commit y sube `downloads/` y `claude-md.html` junto con tus cambios. Detalle en [`stash/README.md`](stash/README.md).
+
+**Pendiente:** los tokens todavía se exportan de Figma a mano. El siguiente paso es leerlos con la API de variables de Figma (requiere plan Enterprise) y correr el build en GitHub Actions en cada merge a `main`.
 
 ---
 
 ## Estructura
 
 ```
-├── index.html            Home público
-├── design.html           Foundations · Overview + Introduction (enlaza a foundations/)
-├── content.html          Content · Voice & tone, product content, gramática
-├── brand.html            Neon805 · PromptMaker Neon + Identidad Visual
-├── patterns.html         Patterns · Overview (enlaza a patterns/)
-├── foundations/          Foundations: una página por tema
-│   ├── foundation.html   Foundation · Overview
-│   ├── colors.html       Foundation · Color
-│   ├── typography.html   Foundation · Typography
-│   ├── icons.html        Foundation · Iconografía
-│   └── ...               (resto de Foundations — ver sidebar de design.html)
-├── patterns/             Patterns: una página por tema (search, onboarding, dialogs…)
+├── index.html               Home
+├── design.html              Cómo funciona Mustache (enlaza a foundations/)
+├── design-principles.html   Principios de diseño
+├── content.html             Voz y tono, product content
+├── components.html          Components · overview (enlaza a components/)
+├── patterns.html            Patterns · overview (enlaza a patterns/)
+├── brand.html               Neon805, PromptMaker, identidad visual
+├── stash.html               Stash/Resources · Overview
+├── claude-md.html           Stash/Resources · AI › Claude.MD (Mustache for Claude)
+├── resources.html           Stash/Resources · Otros recursos
+├── story.html               Historia de Mustache
+├── foundations/             Una página por foundation
+├── components/              Una página por componente
+├── patterns/                Una página por patrón
 ├── css/
-│   └── site-header.css   Estilos del <site-header> — único CSS compartido
+│   ├── tokens.css           Tokens del sitio + escala de títulos (--fs-*) + @font-face
+│   ├── site-header.css      Header compartido
+│   ├── site-sidebar.css     Sidebar de las páginas de documentación
+│   └── hero-particles.css   Fondo de partículas de los hero
 ├── js/
-│   └── site-header.js    <site-header> Web Component — único JS compartido
+│   ├── site-header.js       <site-header> (Web Component)
+│   ├── site-sidebar.js      <site-sidebar> + scrollspy
+│   ├── foundations-nav.js   Menú de Foundations (generado, no editar)
+│   ├── hero-particles.js    Partículas de los hero
+│   └── pixel-canvas.js      Efecto de las cards del home
+├── scripts/
+│   ├── dev.js               npm run dev
+│   ├── build-foundations-nav.js
+│   └── build-stash.js
+├── stash/                   Fuentes del kit de Stash (config + src/)
+├── downloads/               Kit de Stash generado (no editar a mano)
 └── assets/
-    ├── isotype-mustache.svg        Isotipo a color (cuadro + bigote), autocontenido
-    ├── isotype-mustache-tint.svg   Isotipo monocromo (currentColor)
-    ├── mustache.svg                Wordmark "Mustache" (currentColor)
-    ├── system-DSystem.svg          Descriptor "Design System" + divisor (currentColor)
-    ├── system-uxSystem.svg         Descriptor "UX System" + divisor (currentColor)
-    └── identidad-visual/           Fuentes, fotos y logos usados en brand.html
+    ├── isotype-mustache*.svg, mustache-lockup.svg, system-*.svg   Piezas de la marca
+    └── identidad-visual/
+        ├── fonts/           PP Object Sans (incluida la variable)
+        ├── foto/            Fotos, key visuals y videos del home
+        ├── logos/           Logos de Rappi y sus productos
+        └── foundations/     Covers de las páginas de foundations
 ```
-
-Las páginas dentro de `foundations/` y `patterns/` cargan `css/` y `js/`
-compartidos con `../` (por ejemplo `../css/tokens.css`), y el `<site-header>`
-usa rutas absolutas (`/design.html`, `/assets/...`) para que el mismo
-componente funcione sin importar la profundidad de carpeta de la página que
-lo incluye.
-
-El fondo del hero del home es procedural (bubbles orgánicos en CSS +
-starfield en `<canvas>`), no una imagen.
-
-
-Cada página de Foundations es independiente: su propio `<style>`, su propio
-scrollspy. Lo único que comparten es el `<site-header>`.
 
 ---
 
 ## Convenciones
 
-### Design tokens
+### Stack
 
-CSS custom properties semánticas en `:root`, tema oscuro. Hoy se **redeclaran en
-cada página** (deuda conocida — ver [Roadmap](#roadmap--deuda-técnica)). Núcleo:
+Sitio estático: HTML, CSS y JavaScript sin framework ni paso de compilación. `package.json` solo existe para los scripts de `npm run`; el sitio no tiene dependencias.
 
-```css
---bg  --bg-2  --panel  --panel-2  --tile      /* superficies */
---line  --line-2                              /* bordes */
---text  --muted  --muted-2  --white           /* tinta */
---display  --body  --mono                     /* familias */
---radius  --topbar  --side  --maxw            /* medidas */
-```
+**Por qué:** cualquier diseñador puede editar una página con un editor de texto y ver el cambio al recargar.
 
-Regla: en el markup y CSS del sitio se habla en token, nunca en hex. Hex solo si
-ningún token cubre el caso.
+### Tokens y tipografía
 
-### `<site-header>` (Web Component)
+- `css/tokens.css` es la fuente única de los tokens del sitio (`--bg`, `--panel`, `--line`, `--text`, `--muted`…). Cada página lo enlaza; solo agrega en su `:root` lo que es exclusivo de esa página.
+- **Habla en tokens, no en hex.** Hex solo si ningún token cubre el caso.
+- **Escala de títulos:** usa solo los 6 tamaños de `tokens.css`:
 
-Topbar compartida. Light DOM (hereda los estilos globales; requiere
-`css/site-header.css` en el `<head>`).
+| Token | Uso |
+|---|---|
+| `--fs-display` | Hero del home |
+| `--fs-h1` | Hero de página |
+| `--fs-h2-lg` | Secciones de landing (home, brand, stash) |
+| `--fs-h2` | Secciones de documentación |
+| `--fs-h3` | Cards y bloques destacados |
+| `--fs-h3-sm` | Subsecciones y tablas |
+
+- **Fuentes:** PP Object Sans (auto-hospedada, variable) en los títulos del home; Archivo Black (display) e Inter (texto) desde Google Fonts en el resto. IBM Plex Mono (código) solo se carga en el home y en Stash.
+
+### `<site-header>`
+
+Header compartido por todas las páginas menos el home, que tiene su propio menú flotante.
 
 ```html
-<link rel="stylesheet" href="css/site-header.css" />
+<link rel="stylesheet" href="css/site-header.css">
 <script src="js/site-header.js" defer></script>
-...
 <site-header active="design"></site-header>
 ```
 
-- `active` marca el ítem de nav actual: `design` | `content`.
-- Bajo **960px** el nav inline colapsa en una pill (sección actual + chevron) que
-  abre un dropdown con los mismos ítems. Operable por teclado; cierra con
-  `Escape`, click afuera, elegir un ítem o ensanchar sobre el breakpoint.
+- `active` marca la sección actual: `design`, `content`, `components`, `patterns`, `brand` o `stash`.
+- Los ítems viven en el array `NAV` de `js/site-header.js`. Stash/Resources va separado del resto por un divisor (blanco al 20%, `mix-blend-mode: plus-lighter`).
+- **Si cambias el menú, cambia también el menú flotante de `index.html`** (`.fn-links` y `.fn-menu`).
+- Bajo 960px el menú se vuelve un desplegable.
 
-### Marca — lockup en piezas
+### Marca
 
-El logo se compone de piezas SVG, no de un archivo único:
+El logo se arma con piezas SVG (isotipo + wordmark + descriptor). Las piezas de una tinta usan `fill="currentColor"` o se pintan con `mask`, para recolorearlas desde un solo archivo.
 
-```
-isotipo  +4px  wordmark  [ +4px  descriptor ]
-```
+Logos nuevos en `assets/identidad-visual/logos/`, en SVG, con nombres en minúsculas y guiones (`rappi-pay-wordmark.svg`).
 
-Las piezas de una tinta usan `fill="currentColor"` → un archivo sirve en
-cualquier color según el `color` del contenedor. El isotipo a color trae su
-propio cuadro y va tal cual. En el header, el wordmark se pinta con un CSS
-`mask` sobre `var(--text)` para funcionar en la barra oscura desde un solo asset.
+### Idiomas
 
-### i18n
-
-Atributos `data-en` / `data-es` + un script inline que hace el swap con el toggle
-ES/EN. `data-html` cuando el valor lleva markup. **Hoy solo está cableado en
-`index.html`.**
-
-```html
-<h1 data-html
-    data-en="Living.<br>Evolving."
-    data-es="Vivo.<br>Evolucionando.">Living.<br>Evolving.</h1>
-```
+`data-en` / `data-es` + el toggle ES/EN. `data-html` cuando el texto lleva etiquetas. **Hoy solo funciona en el home.**
 
 ### Motion
 
-Transiciones y `@keyframes` en CSS. Las animaciones de entrada del home se
-controlan con una clase `.preload` en `<html>` (la pone un script en el `<head>`
-para evitar flash de contenido) que el JS de entrada libera al terminar. Todo
-respeta `prefers-reduced-motion: reduce`.
-
-### Layout de Foundations
-
-Sidebar sticky (`--side` = 288px) + `IntersectionObserver` para el scrollspy. El
-JS del scrollspy está inline y duplicado por página (deuda — ver Roadmap).
-
----
-
-## Correr local
-
-No hay que instalar nada. Cualquier server estático sirve:
-
-```bash
-python3 -m http.server 8080
-# http://localhost:8080
-```
-
-**Ábrelo por `http://`, no por `file://`:** el `<site-header>` referencia
-`assets/` con rutas relativas y los CSS `mask` no resuelven bien bajo `file://`.
+Transiciones y animaciones en CSS. El showcase del home usa animaciones ligadas al scroll (`animation-timeline`), con una versión en JavaScript para Firefox. Todo respeta `prefers-reduced-motion: reduce`.
 
 ---
 
 ## Deploy
 
-Vercel, proyecto `mustache-ds` (team `wspace`). Zero-config: no hay `vercel.json`,
-se sirve la raíz tal cual.
+Vercel, proyecto `mustache-ds`. Sin configuración: se sirve la raíz tal cual.
 
 - Merge a `main` → deploy a producción.
-- Cada PR → preview deploy en `mustache-ds-git-<rama>-wspace.vercel.app`.
+- Cada PR → preview deploy.
 
 ---
 
 ## Contribuir
 
-1. Rama desde `main` → PR → **squash merge**.
-2. CSS de una página va **en esa página**. UI compartida va en
-   `css/site-header.css` + `js/site-header.js`.
-3. Habla en tokens, no en hex.
-4. Si agregas copy al home, pon `data-en` **y** `data-es`.
-5. Assets nuevos → `assets/`, SVG optimizado; piezas de una tinta con
-   `fill="currentColor"`.
-
----
-
-## Fuente de verdad
-
-El sistema vive en **Figma** — 3 librerías publicadas: `primitives`, `icons`,
-`semantics`. Este repo documenta, no define.
-
-Tipografía oficial: **PP Object Sans** (Regular 400 / Medium 500). No está en
-Google Fonts; el sitio la aproxima con Archivo Black (display) + Inter (texto)
-hasta auto-hospedarla. Archivo Black trae una sola pesa (400); el `font-weight`
-del display queda para el fallback y `font-synthesis: style` en `body` evita el
-faux-bold.
+1. Rama desde `main` → PR → merge.
+2. El CSS de una página va en esa página. Lo compartido va en `css/` y `js/`.
+3. Habla en tokens y usa la escala de títulos.
+4. Si agregas texto al home, pon `data-en` **y** `data-es`.
+5. Si tocas el sitio o `stash/src/`, corre `npm run build:stash` antes del commit.
+6. Imágenes pesadas: exporta en JPG o WebP al tamaño en que se muestran; videos en MP4 (H.264) sin audio.
 
 ---
 
 ## Roadmap / deuda técnica
 
-- [ ] Extraer los tokens a un `tokens.css` compartido. Hoy están duplicados por
-      página y **ya divergen** (`--radius` es `18px` en `index.html` y `16px` en
-      el resto; `--mono` no está en `design.html` ni `content.html`).
-- [ ] Auto-hospedar PP Object Sans y reemplazar Archivo Black / Inter.
-- [ ] Extraer el scrollspy de Foundations a `js/` compartido.
+- [ ] Leer los tokens de Stash directo desde Figma y correr `build:stash` en GitHub Actions.
+- [ ] Extender PP Object Sans a todo el sitio (hoy solo en los títulos del home).
 - [ ] Extender `data-en` / `data-es` más allá del home.
-- [ ] Páginas de Components, Brand y Resources.
-- [ ] Alinear el footer del home con el sistema de piezas de marca nuevo.
+- [ ] Asset de Motion en "The signature look".
+- [ ] Optimizar imágenes pesadas del showcase (varias de 1.5–2.7 MB).
+- [ ] Sección AI.
 
 ---
 

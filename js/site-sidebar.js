@@ -72,13 +72,21 @@
   }
 
   function renderGroup(group) {
-    var solo = !group.title && group.items.length === 1 && !group.items[0].collapse;
+    var items = group.items || [];
+    var titleCls = 'sb-title' + (group.caps ? ' sb-caps' : '');
+    // caps: true renders the title as a small uppercase label; with an href
+    // and no items it becomes a link on its own (e.g. { title: 'Otros
+    // recursos', caps: true, href: 'resources.html' })
+    if (group.title && group.href && !items.length) {
+      return '<div class="sb-group"><a class="' + titleCls + '"' + linkAttrs(group) + '>' + group.title + '</a></div>';
+    }
+    var solo = !group.title && items.length === 1 && !items[0].collapse;
     if (solo) {
-      return '<div class="sb-group"><a class="sb-title"' + linkAttrs(group.items[0]) + '>' + group.items[0].label + '</a></div>';
+      return '<div class="sb-group"><a class="sb-title"' + linkAttrs(items[0]) + '>' + items[0].label + '</a></div>';
     }
     var html = '<div class="sb-group">';
-    if (group.title) html += '<div class="sb-title">' + group.title + '</div>';
-    html += '<nav class="sb-links">' + group.items.map(renderItem).join('') + '</nav>';
+    if (group.title) html += '<div class="' + titleCls + '">' + group.title + '</div>';
+    html += '<nav class="sb-links">' + items.map(renderItem).join('') + '</nav>';
     html += '</div>';
     return html;
   }

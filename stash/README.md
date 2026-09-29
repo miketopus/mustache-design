@@ -1,6 +1,6 @@
 # Stash · kit "Mustache for Claude"
 
-Todo lo que se descarga desde `stash.html` se genera con un comando. No edites `downloads/` a mano.
+Todo lo que se descarga desde `claude-md.html` (Stash/Resources › AI › Claude.MD) se genera con un comando. No edites `downloads/` a mano.
 
 ```bash
 npm run build:stash
@@ -22,11 +22,11 @@ npm run build:stash
 - `downloads/mustache-ds-skill.zip`: la skill, con `references/site/` armado desde el sitio.
 - `downloads/mustache-ds-guidelines.md`: todo en un archivo, para Projects.
 - `downloads/tokens.css` y `downloads/rappi-design-tokens.json`.
-- `stash.html`: versión, fecha, pesos, cantidad de archivos y árbol de la skill (elementos con `data-stash="…"`).
+- `claude-md.html`: versión, fecha, pesos, cantidad de archivos y árbol de la skill (elementos con `data-stash="…"`).
 
 ## Cuándo correrlo
 
-Cada vez que publiques cambios en el sitio o en `stash/src/`, antes del commit. Revisa el diff de `stash.html` y súbelo junto con `downloads/`.
+Cada vez que publiques cambios en el sitio o en `stash/src/`, antes del commit. Revisa el diff de `claude-md.html` y súbelo junto con `downloads/`.
 
 ## Placeholders en `SKILL.md`
 

@@ -1,0 +1,32 @@
+/* Glowing effect (ref. show.saasfly.io · Aceternity "GlowingEffect").
+   Driven by js/glowing-effect.js, which sets --start (angle) and --active. */
+.glow{
+  /* Rappi neon: same reds/pinks as the Stash diagram's neon sources */
+  --spread:40;--start:0;--active:0;--gw:2px;--times:5;
+  --g1:#FF441F;--g2:#FF2526;--g3:#FF4583;--g4:#FF8A5C;
+  --gradient:
+    radial-gradient(circle, var(--g1) 10%, #FF441F00 20%),
+    radial-gradient(circle at 40% 40%, var(--g4) 5%, #FF8A5C00 15%),
+    radial-gradient(circle at 60% 60%, var(--g3) 10%, #FF458300 20%),
+    radial-gradient(circle at 40% 60%, var(--g2) 10%, #FF252600 20%),
+    repeating-conic-gradient(from 236.84deg at 50% 50%,
+      var(--g1) 0%,
+      var(--g4) calc(25% / var(--times)),
+      var(--g3) calc(50% / var(--times)),
+      var(--g2) calc(75% / var(--times)),
+      var(--g1) calc(100% / var(--times)));
+  position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:1
+}
+.glow::after{
+  content:"";position:absolute;border-radius:inherit;
+  /* sits on the host's border; hosts with overflow:hidden set --glow-offset:0px */
+  inset:calc(-1 * var(--glow-offset, var(--gw)));
+  border:var(--gw) solid transparent;
+  background:var(--gradient);background-attachment:fixed;
+  opacity:var(--active);transition:opacity .3s;
+  -webkit-mask-clip:padding-box,border-box;mask-clip:padding-box,border-box;
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+  -webkit-mask-image:linear-gradient(#0000,#0000),conic-gradient(from calc((var(--start) - var(--spread)) * 1deg),#0000 0deg,#fff,#0000 calc(var(--spread) * 2deg));
+          mask-image:linear-gradient(#0000,#0000),conic-gradient(from calc((var(--start) - var(--spread)) * 1deg),#0000 0deg,#fff,#0000 calc(var(--spread) * 2deg))
+}
+@media (prefers-reduced-motion: reduce){.glow{display:none}}

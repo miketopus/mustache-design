@@ -51,8 +51,8 @@
     border:1px solid transparent;transition:.18s;white-space:nowrap}
   .fn-links a:hover{color:var(--text);background:var(--panel-2);border-color:var(--line)}
   .fn-navlock{width:12px;height:12px;flex-shrink:0;opacity:.6}
-  .fn-ai{width:15px;height:15px;flex-shrink:0}
-  .fn-divider{width:1px;height:20px;background:var(--white);align-self:center;margin:0 8px;flex-shrink:0}
+  .fn-ai{display:inline-block;width:15px;flex-shrink:0;text-align:center;color:#DA9779;font-size:15px;line-height:1;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .fn-divider{width:1px;height:20px;background:rgba(255,255,255,.2);mix-blend-mode:plus-lighter;align-self:center;margin:0 8px;flex-shrink:0}
   .fn-menu .fn-divider{width:auto;height:1px;margin:6px 8px}
   /* subtle language toggle */
   .lang{display:flex;background:var(--tile);border:1px solid var(--line);border-radius:12px;padding:3px;flex-shrink:0}
@@ -412,7 +412,7 @@
       <a href="patterns.html">Patterns</a>
       <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>AI</a>
       <a href="brand.html">Brand</a>
-      <span class="fn-divider" aria-hidden="true"></span><a href="stash.html"><svg class="fn-ai" viewBox="0 0 24 24" aria-hidden="true"><g fill="#D97757" transform="translate(12 12)"><rect x="-1.25" y="-10.6" width="2.5" height="10.6" rx="1.25" transform="rotate(0)"/><rect x="-1.25" y="-8.6" width="2.5" height="8.6" rx="1.25" transform="rotate(30)"/><rect x="-1.25" y="-10.0" width="2.5" height="10.0" rx="1.25" transform="rotate(60)"/><rect x="-1.25" y="-9.2" width="2.5" height="9.2" rx="1.25" transform="rotate(90)"/><rect x="-1.25" y="-10.8" width="2.5" height="10.8" rx="1.25" transform="rotate(120)"/><rect x="-1.25" y="-8.4" width="2.5" height="8.4" rx="1.25" transform="rotate(150)"/><rect x="-1.25" y="-9.8" width="2.5" height="9.8" rx="1.25" transform="rotate(180)"/><rect x="-1.25" y="-9.0" width="2.5" height="9.0" rx="1.25" transform="rotate(210)"/><rect x="-1.25" y="-10.4" width="2.5" height="10.4" rx="1.25" transform="rotate(240)"/><rect x="-1.25" y="-8.8" width="2.5" height="8.8" rx="1.25" transform="rotate(270)"/><rect x="-1.25" y="-10.2" width="2.5" height="10.2" rx="1.25" transform="rotate(300)"/><rect x="-1.25" y="-9.4" width="2.5" height="9.4" rx="1.25" transform="rotate(330)"/></g></svg>Stash</a>
+      <span class="fn-divider" aria-hidden="true"></span><a href="stash.html"><span class="fn-ai" data-ai-spin aria-hidden="true">✻&#xFE0E;</span>Stash/Resources<svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
     </nav>
     <div class="fn-more" data-open="false">
       <button type="button" class="fn-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="fn-menu"><span class="fn-more-label" data-en="Home" data-es="Inicio">Home</span><svg class="fn-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
@@ -423,7 +423,7 @@
         <a href="patterns.html">Patterns</a>
         <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>AI</a>
         <a href="brand.html">Brand</a>
-        <span class="fn-divider" aria-hidden="true"></span><a href="stash.html"><svg class="fn-ai" viewBox="0 0 24 24" aria-hidden="true"><g fill="#D97757" transform="translate(12 12)"><rect x="-1.25" y="-10.6" width="2.5" height="10.6" rx="1.25" transform="rotate(0)"/><rect x="-1.25" y="-8.6" width="2.5" height="8.6" rx="1.25" transform="rotate(30)"/><rect x="-1.25" y="-10.0" width="2.5" height="10.0" rx="1.25" transform="rotate(60)"/><rect x="-1.25" y="-9.2" width="2.5" height="9.2" rx="1.25" transform="rotate(90)"/><rect x="-1.25" y="-10.8" width="2.5" height="10.8" rx="1.25" transform="rotate(120)"/><rect x="-1.25" y="-8.4" width="2.5" height="8.4" rx="1.25" transform="rotate(150)"/><rect x="-1.25" y="-9.8" width="2.5" height="9.8" rx="1.25" transform="rotate(180)"/><rect x="-1.25" y="-9.0" width="2.5" height="9.0" rx="1.25" transform="rotate(210)"/><rect x="-1.25" y="-10.4" width="2.5" height="10.4" rx="1.25" transform="rotate(240)"/><rect x="-1.25" y="-8.8" width="2.5" height="8.8" rx="1.25" transform="rotate(270)"/><rect x="-1.25" y="-10.2" width="2.5" height="10.2" rx="1.25" transform="rotate(300)"/><rect x="-1.25" y="-9.4" width="2.5" height="9.4" rx="1.25" transform="rotate(330)"/></g></svg>Stash</a>
+        <span class="fn-divider" aria-hidden="true"></span><a href="stash.html"><span class="fn-ai" data-ai-spin aria-hidden="true">✻&#xFE0E;</span>Stash/Resources<svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></a>
       </nav>
     </div>
     <button type="button" class="fn-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> <span data-en="Login" data-es="Iniciar sesión">Login</span></button>
@@ -1353,6 +1353,17 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   update();
+})();
+// Stash/Resources nav glyph — same "thinking" cycle as js/site-header.js
+// (the home doesn't load that file)
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var FRAMES = ['·', '✢', '✳', '✶', '✻', '✽'], frame = 0, dir = 1;
+  setInterval(function(){
+    frame += dir;
+    if(frame >= FRAMES.length - 1 || frame <= 0) dir = -dir;
+    document.querySelectorAll('[data-ai-spin]').forEach(function(el){ el.textContent = FRAMES[frame] + '\uFE0E'; });
+  }, 250);
 })();
 </script>
 </body>

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Builds the "Mustache for Claude" kit that stash.html offers for download,
+ * Builds the "Mustache for Claude" kit that claude-md.html (Stash/Resources › AI › Claude.MD) offers for download,
  * so the kit always matches what the site documents.
  *
  * Sources (the only things anyone edits by hand):
@@ -13,7 +13,7 @@
  *   downloads/mustache-ds-skill.zip     the Skill (SKILL.md + references + assets)
  *   downloads/mustache-ds-guidelines.md single-file version for Projects
  *   downloads/tokens.css, downloads/rappi-design-tokens.json
- *   stash.html                          version, date, sizes and file tree
+ *   claude-md.html                      version, date, sizes and file tree
  *                                       (every element with data-stash="…")
  *
  * Usage:
@@ -29,7 +29,7 @@ const { execFileSync } = require('child_process');
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(ROOT, 'stash', 'src');
 const OUT = path.join(ROOT, 'downloads');
-const PAGE = path.join(ROOT, 'stash.html');
+const PAGE = path.join(ROOT, 'claude-md.html');
 const CFG = JSON.parse(fs.readFileSync(path.join(ROOT, 'stash', 'stash.config.json'), 'utf8'));
 
 const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -211,7 +211,7 @@ guides.forEach(function (g) {
 const mdPath = path.join(OUT, CFG.skillName + '-guidelines.md');
 fs.writeFileSync(mdPath, guide);
 
-/* ---------- update stash.html ---------- */
+/* ---------- update claude-md.html ---------- */
 
 function kb(file) { return Math.max(1, Math.round(fs.statSync(file).size / 1024)) + ' KB'; }
 
@@ -234,6 +234,8 @@ const values = {
   version: CFG.appVersion,
   date: DATE_ES,
   'zip-meta': kb(zipPath) + ' · ' + kitFiles.length + ' archivos',
+  'zip-size': kb(zipPath),
+  'guide-count': String(guides.length),
   'md-size': kb(mdPath),
   'css-size': kb(path.join(OUT, 'tokens.css')),
   'json-size': kb(path.join(OUT, 'rappi-design-tokens.json')),
@@ -252,4 +254,4 @@ fs.writeFileSync(PAGE, page);
 
 fs.rmSync(tmp, { recursive: true, force: true });
 log(CFG.appVersion + ' · ' + DATE_ES + ' — ' + guides.length + ' site guides, ' + kitFiles.length +
-  ' files in the skill (' + kb(zipPath) + '), guide ' + kb(mdPath) + ', ' + hits + ' fields updated in stash.html');
+  ' files in the skill (' + kb(zipPath) + '), guide ' + kb(mdPath) + ', ' + hits + ' fields updated in claude-md.html');
