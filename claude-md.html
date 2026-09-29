@@ -32,7 +32,17 @@
   /* ── Shell: shared <site-sidebar> + content ── */
   .shell{display:flex;align-items:flex-start}
   .shell>main{flex:1;min-width:0}
-  section.doc{scroll-margin-top:calc(var(--topbar) + 12px)}
+  section.doc{scroll-margin-top:calc(var(--topbar) + var(--tabs-h) + 12px)}
+
+  /* ── Tabs fijas (índice de la página) ── */
+  :root{--tabs-h:52px}
+  .page-tabs{position:sticky;top:var(--topbar);z-index:50;height:var(--tabs-h);background:rgba(10,10,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .page-tabs .wrap{height:100%;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
+  .page-tabs .wrap::-webkit-scrollbar{display:none}
+  .page-tabs a{position:relative;flex-shrink:0;font-size:13.5px;font-weight:500;color:var(--muted);padding:7px 12px;border-radius:9px;transition:color .16s,background .16s}
+  .page-tabs a:hover{color:var(--text);background:var(--panel)}
+  .page-tabs a.on{color:var(--text);background:var(--panel-2)}
+  .page-tabs a.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-9px;height:2px;border-radius:2px;background:var(--neon)}
 
   /* ── Líneas de fondo (ref. chanhdai.com) ──
      Rieles verticales en el borde de la columna, líneas horizontales entre
@@ -322,6 +332,17 @@
   <site-sidebar></site-sidebar>
 
 <main>
+  <!-- Tabs fijas: índice de la página, marcan la sección visible -->
+  <nav class="page-tabs" aria-label="En esta página">
+    <div class="wrap">
+      <a href="#por-que" data-tab="por-que">Por qué</a>
+      <a href="#descargas" data-tab="descargas">Descargas</a>
+      <a href="#instalar" data-tab="instalar">Instalar</a>
+      <a href="#prompts" data-tab="prompts">Pruébalo</a>
+      <a href="#incluye" data-tab="incluye">Transparencia</a>
+      <a href="#faq" data-tab="faq">FAQ</a>
+    </div>
+  </nav>
   <!-- ═════ HERO ═════ -->
   <div class="hero">
     <div class="wrap">
@@ -743,6 +764,31 @@
     });
   });
 })();
+</script>
+<script>
+  /* Tabs fijas: marca la sección visible y mantiene la tab activa a la vista */
+  (function () {
+    var tabs = [].slice.call(document.querySelectorAll('.page-tabs a'));
+    var secs = tabs.map(function (a) { return document.getElementById(a.dataset.tab); });
+    var current = null, ticking = false;
+    function spy() {
+      ticking = false;
+      var line = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar')) + 52 + 80;
+      var id = null;
+      secs.forEach(function (s) { if (s && s.getBoundingClientRect().top <= line) id = s.id; });
+      if (id === current) return;
+      current = id;
+      tabs.forEach(function (a) {
+        var on = a.dataset.tab === id;
+        a.classList.toggle('on', on);
+        if (on) { a.setAttribute('aria-current', 'location'); a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+        else a.removeAttribute('aria-current');
+      });
+    }
+    addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(spy); } }, { passive: true });
+    addEventListener('resize', spy);
+    spy();
+  })();
 </script>
 </body>
 </html>
