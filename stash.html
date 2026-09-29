@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stash/Resources · Overview — Mustache Design System</title>
+<meta name="description" content="Stash/Resources: todo lo que necesitas para llevar Mustache a tu trabajo diario, con IA y sin ella.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/site-header.css">
+<link rel="stylesheet" href="css/site-sidebar.css">
+<script src="js/site-header.js" defer></script>
+<script src="js/site-sidebar.js" defer></script>
+<style>
+  /* page-local tokens (everything else comes from css/tokens.css) */
+  :root{--maxw:1160px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .display{font-family:var(--display);letter-spacing:-.025em;line-height:1.02}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+  @media(max-width:760px){.wrap{padding:0 16px}}
+
+  .shell{display:flex;align-items:flex-start}
+  .shell>main{flex:1;min-width:0}
+
+  .page-head{position:relative;padding:88px 0 48px;overflow:hidden}
+  .page-head::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 320px at 80% 20%,rgba(255,68,31,.12),transparent 70%);pointer-events:none}
+  .page-head .wrap{position:relative}
+  .crumb{font-size:13px;color:var(--muted-2);margin-bottom:22px}
+  .crumb b{color:var(--muted);font-weight:500}
+  .page-head h1{font-size:var(--fs-h1);margin-bottom:18px}
+  .lead{font-size:clamp(17px,1.6vw,19px);color:var(--muted);max-width:620px}
+  .res-body{padding:8px 0 96px}
+  @media(max-width:760px){.page-head{padding:56px 0 32px}.res-body{padding-bottom:64px}}
+
+  /* Overview: one card per area of Stash/Resources */
+  .ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ov{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:28px 26px 24px;min-height:240px;transition:.18s}
+  .ov:hover{border-color:var(--line-2);background:var(--panel-2);transform:translateY(-2px)}
+  .ov .kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+  .ov .kicker .glyph{color:#DA9779;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;letter-spacing:0}
+  .ov h2{font-family:var(--display);font-size:var(--fs-h3);letter-spacing:-.015em;line-height:1.15;margin-bottom:10px}
+  .ov p{color:var(--muted);font-size:15px;flex:1}
+  .ov .go{margin-top:22px;font-size:14px;font-weight:600;color:var(--text)}
+  @media(max-width:860px){.ov-grid{grid-template-columns:1fr}}
+  footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted-2);font-size:12.5px}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<site-header active="stash"></site-header>
+
+<div class="shell">
+  <script>
+    window.SIDEBAR_CONFIG = {
+      eyebrow: 'Stash/Resources',
+      groups: [
+        { items: [{ label: 'Overview', href: 'stash.html' }] },
+        { title: 'AI', caps: true, items: [{ label: 'Claude.MD', href: 'claude-md.html' }] },
+        { title: 'Otros recursos', caps: true, items: [
+          { label: 'PromptMaker Neon', href: 'resources.html#promptmaker-neon' },
+          { label: 'Rappi Icon Studio', href: 'resources.html#rappi-icon-studio' }
+        ]}
+      ]
+    };
+  </script>
+  <site-sidebar></site-sidebar>
+
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumb"><b>Stash/Resources</b> / Overview</div>
+      <h1 class="display">Stash/Resources</h1>
+      <p class="lead">Todo lo que necesitas para llevar Mustache a tu trabajo diario. Aquí está el sistema listo para usar con IA y las librerías, guías y assets del equipo, siempre en su versión vigente.</p>
+    </div>
+  </div>
+  <div class="res-body">
+    <div class="wrap">
+      <div class="ov-grid">
+        <a class="ov" href="claude-md.html">
+          <span class="kicker"><span class="glyph" data-ai-spin aria-hidden="true">✻&#xFE0E;</span>AI</span>
+          <h2>Claude.MD</h2>
+          <p>Mustache empaquetado para Claude: una skill, una guía y los tokens para que diseñe, prototipe y escriba con nuestras reglas. Sin hex inventados, sin tonos que no suenan a Rappi.</p>
+          <span class="go">Descargar e instalar →</span>
+        </a>
+        <a class="ov" href="resources.html">
+          <span class="kicker">Otros recursos</span>
+          <h2>Librerías, guías y assets</h2>
+          <p>Las librerías de Figma, la guía de voz y tono, PromptMaker Neon, Rappi Icon Studio y los assets de marca del sistema, en un solo lugar.</p>
+          <span class="go">Ver recursos →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<footer>
+  <div class="wrap"><span>Mustache Design System · Rappi</span><span>Stash/Resources</span></div>
+</footer>
+
+</body>
+</html>

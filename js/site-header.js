@@ -23,8 +23,14 @@
     { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
     { id: 'ai',         href: '#',              label: 'AI',          lock: true  },
     { id: 'brand',      href: '/brand.html',    label: 'Brand'                   },
-    { id: 'resources',  href: '#',              label: 'Resources',   lock: true  },
+    { id: 'stash',      href: '/stash.html',    label: 'Stash/Resources', ai: true, divider: true, lockAfter: true },
   ];
+
+  // AI mark for Stash/Resources — the Claude Code "thinking" glyph: it
+  // cycles · ✢ ✳ ✶ ✻ ✽ back and forth every 250ms (after
+  // https://codepen.io/levimluke/pen/OPMJrvv). U+FE0E forces text
+  // presentation so ✳ doesn't turn into an emoji on Apple platforms.
+  const AI = `<span class="tb-ai" data-ai-spin aria-hidden="true">✻\uFE0E</span>`;
 
   const LOCK = `<svg class="tb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
 
@@ -42,7 +48,11 @@
 
   function navItem(item, active) {
     const on = item.id === active;
-    return `<a href="${item.href}"${on ? ' class="on"' : ''}>${item.lock ? LOCK : ''}${item.label}</a>`;
+    const divider = item.divider ? '<span class="tb-divider" aria-hidden="true"></span>' : '';
+    const icon = item.lock ? LOCK : item.ai ? AI : '';
+    // lockAfter: link stays active, the padlock just flags it as internal
+    const after = item.lockAfter ? LOCK.replace('tb-lock', 'tb-lock tb-lock-after') : '';
+    return `${divider}<a href="${item.href}"${on ? ' class="on" aria-current="page"' : ''}>${icon}${item.label}${after}</a>`;
   }
 
   class SiteHeader extends HTMLElement {
@@ -115,5 +125,19 @@
   }
 
   customElements.define('site-header', SiteHeader);
+
+  // one timer drives every [data-ai-spin] glyph on the page (header, menu,
+  // and any other copy), so they stay in sync
+  const AI_FRAMES = ['·', '✢', '✳', '✶', '✻', '✽'];
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let frame = 0, dir = 1;
+    setInterval(function () {
+      frame += dir;
+      if (frame >= AI_FRAMES.length - 1 || frame <= 0) dir = -dir;
+      document.querySelectorAll('[data-ai-spin]').forEach(function (el) {
+        el.textContent = AI_FRAMES[frame] + '\uFE0E';
+      });
+    }, 250);
+  }
 
 })();
