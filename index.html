@@ -51,6 +51,9 @@
     border:1px solid transparent;transition:.18s;white-space:nowrap}
   .fn-links a:hover{color:var(--text);background:var(--panel-2);border-color:var(--line)}
   .fn-navlock{width:12px;height:12px;flex-shrink:0;opacity:.6}
+  .fn-ai{width:15px;height:15px;flex-shrink:0}
+  .fn-divider{width:1px;height:20px;background:var(--white);align-self:center;margin:0 8px;flex-shrink:0}
+  .fn-menu .fn-divider{width:auto;height:1px;margin:6px 8px}
   /* subtle language toggle */
   .lang{display:flex;background:var(--tile);border:1px solid var(--line);border-radius:12px;padding:3px;flex-shrink:0}
   .lang button{font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.02em;color:var(--muted-2);
@@ -322,37 +325,35 @@
   }
 
   .craft{background:var(--bg-2);border-bottom:1px solid var(--line)}
-  .craft-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
-  .craft-head h2{font-size:var(--fs-h2-lg);margin-top:12px}
-  .craft-head p{max-width:420px;font-size:15px}
-  .craft-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:156px;gap:16px;margin-top:40px}
-  .cx{border:1px solid var(--line);border-radius:16px;background:var(--panel);position:relative;overflow:hidden;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .25s,transform .25s}
+  /* craft — "The signature look" (Figma site-DS 4304:61) */
+  .craft-head{display:flex;flex-direction:column;gap:8px}
+  .craft-head .sec-eyebrow-row{margin-bottom:20px} /* + 8px gap = 28px to the title */
+  .craft-head h2{font-size:var(--fs-h1);line-height:1.03}
+  .craft-head p{max-width:553px;font-size:15px;line-height:1.55;color:var(--text)}
+  .craft-grid{display:flex;flex-direction:column;gap:32px;margin-top:40px}
+  .craft-row{display:grid;gap:32px}
+  .craft-row.top{grid-template-columns:741fr 371fr}
+  .craft-row.bottom{grid-template-columns:1fr 1fr}
+  .craft-side{display:flex;flex-direction:column;gap:32px}
+  .cx{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:22px;border:1px solid var(--line);border-radius:40px;background:var(--panel);
+    transition:border-color .25s,transform .25s}
   .cx:hover{border-color:var(--line-2);transform:translateY(-3px)}
-  .cx b{font-family:var(--display);font-weight:700;font-size:17px;position:relative;z-index:2}
-  .cx span{color:var(--muted-2);font-size:12.5px;position:relative;z-index:2;margin-top:2px}
-  .cx .art{position:absolute;inset:0;z-index:1}
-  /* bento layout */
-  .cx.big{grid-column:span 4;grid-row:span 2}
-  .cx.mid{grid-column:span 2;grid-row:span 1}
-  .cx.sq:nth-of-type(3){grid-column:span 2;grid-row:span 1}
-  .cx.sq:nth-of-type(4){grid-column:span 3;grid-row:span 1}
-  .cx.sq:nth-of-type(5){grid-column:span 3;grid-row:span 1}
-  .cx.big b{font-size:22px}
+  .cx-art{position:absolute;inset:-1px;z-index:-1;width:calc(100% + 2px);height:calc(100% + 2px);object-fit:cover}
+  .cx-body{display:flex;flex-direction:column;gap:4px}
+  .cx b{font-family:var(--display);font-weight:400;font-size:24px;line-height:1;color:rgba(245,245,246,.9)}
+  .cx span{font-size:16px;line-height:1.25;color:#fff;opacity:.9;mix-blend-mode:plus-lighter}
+  .cx.big{padding:32px}
+  .cx.big .cx-body{gap:10px}
+  .cx.big b{font-size:clamp(40px,4.8vw,62px);line-height:.81;letter-spacing:-.03em;max-width:435px}
+  .cx.type{aspect-ratio:371/308}
+  .cx.icons{aspect-ratio:371/207}
+  .craft-row.bottom .cx{aspect-ratio:556/444}
   @media(max-width:900px){
-    .craft-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px}
-    .cx.big{grid-column:span 2;grid-row:span 2}
-    .cx.mid,.cx.sq:nth-of-type(3),.cx.sq:nth-of-type(4),.cx.sq:nth-of-type(5){grid-column:span 1;grid-row:span 1}
+    .craft-row.top,.craft-row.bottom{grid-template-columns:1fr;gap:16px}
+    .craft-grid,.craft-side{gap:16px}
+    .cx.big{aspect-ratio:1/1;padding:24px}
   }
-  .art-3d{background:radial-gradient(60% 60% at 65% 35%,#2a2a2f,#0E0E10 72%)}
-  .art-3d::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;right:-20px;top:20px;
-    background:radial-gradient(35% 35% at 40% 30%,#fff,#6a6a70 40%,#141416 78%);box-shadow:0 20px 50px rgba(0,0,0,.5)}
-  .art-icons svg{position:absolute;stroke:#7a7a80;stroke-width:2;fill:none}
-  .art-type{display:grid;place-items:center}
-  .art-type .aa{font-family:var(--display);font-weight:800;font-size:78px;color:#26262b;line-height:1}
-  .art-color{display:flex;inset:0 0 42% 0}
-  .art-color i{flex:1}
-  .art-motion::after{content:"";position:absolute;left:24px;top:40px;width:90px;height:90px;border-radius:50%;
-    border:2px solid #3a3a40;box-shadow:26px 0 0 -1px #2b2b30,52px 0 0 -2px #202024}
 
   .access{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .access-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
@@ -411,7 +412,7 @@
       <a href="patterns.html">Patterns</a>
       <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>AI</a>
       <a href="brand.html">Brand</a>
-      <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Resources</a>
+      <span class="fn-divider" aria-hidden="true"></span><a href="stash.html"><svg class="fn-ai" viewBox="0 0 24 24" aria-hidden="true"><g fill="#D97757" transform="translate(12 12)"><rect x="-1.25" y="-10.6" width="2.5" height="10.6" rx="1.25" transform="rotate(0)"/><rect x="-1.25" y="-8.6" width="2.5" height="8.6" rx="1.25" transform="rotate(30)"/><rect x="-1.25" y="-10.0" width="2.5" height="10.0" rx="1.25" transform="rotate(60)"/><rect x="-1.25" y="-9.2" width="2.5" height="9.2" rx="1.25" transform="rotate(90)"/><rect x="-1.25" y="-10.8" width="2.5" height="10.8" rx="1.25" transform="rotate(120)"/><rect x="-1.25" y="-8.4" width="2.5" height="8.4" rx="1.25" transform="rotate(150)"/><rect x="-1.25" y="-9.8" width="2.5" height="9.8" rx="1.25" transform="rotate(180)"/><rect x="-1.25" y="-9.0" width="2.5" height="9.0" rx="1.25" transform="rotate(210)"/><rect x="-1.25" y="-10.4" width="2.5" height="10.4" rx="1.25" transform="rotate(240)"/><rect x="-1.25" y="-8.8" width="2.5" height="8.8" rx="1.25" transform="rotate(270)"/><rect x="-1.25" y="-10.2" width="2.5" height="10.2" rx="1.25" transform="rotate(300)"/><rect x="-1.25" y="-9.4" width="2.5" height="9.4" rx="1.25" transform="rotate(330)"/></g></svg>Stash</a>
     </nav>
     <div class="fn-more" data-open="false">
       <button type="button" class="fn-more-btn" aria-haspopup="true" aria-expanded="false" aria-controls="fn-menu"><span class="fn-more-label" data-en="Home" data-es="Inicio">Home</span><svg class="fn-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
@@ -422,7 +423,7 @@
         <a href="patterns.html">Patterns</a>
         <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>AI</a>
         <a href="brand.html">Brand</a>
-        <a href="#"><svg class="fn-navlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Resources</a>
+        <span class="fn-divider" aria-hidden="true"></span><a href="stash.html"><svg class="fn-ai" viewBox="0 0 24 24" aria-hidden="true"><g fill="#D97757" transform="translate(12 12)"><rect x="-1.25" y="-10.6" width="2.5" height="10.6" rx="1.25" transform="rotate(0)"/><rect x="-1.25" y="-8.6" width="2.5" height="8.6" rx="1.25" transform="rotate(30)"/><rect x="-1.25" y="-10.0" width="2.5" height="10.0" rx="1.25" transform="rotate(60)"/><rect x="-1.25" y="-9.2" width="2.5" height="9.2" rx="1.25" transform="rotate(90)"/><rect x="-1.25" y="-10.8" width="2.5" height="10.8" rx="1.25" transform="rotate(120)"/><rect x="-1.25" y="-8.4" width="2.5" height="8.4" rx="1.25" transform="rotate(150)"/><rect x="-1.25" y="-9.8" width="2.5" height="9.8" rx="1.25" transform="rotate(180)"/><rect x="-1.25" y="-9.0" width="2.5" height="9.0" rx="1.25" transform="rotate(210)"/><rect x="-1.25" y="-10.4" width="2.5" height="10.4" rx="1.25" transform="rotate(240)"/><rect x="-1.25" y="-8.8" width="2.5" height="8.8" rx="1.25" transform="rotate(270)"/><rect x="-1.25" y="-10.2" width="2.5" height="10.2" rx="1.25" transform="rotate(300)"/><rect x="-1.25" y="-9.4" width="2.5" height="9.4" rx="1.25" transform="rotate(330)"/></g></svg>Stash</a>
       </nav>
     </div>
     <button type="button" class="fn-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> <span data-en="Login" data-es="Iniciar sesión">Login</span></button>
@@ -566,23 +567,37 @@
 <section class="section craft" id="craft">
   <div class="wrap reveal">
     <div class="craft-head">
-      <div>
-        <div class="sec-eyebrow-row"><span class="eyebrow" data-en="The signature look" data-es="El sello visual">The signature look</span><span class="ln"></span></div>
-        <h2 class="display" data-en="Craft you can recognize" data-es="Un craft que se reconoce">Craft you can recognize</h2>
-      </div>
+      <div class="sec-eyebrow-row"><span class="ln"></span><span class="eyebrow" data-en="The signature look" data-es="El sello visual">The signature look</span></div>
+      <h2 class="display" data-en="Craft you can recognize" data-es="Un craft que se reconoce">Craft you can recognize</h2>
       <p class="scrub" data-en="Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon." data-es="Nuestro lenguaje visual es lo que hace que una pantalla de Rappi se sienta Rappi: 3D, glossy, expresiva y consistente hasta el último ícono.">Our visual language is what makes a Rappi screen feel like Rappi: 3D, glossy, expressive, and consistent down to the last icon.</p>
     </div>
     <div class="craft-grid">
-      <div class="cx big"><div class="art art-3d"></div><b data-en="3D Illustrations" data-es="Ilustraciones 3D">3D Illustrations</b><span data-en="Our signature glossy look" data-es="Nuestro sello glossy">Our signature glossy look</span></div>
-      <div class="cx mid"><div class="art art-type"><div class="aa">Aa</div></div><b data-en="Typography" data-es="Tipografía">Typography</b><span data-en="Medium weight, lighter load" data-es="Peso Medium, menos carga">Medium weight, lighter load</span></div>
-      <div class="cx sq"><div class="art art-icons">
-        <svg viewBox="0 0 24 24" style="left:20px;top:24px;width:26px;height:26px"><circle cx="12" cy="12" r="9"/></svg>
-        <svg viewBox="0 0 24 24" style="left:64px;top:24px;width:26px;height:26px"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>
-        <svg viewBox="0 0 24 24" style="left:20px;top:70px;width:26px;height:26px"><path d="M12 3 21 20 3 20Z"/></svg>
-        <svg viewBox="0 0 24 24" style="left:64px;top:70px;width:26px;height:26px"><path d="M4 12h16M12 4v16"/></svg>
-      </div><b data-en="Iconography" data-es="Iconografía">Iconography</b><span data-en="2px stroke, in harmony" data-es="Trazo de 2px, en armonía">2px stroke, in harmony</span></div>
-      <div class="cx sq"><div class="art art-motion"></div><b data-en="Motion" data-es="Movimiento">Motion</b><span data-en="How things move" data-es="Cómo se mueve todo">How things move</span></div>
-      <div class="cx sq"><div class="art art-color"><i style="background:#f5f5f6"></i><i style="background:#b8b8bd"></i><i style="background:#7a7a80"></i><i style="background:#3a3a40"></i><i style="background:#151519"></i></div><b data-en="Color &amp; tokens" data-es="Color y tokens">Color &amp; tokens</b><span data-en="Semantic, accessible" data-es="Semánticos, accesibles">Semantic, accessible</span></div>
+      <div class="craft-row top">
+        <div class="cx big">
+          <img class="cx-art" src="assets/identidad-visual/foto/waves-rappi-cursor.png" alt="" loading="lazy">
+          <div class="cx-body"><b data-en="3D Illustrations" data-es="Ilustraciones 3D">3D Illustrations</b><span data-en="Our signature glossy look" data-es="Nuestro sello glossy">Our signature glossy look</span></div>
+        </div>
+        <div class="craft-side">
+          <div class="cx type">
+            <img class="cx-art" src="assets/identidad-visual/foto/kv-typography.png" alt="" loading="lazy">
+            <div class="cx-body"><b data-en="Typography" data-es="Tipografía">Typography</b><span data-en="Medium weight, lighter load" data-es="Peso Medium, menos carga">Medium weight, lighter load</span></div>
+          </div>
+          <div class="cx icons">
+            <img class="cx-art" src="assets/identidad-visual/foto/kv-iconography.png" alt="" loading="lazy">
+            <div class="cx-body"><b data-en="Iconography" data-es="Iconografía">Iconography</b><span data-en="2px stroke, in harmony" data-es="Trazo de 2px, en armonía">2px stroke, in harmony</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="craft-row bottom">
+        <div class="cx motion">
+          <!-- motion key visual pending -->
+          <div class="cx-body"><b data-en="Motion" data-es="Movimiento">Motion</b><span data-en="How things move" data-es="Cómo se mueve todo">How things move</span></div>
+        </div>
+        <div class="cx color">
+          <img class="cx-art" src="assets/identidad-visual/foto/kv-color%26tokens.png" alt="" loading="lazy">
+          <div class="cx-body"><b data-en="Color &amp; tokens" data-es="Color y tokens">Color &amp; tokens</b><span data-en="Semantic, accessible" data-es="Semánticos, accesibles">Semantic, accessible</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
