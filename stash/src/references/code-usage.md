@@ -23,7 +23,7 @@ El token del DS pasa a variable CSS reemplazando `/` por `-` y con prefijo por g
 
 .button-primary {
   background: var(--rp-color-background-accent);
-  color: var(--rp-color-ink-inverse);
+  color: var(--rp-color-ink-inverse-on);
   border-radius: var(--rp-radius-pill);
   padding: var(--rp-space-12) var(--rp-space-24);
   font-size: var(--rp-type-pp-object-sans-size-body);

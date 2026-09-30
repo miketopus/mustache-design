@@ -136,6 +136,8 @@ CFG.sections.forEach(function (sec) {
     const out = pageToMarkdown(fs.readFileSync(path.join(ROOT, file), 'utf8'));
     if (!out || out.md.length < 40) { log('skipped ' + file + ' (no content)'); return; }
     const slug = path.basename(file, '.html');
+    const notes = [CFG.siteBanner, (CFG.siteNotes || {})[sec.id + '/' + slug]].filter(Boolean).join('\n>\n');
+    if (notes) out.md = out.md.replace(/^(# .+\n)/m, '$1\n' + notes + '\n');
     guides.push({
       section: sec, title: titleOf(out.md, file), lead: out.lead,
       rel: 'references/site/' + sec.id + '/' + slug + '.md',

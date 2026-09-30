@@ -70,11 +70,21 @@
   /* type scale specimens */
   .spec{border-top:1px solid var(--line);padding:22px 0;display:grid;grid-template-columns:1fr 220px;gap:24px;align-items:baseline}
   .spec:last-child{border-bottom:1px solid var(--line)}
+  .issues{margin:12px 0 0 18px;color:var(--muted);font-size:15px}
+  .issues li{margin-bottom:8px}
+  .issues strong{color:var(--text);font-weight:600}
   .spec .demo{font-family:var(--display);color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .spec .info{font-family:var(--mono);font-size:12px;color:var(--muted-2);line-height:1.7}
   .spec .info b{color:var(--text);font-weight:500;display:block;font-family:var(--body);font-size:13px;margin-bottom:4px}
   @media(max-width:720px){.spec{grid-template-columns:1fr;gap:8px}.spec .demo{white-space:normal}}
 
+  table.tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0}
+  table.tbl th{text-align:left;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);padding:0 16px 10px 0;border-bottom:1px solid var(--line-2)}
+  table.tbl td{padding:10px 16px 10px 0;color:var(--muted);border-bottom:1px solid var(--line);vertical-align:top}
+  table.tbl td:first-child{color:var(--text);font-family:var(--mono);font-size:12.5px;font-weight:500;white-space:nowrap}
+  table.tbl tr:last-child td{border-bottom:none}
+  .tbl-wrap{overflow-x:auto}
+  .spec .demo.arch{font-family:'Archivo Black',var(--display);letter-spacing:-.04em;overflow:visible;padding-bottom:.2em}
   .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#171A1E;background:rgba(255,255,255,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:999px;padding:10px 16px;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s;pointer-events:none}
   .backtop.show{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
   .backtop:hover{background:rgba(255,255,255,1)}
@@ -125,7 +135,7 @@
   ],
   "onThisPage": [
     {
-      "label": "Familia tipográfica",
+      "label": "Familias tipográficas",
       "href": "#familia"
     },
     {
@@ -135,6 +145,22 @@
     {
       "label": "Escala tipográfica",
       "href": "#escala"
+    },
+    {
+      "label": "Archivo Black · bigFont",
+      "href": "#display"
+    },
+    {
+      "label": "Text styles",
+      "href": "#text-styles"
+    },
+    {
+      "label": "Variables",
+      "href": "#variables"
+    },
+    {
+      "label": "Revisión pendiente",
+      "href": "#revision"
     }
   ]
 };
@@ -149,10 +175,12 @@
       <div class="hero-in">
         <div class="crumb"><b>Design</b> <span>/</span> Foundations <span>/</span> Typography</div>
         <h1 class="page-h1 display">Typography</h1>
-        <p class="page-lead">La tipografía da voz al sistema. Una sola familia, dos pesos y una escala predecible que mantiene la jerarquía consistente en toda la interfaz.</p>
+        <p class="page-lead">La tipografía da voz al sistema. Una familia para la interfaz, dos pesos y una escala por breakpoint que mantiene la jerarquía consistente en toda la app.</p>
         <div class="meta-row">
           <span class="meta-chip"><b>Familia</b> PP Object Sans</span>
           <span class="meta-chip"><b>Pesos</b> Regular · Medium</span>
+          <span class="meta-chip"><b>Text styles</b> 39</span>
+          <span class="meta-chip"><b>Breakpoints</b> Mobile · Tablet · Desktop</span>
         </div>
       </div>
     </div>
@@ -161,12 +189,22 @@
       <img class="page-cover" src="../assets/identidad-visual/foundations/typo.png" alt="">
 
       <section class="doc" id="familia">
-        <h2>Familia tipográfica</h2>
-        <p>Mustache usa <strong>PP Object Sans</strong> como única familia. Una sola tipografía en todo el sistema mantiene la marca reconocible y reduce la carga de decisiones al diseñar.</p>
+        <h2>Familias tipográficas</h2>
+        <p><strong>PP Object Sans</strong> es la familia de la interfaz: títulos y contenido. <strong>Archivo Black</strong> es exclusiva del componente <strong>banner-bigFont</strong> (<code>hugeTitle*</code>): no es una fuente display general ni se usa en ninguna otra pieza.</p>
         <div class="ff">
           <div class="big">Aa Bb Cc 0123</div>
-          <div class="name">PP Object Sans</div>
+          <div class="name">PP Object Sans · interfaz</div>
         </div>
+        <div class="ff">
+          <div class="big" style="font-family:'Archivo Black',var(--display);letter-spacing:-.04em">Aa Bb Cc 0123</div>
+          <div class="name">Archivo Black · solo banner-bigFont</div>
+        </div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Variable</th><th>Valor</th><th>Uso</th></tr>
+          <tr><td>PP Object sans/family/title</td><td>PP Object Sans</td><td>huge a subheadline</td></tr>
+          <tr><td>PP Object sans/family/content</td><td>PP Object Sans</td><td>body a legal</td></tr>
+          <tr><td>Archivo Black/family/title</td><td>Archivo Black</td><td>Solo banner-bigFont (hugeTitleL · M · S)</td></tr>
+        </table></div>
         <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Nota:</b> PP Object Sans no está en Google Fonts, así que estos especímenes se muestran con la fuente del sitio como aproximación. El render final usa PP Object Sans embebida.</p></div>
       </section>
 
@@ -174,29 +212,176 @@
         <h2>Pesos</h2>
         <p>El sistema trabaja con dos pesos. <strong>Medium (500) reemplazó a Bold</strong> como el peso de énfasis: da jerarquía sin sentirse pesado, alineado con el tono fresco y directo de la marca.</p>
         <div class="weights">
-          <div class="wt"><div class="s reg">Regular</div><div class="m">font/weight/Regular · 400</div></div>
-          <div class="wt"><div class="s med">Medium</div><div class="m">font/weight/Medium · 500</div></div>
+          <div class="wt"><div class="s reg">Regular</div><div class="m">PP Object sans/weight/Regular · 400</div></div>
+          <div class="wt"><div class="s med">Medium</div><div class="m">PP Object sans/weight/Medium · 500</div></div>
         </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Legado:</b> los text styles <code>*Bold</code> (700) siguen en Figma para no romper archivos existentes, y la variable <code>weight/Heavy</code> existe sin text style. No los uses en diseño nuevo.</p></div>
       </section>
 
       <section class="doc" id="escala">
         <h2>Escala tipográfica</h2>
-        <p>Cada estilo es un token que combina familia, peso, tamaño, interlineado y tracking. Estos son los estilos que pude leer del nodo seleccionado en Figma:</p>
+        <p>Cada rol combina familia, peso, tamaño, interlineado y tracking. Tamaño e interlineado cambian por breakpoint: <strong>Mobile</strong> (&lt;600px), <strong>Tablet</strong> (≥600px) y <strong>Desktop</strong> (≥1024px). Especímenes en Mobile.</p>
+        <div class="spec">
+          <div class="demo" style="font-weight:500;font-size:48px;line-height:48px">Huge</div>
+          <div class="info"><b>huge/hugeMedium</b>PP Object Sans · Medium 500<br>48 / 48 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:500;font-size:40px;line-height:40px">H1</div>
+          <div class="info"><b>h1/h1Medium</b>PP Object Sans · Medium 500<br>40 / 40 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:500;font-size:32px;line-height:40px">H2</div>
+          <div class="info"><b>h2/h2Medium</b>PP Object Sans · Medium 500<br>32 / 40 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:500;font-size:26px;line-height:32px">H3</div>
+          <div class="info"><b>h3/h3Medium</b>PP Object Sans · Medium 500<br>26 / 32 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:500;font-size:24px;line-height:32px">H4</div>
+          <div class="info"><b>h4/h4Medium</b>PP Object Sans · Medium 500<br>24 / 32 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:500;font-size:20px;line-height:24px">Headline</div>
+          <div class="info"><b>headline/headlineMedium</b>PP Object Sans · Medium 500<br>20 / 24 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:500;font-size:10px;line-height:24px;text-transform:uppercase;letter-spacing:.12em">Eyebrow de sección</div>
+          <div class="info"><b>subheadline/subheadlineMedium</b>PP Object Sans · Medium 500<br>10 / 24 · tracking 12% · mayúsculas</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:400;font-size:16px;line-height:20px">Body: el texto base de la interfaz.</div>
+          <div class="info"><b>body/bodyRegular</b>PP Object Sans · Regular 400<br>16 / 20 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:400;font-size:14px;line-height:16px">Caption 1: texto de apoyo y metadatos.</div>
+          <div class="info"><b>caption-1/caption1Regular</b>PP Object Sans · Regular 400<br>14 / 16 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:400;font-size:12px;line-height:16px">Caption 2: metadatos secundarios.</div>
+          <div class="info"><b>caption-2/caption2Regular</b>PP Object Sans · Regular 400<br>12 / 16 · tracking 0</div>
+        </div>
+        <div class="spec">
+          <div class="demo" style="font-weight:400;font-size:10px;line-height:12px">Label: tags y badges</div>
+          <div class="info"><b>label/labelRegular</b>PP Object Sans · Regular 400<br>10 / 12 · tracking 0</div>
+        </div>
+        <h3>Tabla completa por breakpoint</h3>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Rol</th><th>Mobile</th><th>Tablet</th><th>Desktop</th><th>Pesos</th></tr>
+          <tr><td>huge</td><td>48 / 48</td><td>64 / 72</td><td>64 / 72</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>h1</td><td>40 / 40</td><td>28 / 34</td><td>40 / 48</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>h2</td><td>32 / 40</td><td>24 / 32</td><td>32 / 40</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>h3</td><td>26 / 32</td><td>20 / 28</td><td>24 / 32</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>h4</td><td>24 / 32</td><td>18 / 26</td><td>20 / 26</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>headline</td><td>20 / 24</td><td>20 / 24</td><td>18 / 24</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>subheadline</td><td>10 / 24</td><td>10 / 16</td><td>10 / 24</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>body</td><td>16 / 20</td><td>16 / 24</td><td>16 / 24</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>caption-1</td><td>14 / 16</td><td>14 / 20</td><td>14 / 20</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>caption-2</td><td>12 / 16</td><td>12 / 18</td><td>12 / 18</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>label</td><td>10 / 12</td><td>10 / 14</td><td>10 / 16</td><td>Bold · Medium · Regular</td></tr>
+          <tr><td>footnote</td><td>8 / 12</td><td>8 / 12</td><td>8 / 12</td><td>Regular</td></tr>
+          <tr><td>disclaimer</td><td>6 / 8</td><td>6 / 8</td><td>6 / 8</td><td>Regular</td></tr>
+          <tr><td>legal</td><td>4 / 6</td><td>4 / 6</td><td>4 / 6</td><td>Regular</td></tr>
+        </table></div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Legibilidad:</b> cuerpo mínimo 16px (<code>body</code>) y 12px en UI (<code>caption-2</code>). <code>footnote</code> (8), <code>disclaimer</code> (6) y <code>legal</code> (4) existen en Figma pero son ilegibles en pantalla: si un legal lo exige, usa <code>caption-2</code>.</p></div>
+      </section>
 
+      <section class="doc" id="display">
+        <h2>Archivo Black · banner-bigFont</h2>
+        <p>Archivo Black <strong>solo vive en el componente banner-bigFont</strong> (mobile-library Rappi 8), para la cifra o titular protagonista, como el % OFF. El resto del texto del banner va en PP Object Sans. No la uses en otros banners, pantallas ni piezas de marketing: ahí usa <code>huge</code> o <code>h1</code>.</p><p>Tracking <strong>−4%</strong> e interlineado menor que el tamaño, a propósito: titulares de 1 o 2 líneas.</p>
         <div class="spec">
-          <div class="demo" style="font-weight:500;font-size:48px;line-height:48px">Huge Title</div>
-          <div class="info"><b>titles / hugeTitleMedium</b>PP Object Sans · Medium 500<br>48 / 48 · tracking 0</div>
+          <div class="demo arch" style="font-size:46px;line-height:34px">-50% hoy</div>
+          <div class="info"><b>Archivo-Black/hugeTitleL</b>46/34 · 52/40 · 64/48<br>tracking −4%</div>
         </div>
         <div class="spec">
-          <div class="demo" style="font-weight:500;font-size:16px;line-height:20px">Body Medium — el texto base de la interfaz.</div>
-          <div class="info"><b>body / bodyMedium</b>PP Object Sans · Medium 500<br>16 / 20 · tracking 0</div>
+          <div class="demo arch" style="font-size:40px;line-height:32px">-50% hoy</div>
+          <div class="info"><b>Archivo-Black/hugeTitleM</b>40/32 · 48/34 · 56/40<br>tracking −4%</div>
         </div>
         <div class="spec">
-          <div class="demo" style="font-weight:400;font-size:14px;line-height:16px">Caption Regular — texto de apoyo y metadatos.</div>
-          <div class="info"><b>caption / caption1Regular</b>PP Object Sans · Regular 400<br>14 / 16 · tracking 0</div>
+          <div class="demo arch" style="font-size:30px;line-height:26px">-50% hoy</div>
+          <div class="info"><b>Archivo-Black/hugeTitleS</b>30/26 · 32/28 · 46/34<br>tracking −4%</div>
         </div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Estilo</th><th>Cuándo usarlo dentro del bigFont</th></tr>
+          <tr><td>hugeTitleL</td><td>El protagonista: la cifra estrella (precio, % de descuento o nombre del evento). Uno por banner.</td></tr>
+          <tr><td>hugeTitleM</td><td>El titular de apoyo: titular principal cuando el banner tiene imagen fuerte o poco espacio.</td></tr>
+          <tr><td>hugeTitleS</td><td>El contenido: banners compactos, formatos verticales o cuando acompaña a otro elemento sin robar el foco.</td></tr>
+        </table></div>
+      </section>
 
-        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Escala parcial.</b> Estos 3 estilos vienen del nodo que estaba seleccionado. La escala completa (titles, headings, body, caption con todos sus tamaños) sale del frame de tipografía en Figma: selecciónalo y lo lleno con todos los estilos y specs exactos.</p></div>
+      <section class="doc" id="text-styles">
+        <h2>Text styles</h2>
+        <p>Hay <strong>39 text styles</strong> en la librería semantics, todos ligados a las variables de la colección <code>Typography</code>. Nombre: <code>rol/rolPeso</code>. En código, cada uno tiene su clase en <code>tokens.css</code>.</p>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Text style</th><th>Clase CSS</th><th>Peso</th><th>Mobile</th></tr>
+          <tr><td>huge/hugeBold</td><td><code>.rp-text-huge-bold</code></td><td>Bold 700 (legado)</td><td>48 / 48</td></tr>
+          <tr><td>huge/hugeMedium</td><td><code>.rp-text-huge-medium</code></td><td>Medium 500</td><td>48 / 48</td></tr>
+          <tr><td>huge/hugeRegular</td><td><code>.rp-text-huge-regular</code></td><td>Regular 400</td><td>48 / 48</td></tr>
+          <tr><td>h1/h1Bold</td><td><code>.rp-text-h1-bold</code></td><td>Bold 700 (legado)</td><td>40 / 40</td></tr>
+          <tr><td>h1/h1Medium</td><td><code>.rp-text-h1-medium</code></td><td>Medium 500</td><td>40 / 40</td></tr>
+          <tr><td>h1/h1Regular</td><td><code>.rp-text-h1-regular</code></td><td>Regular 400</td><td>40 / 40</td></tr>
+          <tr><td>h2/h2Bold</td><td><code>.rp-text-h2-bold</code></td><td>Bold 700 (legado)</td><td>32 / 40</td></tr>
+          <tr><td>h2/h2Medium</td><td><code>.rp-text-h2-medium</code></td><td>Medium 500</td><td>32 / 40</td></tr>
+          <tr><td>h2/h2Regular</td><td><code>.rp-text-h2-regular</code></td><td>Regular 400</td><td>32 / 40</td></tr>
+          <tr><td>h3/h3Bold</td><td><code>.rp-text-h3-bold</code></td><td>Bold 700 (legado)</td><td>26 / 32</td></tr>
+          <tr><td>h3/h3Medium</td><td><code>.rp-text-h3-medium</code></td><td>Medium 500</td><td>26 / 32</td></tr>
+          <tr><td>h3/h3Regular</td><td><code>.rp-text-h3-regular</code></td><td>Regular 400</td><td>26 / 32</td></tr>
+          <tr><td>h4/h4Bold</td><td><code>.rp-text-h4-bold</code></td><td>Bold 700 (legado)</td><td>24 / 32</td></tr>
+          <tr><td>h4/h4Medium</td><td><code>.rp-text-h4-medium</code></td><td>Medium 500</td><td>24 / 32</td></tr>
+          <tr><td>h4/h4Regular</td><td><code>.rp-text-h4-regular</code></td><td>Regular 400</td><td>24 / 32</td></tr>
+          <tr><td>headline/headlineBold</td><td><code>.rp-text-headline-bold</code></td><td>Bold 700 (legado)</td><td>20 / 24</td></tr>
+          <tr><td>headline/headlineMedium</td><td><code>.rp-text-headline-medium</code></td><td>Medium 500</td><td>20 / 24</td></tr>
+          <tr><td>headline/headlineRegular</td><td><code>.rp-text-headline-regular</code></td><td>Regular 400</td><td>20 / 24</td></tr>
+          <tr><td>subheadline/subheadlineBold</td><td><code>.rp-text-subheadline-bold</code></td><td>Bold 700 (legado)</td><td>10 / 24</td></tr>
+          <tr><td>subheadline/subheadlineMedium</td><td><code>.rp-text-subheadline-medium</code></td><td>Medium 500</td><td>10 / 24</td></tr>
+          <tr><td>subheadline/subheadlineRegular</td><td><code>.rp-text-subheadline-regular</code></td><td>Regular 400</td><td>10 / 24</td></tr>
+          <tr><td>body/bodyBold</td><td><code>.rp-text-body-bold</code></td><td>Bold 700 (legado)</td><td>16 / 20</td></tr>
+          <tr><td>body/bodyMedium</td><td><code>.rp-text-body-medium</code></td><td>Medium 500</td><td>16 / 20</td></tr>
+          <tr><td>body/bodyRegular</td><td><code>.rp-text-body-regular</code></td><td>Regular 400</td><td>16 / 20</td></tr>
+          <tr><td>caption-1/caption1Bold</td><td><code>.rp-text-caption-1-bold</code></td><td>Bold 700 (legado)</td><td>14 / 16</td></tr>
+          <tr><td>caption-1/caption1Medium</td><td><code>.rp-text-caption-1-medium</code></td><td>Medium 500</td><td>14 / 16</td></tr>
+          <tr><td>caption-1/caption1Regular</td><td><code>.rp-text-caption-1-regular</code></td><td>Regular 400</td><td>14 / 16</td></tr>
+          <tr><td>caption-2/caption2Bold</td><td><code>.rp-text-caption-2-bold</code></td><td>Bold 700 (legado)</td><td>12 / 16</td></tr>
+          <tr><td>caption-2/caption2Medium</td><td><code>.rp-text-caption-2-medium</code></td><td>Medium 500</td><td>12 / 16</td></tr>
+          <tr><td>caption-2/caption2Regular</td><td><code>.rp-text-caption-2-regular</code></td><td>Regular 400</td><td>12 / 16</td></tr>
+          <tr><td>label/labelBold</td><td><code>.rp-text-label-bold</code></td><td>Bold 700 (legado)</td><td>10 / 12</td></tr>
+          <tr><td>label/labelMedium</td><td><code>.rp-text-label-medium</code></td><td>Medium 500</td><td>10 / 12</td></tr>
+          <tr><td>label/labelRegular</td><td><code>.rp-text-label-regular</code></td><td>Regular 400</td><td>10 / 12</td></tr>
+          <tr><td>footnote/footnoteRegular</td><td><code>.rp-text-footnote-regular</code></td><td>Regular 400</td><td>8 / 12</td></tr>
+          <tr><td>disclaimer/disclaimerRegular</td><td><code>.rp-text-disclaimer-regular</code></td><td>Regular 400</td><td>6 / 8</td></tr>
+          <tr><td>legal/legalRegular</td><td><code>.rp-text-legal-regular</code></td><td>Regular 400</td><td>4 / 6</td></tr>
+          <tr><td>Archivo-Black/hugeTitleL</td><td><code>.rp-text-hugetitlel</code></td><td>Regular</td><td>46 / 34</td></tr>
+          <tr><td>Archivo-Black/hugeTitleM</td><td><code>.rp-text-hugetitlem</code></td><td>Regular</td><td>40 / 32</td></tr>
+          <tr><td>Archivo-Black/hugeTitleS</td><td><code>.rp-text-hugetitles</code></td><td>Regular</td><td>30 / 26</td></tr>
+        </table></div>
+      </section>
+
+      <section class="doc" id="variables">
+        <h2>Variables</h2>
+        <p>Colección <code>Typography</code> en semantics: <strong>42 variables</strong> con modos Mobile, Tablet y Desktop. En CSS: <code>--rp-type-&lt;familia&gt;-&lt;propiedad&gt;-&lt;rol&gt;</code>, ya resueltas por breakpoint.</p>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Grupo</th><th>Variables</th><th>Ejemplo CSS</th></tr>
+          <tr><td>PP Object sans/family</td><td>title, content</td><td><code>--rp-font-family-title</code></td></tr>
+          <tr><td>PP Object sans/weight</td><td>Heavy, Bold, Medium, Regular</td><td><code>--rp-font-weight-medium</code> (500)</td></tr>
+          <tr><td>PP Object sans/size</td><td>huge, h1–h4, headline, subheadline, body, caption-1, caption-2, label, footnote, disclaimer, legal</td><td><code>--rp-type-pp-object-sans-size-body</code></td></tr>
+          <tr><td>PP Object sans/line-height</td><td>los mismos 14 roles</td><td><code>--rp-type-pp-object-sans-line-height-body</code></td></tr>
+          <tr><td>Archivo Black/family · weight</td><td>title · Regular</td><td><code>--rp-font-family-display</code></td></tr>
+          <tr><td>Archivo Black/size · line-height</td><td>hugeTitleL, hugeTitleM, hugeTitleS</td><td><code>--rp-type-archivo-black-size-hugetitlel</code></td></tr>
+        </table></div>
+      </section>
+
+      <section class="doc" id="revision">
+        <h2>Revisión pendiente en Figma</h2>
+        <p>Inconsistencias encontradas en semantics. Hasta resolverlas, los valores de esta página siguen las <strong>variables</strong>.</p>
+        <ul class="issues">
+          <li><strong>Archivo-Black/hugeTitle*</strong> están ligados a primitivos (<code>font/size/46</code>…), no a <code>Archivo Black/size/*</code>: en Figma no escalan a Tablet ni Desktop.</li>
+          <li><strong>subheadline/*</strong> usan <code>line-height/headline</code> en vez de <code>line-height/subheadline</code>: en Tablet dan 24 en vez de 16.</li>
+          <li><strong>h1/h1Regular</strong> tiene el peso ligado al primitivo <code>font/weight/Regular</code>.</li>
+          <li><strong>legal/legalRegular</strong> tiene size y line-height ligados a primitivos.</li>
+          <li>En Tablet, <code>size/h1</code> (28) y <code>line-height/h3</code> (28) son valores fijos sin alias.</li>
+          <li>En Tablet, h1 a h4 son más chicos que en Mobile (h1 28 vs 40).</li>
+          <li>No hay variables de letter-spacing ni text-case: el 12% de subheadline y el −4% de Archivo Black solo viven en el text style.</li>
+        </ul>
       </section>
 
       <a href="#top" class="backtop"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg> Volver arriba</a>
