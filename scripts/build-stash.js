@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Builds the "Mustache for Claude" kit that claude-md.html (Stash/Resources › AI › Claude.MD) offers for download,
+ * Builds the "Mustache for Claude" kit that claude-md.html (Tools › AI › Kit Claude) offers for download,
  * so the kit always matches what the site documents.
  *
  * Sources (the only things anyone edits by hand):
@@ -13,7 +13,7 @@
  *   downloads/mustache-ds-skill.zip     the Skill (SKILL.md + references + assets)
  *   downloads/mustache-ds-guidelines.md single-file version for Projects
  *   downloads/tokens.css, downloads/rappi-design-tokens.json
- *   claude-md.html                      version, date, sizes and file tree
+ *   claude-md.html                      version, date, sizes, file tree and site counts
  *                                       (every element with data-stash="…")
  *
  * Usage:
@@ -29,7 +29,8 @@ const { execFileSync } = require('child_process');
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(ROOT, 'stash', 'src');
 const OUT = path.join(ROOT, 'downloads');
-const PAGE = path.join(ROOT, 'claude-md.html');
+// pages with data-stash="…" fields to stamp
+const PAGES = ['claude-md.html'].map(function (f) { return path.join(ROOT, f); });
 const CFG = JSON.parse(fs.readFileSync(path.join(ROOT, 'stash', 'stash.config.json'), 'utf8'));
 
 const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -243,14 +244,16 @@ const values = {
   tree: tree(),
 };
 
-let page = fs.readFileSync(PAGE, 'utf8');
 let hits = 0;
-page = page.replace(/(<(\w+)\b[^>]*\bdata-stash="([\w-]+)"[^>]*>)([\s\S]*?)(<\/\2>)/g, function (m, open, tag, key, _, close) {
-  if (!(key in values)) return m;
-  hits++;
-  return open + values[key] + close;
+PAGES.forEach(function (file) {
+  let page = fs.readFileSync(file, 'utf8');
+  page = page.replace(/(<(\w+)\b[^>]*\bdata-stash="([\w-]+)"[^>]*>)([\s\S]*?)(<\/\2>)/g, function (m, open, tag, key, _, close) {
+    if (!(key in values)) return m;
+    hits++;
+    return open + values[key] + close;
+  });
+  fs.writeFileSync(file, page);
 });
-fs.writeFileSync(PAGE, page);
 
 fs.rmSync(tmp, { recursive: true, force: true });
 log(CFG.appVersion + ' · ' + DATE_ES + ' — ' + guides.length + ' site guides, ' + kitFiles.length +

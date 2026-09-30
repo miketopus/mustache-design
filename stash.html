@@ -47,6 +47,10 @@
   .ov h2{font-family:var(--display);font-size:var(--fs-h3);letter-spacing:-.015em;line-height:1.15;margin-bottom:10px}
   .ov p{color:var(--muted);font-size:15px;flex:1}
   .ov .go{margin-top:22px;font-size:14px;font-weight:600;color:var(--text)}
+  /* card with 3D art above the text; the render's black background blends
+     into the card with lighten */
+  .ov-art{display:block;width:160px;height:160px;margin:-12px 0 14px -14px;object-fit:contain;mix-blend-mode:lighten;pointer-events:none;transition:transform .35s ease}
+  .ov:hover .ov-art{transform:scale(1.05) rotate(-2deg)}
   @media(max-width:860px){.ov-grid{grid-template-columns:1fr}}
   footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted-2);font-size:12.5px}
   footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -60,11 +64,11 @@
 <div class="shell">
   <script>
     window.SIDEBAR_CONFIG = {
-      eyebrow: 'Stash/Resources',
+      eyebrow: 'Tools',
       groups: [
         { items: [{ label: 'Overview', href: 'stash.html' }] },
-        { title: 'AI', caps: true, items: [{ label: 'Claude.MD', href: 'claude-md.html' }] },
-        { title: 'Otros recursos', caps: true, items: [
+        { title: 'AI', caps: true, items: [{ label: 'Kit Claude', href: 'claude-md.html' }] },
+        { title: "PromptMaker 3D", caps: true, items: [
           { label: 'PromptMaker Neon', href: 'resources.html#promptmaker-neon' },
           { label: 'Rappi Icon Studio', href: 'resources.html#rappi-icon-studio' }
         ]}
@@ -76,7 +80,7 @@
 <main>
   <div class="page-head">
     <div class="wrap">
-      <div class="crumb"><b>Stash/Resources</b> / Overview</div>
+      <div class="crumb"><b>Tools</b> / Overview</div>
       <h1 class="display">Stash/Resources</h1>
       <p class="lead">Todo lo que necesitas para llevar Mustache a tu trabajo diario. Aquí está el sistema listo para usar con IA y las librerías, guías y assets del equipo, siempre en su versión vigente.</p>
     </div>
@@ -85,13 +89,14 @@
     <div class="wrap">
       <div class="ov-grid">
         <a class="ov" href="claude-md.html">
+          <img class="ov-art" src="assets/identidad-visual/foto/tools-mustache-rappi.png" alt="" width="1200" height="1200" loading="lazy">
           <span class="kicker"><span class="glyph" data-ai-spin aria-hidden="true">✻&#xFE0E;</span>AI</span>
-          <h2>Claude.MD</h2>
+          <h2>Kit Claude</h2>
           <p>Mustache empaquetado para Claude: una skill, una guía y los tokens para que diseñe, prototipe y escriba con nuestras reglas. Sin hex inventados, sin tonos que no suenan a Rappi.</p>
           <span class="go">Descargar e instalar →</span>
         </a>
         <a class="ov" href="resources.html">
-          <span class="kicker">Otros recursos</span>
+          <span class="kicker">PromptMaker 3D</span>
           <h2>Librerías, guías y assets</h2>
           <p>Las librerías de Figma, la guía de voz y tono, PromptMaker Neon, Rappi Icon Studio y los assets de marca del sistema, en un solo lugar.</p>
           <span class="go">Ver recursos →</span>

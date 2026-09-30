@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude.MD · Stash/Resources — Mustache Design System</title>
+<title>Kit Claude · Tools — Mustache Design System</title>
 <meta name="description" content="Descarga Mustache para Claude: el sistema de diseño de Rappi listo para diseñar, prototipar y escribir con IA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,6 +65,9 @@
   .hero h1{font-size:var(--fs-h1);margin-bottom:22px}
   .hero h1 .x{display:inline-flex;align-items:center;gap:.18em}
   .hero h1 .x i{font-style:normal;color:var(--muted-2);font-size:.6em}
+  /* "Mustache + Claude": "+ Claude" stays together and wraps as one unit */
+  .hero h1 .plus{white-space:nowrap}
+  .hero h1 .plus i{font-style:normal;color:var(--muted-2);font-size:.6em;vertical-align:.18em}
   .lead{font-size:clamp(17px,1.6vw,19px);color:var(--muted);max-width:560px;margin-bottom:32px}
   .lead b{color:var(--text);font-weight:500}
   .ctas{display:flex;flex-wrap:wrap;gap:12px}
@@ -154,12 +157,17 @@
   /* Install tabs */
   .install{display:grid;grid-template-columns:280px 1fr;gap:24px}
   .tabs{display:flex;flex-direction:column;gap:6px}
-  .tab{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:14px 16px;border-radius:14px;border:1px solid transparent;transition:.16s}
+  .tab{display:flex;align-items:center;gap:12px;text-align:left;padding:14px 16px;border-radius:14px;border:1px solid transparent;transition:.16s}
+  .tab .ti{flex-shrink:0;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--bg);display:grid;place-items:center;color:var(--muted-2);transition:.16s}
+  .tab .ti svg{width:16px;height:16px}
+  .tab .tt{display:flex;flex-direction:column;gap:2px;min-width:0}
   .tab strong{font-size:15px;font-weight:600;color:var(--muted)}
-  .tab span{font-size:12.5px;color:var(--muted-2)}
+  .tab .tt span{font-size:12.5px;color:var(--muted-2)}
   .tab:hover{background:var(--panel)}
+  .tab:hover .ti{color:var(--muted)}
   .tab[aria-selected="true"]{background:var(--panel);border-color:var(--line-2)}
   .tab[aria-selected="true"] strong{color:var(--text)}
+  .tab[aria-selected="true"] .ti{color:var(--text);border-color:var(--line-2);background:var(--panel-2)}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px}
   .panel[hidden]{display:none}
   .panel h3{font-family:var(--display);font-size:var(--fs-h3);letter-spacing:-.015em;margin-bottom:6px}
@@ -174,7 +182,7 @@
   .note p{font-size:13.5px;color:var(--muted)}
   .note p b{color:var(--text)}
   .note.star{border-color:var(--line-2)}
-  @media(max-width:860px){.install{grid-template-columns:1fr}.steps li{min-width:0;overflow-wrap:anywhere}.tabs{flex-direction:row;overflow-x:auto;padding-bottom:4px}.tab{min-width:180px}.panel{padding:24px 20px}}
+  @media(max-width:860px){.install{grid-template-columns:1fr}.steps li{min-width:0;overflow-wrap:anywhere}.tabs{flex-direction:row;overflow-x:auto;padding-bottom:4px}.tab{min-width:210px}.panel{padding:24px 20px}}
 
   /* Prompts */
   .prompts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -198,28 +206,30 @@
   .st ul{list-style:none;display:grid;gap:0}
   .st li{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
   .st li:first-child{border-top:0}
-  .st li b{color:var(--text);font-weight:500}
-  .st li span{font-family:var(--mono);font-size:12px;color:var(--muted-2);text-align:right;white-space:nowrap}
+  .st li b{color:var(--text);font-weight:500;flex-shrink:0}
+  .st li span{font-family:var(--mono);font-size:12px;color:var(--muted-2);text-align:right;min-width:0}
   @media(max-width:860px){.status{grid-template-columns:1fr}.st li{flex-direction:column;gap:2px}.st li span{text-align:left;white-space:normal}}
 
   /* FAQ */
-  .faq{max-width:860px}
-  .faq details{border-top:1px solid var(--line)}
-  .faq details:last-child{border-bottom:1px solid var(--line)}
-  .faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;font-size:16.5px;font-weight:500;cursor:pointer}
+  /* FAQ: each question is a dark card; the diagram in the first one uses
+     the card's full width, answers keep a readable measure */
+  .faq{display:grid;gap:10px}
+  .faq details{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:0 22px;transition:border-color .16s}
+  .faq details:hover,.faq details[open]{border-color:var(--line-2)}
+  .faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;font-size:16.5px;font-weight:500;cursor:pointer}
   .faq summary::-webkit-details-marker{display:none}
-  .faq summary svg{width:18px;height:18px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+  .faq summary svg{width:32px;height:32px;padding:8px;border-radius:50%;background:#000;border:1px solid var(--line);color:var(--text);transition:transform .2s;flex-shrink:0}
   .faq details[open] summary svg{transform:rotate(45deg)}
-  .faq details p{color:var(--muted);font-size:15px;padding:0 40px 22px 0}
+  .faq details p{color:var(--muted);font-size:15px;max-width:760px;padding:0 0 22px}
   .faq details p b{color:var(--text);font-weight:500}
 
   /* Stash flow diagram — same visual language as "Cómo funciona Mustache"
      (design.html .ds-*: black grid stage, rotating neon source cards, glowing
-     connector, grey cards, round arrows) laid out left → right. It breaks
-     out of the FAQ's 860px column; below 1100px it stacks vertically. */
+     connector, grey cards, round arrows) laid out left → right. It fills
+     its FAQ card; below 1100px it stacks vertically. */
   .ds-diagram{background:#000;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
     background-size:24px 24px;border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:28px 24px 32px;margin:4px 0 26px;
-    width:min(1088px,calc(100vw - var(--side) - 64px))}
+    width:auto}
   .ds-graphic-head{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 24px}
   .ds-mark{width:28px;height:28px;background:#fff;
     -webkit-mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat;
@@ -318,11 +328,11 @@
     // no onThisPage: its floating card is sized for the 860px doc column and
     // would sit on top of this page's wider layout (hero demo, format cards)
     window.SIDEBAR_CONFIG = {
-      eyebrow: 'Stash/Resources',
+      eyebrow: 'Tools',
       groups: [
         { items: [{ label: 'Overview', href: 'stash.html' }] },
-        { title: 'AI', caps: true, items: [{ label: 'Claude.MD', href: 'claude-md.html' }] },
-        { title: 'Otros recursos', caps: true, items: [
+        { title: 'AI', caps: true, items: [{ label: 'Kit Claude', href: 'claude-md.html' }] },
+        { title: "PromptMaker 3D", caps: true, items: [
           { label: 'PromptMaker Neon', href: 'resources.html#promptmaker-neon' },
           { label: 'Rappi Icon Studio', href: 'resources.html#rappi-icon-studio' }
         ]}
@@ -336,10 +346,11 @@
   <nav class="page-tabs" aria-label="En esta página">
     <div class="wrap">
       <a href="#por-que" data-tab="por-que">Por qué</a>
+      <a href="#casos" data-tab="casos">Qué pedir</a>
       <a href="#descargas" data-tab="descargas">Descargas</a>
       <a href="#instalar" data-tab="instalar">Instalar</a>
-      <a href="#prompts" data-tab="prompts">Pruébalo</a>
-      <a href="#incluye" data-tab="incluye">Transparencia</a>
+      <a href="#prompts" data-tab="prompts">Testing</a>
+      <a href="#incluye" data-tab="incluye">Qué incluye</a>
       <a href="#faq" data-tab="faq">FAQ</a>
     </div>
   </nav>
@@ -347,9 +358,9 @@
   <div class="hero">
     <div class="wrap">
       <div>
-        <div class="crumb"><b>Stash/Resources</b> / AI / Claude.MD</div>
-        <h1 class="display">Diseña como Rappi,<br>con Claude.</h1>
-        <p class="lead">Descarga <b>Mustache for Claude</b>: colores, tipografía, spacing, componentes y voz de marca empaquetados para que Claude diseñe, prototipe y escriba <b>con nuestras reglas</b>. Sin hex inventados, sin tonos que no suenan a Rappi.</p>
+        <div class="crumb"><b>Tools</b> / AI / Kit Claude</div>
+        <h1 class="display">Mustache <span class="plus"><i>+</i>&nbsp;Claude</span></h1>
+        <p class="lead">La misma base que usas en Figma, con los mismos tokens, componentes, patrones y voz de Rappi. Lo que Claude diseña, prototipa o escribe <b>ya habla el idioma del sistema</b>.</p>
         <div class="ctas">
           <a class="btn btn-primary" href="downloads/mustache-ds-skill.zip" download>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Descargar Skill
@@ -359,7 +370,7 @@
           </a>
         </div>
         <div class="hero-meta">
-          <span class="chip"><b data-stash="version">Rappi 8</b> · <span data-stash="date">29 sep 2026</span></span>
+          <span class="chip"><b data-stash="version">Rappi 8</b> · <span data-stash="date">30 sep 2026</span></span>
           <span class="chip"><b>Tema</b> User App · light + dark</span>
           <span class="chip"><b>Funciona en</b> claude.ai · Claude Code</span>
         </div>
@@ -407,24 +418,66 @@
   <section class="doc" id="por-que">
     <div class="wrap">
       <div class="sec-head">
-        <div><span class="num">01 / Por qué</span><h2 class="display">Una sola fuente de reglas, para todos.</h2></div>
-        <p>Hoy cada persona le explica Rappi a Claude a su manera. Con Mustache for Claude, todos parten del mismo sistema: el de Figma.</p>
+        <div><span class="num">01 / Por qué</span><h2 class="display">Una sola base, de Figma a Claude.</h2></div>
+        <p>Todo sale de Mustache. Las variables y componentes de nuestras libraries en Figma son los mismos que lee Claude, así que nadie tiene que explicarle Rappi desde cero.</p>
       </div>
       <div class="why">
         <div>
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></div>
-          <h3>Tokens, no hex</h3>
-          <p>Claude elige por uso (<code style="font-family:var(--mono);font-size:12.5px">ink/error</code>, <code style="font-family:var(--mono);font-size:12.5px">background/offer</code>) y el dark mode sale solo. Lo mismo que pedimos en Figma.</p>
+          <h3>Los mismos tokens de Figma</h3>
+          <p>Claude usa los tokens semánticos de las libraries (<code style="font-family:var(--mono);font-size:12.5px">ink/error</code>, <code style="font-family:var(--mono);font-size:12.5px">background/offer</code>) y el dark mode sale solo. Nada de hex sueltos.</p>
         </div>
         <div>
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V5h16v2M9 19h6M12 5v14"/></svg></div>
           <h3>Suena a Rappi</h3>
-          <p>Incluye la guía de voz y tono: tuteo, verbos de acción, errores que dicen qué hacer. Copies listos para revisar, no para reescribir.</p>
+          <p>La voz y tono también son parte del sistema. Los copies salen listos para revisar, no para reescribir.</p>
         </div>
         <div>
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
-          <h3>Handoff más corto</h3>
-          <p>Cada entrega trae una tabla de tokens usados. De prompt a Figma o a código sin traducir valores a mano.</p>
+          <h3>Sin traducir valores</h3>
+          <p>Lo que entrega Claude usa los mismos nombres que Figma y el código. Pasar de uno a otro es directo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════ QUÉ PEDIR ═════ -->
+  <section class="doc" id="casos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="num">02 / Qué pedir</span><h2 class="display">Pídele lo que le pedirías a tu squad.</h2></div>
+        <p>Como ya conoce el sistema, puedes pedirle trabajo real desde el primer mensaje.</p>
+      </div>
+      <div class="why">
+        <div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/></svg></div>
+          <h3>Prototipos en HTML</h3>
+          <p>Pantallas mobile y web con tokens <code style="font-family:var(--mono);font-size:12.5px">--rp-*</code>, que funcionan en light y dark.</p>
+        </div>
+        <div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h8"/></svg></div>
+          <h3>Todos los estados</h3>
+          <p>Vacío, carga, error y éxito, siguiendo los patrones del sistema.</p>
+        </div>
+        <div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/></svg></div>
+          <h3>Copies y microcopy</h3>
+          <p>CTAs, errores y onboarding con tuteo y verbos de acción.</p>
+        </div>
+        <div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M8 11l2 2 4-4"/></svg></div>
+          <h3>Revisión contra el sistema</h3>
+          <p>Detecta hex sueltos, tokens mal usados y problemas de contraste.</p>
+        </div>
+        <div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+          <h3>Handoff</h3>
+          <p>Cada entrega trae la tabla de tokens usados, lista para Figma o código.</p>
+        </div>
+        <div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 8l-5 4 5 4M16 8l5 4-5 4M14 5l-4 14"/></svg></div>
+          <h3>Código con tokens</h3>
+          <p>Componentes con variables semánticas, no valores a mano.</p>
         </div>
       </div>
     </div>
@@ -434,7 +487,7 @@
   <section class="doc" id="descargas">
     <div class="wrap">
       <div class="sec-head">
-        <div><span class="num">02 / Descargas</span><h2 class="display">Elige tu formato.</h2></div>
+        <div><span class="num">03 / Descargas</span><h2 class="display">Elige cómo usarlo.</h2></div>
         <p>Mismo contenido, tres maneras de usarlo. Si no sabes cuál, empieza por la Skill.</p>
       </div>
       <div class="formats">
@@ -446,17 +499,15 @@
           <div class="tree" aria-label="Contenido de la Skill" data-stash="tree"><b>mustache-ds/</b>
 ├─ <b>SKILL.md</b>          reglas + cheat sheet
 ├─ references/
-│  ├─ accessibility.md
 │  ├─ code-usage.md
 │  ├─ colors.md
 │  ├─ components.md
-│  ├─ icons.md
 │  ├─ spacing-shape.md
 │  ├─ typography.md
 │  ├─ voice-and-tone.md
 │  └─ site/           guías del sitio
 │     ├─ foundations/ (11)
-│     ├─ patterns/ (11)
+│     ├─ patterns/ (10)
 │     ├─ components/ (1)
 │     └─ principles/ (1)
 └─ assets/
@@ -465,14 +516,14 @@
           <p class="for"><b>Ideal para:</b> diseñadores, PMs y devs que usan claude.ai o Claude Code.</p>
           <div class="foot">
             <a class="btn btn-primary" href="downloads/mustache-ds-skill.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Descargar .zip</a>
-            <span class="size" data-stash="zip-meta">86 KB · 35 archivos</span>
+            <span class="size" data-stash="zip-meta">87 KB · 32 archivos</span>
           </div>
         </article>
 
         <article class="fmt">
           <span class="ext">.md · Guía</span>
           <h3>Guía en un archivo</h3>
-          <p>Todo el sistema en un Markdown. Súbelo al conocimiento de un Project o adjúntalo en un chat.</p>
+          <p>Todo Mustache en un solo archivo. Súbelo a un Project y todo el squad trabaja con las mismas reglas.</p>
           <ul>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reglas, color, tipografía, spacing y componentes</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Funciona en cualquier plan, sin configuración</li>
@@ -481,7 +532,7 @@
           <p class="for"><b>Ideal para:</b> un Project de equipo (ej. "Checkout", "Growth").</p>
           <div class="foot">
             <a class="btn btn-ghost" href="downloads/mustache-ds-guidelines.md" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Descargar .md</a>
-            <span class="size" data-stash="md-size">111 KB</span>
+            <span class="size" data-stash="md-size">137 KB</span>
           </div>
         </article>
 
@@ -491,7 +542,7 @@
           <p>Las variables <code style="font-family:var(--mono);font-size:12.5px">--rp-*</code> con light, dark y breakpoints ya resueltos, más la fuente de verdad en JSON.</p>
           <p class="for"><b>Ideal para:</b> devs y prototipos en código.</p>
           <div class="dl-list">
-            <a class="dl-row" href="downloads/tokens.css" download><code>tokens.css</code><span data-stash="css-size">23 KB</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></a>
+            <a class="dl-row" href="downloads/tokens.css" download><code>tokens.css</code><span data-stash="css-size">33 KB</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></a>
             <a class="dl-row" href="downloads/rappi-design-tokens.json" download><code>design-tokens.json</code><span data-stash="json-size">60 KB</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></a>
           </div>
         </article>
@@ -503,15 +554,15 @@
   <section class="doc" id="instalar">
     <div class="wrap">
       <div class="sec-head">
-        <div><span class="num">03 / Instalar</span><h2 class="display">Listo en 2 minutos.</h2></div>
+        <div><span class="num">04 / Instalar</span><h2 class="display">Listo en 2 minutos.</h2></div>
         <p>Elige dónde usas Claude. Si tu equipo usa un plan Team o Enterprise, lo ideal es que un owner la active para toda la organización.</p>
       </div>
       <div class="install">
         <div class="tabs" role="tablist" aria-label="Dónde instalar">
-          <button class="tab" role="tab" id="t-ai" aria-controls="p-ai" aria-selected="true"><strong>claude.ai</strong><span>Skill · web y desktop</span></button>
-          <button class="tab" role="tab" id="t-pj" aria-controls="p-pj" aria-selected="false" tabindex="-1"><strong>Projects</strong><span>Guía .md para un equipo</span></button>
-          <button class="tab" role="tab" id="t-cc" aria-controls="p-cc" aria-selected="false" tabindex="-1"><strong>Claude Code</strong><span>Skill en tu repo</span></button>
-          <button class="tab" role="tab" id="t-org" aria-controls="p-org" aria-selected="false" tabindex="-1"><strong>Toda Rappi</strong><span>Para owners de la org</span></button>
+          <button class="tab" role="tab" id="t-ai" aria-controls="p-ai" aria-selected="true"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="tt"><strong>claude.ai</strong><span>Skill · web y desktop</span></span></button>
+          <button class="tab" role="tab" id="t-pj" aria-controls="p-pj" aria-selected="false" tabindex="-1"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/></svg></span><span class="tt"><strong>Projects</strong><span>Guía .md para un equipo</span></span></button>
+          <button class="tab" role="tab" id="t-cc" aria-controls="p-cc" aria-selected="false" tabindex="-1"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg></span><span class="tt"><strong>Claude Code</strong><span>Skill en tu repo</span></span></button>
+          <button class="tab" role="tab" id="t-org" aria-controls="p-org" aria-selected="false" tabindex="-1"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="tt"><strong>Toda Rappi</strong><span>Para owners de la org</span></span></button>
         </div>
 
         <div class="panel" role="tabpanel" id="p-ai" aria-labelledby="t-ai">
@@ -562,11 +613,13 @@
     </div>
   </section>
 
+
+
   <!-- ═════ PROMPTS ═════ -->
   <section class="doc" id="prompts">
     <div class="wrap">
       <div class="sec-head">
-        <div><span class="num">04 / Pruébalo</span><h2 class="display">Prompts para arrancar.</h2></div>
+        <div><span class="num">05 / Testing</span><h2 class="display">Prompts para arrancar.</h2></div>
         <p>Cópialos tal cual o úsalos como punto de partida. Funcionan mejor si adjuntas un pantallazo o un link de Figma.</p>
       </div>
       <div class="prompts">
@@ -584,8 +637,8 @@
   <section class="doc" id="incluye">
     <div class="wrap">
       <div class="sec-head">
-        <div><span class="num">05 / Transparencia</span><h2 class="display">Qué sabe Claude, y qué todavía no.</h2></div>
-        <p>Mustache sigue creciendo. Esto es lo que trae la v1.0 y lo que llega en próximas versiones.</p>
+        <div><span class="num">06 / Qué incluye</span><h2 class="display">Qué sabe Claude, y qué todavía no.</h2></div>
+        <p>Mustache sigue creciendo. Esto es lo que trae hoy el kit y lo que llega en próximas versiones.</p>
       </div>
       <div class="status">
         <div class="st">
@@ -597,7 +650,7 @@
             <li><b>Componentes base</b><span>botón · card · chip · input · alert</span></li>
             <li><b>Voz y tono</b><span>Rappi · Soy Rappi · B2B</span></li>
             <li><b>Iconografía y accesibilidad</b><span>guías completas</span></li>
-            <li><b>Guías del sitio</b><span data-stash="site-count">Foundations 11 · Patterns 11 · Components 1 · Principios de diseño 1</span></li>
+            <li><b>Guías del sitio</b><span data-stash="site-count">Foundations 11 · Patterns 10 · Components 1 · Principios de diseño 1</span></li>
           </ul>
         </div>
         <div class="st wip">
@@ -618,7 +671,7 @@
   <section class="doc" id="faq">
     <div class="wrap">
       <div class="sec-head">
-        <div><span class="num">06 / FAQ</span><h2 class="display">Preguntas frecuentes.</h2></div>
+        <div><span class="num">07 / FAQ</span><h2 class="display">Preguntas frecuentes.</h2></div>
         <p></p>
       </div>
       <div class="faq">
@@ -658,9 +711,9 @@
                   <div class="ds-term-body">
                     <div class="cmd"><span class="p">$</span> npm run build:stash</div>
                     <div class="c"># arma el kit</div>
-                    <div class="ok"><span>✓ guías del sitio → .md</span><b data-stash="guide-count">24</b></div>
-                    <div class="ok"><span>✓ skill.zip</span><b data-stash="zip-size">86 KB</b></div>
-                    <div class="ok"><span>✓ guidelines.md</span><b data-stash="md-size">111 KB</b></div>
+                    <div class="ok"><span>✓ guías del sitio → .md</span><b data-stash="guide-count">23</b></div>
+                    <div class="ok"><span>✓ skill.zip</span><b data-stash="zip-size">87 KB</b></div>
+                    <div class="ok"><span>✓ guidelines.md</span><b data-stash="md-size">137 KB</b></div>
                     <div class="ok"><span>✓ tokens.css · .json</span><b>2</b></div>
                     <div class="ok"><span>✓ versión</span><b data-stash="version">Rappi 8</b></div>
                     <div class="cmd"><span class="p">$</span> <span class="cur"></span></div>
@@ -721,6 +774,7 @@
 
 <div class="toast" role="status" aria-live="polite">Prompt copiado</div>
 
+
 <script>
 (function(){
   // Demo antes / después
@@ -750,6 +804,7 @@
       if(n){e.preventDefault();select(n);}
     });
   });
+
 
   // Copiar prompts
   var toast=document.querySelector('.toast'),tm;
