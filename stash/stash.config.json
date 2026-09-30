@@ -4,7 +4,7 @@
   "theme": "User App · light + dark",
   "sections": [
     { "id": "foundations", "title": "Foundations", "dir": "foundations", "exclude": ["foundation.html"] },
-    { "id": "patterns", "title": "Patterns", "dir": "patterns" },
+    { "id": "patterns", "title": "Patterns", "dir": "patterns", "exclude": ["pull-and-refresh.html"] },
     { "id": "components", "title": "Components", "dir": "components" },
     { "id": "principles", "title": "Principios de diseño", "files": ["design-principles.html"] }
   ],
@@ -13,5 +13,14 @@
     { "file": "typography.md", "title": "Anexo B · Tipografía" },
     { "file": "spacing-shape.md", "title": "Anexo C · Spacing, radius y stroke" },
     { "file": "components.md", "title": "Anexo D · Componentes" }
-  ]
+  ],
+  "siteBanner": "> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.",
+  "siteNotes": {
+    "foundations/cards-border-radius": "> ⚠️ **Nombres heredados.** `borderRadius1…8` no existen como tokens. En Figma son primitivos (`borderRadius/4…32`); los únicos semánticos son `card` (24) y `pill`. Nombra el valor en px y marca \"⚠️ sin token semántico\".",
+    "foundations/stroke": "> ⚠️ **Nombres heredados.** Tokens reales: `stroke/none` (0), `stroke/standard` (1) = strokeMedium, `stroke/selected` (2) = strokeLarge. `strokeSmall` (0.5) no tiene token.",
+    "foundations/elevation": "> ⚠️ **Borrador sin tokens.** Los niveles existen en el sitio, pero no hay valores de sombra exportados en `tokens.css`. Nombra el nivel (ej. \"Elevated Strong\") y marca \"⚠️ sin token oficial\". Nunca inventes valores de sombra como si fueran del DS.",
+    "foundations/haptics": "> ⚠️ **Borrador.** Nomenclatura y varios casos están \"por confirmar\". Úsalo como criterio, no como spec cerrada.",
+    "foundations/accessibility": "> Versión 0.1 (en construcción). Los mínimos (4.5:1, 3:1, 48×48px, 8px) sí son regla. No existe token de foco: usa anillo 2px `line/border-strong` y marca \"⚠️ sin token oficial\".",
+    "components/button": "> `disabled` aparece como variante en el paquete, pero en diseño trátalo como **estado**. Tamaños menores a `large` (48px) necesitan hit area extendida a 48px."
+  }
 }

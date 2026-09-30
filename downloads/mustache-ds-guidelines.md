@@ -1,10 +1,10 @@
 # Mustache UX System · Guía para Claude
 
-> Archivo único para cargar en un **Project de Claude** (Project knowledge) o adjuntar en un chat. Versión **Rappi 8** · 29 sep 2026 · tema User App · light + dark · generado desde las librerías de Figma `semantics` y `primitives` y el sitio de Mustache.
+> Archivo único para cargar en un **Project de Claude** (Project knowledge) o adjuntar en un chat. Versión **Rappi 8** · 30 sep 2026 · tema User App · light + dark · generado desde las librerías de Figma `semantics` y `primitives` y el sitio de Mustache.
 
 # Mustache UX System (Rappi)
 
-> **Versión Rappi 8** · kit actualizado el 29 sep 2026. Si el pedido es para otra versión de la app, avísalo antes de diseñar.
+> **Skill v1.1 · Rappi 8 · 30 sep 2026.** Tema User App (light + dark). Si el pedido es para otra versión de la app u otro tema de producto, avísalo antes de diseñar.
 
 Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, specs, críticas, copies) sigue el Mustache UX System. Si algo no está definido en el DS, **no lo inventes**: usa lo más cercano y dilo.
 
@@ -13,7 +13,14 @@ Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, sp
 1. **Habla y diseña en tokens semánticos, nunca en hex.** `ink/standard`, no `#464D59`. En código: `var(--rp-color-ink-standard)`.
 2. **Los primitives están ocultos a propósito.** No uses `green/50` ni hex crudos: usa el token que dice DÓNDE se usa (`background/accent`).
 3. **Dark mode vive dentro del token.** Nunca definas un color aparte para dark: el mismo token resuelve light y dark.
-4. **Si un token no existe, avisa.** Escribe "⚠️ sin token oficial" y propone el semántico más cercano.
+4. **Si un token no existe, avisa.** Escribe "⚠️ sin token oficial" y propone el semántico más cercano. Nunca uses un token que no esté en `assets/tokens.css`.
+
+## Precedencia (si dos fuentes se contradicen)
+
+1. **Figma** (`semantics` y `primitives`): fuente de verdad. Si tienes el MCP de Figma, gana.
+2. **`assets/tokens.css` y `assets/rappi-design-tokens.json`**: exportados de Figma. Definen qué tokens existen.
+3. **Este SKILL.md y `references/*.md`**: reglas de uso curadas.
+4. **`references/site/**`**: documentación del sitio. Úsala para contexto, patrones y do/don't. Si un nombre o valor choca con 1 a 3, **gana 1 a 3** y avisa de la diferencia.
 
 ## Anatomía de un token de color
 
@@ -22,7 +29,7 @@ Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, sp
 - **Familias:** `ink` (texto e iconos) · `background` (fondos) · `line` (bordes y divisores) · `interactive` (estados) · `surface` (overlays) · `skeleton` · `chart` · `programs`.
 - **Intensidad:** `weak` < `mild` < `standard` < `strong`.
 - **Intenciones:** `accent` (acción/marca) · `positive` · `warning` · `error` · `recommendation` (info) · `offer` (promo).
-- **Inversión:** `inverse`, `inverse-on`, `-on` para contenido sobre color o fondos invertidos.
+- **Inversión:** `inverse` cambia con el modo. `-on` (`ink/inverse-on`, `ink/strong-on`) es **fijo** en light y dark: úsalo siempre sobre fondos de color.
 
 ## Cheat sheet (lo que más se usa)
 
@@ -30,49 +37,97 @@ Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, sp
 |---|---|
 | Fondo de pantalla | `background/standard` |
 | Fondo de sección o card secundaria | `background/mild` / `background/weak` |
+| Card sobre otra superficie | `background/on-top` |
 | Texto principal / secundario / placeholder | `ink/strong` / `ink/standard` / `ink/weak` |
-| Botón primario | `background/accent` + `ink/inverse-on`, radio `pill` (ojo: 2.2:1 de contraste, ver colors.md) |
-| Borde de input o card | `line/border-standard` (focus: `line/border-strong`) |
+| Botón primario | `background/accent` + `ink/inverse-on`, radio `pill`. ⚠️ 2.2:1, ver "Accesibilidad" |
+| Borde de input o card | `line/border-standard` · focus: `line/border-strong` |
 | Error (texto / fondo suave / borde) | `ink/error` / `background/error-weak` / `line/border-error` |
-| Promo | `background/offer` + `ink/strong-on` |
+| Alerta o banner de feedback | `background/<intención>-weak` + texto `ink/strong` + ícono `ink/<intención>` |
+| Promo | `background/offer` + `ink/strong-on` (nunca `ink/strong`: en dark queda blanco sobre amarillo) |
 | Scrim de modal | `surface/overlay` |
 | Margen lateral de pantalla | `horizontal/inside-screen` = 24 |
 | Entre secciones | `vertical/between-sections` = 32 |
-| Radio de card / sheet / modal | `card` = 24 |
+| Radio de card / sheet / modal | `card` = 24 · botones y chips: `pill` |
+| Borde / selección | stroke `standard` = 1 · `selected` = 2 |
 | Texto base | `body` 16/20 (mobile), PP Object Sans Regular |
+| Área táctil mínima | **48×48px** y 8px entre áreas táctiles, aunque el elemento se vea más chico |
 
-## Tipografía en 4 líneas
+## Tipografía en 5 líneas
 
-- **PP Object Sans** para todo; pesos **Regular (400)** y **Medium (500)**. Medium reemplazó a Bold.
-- **Archivo Black** solo para titulares display (`hugeTitleL/M/S`).
-- Elige por rol (`h1`…`caption-2`) y breakpoint (Mobile, Tablet ≥600, Desktop ≥1024).
-- Mínimo 12px en UI; cuerpo 16px. Detalle en `references/typography.md`.
+- **PP Object Sans** para UI. Pesos en uso: **Regular (400)** y **Medium (500)**. Medium reemplazó a Bold: los estilos `*Bold` siguen en Figma por legado, no los uses en diseño nuevo.
+- **Archivo Black es exclusiva del componente `banner-bigFont`** (mobile-library Rappi 8): solo para su cifra o titular protagonista (ej. el % OFF), con `hugeTitleL/M/S` y tracking −4%. **No es una fuente display general:** en cualquier otro banner, pantalla o pieza usa PP Object Sans (`huge`, `h1`).
+- **Text styles** en Figma: `rol/rolPeso` (ej. `body/bodyRegular`, `h2/h2Medium`). Roles: `huge`, `h1`–`h4`, `headline`, `subheadline`, `body`, `caption-1`, `caption-2`, `label`. `subheadline` es un eyebrow: 10px, MAYÚSCULAS, tracking 12%.
+- Tamaño y line-height cambian por breakpoint (Mobile, Tablet ≥600, Desktop ≥1024) vía variables de la colección `Typography`.
+- Mínimo 12px en UI; cuerpo 16px. `footnote` (8), `disclaimer` (6) y `legal` (4) no van en pantalla. Escala completa y CSS en `references/typography.md`.
+
+## Iconos en 4 líneas
+
+- Librería Figma `icons` (file `kYsnknQmkgVfiawkU6baZb`). Nombres en inglés, minúscula y guion, por lo que se ve (`house`, no `home`).
+- **Outline** por defecto; **Filled** solo para activo/seleccionado. No mezcles en un mismo conjunto.
+- Tamaños: 16 (denso), **24 (base)**, 32 (empty states, onboarding). Color con `ink/*`.
+- Ícono funcional siempre con label accesible y área táctil de 48px.
+
+## Estados interactivos (mientras `interactive/*` esté vacío)
+
+Los tokens `interactive/*` existen pero valen transparente (`#FFFFFF00`). No los uses solos: no se vería nada.
+
+- **Hover / pressed:** superposición del color base (ej. `ink/strong` al 8% / 12%) y marca "⚠️ sin valor oficial en `interactive/*`".
+- **Focus:** anillo de stroke `selected` (2px) con `line/border-strong`. ⚠️ No hay token de foco oficial (`line/border-focus` e `interactive/focus` **no existen**).
+- **Disabled:** es un **estado**, no una variante. `background/disabled` + `ink/disabled`.
+
+## Accesibilidad (mínimos WCAG 2.2 AA)
+
+- Texto normal 4.5:1 · texto grande y elementos de UI 3:1.
+- `ink/accent`, `ink/error`, `ink/warning` e `ink/recommendation` **no pasan 4.5:1** en texto de cuerpo. Úsalos en íconos, texto grande o acompañados de ícono.
+- **Botón primario:** respeta el componente oficial (`ink/inverse-on`), pero en revisiones de accesibilidad **señala** el 2.2:1. Alternativa que pasa: `ink/strong-on` (9.6:1).
+- Nunca comuniques un estado solo con color: suma ícono o texto.
 
 ## Flujo de trabajo
 
-**Antes de diseñar**, identifica qué tipo de pedido es y lee solo lo necesario:
+**Antes de diseñar**, identifica el pedido y lee **solo** lo necesario:
 
 | Pedido | Lee |
 |---|---|
-| Elegir o revisar colores | `references/colors.md` |
-| Jerarquía de texto | `references/typography.md` |
-| Layout, márgenes, radios | `references/spacing-shape.md` |
-| Construir un componente (botón, card, chip, input, alert, modal) | `references/components.md` |
+| Elegir o revisar colores, contraste | `references/colors.md` |
+| Jerarquía de texto, text styles, escala por breakpoint | `references/typography.md` |
+| Layout, márgenes, grilla | `references/spacing-shape.md` + `references/site/foundations/layout.md` |
+| Radios de card | `references/spacing-shape.md` (tokens) + `site/foundations/cards-border-radius.md` (criterio) |
+| Sombras y elevación | `references/site/foundations/elevation.md` (⚠️ sin tokens) |
+| Botón (variantes, tamaños, props) | `references/components.md` + `references/site/components/button.md` |
+| Card, chip, input, alert, modal, skeleton | `references/components.md` |
 | HTML / CSS / React | `references/code-usage.md` + `assets/tokens.css` |
-| Iconos | `references/icons.md` |
-| Copies, microcopy, errores, CTAs | `references/voice-and-tone.md` |
-| Revisión de accesibilidad | `references/accessibility.md` |
+| Iconos | `references/site/foundations/icons.md` |
+| Ilustraciones 3D | `references/site/foundations/illustrations-3d.md` |
+| Animación y transiciones | `references/site/foundations/motion.md` |
+| Vibración / feedback háptico | `references/site/foundations/haptics.md` (borrador) |
+| Revisión de accesibilidad | `references/site/foundations/accessibility.md` |
+| Copies, microcopy, errores, CTAs | `references/voice-and-tone.md` (secciones "Microcopy", "Botones / Links", "Escenarios de error") |
+| **Copies para repartidores (Soy Rappi)** | `references/voice-and-tone.md`, sección **"Palabras con restricción de uso"**. Obligatorio: hay riesgo legal |
+| Principios para defender una decisión | `references/site/principles/design-principles.md` |
 | Valor exacto que no aparece arriba | `assets/rappi-design-tokens.json` |
+
+**Patrones de flujo** (`references/site/patterns/`), léelos cuando diseñes esa pantalla o flujo:
+
+| Diseñas… | Archivo |
+|---|---|
+| Agregar al carrito, stepper de cantidad | `add-product.md` |
+| Modales, bottom sheets, pantallas completas | `modality.md` |
+| Diálogos de confirmación | `dialogs.md` |
+| Pantallas vacías o de error | `empty-states.md` |
+| Estados de carga | `loading-skeleton.md` |
+| Búsqueda y resultados | `search.md` |
+| Login, onboarding, ajustes | `login.md`, `onboarding.md`, `settings.md` |
+| Paso del home o menú a una tienda | `transitions-to-stores.md` |
 
 **Al hacer un mockup o prototipo HTML:**
 
-1. Pega el contenido de `assets/tokens.css` dentro de un `<style>` (no enlaces archivos externos) y usa solo variables `--rp-*`.
+1. Pega el contenido de `assets/tokens.css` dentro de un `<style>` (no enlaces archivos externos) y usa solo variables `--rp-*`. Para texto, usa las clases de text style (`.rp-text-body-regular`, `.rp-text-h2-medium`…).
 2. Fuente: `font-family: "PP Object Sans", "Inter", system-ui, sans-serif;` (PP Object Sans no está en Google Fonts; Inter es el fallback visual).
 3. Diseña mobile-first (360–390px de ancho) salvo que pidan otra cosa.
 4. Cubre estados: default, hover, pressed, focus, disabled, loading (skeleton), vacío y error.
-5. Copies en español LatAm, tuteo, frases cortas y verbos de acción (ver voz y tono).
+5. Copies en español LatAm, tuteo, frases cortas y verbos de acción.
 
-**Al entregar**, añade una tabla corta "Tokens usados" (elemento → token) para que el handoff a Figma o a código sea directo.
+**Al entregar**, añade una tabla corta "Tokens usados" (elemento → token) y lista cualquier "⚠️ sin token oficial" que hayas usado.
 
 ## Voz de Rappi en 5 reglas
 
@@ -84,14 +139,17 @@ Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, sp
 
 ## Críticas de diseño
 
-Cuando te pidan revisar algo, sé directo: señala hex hardcodeados, tokens mal usados (ej. `ink/accent` o `ink/error` en texto de cuerpo: no pasan 4.5:1), estados faltantes, jerarquía confusa y copies que no suenan a Rappi. Siempre con alternativa concreta.
+Sé directo: señala hex hardcodeados, tokens inexistentes o mal usados (ej. `ink/accent` en texto de cuerpo, `ink/strong` sobre `background/offer`), Archivo Black fuera de `banner-bigFont`, áreas táctiles menores a 48px, estados faltantes, jerarquía confusa y copies que no suenan a Rappi. Siempre con alternativa concreta.
 
 ## Lo que aún está en construcción
 
-- `interactive/*` (hover/pressed/focus) no tiene valores oficiales todavía.
-- Radius semántico solo tiene `card` y `pill`. No hay tokens de elevación.
-- Solo está el tema **User App**; hay 12 temas de producto más en Figma.
-- Fuente de verdad: las librerías de Figma `semantics` y `primitives`. Si hay contradicción, gana Figma.
+- `interactive/*` sin valores oficiales (ver "Estados interactivos"). No hay token de foco.
+- **Radius:** semánticos solo `card` (24) y `pill`. Hay escala primitiva (2 a 32…) sin semántico: si necesitas otro radio, usa el primitivo más cercano y **dilo**. El sitio los llama `borderRadius1…8`: son nombres heredados.
+- **Stroke:** tokens `none` / `standard` (1) / `selected` (2). El sitio nombra `strokeSmall` (0.5), sin token.
+- **Elevación:** el sitio define 4 niveles (Elevated, Strong, Hard, -Y) y sombras de botón (Green, Rappi), pero **no hay tokens ni valores** exportados. Nómbralos por nivel y marca "⚠️ sin token oficial".
+- **Tipografía:** en Tablet `h1`–`h4` son menores que en Mobile, y algunos text styles tienen variables mal ligadas en Figma (ver "Revisión pendiente en Figma" en `references/typography.md`). Confirma con el equipo de DS antes de asumirlos.
+- **Temas:** solo User App; hay 12 temas de producto más en Figma (RT App, Aliados, Pay, Cargo…).
+- **Componentes:** solo Button tiene ficha completa. Para anatomía exacta de otros, léelos en Figma con `rappi-component-docs`.
 
 ## Guías del sistema (sitio Mustache)
 
@@ -109,7 +167,7 @@ Generadas desde el sitio de documentación. Léelas cuando el pedido toque ese t
 - `references/site/foundations/layout.md`: Layout. En Rappi todos los diseños deben tener como principio el uso correcto de los elementos y espacios, para crear consistencia y claridad en la marca.
 - `references/site/foundations/motion.md`: Motion. El movimiento puede dar vida a la pantalla, guiar a los usuarios a través de experiencias complejas y ayudarlos a progresar.
 - `references/site/foundations/stroke.md`: Stroke. El objeto para definir el color, el ancho y el estilo de un borde o divisor.
-- `references/site/foundations/typography.md`: Typography. La tipografía da voz al sistema. Una sola familia, dos pesos y una escala predecible que mantiene la jerarquía consistente en toda la interfaz.
+- `references/site/foundations/typography.md`: Typography. La tipografía da voz al sistema. Una familia para la interfaz, dos pesos y una escala por breakpoint que mantiene la jerarquía consistente en toda la app.
 
 **Patterns**
 
@@ -120,7 +178,6 @@ Generadas desde el sitio de documentación. Léelas cuando el pedido toque ese t
 - `references/site/patterns/login.md`: Login. El inicio de sesión en un sistema es la acción que permite a las personas usuarias tener acceso a una app o programa.
 - `references/site/patterns/modality.md`: Modality. Soluciones gráficas que, a través de un diseño fluido y sencillo, presentan el contenido de una manera clara que facilita la toma de decisiones.
 - `references/site/patterns/onboarding.md`: Onboarding. Brindarle a nuestras personas usuarias una primera experiencia sencilla, rápida e intuitiva en nuestra app nos acercará a cautivarlos.
-- `references/site/patterns/pull-and-refresh.md`: Pull and refresh. Página sin contenido en la fuente original.
 - `references/site/patterns/search.md`: Search. El principal objetivo de nuestros usuarios está en encontrar de manera rápida y sencilla aquello que necesitan en minutos.
 - `references/site/patterns/settings.md`: Settings. Las personas prefieren las aplicaciones que se adaptan cada vez mejor a sus necesidades a través de sus ajustes personalizados.
 - `references/site/patterns/transitions-to-stores.md`: Transitions to stores. Conoce de manera detallada cómo ocurren las transiciones desde el Menú hacia una tienda dentro de la app.
@@ -312,50 +369,129 @@ Los hex se listan solo para trazabilidad y para diseño a código. **Nunca los e
 
 
 # Anexo B · Tipografía
-## Familias
-
-- **PP Object Sans**: familia del sistema para títulos y contenido. Pesos en uso: **Regular (400)** y **Medium (500)**. Medium reemplazó a Bold como peso de énfasis.
-- **Archivo Black**: solo display / `hugeTitle` (titulares de marketing, héroes, banners). Nunca en cuerpo de texto.
-- PP Object Sans **no está en Google Fonts**. En mockups HTML usa `font-family: "PP Object Sans", "Inter", system-ui, sans-serif;` y avisa que el render final usa la fuente licenciada.
+Fuente: Figma **semantics**, colección de variables `Typography` (modos Mobile / Tablet / Desktop) y sus **39 text styles**. Variable CSS: `--rp-type-<familia>-<propiedad>-<rol>` (ej. `--rp-type-pp-object-sans-size-body`); en `assets/tokens.css` ya vienen resueltas por breakpoint.
 
 ## Reglas
 
-- Elige por **rol** (h1, h2, headline, body, caption…), no por tamaño.
-- Un rol = tamaño + line-height del mismo breakpoint. No mezcles el size de Mobile con el line-height de Desktop.
+- Elige por **rol** (h1, headline, body…), no por tamaño. Un rol = size + line-height del mismo breakpoint.
 - Breakpoints: **Mobile** (<600px), **Tablet** (≥600px), **Desktop** (≥1024px).
-- Cuerpo de texto mínimo **16px** (`body`). `caption-1` (14) y `caption-2` (12) solo para metadatos.
+- Pesos en uso: **Regular (400)** y **Medium (500)**. Medium reemplazó a Bold. Los estilos `*Bold` existen en Figma por legado: no los uses en diseño nuevo. La variable `weight/Heavy` existe pero no tiene text style.
+- Cuerpo mínimo **16px** (`body`). `caption-1` (14) y `caption-2` (12) solo para apoyo y metadatos. `label` (10) solo para tags y badges cortos.
+- `footnote` (8), `disclaimer` (6) y `legal` (4) están en Figma pero **son ilegibles en pantalla**. Si un legal lo exige, usa `caption-2` (12) como mínimo y avísalo.
 - Jerarquía con peso Medium y tamaño, no con color de marca.
-- Variable CSS: `--rp-type-pp-object-sans-size-body`, `--rp-type-pp-object-sans-line-height-body`, etc. (en `tokens.css` ya vienen resueltas por breakpoint).
+- PP Object Sans no está en Google Fonts: en HTML usa `font-family: "PP Object Sans", "Inter", system-ui, sans-serif;` y avisa que el render final usa la fuente licenciada.
 
-## Escala (px, size / line-height)
+## Familias
 
-| Rol | Familia | Mobile (size/lh) | Tablet | Desktop |
+| Familia | Variable Figma | CSS | Uso |
+|---|---|---|---|
+| PP Object Sans | `PP Object sans/family/title` | `--rp-font-family-title` | `huge` a `subheadline` |
+| PP Object Sans | `PP Object sans/family/content` | `--rp-font-family-content` | `body` a `legal` |
+| Archivo Black | `Archivo Black/family/title` | `--rp-font-family-display` | **Solo el componente `banner-bigFont`** (`hugeTitle*`) |
+
+## Escala PP Object Sans (size / line-height, px)
+
+| Rol | Nota | Mobile | Tablet | Desktop | Tracking |
+|---|---|---|---|---|---|
+| `huge` | — | 48 / 48 | 64 / 72 | 64 / 72 | 0 |
+| `h1` | — | 40 / 40 | 28 / 34 | 40 / 48 | 0 |
+| `h2` | — | 32 / 40 | 24 / 32 | 32 / 40 | 0 |
+| `h3` | — | 26 / 32 | 20 / 28 | 24 / 32 | 0 |
+| `h4` | — | 24 / 32 | 18 / 26 | 20 / 26 | 0 |
+| `headline` | — | 20 / 24 | 20 / 24 | 18 / 24 | 0 |
+| `subheadline` | Eyebrow / overline | 10 / 24 | 10 / 16 | 10 / 24 | 12% · MAYÚSCULAS |
+| `body` | Texto base | 16 / 20 | 16 / 24 | 16 / 24 | 0 |
+| `caption-1` | Apoyo y metadatos | 14 / 16 | 14 / 20 | 14 / 20 | 0 |
+| `caption-2` | Metadatos (mínimo en UI) | 12 / 16 | 12 / 18 | 12 / 18 | 0 |
+| `label` | Tags y badges cortos | 10 / 12 | 10 / 14 | 10 / 16 | 0 |
+| `footnote` | No usar en pantalla | 8 / 12 | 8 / 12 | 8 / 12 | 0 |
+| `disclaimer` | No usar en pantalla | 6 / 8 | 6 / 8 | 6 / 8 | 0 |
+| `legal` | No usar en pantalla | 4 / 6 | 4 / 6 | 4 / 6 | 0 |
+
+> `subheadline`: la variable `line-height/subheadline` vale 24 / 16 / 24, pero los text styles están ligados a `line-height/headline` (24 en todos los breakpoints). Ver "Revisión pendiente en Figma".
+
+## Archivo Black · exclusiva de banner-bigFont
+
+Archivo Black **solo se usa en el componente `banner-bigFont`** (librería `mobile-library` Rappi 8, file `j7dMt2KutCl1U0BUZN1jqu`, component set `80487:204`), para la cifra o el titular protagonista (ej. el % OFF). **No es una fuente display general:** no la uses en otros banners, pantallas, héroes ni piezas de marketing. Si alguien la pide fuera de bigFont, avísalo y usa PP Object Sans (`huge` o `h1`). El resto del texto del bigFont va en PP Object Sans.
+
+Tracking **−4%** en todos. Line-height menor que el size a propósito: titulares de 1 o 2 líneas, nunca en párrafos.
+
+| Rol | Mobile | Tablet | Desktop | Cuándo (dentro del bigFont) |
 |---|---|---|---|---|
-| `hugeTitleL` | Archivo Black | 46 / 34 | 52 / 40 | 64 / 48 |
-| `hugeTitleM` | Archivo Black | 40 / 32 | 48 / 34 | 56 / 40 |
-| `hugeTitleS` | Archivo Black | 30 / 26 | 32 / 28 | 46 / 34 |
-| `huge` | PP Object Sans | 48 / 48 | 64 / 72 | 64 / 72 |
-| `h1` | PP Object Sans | 40 / 40 | 28 / 34 | 40 / 48 |
-| `h2` | PP Object Sans | 32 / 40 | 24 / 32 | 32 / 40 |
-| `h3` | PP Object Sans | 26 / 32 | 20 / 28 | 24 / 32 |
-| `h4` | PP Object Sans | 24 / 32 | 18 / 26 | 20 / 26 |
-| `headline` | PP Object Sans | 20 / 24 | 20 / 24 | 18 / 24 |
-| `subheadline` | PP Object Sans | 10 / 24 | 10 / 16 | 10 / 24 |
-| `body` | PP Object Sans | 16 / 20 | 16 / 24 | 16 / 24 |
-| `caption-1` | PP Object Sans | 14 / 16 | 14 / 20 | 14 / 20 |
-| `caption-2` | PP Object Sans | 12 / 16 | 12 / 18 | 12 / 18 |
-| `label` | PP Object Sans | 10 / 12 | 10 / 14 | 10 / 16 |
-| `footnote` | PP Object Sans | 8 / 12 | 8 / 12 | 8 / 12 |
-| `disclaimer` | PP Object Sans | 6 / 8 | 6 / 8 | 6 / 8 |
-| `legal` | PP Object Sans | 4 / 6 | 4 / 6 | 4 / 6 |
+| `hugeTitleL` | 46 / 34 | 52 / 40 | 64 / 48 | El protagonista: la cifra estrella (precio, % de descuento o nombre del evento). Uno por banner. |
+| `hugeTitleM` | 40 / 32 | 48 / 34 | 56 / 40 | El titular de apoyo: titular principal cuando el banner tiene imagen fuerte o poco espacio. |
+| `hugeTitleS` | 30 / 26 | 32 / 28 | 46 / 34 | El contenido: banners compactos, formatos verticales o cuando acompaña a otro elemento sin robar el foco. |
 
-## Notas de calidad de la data
+## Text styles (39)
 
-- Los roles `footnote` (8), `disclaimer` (6) y `legal` (4) están en Figma pero **son ilegibles en pantalla**. No los uses para texto de UI; si un legal lo exige, usa `caption-2` (12) como mínimo y avisa.
-- `subheadline` tiene size 10 con line-height 24: tratarlo como overline/eyebrow en mayúsculas, no como subtítulo.
-- En **Tablet**, `h1`–`h4` son más pequeños que en Mobile (ej. `h1` 28 vs 40). Parece una inconsistencia de la data: si diseñas para tablet, confirma con el equipo de DS antes de asumirlo.
-- Los `hugeTitle` (Archivo Black) tienen line-height menor que el size (interlineado negativo). Es intencional para titulares cortos de 1 o 2 líneas; no lo uses en párrafos.
-- La colección también expone pesos `Heavy` y `Bold`; el criterio vigente del DS es **Regular + Medium**.
+Nombre en Figma: `rol/rolPeso`. Clase CSS (en `assets/tokens.css`): `.rp-text-<rol>-<peso>`. Valores Mobile; la clase escala sola por breakpoint.
+
+| Text style | Clase CSS | Fuente | Size / LH | Tracking |
+|---|---|---|---|---|
+| `huge/hugeBold` (legado) | `.rp-text-huge-bold` | PP Object Sans Bold (700) | 48 / 48 | 0 |
+| `huge/hugeMedium` | `.rp-text-huge-medium` | PP Object Sans Medium (500) | 48 / 48 | 0 |
+| `huge/hugeRegular` | `.rp-text-huge-regular` | PP Object Sans Regular (400) | 48 / 48 | 0 |
+| `h1/h1Bold` (legado) | `.rp-text-h1-bold` | PP Object Sans Bold (700) | 40 / 40 | 0 |
+| `h1/h1Medium` | `.rp-text-h1-medium` | PP Object Sans Medium (500) | 40 / 40 | 0 |
+| `h1/h1Regular` | `.rp-text-h1-regular` | PP Object Sans Regular (400) | 40 / 40 | 0 |
+| `h2/h2Bold` (legado) | `.rp-text-h2-bold` | PP Object Sans Bold (700) | 32 / 40 | 0 |
+| `h2/h2Medium` | `.rp-text-h2-medium` | PP Object Sans Medium (500) | 32 / 40 | 0 |
+| `h2/h2Regular` | `.rp-text-h2-regular` | PP Object Sans Regular (400) | 32 / 40 | 0 |
+| `h3/h3Bold` (legado) | `.rp-text-h3-bold` | PP Object Sans Bold (700) | 26 / 32 | 0 |
+| `h3/h3Medium` | `.rp-text-h3-medium` | PP Object Sans Medium (500) | 26 / 32 | 0 |
+| `h3/h3Regular` | `.rp-text-h3-regular` | PP Object Sans Regular (400) | 26 / 32 | 0 |
+| `h4/h4Bold` (legado) | `.rp-text-h4-bold` | PP Object Sans Bold (700) | 24 / 32 | 0 |
+| `h4/h4Medium` | `.rp-text-h4-medium` | PP Object Sans Medium (500) | 24 / 32 | 0 |
+| `h4/h4Regular` | `.rp-text-h4-regular` | PP Object Sans Regular (400) | 24 / 32 | 0 |
+| `headline/headlineBold` (legado) | `.rp-text-headline-bold` | PP Object Sans Bold (700) | 20 / 24 | 0 |
+| `headline/headlineMedium` | `.rp-text-headline-medium` | PP Object Sans Medium (500) | 20 / 24 | 0 |
+| `headline/headlineRegular` | `.rp-text-headline-regular` | PP Object Sans Regular (400) | 20 / 24 | 0 |
+| `subheadline/subheadlineBold` (legado) | `.rp-text-subheadline-bold` | PP Object Sans Bold (700) | 10 / 24 | 12%, uppercase |
+| `subheadline/subheadlineMedium` | `.rp-text-subheadline-medium` | PP Object Sans Medium (500) | 10 / 24 | 12%, uppercase |
+| `subheadline/subheadlineRegular` | `.rp-text-subheadline-regular` | PP Object Sans Regular (400) | 10 / 24 | 12%, uppercase |
+| `body/bodyBold` (legado) | `.rp-text-body-bold` | PP Object Sans Bold (700) | 16 / 20 | 0 |
+| `body/bodyMedium` | `.rp-text-body-medium` | PP Object Sans Medium (500) | 16 / 20 | 0 |
+| `body/bodyRegular` | `.rp-text-body-regular` | PP Object Sans Regular (400) | 16 / 20 | 0 |
+| `caption-1/caption1Bold` (legado) | `.rp-text-caption-1-bold` | PP Object Sans Bold (700) | 14 / 16 | 0 |
+| `caption-1/caption1Medium` | `.rp-text-caption-1-medium` | PP Object Sans Medium (500) | 14 / 16 | 0 |
+| `caption-1/caption1Regular` | `.rp-text-caption-1-regular` | PP Object Sans Regular (400) | 14 / 16 | 0 |
+| `caption-2/caption2Bold` (legado) | `.rp-text-caption-2-bold` | PP Object Sans Bold (700) | 12 / 16 | 0 |
+| `caption-2/caption2Medium` | `.rp-text-caption-2-medium` | PP Object Sans Medium (500) | 12 / 16 | 0 |
+| `caption-2/caption2Regular` | `.rp-text-caption-2-regular` | PP Object Sans Regular (400) | 12 / 16 | 0 |
+| `label/labelBold` (legado) | `.rp-text-label-bold` | PP Object Sans Bold (700) | 10 / 12 | 0 |
+| `label/labelMedium` | `.rp-text-label-medium` | PP Object Sans Medium (500) | 10 / 12 | 0 |
+| `label/labelRegular` | `.rp-text-label-regular` | PP Object Sans Regular (400) | 10 / 12 | 0 |
+| `footnote/footnoteRegular` | `.rp-text-footnote-regular` | PP Object Sans Regular (400) | 8 / 12 | 0 |
+| `disclaimer/disclaimerRegular` | `.rp-text-disclaimer-regular` | PP Object Sans Regular (400) | 6 / 8 | 0 |
+| `legal/legalRegular` | `.rp-text-legal-regular` | PP Object Sans Regular (400) | 4 / 6 | 0 |
+| `Archivo-Black/hugeTitleL` | `.rp-text-hugetitlel` | Archivo Black Regular | 46 / 34 | −4% |
+| `Archivo-Black/hugeTitleM` | `.rp-text-hugetitlem` | Archivo Black Regular | 40 / 32 | −4% |
+| `Archivo-Black/hugeTitleS` | `.rp-text-hugetitles` | Archivo Black Regular | 30 / 26 | −4% |
+
+## CSS
+
+```css
+.titulo { /* o usa directamente class="rp-text-h2-medium" */
+  font-family: var(--rp-font-family-title);
+  font-weight: var(--rp-font-weight-medium);
+  font-size: var(--rp-type-pp-object-sans-size-h2);
+  line-height: var(--rp-type-pp-object-sans-line-height-h2);
+}
+```
+
+Las variables `--rp-type-*-weight-*` de Figma son strings ("Medium"): en CSS usa `--rp-font-weight-regular` (400), `--rp-font-weight-medium` (500) y `--rp-font-weight-bold` (700).
+
+## Revisión pendiente en Figma
+
+Inconsistencias encontradas en semantics (30 sep 2026). No las corrijas en diseño: repórtalas al equipo de DS.
+
+- **`Archivo-Black/hugeTitleL/M/S`** están ligados a primitivos (`font/size/46`, `font/line-height/34`…), no a las variables `Archivo Black/size/*`. En Figma **no escalan** a Tablet ni Desktop aunque las variables sí existen. En CSS sí escalan.
+- **`subheadline/*`** usan `line-height/headline` en vez de `line-height/subheadline`: en Tablet dan 24 en vez de 16.
+- **`h1/h1Regular`** tiene el peso ligado al primitivo `font/weight/Regular`, no a `PP Object sans/weight/Regular`.
+- **`legal/legalRegular`** tiene size y line-height ligados a primitivos (`font/size/4`, `font/line-height/6`).
+- En Tablet, **`size/h1` (28)** y **`line-height/h3` (28)** son valores fijos, sin alias a primitivo.
+- En Tablet, **`h1`–`h4` son más chicos que en Mobile** (ej. `h1` 28 vs 40). Parece un error de la data: confirma antes de diseñar para tablet.
+- No hay variables de **letter-spacing** ni de **text-case**: el 12% + MAYÚSCULAS de `subheadline` y el −4% de Archivo Black solo viven en el text style.
 
 
 # Anexo C · Spacing, radius y stroke
@@ -373,27 +509,29 @@ Variables CSS: `--rp-space-16`, `--rp-space-h-between-cards`, `--rp-space-v-betw
 - Radio de cards, sheets y modales: `card` (24). Botones, chips y pills: `pill` (1000).
 - Bordes: `standard` (1px). Selección: `selected` (2px).
 
-> **En construcción:** el DS aún no tiene tokens semánticos completos de border radius (solo `card` y `pill`) ni de elevación. Si necesitas otro radio, usa el valor primitivo más cercano (2, 4, 8, 12, 16, 20…) y **dilo explícitamente** para que se revise.
+> **En construcción:** el DS aún no tiene tokens semánticos completos de border radius (solo `card` y `pill`) ni de elevación (el sitio define niveles de elevación sin valores, ver `site/foundations/elevation.md`). Si necesitas otro radio, usa el valor primitivo más cercano (2, 4, 8, 12, 16, 20…) y **dilo explícitamente** para que se revise.
 
 ## Spacing (semántico)
 
 CSS: `--rp-space-*`. Los `spacing-N` son la escala base; los de `horizontal/` y `vertical/` son intenciones de layout.
 
+> En Figma estos tokens llevan el prefijo `✍️` (ej. `horizontal/✍️ between-chips`). Aquí se omite; en CSS no existe.
+
 | Token | px |
 |---|---|
-| `horizontal/✍️ between-chips` | 8 |
-| `horizontal/✍️ between-cards` | 16 |
-| `horizontal/✍️ between-buttons` | 16 |
-| `horizontal/✍️ between-products-2col` | 24 |
-| `horizontal/✍️ between-products-3col` | 12 |
-| `horizontal/✍️ between-default` | 12 |
-| `horizontal/✍️ inside-screen` | 24 |
-| `horizontal/✍️ none` | 0 |
-| `vertical/✍️ below-header` | 16 |
-| `vertical/✍️ between-sections` | 32 |
-| `vertical/✍️ docked-buttons` | 20 |
-| `vertical/✍️ margin-top-bottom` | 8 |
-| `vertical/✍️ none` | 0 |
+| `horizontal/between-chips` | 8 |
+| `horizontal/between-cards` | 16 |
+| `horizontal/between-buttons` | 16 |
+| `horizontal/between-products-2col` | 24 |
+| `horizontal/between-products-3col` | 12 |
+| `horizontal/between-default` | 12 |
+| `horizontal/inside-screen` | 24 |
+| `horizontal/none` | 0 |
+| `vertical/below-header` | 16 |
+| `vertical/between-sections` | 32 |
+| `vertical/docked-buttons` | 20 |
+| `vertical/margin-top-bottom` | 8 |
+| `vertical/none` | 0 |
 | `spacing-0` | 0 |
 | `spacing-2` | 2 |
 | `spacing-4` | 4 |
@@ -434,10 +572,11 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 ## Principios
 
 1. **Superficie:** el fondo del componente sale de `background/*`; el texto e iconos, de `ink/*`; los bordes, de `line/*`.
-2. **Estados:** cada componente interactivo cubre `default / hover / pressed / focus / disabled`. Usa los tokens `interactive/*` para las capas de hover/pressed y `line/border-focus` para el foco.
+2. **Estados:** cada componente interactivo cubre `default / hover / pressed / focus / disabled`. ⚠️ `interactive/*` hoy vale transparente: para hover/pressed usa una superposición del color base (8% / 12%) y avísalo. Foco: anillo de stroke `selected` (2px) con `line/border-strong` (⚠️ no existe token de foco oficial; `line/border-focus` no existe).
 3. **Forma:** radios desde `radius/*` (`card` = 24, `pill` = 1000), grosores desde `stroke/*` (`standard` = 1, `selected` = 2).
 4. **Ritmo:** paddings y gaps desde `--rp-space-*`. Prefiere los de intención (`horizontal/between-buttons`, `vertical/docked-buttons`) cuando aplique.
 5. **Texto:** tamaño y line-height por rol tipográfico (`--rp-type-*`), respetando el breakpoint.
+6. **Área táctil:** mínimo 48×48px y 8px entre áreas táctiles, aunque el elemento visual sea más chico.
 
 ## Feedback / semántica de color
 
@@ -448,20 +587,24 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 | Advertencia | `background/warning` | `background/warning-weak` | `ink/warning` |
 | Error | `background/error` | `background/error-weak` | `ink/error` |
 | Recomendación / info | `background/recommendation` | `background/recommendation-weak` | `ink/recommendation` |
-| Oferta | `background/offer` | `background/offer-weak` | `ink/strong` |
+| Oferta | `background/offer` | `background/offer-weak` | `ink/strong-on` sobre `offer` · `ink/strong` sobre `offer-weak` |
 
 ## Botón
 
-- **Primario:** fondo `background/accent`, texto `ink/inverse`, radio `radius/pill`, padding `--rp-space-12` / `--rp-space-24`, texto rol `body`.
+- **Variantes** (ver `site/components/button.md`): `primary`, `secondary`, `error`, `inverse`, `neutral`, `outline`. `disabled` es un **estado** (`disabled`), no una variante de diseño.
+- **Tamaños:** `xsmall` 24 · `small` 32 · `medium` 40 (default) · `large` 48 · `xlarge` 56. Por debajo de `large`, el área táctil debe extenderse a 48px (padding invisible o hit area).
+- **Primario:** fondo `background/accent`, texto `ink/inverse-on` (blanco fijo en light y dark), radio `radius/pill`, padding horizontal `--rp-space-24`, texto rol `body` en Medium. ⚠️ 2.2:1 de contraste: si piden revisión de accesibilidad, señálalo (alternativa: `ink/strong-on`, 9.6:1).
 - **Secundario / outline:** fondo `background/standard`, borde `stroke/standard` + `line/border-standard`, texto `ink/standard`.
-- **Estados:** hover/pressed → superponer `interactive/bg-accent-hover` / `-pressed`; disabled → texto `ink/disabled`, fondo `background/disabled`; focus → anillo con `line/border-accent` o `interactive/border-accent-focus`.
+- **Error:** fondo `background/error` + `ink/inverse-on`.
+- **Estados:** hover/pressed → superposición del color base (⚠️ `interactive/bg-accent-hover` / `-pressed` existen pero están vacíos); disabled → texto `ink/disabled`, fondo `background/disabled`; focus → anillo 2px `line/border-strong` con separación de 2px.
 
 ```css
 .rp-btn--primary {
   background: var(--rp-color-background-accent);
-  color: var(--rp-color-ink-inverse);
+  color: var(--rp-color-ink-inverse-on);
   border-radius: var(--rp-radius-pill);
-  padding: var(--rp-space-12) var(--rp-space-24);
+  min-height: 48px; /* size large; en medium (40) extiende el hit area */
+  padding: 0 var(--rp-space-24);
   font-size: var(--rp-type-pp-object-sans-size-body);
   line-height: var(--rp-type-pp-object-sans-line-height-body);
 }
@@ -483,14 +626,15 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 
 ## Input / Campo de texto
 
-- Fondo `background/standard`, borde `stroke/standard` + `line/border-standard`, radio `radius/card` (o el que defina el componente), texto `ink/standard`, placeholder `ink/weak`.
-- **Focus:** borde `line/border-strong` o `interactive/border-focus`.
-- **Error:** borde `line/border-error`, mensaje `ink/error`.
+- Fondo `background/standard`, borde `stroke/standard` + `line/border-standard`, texto `ink/strong`, placeholder `ink/weak`, alto mínimo 48px.
+- **Radio:** ⚠️ sin token semántico para inputs. Léelo del componente en Figma; si no está disponible, usa el primitivo más cercano al componente y avísalo (no uses `card` = 24 por defecto).
+- **Focus:** borde `stroke/selected` + `line/border-strong`.
+- **Error:** borde `line/border-error`, mensaje con ícono de error. Texto del mensaje en `ink/error` solo si es Medium ≥14px; si no, `ink/strong` + ícono `ink/error`.
 - **Disabled:** fondo `background/disabled`, texto `ink/disabled`.
 
 ## Banner / Alert
 
-- Usa el par `background/<intención>-weak` + `ink/<intención>` según sea positivo, warning, error o recomendación (ver tabla). Icono con el `ink/*` correspondiente, radio `radius/card`, padding `--rp-space-12`/`--rp-space-16`.
+- Fondo `background/<intención>-weak`, **texto `ink/strong`**, ícono `ink/<intención>` (los `ink/<intención>` no pasan 4.5:1 en texto). Radio `radius/card`, padding `--rp-space-12`/`--rp-space-16`.
 
 ## Separadores y bordes
 
@@ -498,7 +642,8 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 
 ## Overlays / modales
 
-- Fondo de scrim: `surface/overlay` (oscuro) o `surface/overlay-weak`. Contenedor del modal: `background/standard` + `radius/card`.
+- Fondo de scrim: `surface/overlay` (oscuro) o `surface/overlay-weak`. Contenedor del modal: `background/standard` (o `background/on-top` en dark) + `radius/card`.
+- Cuándo usar modal, bottom sheet o pantalla completa: `site/patterns/modality.md`. Elevación: `site/foundations/elevation.md` (⚠️ sin tokens).
 
 ## Skeleton (loading)
 
@@ -513,6 +658,10 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 
 
 ## Accessibility
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+>
+> Versión 0.1 (en construcción). Los mínimos (4.5:1, 3:1, 48×48px, 8px) sí son regla. No existe token de foco: usa anillo 2px `line/border-strong` y marca "⚠️ sin token oficial".
 
 Cómo Mustache garantiza que cualquier persona, sin importar su capacidad visual, motriz, auditiva o cognitiva, pueda usar Rappi. No es un checklist al final: es la base que sostiene color, tipografía, iconografía y spacing.
 
@@ -652,6 +801,10 @@ WCAG 2.2, nivel de conformidad AA (World Wide Web Consortium). Es el criterio t�
 
 ## Cards/Border Radius
 
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+>
+> ⚠️ **Nombres heredados.** `borderRadius1…8` no existen como tokens. En Figma son primitivos (`borderRadius/4…32`); los únicos semánticos son `card` (24) y `pill`. Nombra el valor en px y marca "⚠️ sin token semántico".
+
 El uso de tarjetas o contenedores en nuestros diseños es la manera más sencilla de integrar y organizar imágenes, textos, botones y listas.
 
 ### Cards/Border Radius
@@ -681,6 +834,8 @@ Hay que tener en cuenta que el tamaño de una Card siempre está en una escala d
 
 
 ## Colors
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 El color es el lenguaje visual de Mustache. Cada tono tiene un propósito: comunicar identidad de marca, jerarquía, estados de feedback y accesibilidad.
 
@@ -721,6 +876,10 @@ Todas las combinaciones de color en Mustache se validan contra **WCAG 2.2 nivel 
 
 
 ## Elevation
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+>
+> ⚠️ **Borrador sin tokens.** Los niveles existen en el sitio, pero no hay valores de sombra exportados en `tokens.css`. Nombra el nivel (ej. "Elevated Strong") y marca "⚠️ sin token oficial". Nunca inventes valores de sombra como si fueran del DS.
 
 Las elevaciones simulan el efecto visual de un elemento "flotando" sobre una superficie: sombras y orientaciones con un uso definido.
 
@@ -816,6 +975,10 @@ En el caso puntual de algunas elevaciones, estás vienen de manera similar a una
 
 
 ## Haptics
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+>
+> ⚠️ **Borrador.** Nomenclatura y varios casos están "por confirmar". Úsalo como criterio, no como spec cerrada.
 
 Cómo Mustache usa la vibración del dispositivo para confirmar, advertir y dar textura física a las interacciones de Rappi, siempre de forma consistente y como refuerzo de lo que la persona ya ve y oye.
 
@@ -989,6 +1152,8 @@ Mapeo de interacciones reales de la app a cada tipo. El estado refleja lo marcad
 
 
 ## Icons
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 Guía de estilo de iconografía del Mustache Design System: cómo construir, nombrar y usar los íconos de Rappi de forma consistente.
 
@@ -1246,6 +1411,8 @@ Antes de agregar un ícono al sistema, verifica:
 
 ## Illustrations 3D's
 
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
 Mustache utiliza un estilo de ilustración preciso para ayudar a los usuarios a comprender rápida y claramente cómo funcionan las cosas en cada experiencia.
 
 - **Tabs** Storetypes · Placeholders · Objects · Prime
@@ -1284,6 +1451,8 @@ ATMbubble-chatburgercalendarcashbackchronometercoinscommentsconfettigiftlikemoto
 
 
 ## Layout
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 En Rappi todos los diseños deben tener como principio el uso correcto de los elementos y espacios, para crear consistencia y claridad en la marca.
 
@@ -1378,6 +1547,8 @@ En el siguiente ejemplo, podrás ver la altura de la línea del texto con 16px, 
 
 ## Motion
 
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
 El movimiento puede dar vida a la pantalla, guiar a los usuarios a través de experiencias complejas y ayudarlos a progresar.
 
 ### Motion
@@ -1408,6 +1579,10 @@ Motion ayuda a que una interfaz de usuario sea expresiva y fácil de usar.
 
 
 ## Stroke
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+>
+> ⚠️ **Nombres heredados.** Tokens reales: `stroke/none` (0), `stroke/standard` (1) = strokeMedium, `stroke/selected` (2) = strokeLarge. `strokeSmall` (0.5) no tiene token.
 
 El objeto para definir el color, el ancho y el estilo de un borde o divisor.
 
@@ -1442,19 +1617,35 @@ El tamaño del borde está en una escala de 0.5px min.
 
 ## Typography
 
-La tipografía da voz al sistema. Una sola familia, dos pesos y una escala predecible que mantiene la jerarquía consistente en toda la interfaz.
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
+La tipografía da voz al sistema. Una familia para la interfaz, dos pesos y una escala por breakpoint que mantiene la jerarquía consistente en toda la app.
 
 - **Familia** PP Object Sans
 
 - **Pesos** Regular · Medium
 
-### Familia tipográfica
+- **Text styles** 39
 
-Mustache usa **PP Object Sans** como única familia. Una sola tipografía en todo el sistema mantiene la marca reconocible y reduce la carga de decisiones al diseñar.
+- **Breakpoints** Mobile · Tablet · Desktop
+
+### Familias tipográficas
+
+**PP Object Sans** es la familia de la interfaz: títulos y contenido. **Archivo Black** es exclusiva del componente **banner-bigFont** (`hugeTitle*`): no es una fuente display general ni se usa en ninguna otra pieza.
 
 Aa Bb Cc 0123
 
-PP Object Sans
+PP Object Sans · interfaz
+
+Aa Bb Cc 0123
+
+Archivo Black · solo banner-bigFont
+
+| Variable | Valor | Uso |
+| --- | --- | --- |
+| PP Object sans/family/title | PP Object Sans | huge a subheadline |
+| PP Object sans/family/content | PP Object Sans | body a legal |
+| Archivo Black/family/title | Archivo Black | Solo banner-bigFont (hugeTitleL · M · S) |
 
 > **Nota:** PP Object Sans no está en Google Fonts, así que estos especímenes se muestran con la fuente del sitio como aproximación. El render final usa PP Object Sans embebida.
 
@@ -1463,31 +1654,187 @@ PP Object Sans
 El sistema trabaja con dos pesos. **Medium (500) reemplazó a Bold** como el peso de énfasis: da jerarquía sin sentirse pesado, alineado con el tono fresco y directo de la marca.
 
 Regular
-font/weight/Regular · 400
+PP Object sans/weight/Regular · 400
 
 Medium
-font/weight/Medium · 500
+PP Object sans/weight/Medium · 500
+
+> **Legado:** los text styles `*Bold` (700) siguen en Figma para no romper archivos existentes, y la variable `weight/Heavy` existe sin text style. No los uses en diseño nuevo.
 
 ### Escala tipográfica
 
-Cada estilo es un token que combina familia, peso, tamaño, interlineado y tracking. Estos son los estilos que pude leer del nodo seleccionado en Figma:
+Cada rol combina familia, peso, tamaño, interlineado y tracking. Tamaño e interlineado cambian por breakpoint: **Mobile** (<600px), **Tablet** (≥600px) y **Desktop** (≥1024px). Especímenes en Mobile.
 
-Huge Title
+Huge
 
-titles / hugeTitleMediumPP Object Sans · Medium 50048 / 48 · tracking 0
+huge/hugeMediumPP Object Sans · Medium 50048 / 48 · tracking 0
 
-Body Medium — el texto base de la interfaz.
+H1
 
-body / bodyMediumPP Object Sans · Medium 50016 / 20 · tracking 0
+h1/h1MediumPP Object Sans · Medium 50040 / 40 · tracking 0
 
-Caption Regular — texto de apoyo y metadatos.
+H2
 
-caption / caption1RegularPP Object Sans · Regular 40014 / 16 · tracking 0
+h2/h2MediumPP Object Sans · Medium 50032 / 40 · tracking 0
 
-> **Escala parcial.** Estos 3 estilos vienen del nodo que estaba seleccionado. La escala completa (titles, headings, body, caption con todos sus tamaños) sale del frame de tipografía en Figma: selecciónalo y lo lleno con todos los estilos y specs exactos.
+H3
+
+h3/h3MediumPP Object Sans · Medium 50026 / 32 · tracking 0
+
+H4
+
+h4/h4MediumPP Object Sans · Medium 50024 / 32 · tracking 0
+
+Headline
+
+headline/headlineMediumPP Object Sans · Medium 50020 / 24 · tracking 0
+
+Eyebrow de sección
+
+subheadline/subheadlineMediumPP Object Sans · Medium 50010 / 24 · tracking 12% · mayúsculas
+
+Body: el texto base de la interfaz.
+
+body/bodyRegularPP Object Sans · Regular 40016 / 20 · tracking 0
+
+Caption 1: texto de apoyo y metadatos.
+
+caption-1/caption1RegularPP Object Sans · Regular 40014 / 16 · tracking 0
+
+Caption 2: metadatos secundarios.
+
+caption-2/caption2RegularPP Object Sans · Regular 40012 / 16 · tracking 0
+
+Label: tags y badges
+
+label/labelRegularPP Object Sans · Regular 40010 / 12 · tracking 0
+
+#### Tabla completa por breakpoint
+
+| Rol | Mobile | Tablet | Desktop | Pesos |
+| --- | --- | --- | --- | --- |
+| huge | 48 / 48 | 64 / 72 | 64 / 72 | Bold · Medium · Regular |
+| h1 | 40 / 40 | 28 / 34 | 40 / 48 | Bold · Medium · Regular |
+| h2 | 32 / 40 | 24 / 32 | 32 / 40 | Bold · Medium · Regular |
+| h3 | 26 / 32 | 20 / 28 | 24 / 32 | Bold · Medium · Regular |
+| h4 | 24 / 32 | 18 / 26 | 20 / 26 | Bold · Medium · Regular |
+| headline | 20 / 24 | 20 / 24 | 18 / 24 | Bold · Medium · Regular |
+| subheadline | 10 / 24 | 10 / 16 | 10 / 24 | Bold · Medium · Regular |
+| body | 16 / 20 | 16 / 24 | 16 / 24 | Bold · Medium · Regular |
+| caption-1 | 14 / 16 | 14 / 20 | 14 / 20 | Bold · Medium · Regular |
+| caption-2 | 12 / 16 | 12 / 18 | 12 / 18 | Bold · Medium · Regular |
+| label | 10 / 12 | 10 / 14 | 10 / 16 | Bold · Medium · Regular |
+| footnote | 8 / 12 | 8 / 12 | 8 / 12 | Regular |
+| disclaimer | 6 / 8 | 6 / 8 | 6 / 8 | Regular |
+| legal | 4 / 6 | 4 / 6 | 4 / 6 | Regular |
+
+> **Legibilidad:** cuerpo mínimo 16px (`body`) y 12px en UI (`caption-2`). `footnote` (8), `disclaimer` (6) y `legal` (4) existen en Figma pero son ilegibles en pantalla: si un legal lo exige, usa `caption-2`.
+
+### Archivo Black · banner-bigFont
+
+Archivo Black **solo vive en el componente banner-bigFont** (mobile-library Rappi 8), para la cifra o titular protagonista, como el % OFF. El resto del texto del banner va en PP Object Sans. No la uses en otros banners, pantallas ni piezas de marketing: ahí usa `huge` o `h1`.
+
+Tracking **−4%** e interlineado menor que el tamaño, a propósito: titulares de 1 o 2 líneas.
+
+          -50% hoy
+
+Archivo-Black/hugeTitleL46/34 · 52/40 · 64/48tracking −4%
+
+          -50% hoy
+
+Archivo-Black/hugeTitleM40/32 · 48/34 · 56/40tracking −4%
+
+          -50% hoy
+
+Archivo-Black/hugeTitleS30/26 · 32/28 · 46/34tracking −4%
+
+| Estilo | Cuándo usarlo dentro del bigFont |
+| --- | --- |
+| hugeTitleL | El protagonista: la cifra estrella (precio, % de descuento o nombre del evento). Uno por banner. |
+| hugeTitleM | El titular de apoyo: titular principal cuando el banner tiene imagen fuerte o poco espacio. |
+| hugeTitleS | El contenido: banners compactos, formatos verticales o cuando acompaña a otro elemento sin robar el foco. |
+
+### Text styles
+
+Hay **39 text styles** en la librería semantics, todos ligados a las variables de la colección `Typography`. Nombre: `rol/rolPeso`. En código, cada uno tiene su clase en `tokens.css`.
+
+| Text style | Clase CSS | Peso | Mobile |
+| --- | --- | --- | --- |
+| huge/hugeBold | `.rp-text-huge-bold` | Bold 700 (legado) | 48 / 48 |
+| huge/hugeMedium | `.rp-text-huge-medium` | Medium 500 | 48 / 48 |
+| huge/hugeRegular | `.rp-text-huge-regular` | Regular 400 | 48 / 48 |
+| h1/h1Bold | `.rp-text-h1-bold` | Bold 700 (legado) | 40 / 40 |
+| h1/h1Medium | `.rp-text-h1-medium` | Medium 500 | 40 / 40 |
+| h1/h1Regular | `.rp-text-h1-regular` | Regular 400 | 40 / 40 |
+| h2/h2Bold | `.rp-text-h2-bold` | Bold 700 (legado) | 32 / 40 |
+| h2/h2Medium | `.rp-text-h2-medium` | Medium 500 | 32 / 40 |
+| h2/h2Regular | `.rp-text-h2-regular` | Regular 400 | 32 / 40 |
+| h3/h3Bold | `.rp-text-h3-bold` | Bold 700 (legado) | 26 / 32 |
+| h3/h3Medium | `.rp-text-h3-medium` | Medium 500 | 26 / 32 |
+| h3/h3Regular | `.rp-text-h3-regular` | Regular 400 | 26 / 32 |
+| h4/h4Bold | `.rp-text-h4-bold` | Bold 700 (legado) | 24 / 32 |
+| h4/h4Medium | `.rp-text-h4-medium` | Medium 500 | 24 / 32 |
+| h4/h4Regular | `.rp-text-h4-regular` | Regular 400 | 24 / 32 |
+| headline/headlineBold | `.rp-text-headline-bold` | Bold 700 (legado) | 20 / 24 |
+| headline/headlineMedium | `.rp-text-headline-medium` | Medium 500 | 20 / 24 |
+| headline/headlineRegular | `.rp-text-headline-regular` | Regular 400 | 20 / 24 |
+| subheadline/subheadlineBold | `.rp-text-subheadline-bold` | Bold 700 (legado) | 10 / 24 |
+| subheadline/subheadlineMedium | `.rp-text-subheadline-medium` | Medium 500 | 10 / 24 |
+| subheadline/subheadlineRegular | `.rp-text-subheadline-regular` | Regular 400 | 10 / 24 |
+| body/bodyBold | `.rp-text-body-bold` | Bold 700 (legado) | 16 / 20 |
+| body/bodyMedium | `.rp-text-body-medium` | Medium 500 | 16 / 20 |
+| body/bodyRegular | `.rp-text-body-regular` | Regular 400 | 16 / 20 |
+| caption-1/caption1Bold | `.rp-text-caption-1-bold` | Bold 700 (legado) | 14 / 16 |
+| caption-1/caption1Medium | `.rp-text-caption-1-medium` | Medium 500 | 14 / 16 |
+| caption-1/caption1Regular | `.rp-text-caption-1-regular` | Regular 400 | 14 / 16 |
+| caption-2/caption2Bold | `.rp-text-caption-2-bold` | Bold 700 (legado) | 12 / 16 |
+| caption-2/caption2Medium | `.rp-text-caption-2-medium` | Medium 500 | 12 / 16 |
+| caption-2/caption2Regular | `.rp-text-caption-2-regular` | Regular 400 | 12 / 16 |
+| label/labelBold | `.rp-text-label-bold` | Bold 700 (legado) | 10 / 12 |
+| label/labelMedium | `.rp-text-label-medium` | Medium 500 | 10 / 12 |
+| label/labelRegular | `.rp-text-label-regular` | Regular 400 | 10 / 12 |
+| footnote/footnoteRegular | `.rp-text-footnote-regular` | Regular 400 | 8 / 12 |
+| disclaimer/disclaimerRegular | `.rp-text-disclaimer-regular` | Regular 400 | 6 / 8 |
+| legal/legalRegular | `.rp-text-legal-regular` | Regular 400 | 4 / 6 |
+| Archivo-Black/hugeTitleL | `.rp-text-hugetitlel` | Regular | 46 / 34 |
+| Archivo-Black/hugeTitleM | `.rp-text-hugetitlem` | Regular | 40 / 32 |
+| Archivo-Black/hugeTitleS | `.rp-text-hugetitles` | Regular | 30 / 26 |
+
+### Variables
+
+Colección `Typography` en semantics: **42 variables** con modos Mobile, Tablet y Desktop. En CSS: `--rp-type-<familia>-<propiedad>-<rol>`, ya resueltas por breakpoint.
+
+| Grupo | Variables | Ejemplo CSS |
+| --- | --- | --- |
+| PP Object sans/family | title, content | `--rp-font-family-title` |
+| PP Object sans/weight | Heavy, Bold, Medium, Regular | `--rp-font-weight-medium` (500) |
+| PP Object sans/size | huge, h1–h4, headline, subheadline, body, caption-1, caption-2, label, footnote, disclaimer, legal | `--rp-type-pp-object-sans-size-body` |
+| PP Object sans/line-height | los mismos 14 roles | `--rp-type-pp-object-sans-line-height-body` |
+| Archivo Black/family · weight | title · Regular | `--rp-font-family-display` |
+| Archivo Black/size · line-height | hugeTitleL, hugeTitleM, hugeTitleS | `--rp-type-archivo-black-size-hugetitlel` |
+
+### Revisión pendiente en Figma
+
+Inconsistencias encontradas en semantics. Hasta resolverlas, los valores de esta página siguen las **variables**.
+
+- **Archivo-Black/hugeTitle*** están ligados a primitivos (`font/size/46`…), no a `Archivo Black/size/*`: en Figma no escalan a Tablet ni Desktop.
+
+- **subheadline/*** usan `line-height/headline` en vez de `line-height/subheadline`: en Tablet dan 24 en vez de 16.
+
+- **h1/h1Regular** tiene el peso ligado al primitivo `font/weight/Regular`.
+
+- **legal/legalRegular** tiene size y line-height ligados a primitivos.
+
+- En Tablet, `size/h1` (28) y `line-height/h3` (28) son valores fijos sin alias.
+
+- En Tablet, h1 a h4 son más chicos que en Mobile (h1 28 vs 40).
+
+- No hay variables de letter-spacing ni text-case: el 12% de subheadline y el −4% de Archivo Black solo viven en el text style.
 
 
 ## Add Product
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 Agregar los productos a la canasta en Rappi, al igual que como se hace en la vida real, es una de las experiencias que nos hace diferentes e innovadores.
 
@@ -1560,6 +1907,8 @@ Concluyendo una duración total de 0,3s.
 
 ## Dialogs
 
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
 En nuestra interfaz, un diálogo es una “conversación” entre el sistema y las personas usuarias con el fin de solicitar o brindar información.
 
 ### Dialogs
@@ -1583,6 +1932,8 @@ El propósito de un diálogo surge de la acción realizada por la persona usuari
 
 ## Empty states
 
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
 Pantallas en nuestra interfaz o sistema que no contienen información, o que informan sobre alguna falla o error.
 
 ### Empty states
@@ -1593,6 +1944,8 @@ Los "Empty states" o más conocidos en español como "Espacios vacíos", son aqu
 
 
 ## Loading / Skeleton
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 Elementos visuales que comunican a las personas usuarias la continuidad de un proceso en la interfaz o sistema.
 
@@ -1637,6 +1990,8 @@ Una vez el contenido que se presenta donde estaba el skeleton esté cargado, est
 
 ## Login
 
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
 El inicio de sesión en un sistema es la acción que permite a las personas usuarias tener acceso a una app o programa.
 
 ### Login
@@ -1651,6 +2006,8 @@ El momento de registro en nuestra app o sistema es la primera interacción con n
 
 
 ## Modality
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 Soluciones gráficas que, a través de un diseño fluido y sencillo, presentan el contenido de una manera clara que facilita la toma de decisiones.
 
@@ -1771,6 +2128,8 @@ Al cerrarse esta pantalla del ETA, esta desciende hasta finalizar su recorrido e
 
 ## Onboarding
 
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
 Brindarle a nuestras personas usuarias una primera experiencia sencilla, rápida e intuitiva en nuestra app nos acercará a cautivarlos.
 
 ### Onboarding
@@ -1790,16 +2149,9 @@ Para brindar esta primera gran experiencia en nuestra app, es ideal tener en cue
 - Integra elementos visuales que guíen el proceso y gestionen paso a paso el recorrido del usuario en el app.
 
 
-## Pull and refresh
-
-Página sin contenido en la fuente original.
-
-### Pull and refresh
-
-> **Así está en la fuente.** Página completamente vacía en la fuente: solo el título y el enlace de feedback del sitio, sin párrafos, subtítulos ni imágenes.
-
-
 ## Search
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 El principal objetivo de nuestros usuarios está en encontrar de manera rápida y sencilla aquello que necesitan en minutos.
 
@@ -1834,6 +2186,8 @@ Inmediatamente después de que carga por completo la pantalla de la tienda, auto
 
 ## Settings
 
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
 Las personas prefieren las aplicaciones que se adaptan cada vez mejor a sus necesidades a través de sus ajustes personalizados.
 
 ### Settings
@@ -1854,6 +2208,8 @@ Las personas prefieren las aplicaciones que se adaptan cada vez mejor a sus nece
 
 
 ## Transitions to stores
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 Conoce de manera detallada cómo ocurren las transiciones desde el Menú hacia una tienda dentro de la app.
 
@@ -1893,6 +2249,10 @@ Una vez el contenido que se presenta donde estaba el skeleton termine de cargar,
 
 
 ## Button
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+>
+> `disabled` aparece como variante en el paquete, pero en diseño trátalo como **estado**. Tamaños menores a `large` (48px) necesitan hit area extendida a 48px.
 
 Disparador de acción principal en cualquier superficie. Renderiza un `<button>` (o cualquier elemento vía `asChild`) con tokens semánticos de variante y tamaño.
 
@@ -1970,6 +2330,8 @@ export function CheckoutCta() {
 
 
 ## Principios de Diseño
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
 Los principios de producto son la base de la marca en el área de diseño. Con ellos no solo creamos una marca atractiva, sino una consistente y escalable que responde a las necesidades de las personas usuarias y de nuestro negocio.
 

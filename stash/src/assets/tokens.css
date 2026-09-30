@@ -154,7 +154,7 @@
   --rp-opacity-100pct: 1;
 
   /* Font families */
-  --rp-font-family-display: "Archivo Black", system-ui, sans-serif;
+  --rp-font-family-display: "Archivo Black", system-ui, sans-serif; /* solo banner-bigFont */
   --rp-font-family-title: "PP Object Sans", system-ui, sans-serif;
   --rp-font-family-content: "PP Object Sans", system-ui, sans-serif;
 
@@ -548,3 +548,57 @@
     --rp-type-pp-object-sans-size-legal: 4px;
   }
 }
+
+/* ------------------------------------------------------------------
+ * Text styles — 1:1 con los 39 text styles de Figma semantics.
+ * Clase: .rp-text-<rol>-<peso>. Escalan por breakpoint vía --rp-type-*.
+ * Pesos en uso: Regular y Medium. *-bold existe por legado.
+ * .rp-text-hugetitle* (Archivo Black): SOLO para el componente banner-bigFont.
+ * ------------------------------------------------------------------ */
+:root {
+  --rp-font-weight-regular: 400;
+  --rp-font-weight-medium: 500;
+  --rp-font-weight-bold: 700;
+  --rp-letter-spacing-subheadline: 0.12em;
+  --rp-letter-spacing-display: -0.04em;
+}
+
+.rp-text-huge-bold { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-huge); line-height: var(--rp-type-pp-object-sans-line-height-huge); }
+.rp-text-huge-medium { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-huge); line-height: var(--rp-type-pp-object-sans-line-height-huge); }
+.rp-text-huge-regular { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-huge); line-height: var(--rp-type-pp-object-sans-line-height-huge); }
+.rp-text-h1-bold { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-h1); line-height: var(--rp-type-pp-object-sans-line-height-h1); }
+.rp-text-h1-medium { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-h1); line-height: var(--rp-type-pp-object-sans-line-height-h1); }
+.rp-text-h1-regular { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-h1); line-height: var(--rp-type-pp-object-sans-line-height-h1); }
+.rp-text-h2-bold { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-h2); line-height: var(--rp-type-pp-object-sans-line-height-h2); }
+.rp-text-h2-medium { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-h2); line-height: var(--rp-type-pp-object-sans-line-height-h2); }
+.rp-text-h2-regular { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-h2); line-height: var(--rp-type-pp-object-sans-line-height-h2); }
+.rp-text-h3-bold { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-h3); line-height: var(--rp-type-pp-object-sans-line-height-h3); }
+.rp-text-h3-medium { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-h3); line-height: var(--rp-type-pp-object-sans-line-height-h3); }
+.rp-text-h3-regular { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-h3); line-height: var(--rp-type-pp-object-sans-line-height-h3); }
+.rp-text-h4-bold { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-h4); line-height: var(--rp-type-pp-object-sans-line-height-h4); }
+.rp-text-h4-medium { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-h4); line-height: var(--rp-type-pp-object-sans-line-height-h4); }
+.rp-text-h4-regular { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-h4); line-height: var(--rp-type-pp-object-sans-line-height-h4); }
+.rp-text-headline-bold { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-headline); line-height: var(--rp-type-pp-object-sans-line-height-headline); }
+.rp-text-headline-medium { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-headline); line-height: var(--rp-type-pp-object-sans-line-height-headline); }
+.rp-text-headline-regular { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-headline); line-height: var(--rp-type-pp-object-sans-line-height-headline); }
+.rp-text-subheadline-bold { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-subheadline); line-height: var(--rp-type-pp-object-sans-line-height-subheadline); letter-spacing: var(--rp-letter-spacing-subheadline); text-transform: uppercase; }
+.rp-text-subheadline-medium { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-subheadline); line-height: var(--rp-type-pp-object-sans-line-height-subheadline); letter-spacing: var(--rp-letter-spacing-subheadline); text-transform: uppercase; }
+.rp-text-subheadline-regular { font-family: var(--rp-font-family-title); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-subheadline); line-height: var(--rp-type-pp-object-sans-line-height-subheadline); letter-spacing: var(--rp-letter-spacing-subheadline); text-transform: uppercase; }
+.rp-text-body-bold { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-body); line-height: var(--rp-type-pp-object-sans-line-height-body); }
+.rp-text-body-medium { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-body); line-height: var(--rp-type-pp-object-sans-line-height-body); }
+.rp-text-body-regular { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-body); line-height: var(--rp-type-pp-object-sans-line-height-body); }
+.rp-text-caption-1-bold { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-caption-1); line-height: var(--rp-type-pp-object-sans-line-height-caption-1); }
+.rp-text-caption-1-medium { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-caption-1); line-height: var(--rp-type-pp-object-sans-line-height-caption-1); }
+.rp-text-caption-1-regular { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-caption-1); line-height: var(--rp-type-pp-object-sans-line-height-caption-1); }
+.rp-text-caption-2-bold { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-caption-2); line-height: var(--rp-type-pp-object-sans-line-height-caption-2); }
+.rp-text-caption-2-medium { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-caption-2); line-height: var(--rp-type-pp-object-sans-line-height-caption-2); }
+.rp-text-caption-2-regular { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-caption-2); line-height: var(--rp-type-pp-object-sans-line-height-caption-2); }
+.rp-text-label-bold { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-bold); font-size: var(--rp-type-pp-object-sans-size-label); line-height: var(--rp-type-pp-object-sans-line-height-label); }
+.rp-text-label-medium { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-medium); font-size: var(--rp-type-pp-object-sans-size-label); line-height: var(--rp-type-pp-object-sans-line-height-label); }
+.rp-text-label-regular { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-label); line-height: var(--rp-type-pp-object-sans-line-height-label); }
+.rp-text-footnote-regular { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-footnote); line-height: var(--rp-type-pp-object-sans-line-height-footnote); }
+.rp-text-disclaimer-regular { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-disclaimer); line-height: var(--rp-type-pp-object-sans-line-height-disclaimer); }
+.rp-text-legal-regular { font-family: var(--rp-font-family-content); font-weight: var(--rp-font-weight-regular); font-size: var(--rp-type-pp-object-sans-size-legal); line-height: var(--rp-type-pp-object-sans-line-height-legal); }
+.rp-text-hugetitlel { font-family: var(--rp-font-family-display); font-weight: 400; font-size: var(--rp-type-archivo-black-size-hugetitlel); line-height: var(--rp-type-archivo-black-line-height-hugetitlel); letter-spacing: var(--rp-letter-spacing-display); }
+.rp-text-hugetitlem { font-family: var(--rp-font-family-display); font-weight: 400; font-size: var(--rp-type-archivo-black-size-hugetitlem); line-height: var(--rp-type-archivo-black-line-height-hugetitlem); letter-spacing: var(--rp-letter-spacing-display); }
+.rp-text-hugetitles { font-family: var(--rp-font-family-display); font-weight: 400; font-size: var(--rp-type-archivo-black-size-hugetitles); line-height: var(--rp-type-archivo-black-line-height-hugetitles); letter-spacing: var(--rp-letter-spacing-display); }

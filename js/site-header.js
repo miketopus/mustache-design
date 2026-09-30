@@ -23,7 +23,7 @@
     { id: 'patterns',   href: '/patterns.html', label: 'Patterns'                },
     { id: 'ai',         href: '#',              label: 'AI',          lock: true  },
     { id: 'brand',      href: '/brand.html',    label: 'Brand'                   },
-    { id: 'stash',      href: '/stash.html',    label: 'Stash/Resources', ai: true, divider: true, lockAfter: true },
+    { id: 'stash',      href: '/stash.html',    label: 'Tools', ai: true, divider: true, lockAfter: true },
   ];
 
   // AI mark for Stash/Resources — the Claude Code "thinking" glyph: it

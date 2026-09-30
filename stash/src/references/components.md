@@ -7,10 +7,11 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 ## Principios
 
 1. **Superficie:** el fondo del componente sale de `background/*`; el texto e iconos, de `ink/*`; los bordes, de `line/*`.
-2. **Estados:** cada componente interactivo cubre `default / hover / pressed / focus / disabled`. Usa los tokens `interactive/*` para las capas de hover/pressed y `line/border-focus` para el foco.
+2. **Estados:** cada componente interactivo cubre `default / hover / pressed / focus / disabled`. ⚠️ `interactive/*` hoy vale transparente: para hover/pressed usa una superposición del color base (8% / 12%) y avísalo. Foco: anillo de stroke `selected` (2px) con `line/border-strong` (⚠️ no existe token de foco oficial; `line/border-focus` no existe).
 3. **Forma:** radios desde `radius/*` (`card` = 24, `pill` = 1000), grosores desde `stroke/*` (`standard` = 1, `selected` = 2).
 4. **Ritmo:** paddings y gaps desde `--rp-space-*`. Prefiere los de intención (`horizontal/between-buttons`, `vertical/docked-buttons`) cuando aplique.
 5. **Texto:** tamaño y line-height por rol tipográfico (`--rp-type-*`), respetando el breakpoint.
+6. **Área táctil:** mínimo 48×48px y 8px entre áreas táctiles, aunque el elemento visual sea más chico.
 
 ## Feedback / semántica de color
 
@@ -21,20 +22,24 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 | Advertencia | `background/warning` | `background/warning-weak` | `ink/warning` |
 | Error | `background/error` | `background/error-weak` | `ink/error` |
 | Recomendación / info | `background/recommendation` | `background/recommendation-weak` | `ink/recommendation` |
-| Oferta | `background/offer` | `background/offer-weak` | `ink/strong` |
+| Oferta | `background/offer` | `background/offer-weak` | `ink/strong-on` sobre `offer` · `ink/strong` sobre `offer-weak` |
 
 ## Botón
 
-- **Primario:** fondo `background/accent`, texto `ink/inverse`, radio `radius/pill`, padding `--rp-space-12` / `--rp-space-24`, texto rol `body`.
+- **Variantes** (ver `site/components/button.md`): `primary`, `secondary`, `error`, `inverse`, `neutral`, `outline`. `disabled` es un **estado** (`disabled`), no una variante de diseño.
+- **Tamaños:** `xsmall` 24 · `small` 32 · `medium` 40 (default) · `large` 48 · `xlarge` 56. Por debajo de `large`, el área táctil debe extenderse a 48px (padding invisible o hit area).
+- **Primario:** fondo `background/accent`, texto `ink/inverse-on` (blanco fijo en light y dark), radio `radius/pill`, padding horizontal `--rp-space-24`, texto rol `body` en Medium. ⚠️ 2.2:1 de contraste: si piden revisión de accesibilidad, señálalo (alternativa: `ink/strong-on`, 9.6:1).
 - **Secundario / outline:** fondo `background/standard`, borde `stroke/standard` + `line/border-standard`, texto `ink/standard`.
-- **Estados:** hover/pressed → superponer `interactive/bg-accent-hover` / `-pressed`; disabled → texto `ink/disabled`, fondo `background/disabled`; focus → anillo con `line/border-accent` o `interactive/border-accent-focus`.
+- **Error:** fondo `background/error` + `ink/inverse-on`.
+- **Estados:** hover/pressed → superposición del color base (⚠️ `interactive/bg-accent-hover` / `-pressed` existen pero están vacíos); disabled → texto `ink/disabled`, fondo `background/disabled`; focus → anillo 2px `line/border-strong` con separación de 2px.
 
 ```css
 .rp-btn--primary {
   background: var(--rp-color-background-accent);
-  color: var(--rp-color-ink-inverse);
+  color: var(--rp-color-ink-inverse-on);
   border-radius: var(--rp-radius-pill);
-  padding: var(--rp-space-12) var(--rp-space-24);
+  min-height: 48px; /* size large; en medium (40) extiende el hit area */
+  padding: 0 var(--rp-space-24);
   font-size: var(--rp-type-pp-object-sans-size-body);
   line-height: var(--rp-type-pp-object-sans-line-height-body);
 }
@@ -56,14 +61,15 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 
 ## Input / Campo de texto
 
-- Fondo `background/standard`, borde `stroke/standard` + `line/border-standard`, radio `radius/card` (o el que defina el componente), texto `ink/standard`, placeholder `ink/weak`.
-- **Focus:** borde `line/border-strong` o `interactive/border-focus`.
-- **Error:** borde `line/border-error`, mensaje `ink/error`.
+- Fondo `background/standard`, borde `stroke/standard` + `line/border-standard`, texto `ink/strong`, placeholder `ink/weak`, alto mínimo 48px.
+- **Radio:** ⚠️ sin token semántico para inputs. Léelo del componente en Figma; si no está disponible, usa el primitivo más cercano al componente y avísalo (no uses `card` = 24 por defecto).
+- **Focus:** borde `stroke/selected` + `line/border-strong`.
+- **Error:** borde `line/border-error`, mensaje con ícono de error. Texto del mensaje en `ink/error` solo si es Medium ≥14px; si no, `ink/strong` + ícono `ink/error`.
 - **Disabled:** fondo `background/disabled`, texto `ink/disabled`.
 
 ## Banner / Alert
 
-- Usa el par `background/<intención>-weak` + `ink/<intención>` según sea positivo, warning, error o recomendación (ver tabla). Icono con el `ink/*` correspondiente, radio `radius/card`, padding `--rp-space-12`/`--rp-space-16`.
+- Fondo `background/<intención>-weak`, **texto `ink/strong`**, ícono `ink/<intención>` (los `ink/<intención>` no pasan 4.5:1 en texto). Radio `radius/card`, padding `--rp-space-12`/`--rp-space-16`.
 
 ## Separadores y bordes
 
@@ -71,7 +77,8 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 
 ## Overlays / modales
 
-- Fondo de scrim: `surface/overlay` (oscuro) o `surface/overlay-weak`. Contenedor del modal: `background/standard` + `radius/card`.
+- Fondo de scrim: `surface/overlay` (oscuro) o `surface/overlay-weak`. Contenedor del modal: `background/standard` (o `background/on-top` en dark) + `radius/card`.
+- Cuándo usar modal, bottom sheet o pantalla completa: `site/patterns/modality.md`. Elevación: `site/foundations/elevation.md` (⚠️ sin tokens).
 
 ## Skeleton (loading)
 

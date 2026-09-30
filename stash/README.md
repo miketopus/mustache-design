@@ -1,6 +1,6 @@
 # Stash · kit "Mustache for Claude"
 
-Todo lo que se descarga desde `claude-md.html` (Stash/Resources › AI › Claude.MD) se genera con un comando. No edites `downloads/` a mano.
+Todo lo que se descarga desde `claude-md.html` (Tools › AI › Kit Claude) se genera con un comando. No edites `downloads/` a mano.
 
 ```bash
 npm run build:stash

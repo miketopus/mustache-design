@@ -14,27 +14,29 @@ Variables CSS: `--rp-space-16`, `--rp-space-h-between-cards`, `--rp-space-v-betw
 - Radio de cards, sheets y modales: `card` (24). Botones, chips y pills: `pill` (1000).
 - Bordes: `standard` (1px). Selección: `selected` (2px).
 
-> **En construcción:** el DS aún no tiene tokens semánticos completos de border radius (solo `card` y `pill`) ni de elevación. Si necesitas otro radio, usa el valor primitivo más cercano (2, 4, 8, 12, 16, 20…) y **dilo explícitamente** para que se revise.
+> **En construcción:** el DS aún no tiene tokens semánticos completos de border radius (solo `card` y `pill`) ni de elevación (el sitio define niveles de elevación sin valores, ver `site/foundations/elevation.md`). Si necesitas otro radio, usa el valor primitivo más cercano (2, 4, 8, 12, 16, 20…) y **dilo explícitamente** para que se revise.
 
 ## Spacing (semántico)
 
 CSS: `--rp-space-*`. Los `spacing-N` son la escala base; los de `horizontal/` y `vertical/` son intenciones de layout.
 
+> En Figma estos tokens llevan el prefijo `✍️` (ej. `horizontal/✍️ between-chips`). Aquí se omite; en CSS no existe.
+
 | Token | px |
 |---|---|
-| `horizontal/✍️ between-chips` | 8 |
-| `horizontal/✍️ between-cards` | 16 |
-| `horizontal/✍️ between-buttons` | 16 |
-| `horizontal/✍️ between-products-2col` | 24 |
-| `horizontal/✍️ between-products-3col` | 12 |
-| `horizontal/✍️ between-default` | 12 |
-| `horizontal/✍️ inside-screen` | 24 |
-| `horizontal/✍️ none` | 0 |
-| `vertical/✍️ below-header` | 16 |
-| `vertical/✍️ between-sections` | 32 |
-| `vertical/✍️ docked-buttons` | 20 |
-| `vertical/✍️ margin-top-bottom` | 8 |
-| `vertical/✍️ none` | 0 |
+| `horizontal/between-chips` | 8 |
+| `horizontal/between-cards` | 16 |
+| `horizontal/between-buttons` | 16 |
+| `horizontal/between-products-2col` | 24 |
+| `horizontal/between-products-3col` | 12 |
+| `horizontal/between-default` | 12 |
+| `horizontal/inside-screen` | 24 |
+| `horizontal/none` | 0 |
+| `vertical/below-header` | 16 |
+| `vertical/between-sections` | 32 |
+| `vertical/docked-buttons` | 20 |
+| `vertical/margin-top-bottom` | 8 |
+| `vertical/none` | 0 |
 | `spacing-0` | 0 |
 | `spacing-2` | 2 |
 | `spacing-4` | 4 |
