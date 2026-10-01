@@ -1,10 +1,10 @@
 # Mustache UX System · Guía para Claude
 
-> Archivo único para cargar en un **Project de Claude** (Project knowledge) o adjuntar en un chat. Versión **Rappi 8** · 30 sep 2026 · tema User App · light + dark · generado desde las librerías de Figma `semantics` y `primitives` y el sitio de Mustache.
+> Archivo único para cargar en un **Project de Claude** (Project knowledge) o adjuntar en un chat. Versión **Rappi 8** · 1 oct 2026 · tema User App · light + dark · generado desde las librerías de Figma `semantics` y `primitives` y el sitio de Mustache.
 
 # Mustache UX System (Rappi)
 
-> **Skill v1.1 · Rappi 8 · 30 sep 2026.** Tema User App (light + dark). Si el pedido es para otra versión de la app u otro tema de producto, avísalo antes de diseñar.
+> **Skill v1.1 · Rappi 8 · 1 oct 2026.** Tema User App (light + dark). Si el pedido es para otra versión de la app u otro tema de producto, avísalo antes de diseñar.
 
 Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, specs, críticas, copies) sigue el Mustache UX System. Si algo no está definido en el DS, **no lo inventes**: usa lo más cercano y dilo.
 
@@ -154,6 +154,10 @@ Sé directo: señala hex hardcodeados, tokens inexistentes o mal usados (ej. `in
 ## Guías del sistema (sitio Mustache)
 
 Generadas desde el sitio de documentación. Léelas cuando el pedido toque ese tema; no las cargues todas.
+
+**Tokens y temas**
+
+- `references/site/tokens/tokens-temas.md`: Tokens y temas. Un mismo nombre de token funciona en 13 productos, en light y dark, y en tres tamaños de pantalla. Aquí está cómo: las capas, cómo se nombra un token, los temas y cómo elegir el correcto.
 
 **Foundations**
 
@@ -416,6 +420,8 @@ Archivo Black **solo se usa en el componente `banner-bigFont`** (librería `mobi
 
 Tracking **−4%** en todos. Line-height menor que el size a propósito: titulares de 1 o 2 líneas, nunca en párrafos.
 
+Los text styles están ligados a `Archivo Black/size/*` y `Archivo Black/line-height/*`: escalan por breakpoint igual en Figma y en CSS (corregido el 1 oct 2026; antes estaban fijos al valor Mobile).
+
 | Rol | Mobile | Tablet | Desktop | Cuándo (dentro del bigFont) |
 |---|---|---|---|---|
 | `hugeTitleL` | 46 / 34 | 52 / 40 | 64 / 48 | El protagonista: la cifra estrella (precio, % de descuento o nombre del evento). Uno por banner. |
@@ -485,7 +491,6 @@ Las variables `--rp-type-*-weight-*` de Figma son strings ("Medium"): en CSS usa
 
 Inconsistencias encontradas en semantics (30 sep 2026). No las corrijas en diseño: repórtalas al equipo de DS.
 
-- **`Archivo-Black/hugeTitleL/M/S`** están ligados a primitivos (`font/size/46`, `font/line-height/34`…), no a las variables `Archivo Black/size/*`. En Figma **no escalan** a Tablet ni Desktop aunque las variables sí existen. En CSS sí escalan.
 - **`subheadline/*`** usan `line-height/headline` en vez de `line-height/subheadline`: en Tablet dan 24 en vez de 16.
 - **`h1/h1Regular`** tiene el peso ligado al primitivo `font/weight/Regular`, no a `PP Object sans/weight/Regular`.
 - **`legal/legalRegular`** tiene size y line-height ligados a primitivos (`font/size/4`, `font/line-height/6`).
@@ -655,6 +660,134 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 
 
 # Anexo E · Guías del sitio
+
+
+## Tokens y temas
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
+Un mismo nombre de token funciona en 13 productos, en light y dark, y en tres tamaños de pantalla. Aquí está cómo: las capas, cómo se nombra un token, los temas y cómo elegir el correcto.
+
+### Tres capas
+
+Mustache separa el **valor** de la **intención**. Diseñas y construyes siempre con la capa del medio.
+
+Capa 1
+Primitives
+
+La paleta y las escalas crudas: `olive-green/50`, `font/size/16`. Están ocultos en Figma a propósito.
+
+→
+
+Capa 2
+Semantics
+
+El rol: `background/accent`, `ink/strong`. Apuntan a un primitivo distinto según tema, modo o breakpoint.
+
+→
+
+Capa 3
+Componentes
+
+Botones, cards, chips. Solo usan semantics, por eso cambian de tema sin tocarlos.
+
+**Por qué no hex:** si un botón usa `#34C85A`, se queda verde en Pay, en dark mode y para siempre. Si usa `background/accent`, toma el color de cada producto y se actualiza solo cuando cambia la marca.
+
+### Cómo se nombra un token
+
+Cada nombre de color se lee como una frase: **dónde se pinta**, **qué comunica** y **con qué fuerza**.
+
+Familia background /
+Intención accent -
+Intensidad weak
+
+`background/accent-weak` = familia `background` + intención `accent` + intensidad `weak`: un fondo suave con el color de marca.
+
+| Parte | Opciones | Qué decide |
+| --- | --- | --- |
+| Familia | `ink` (12) · `background` (19) · `line` (9) · `interactive` (12) · `surface` (2) · `skeleton` (2) · `programs` (2) · `chart` (36) | Qué pinta: texto e íconos, fondos, bordes, estados hover y pressed, overlays, cargas, programas de marca, gráficos. |
+| Intención | `standard` · `accent` · `positive` · `warning` · `error` · `recommendation` · `offer` | Qué comunica: neutro, marca o acción, éxito, precaución, error, sugerencia, promo. |
+| Intensidad | `weak` < `mild` < `standard` < `strong` | Cuánto pesa en la jerarquía. |
+| Variante | `-on` · `inverse` · `inverse-on` · `disabled` | Si va encima de un color, invertido o deshabilitado. |
+
+La librería tiene **94 tokens de color**. Los fondos de intención vienen en par fuerte y suave (`background/error` y `background/error-weak`), y su texto o ícono usa el `ink` de la misma intención.
+
+### Temas de producto
+
+La colección de color tiene **13 temas**, uno por producto. Todos usan los mismos 94 nombres; cada tema decide a qué primitivo apunta. Así un componente funciona en todos los productos sin cambios.
+
+Ejemplo: `background/accent` en light, tema por tema.
+
+| Tema | `background/accent` apunta a | Dark mode propio |
+| --- | --- | --- |
+| User App | `olive-green/50` | 72 de 94 |
+| RT App | `teal/70` | 1 |
+| Nitro | `purple/50` | — |
+| Consumer CMS | `teal/70` | — |
+| Aliados | `chart/teal/teal-03 ⚠️` | — |
+| Portal Partners | `blue/50` | — |
+| Brands | `valor fijo ⚠️` | — |
+| Mi Tienda | `blue/50` | — |
+| Nexus | `olive-green/80` | 1 |
+| Marketing Suite | `valor fijo ⚠️` | — |
+| Merchants | `rappiNeon` | — |
+| Cargo | `rappiNeon` | — |
+| Pay | `indigo/50` | 84 de 94 |
+
+> **⚠️ Revisión pendiente en Figma.** En Aliados, Brands y Marketing Suite el acento no apunta a un primitivo de la paleta: Aliados usa un color de `chart` y los otros dos tienen el valor escrito a mano. Funciona, pero si la paleta cambia, esos temas no se actualizan.
+
+### Light y dark
+
+Dark mode es una **extensión** de la colección de color: hereda todo de light y solo sobrescribe lo que cambia. Por eso un tema sin overrides se ve igual en los dos modos.
+
+| Token (User App) | Light | Dark |
+| --- | --- | --- |
+| `background/standard` | `neutrals/white` | `neutrals/black` |
+| `ink/strong` | `neutrals/black` | `neutrals/white` |
+| `background/accent` | `olive-green/50` | `olive-green/80` |
+
+> **Hoy, dark mode completo solo existe en User App y Pay.** User App sobrescribe 72 de 94 tokens y Pay 84. RT App y Nexus cambian uno; los otros 9 temas todavía no tienen dark. Si diseñas dark para un producto sin overrides, avísale al equipo de DS antes de inventar valores.
+
+### Más allá del color
+
+La misma idea, un nombre con valores según el contexto, también vive en otras colecciones de semantics.
+
+- **Typography** cambia por breakpoint: **Mobile** (<600px), **Tablet** (≥600px) y **Desktop** (≥1024px). `size/h1` vale 40, 28 o 40 según la pantalla. Detalle en [Typography](foundations/typography.html).
+
+- **Spacing** tiene dos niveles: la escala (`spacing-0` a `spacing-64`) y tokens con intención (`horizontal/inside-screen` = 24, `vertical/between-sections` = 32). Usa los de intención cuando existan.
+
+- **Radius** (`card` 24, `pill`), **Stroke** (`none`, `standard` 1, `selected` 2) y **Opacity** (10% a 100%) tienen un solo valor para todos.
+
+### Cómo elegir un token
+
+Cuatro preguntas, en este orden:
+
+- **¿Qué pinta?** Texto o ícono → `ink`. Fondo → `background`. Borde o divisor → `line`. Hover o pressed → `interactive`. Overlay → `surface`.
+
+- **¿Qué comunica?** Neutro → `standard`. Marca o acción → `accent`. Y si es estado: `positive`, `warning`, `error`, `recommendation` u `offer`.
+
+- **¿Va sobre color o invertido?** Usa la variante `-on`, `inverse` o `inverse-on`.
+
+- **¿Cuánto pesa?** Ajusta con `weak`, `mild`, `standard` o `strong`.
+
+Si ningún token cubre el caso, no inventes uno: usa el más cercano y avísale al equipo de DS.
+
+### Mapa de colecciones
+
+Lo que hay en la librería **semantics** de Figma, dónde se documenta y cómo se llama en código.
+
+| Colección | Modos | Tokens | Se documenta en | En CSS |
+| --- | --- | --- | --- | --- |
+| Colors | 13 temas | 94 | [Colors](foundations/colors.html) | `--rp-color-*` |
+| Darkmode | 13 temas (extiende Colors) | 94 | [Colors](foundations/colors.html) | mismas variables en `prefers-color-scheme: dark` |
+| Typography | Mobile · Tablet · Desktop | 42 | [Typography](foundations/typography.html) | `--rp-type-*` · `.rp-text-*` |
+| Spacing | 1 | 28 | [Layout](foundations/layout.html) | `--rp-space-*` |
+| Radius | 1 | 2 | [Cards/Border Radius](foundations/cards-border-radius.html) | `--rp-radius-*` |
+| Stroke | 1 | 3 | [Stroke](foundations/stroke.html) | `--rp-stroke-*` |
+| Opacity | 1 | 10 | — | `--rp-opacity-*` |
+| Glass | 1 | 3 | — | — (en Figma valen 0: sin definir) |
+
+El `tokens.css` del kit trae solo el tema **User App**, en light y dark.
 
 
 ## Accessibility
@@ -860,6 +993,8 @@ Los primitivos **nunca se usan directamente** en diseño: existen como fuente de
 Los tokens semánticos le dan propósito al color. En lugar de referenciar un valor crudo, los componentes usan tokens como **Ink.Strong** o **Background.disabled**: nombres que describen el rol, no el color en sí.
 
 Semánticos también impulsa el sistema de temas multi-producto. Cada equipo en Rappi tiene un tema dentro de la librería; todos usan exactamente los mismos nombres de token, pero los mapean a una paleta de primitivos diferente. Así un componente funciona en todos los productos sin ninguna modificación.
+
+Cómo se nombra un token, los 13 temas y qué productos tienen dark mode: [Tokens y temas →](../tokens-temas.html)
 
 ### Semantics
 
@@ -1816,8 +1951,6 @@ Colección `Typography` en semantics: **42 variables** con modos Mobile, Tablet 
 ### Revisión pendiente en Figma
 
 Inconsistencias encontradas en semantics. Hasta resolverlas, los valores de esta página siguen las **variables**.
-
-- **Archivo-Black/hugeTitle*** están ligados a primitivos (`font/size/46`…), no a `Archivo Black/size/*`: en Figma no escalan a Tablet ni Desktop.
 
 - **subheadline/*** usan `line-height/headline` en vez de `line-height/subheadline`: en Tablet dan 24 en vez de 16.
 

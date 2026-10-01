@@ -3,6 +3,7 @@
   "skillName": "mustache-ds",
   "theme": "User App · light + dark",
   "sections": [
+    { "id": "tokens", "title": "Tokens y temas", "files": ["tokens-temas.html"] },
     { "id": "foundations", "title": "Foundations", "dir": "foundations", "exclude": ["foundation.html"] },
     { "id": "patterns", "title": "Patterns", "dir": "patterns", "exclude": ["pull-and-refresh.html"] },
     { "id": "components", "title": "Components", "dir": "components" },

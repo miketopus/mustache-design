@@ -47,6 +47,8 @@ Archivo Black **solo se usa en el componente `banner-bigFont`** (librería `mobi
 
 Tracking **−4%** en todos. Line-height menor que el size a propósito: titulares de 1 o 2 líneas, nunca en párrafos.
 
+Los text styles están ligados a `Archivo Black/size/*` y `Archivo Black/line-height/*`: escalan por breakpoint igual en Figma y en CSS (corregido el 1 oct 2026; antes estaban fijos al valor Mobile).
+
 | Rol | Mobile | Tablet | Desktop | Cuándo (dentro del bigFont) |
 |---|---|---|---|---|
 | `hugeTitleL` | 46 / 34 | 52 / 40 | 64 / 48 | El protagonista: la cifra estrella (precio, % de descuento o nombre del evento). Uno por banner. |
@@ -116,7 +118,6 @@ Las variables `--rp-type-*-weight-*` de Figma son strings ("Medium"): en CSS usa
 
 Inconsistencias encontradas en semantics (30 sep 2026). No las corrijas en diseño: repórtalas al equipo de DS.
 
-- **`Archivo-Black/hugeTitleL/M/S`** están ligados a primitivos (`font/size/46`, `font/line-height/34`…), no a las variables `Archivo Black/size/*`. En Figma **no escalan** a Tablet ni Desktop aunque las variables sí existen. En CSS sí escalan.
 - **`subheadline/*`** usan `line-height/headline` en vez de `line-height/subheadline`: en Tablet dan 24 en vez de 16.
 - **`h1/h1Regular`** tiene el peso ligado al primitivo `font/weight/Regular`, no a `PP Object sans/weight/Regular`.
 - **`legal/legalRegular`** tiene size y line-height ligados a primitivos (`font/size/4`, `font/line-height/6`).
