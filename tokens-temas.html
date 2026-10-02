@@ -16,6 +16,8 @@
 <script src="js/site-header.js" defer></script>
 <script src="js/site-sidebar.js" defer></script>
 <script src="js/hero-particles.js" defer></script>
+<link rel="stylesheet" href="css/glowing-effect.css">
+<script src="js/glowing-effect.js" defer data-glow=".ds-diagram .ds-node"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -61,15 +63,36 @@
   .tbl td{color:var(--muted)}
   .tbl td:first-child{color:var(--text)}
   .tbl-wrap{overflow-x:auto}
-  /* capas */
-  .layers{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:stretch;margin:18px 0 8px}
-  .layer{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
-  .layer .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2);font-weight:600;margin-bottom:8px}
-  .layer b{display:block;font-family:var(--display);font-size:17px;margin-bottom:6px;color:var(--text)}
-  .layer p{font-size:13.5px;margin:0}
-  .layer.hl{border-color:#FF441F;box-shadow:0 0 0 3px rgba(255,68,31,.12)}
-  .arrow{align-self:center;color:var(--muted-2);font-size:20px}
-  @media(max-width:860px){.layers{grid-template-columns:1fr}.arrow{transform:rotate(90deg);justify-self:center}}
+  /* capas: misma caja negra que "Cómo funciona Mustache" (design.html .ds-*) */
+  .ds-diagram{background:#000;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+    background-size:24px 24px;border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:32px 28px;margin:20px 0}
+  .ds-graphic-head{display:flex;flex-direction:column;align-items:center;gap:12px;margin:0 0 24px}
+  .ds-mark{width:32px;height:32px;background:#fff;
+    -webkit-mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat;
+            mask:url(assets/isotype-mustache-tint.svg) center/contain no-repeat}
+  .ds-label{display:inline-flex;font-family:var(--display);font-weight:700;font-size:13px;color:#fff;background:#242428;border-radius:999px;padding:8px 16px}
+  .ds-flow{display:flex;align-items:stretch;gap:12px}
+  .ds-flow>.ds-node{flex:1 1 0;min-width:0}
+  .ds-arrow{flex:0 0 36px;align-self:center;display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:#242428;border-radius:50%;color:#fff}
+  .ds-arrow svg{width:16px;height:16px;display:block}
+  .ds-node{position:relative;border-radius:16px;padding:16px 18px;font-family:var(--mono);font-size:12.5px;line-height:1.9;color:#d4d4d8}
+  .ds-node p{margin:0;font:inherit;color:inherit}
+  .ds-node p.t{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b73;font-family:var(--body);font-weight:600}
+  .ds-node p.v{font-size:19px;font-weight:700;color:#fff;margin-bottom:2px}
+  .ds-node p.k{color:#FF6B8A}
+  .ds-node p.l{color:#a1a1aa}
+  .ds-node p.foot{margin-top:10px;font-family:var(--body);font-size:12.5px;line-height:1.5;color:#9a9aa2}
+  .ds-node.dashed{background:#0E0E10;border:1px dashed rgba(255,255,255,.28)}
+  .ds-node.card{background:#242428;border:1px solid rgba(255,255,255,.08)}
+  @property --rotate{syntax:"<angle>";initial-value:0deg;inherits:false}
+  .ds-neon{border:1.5px solid transparent;
+    background:linear-gradient(#0a0a0d,#0a0a0d) padding-box,linear-gradient(var(--rotate),#FF2526,#FF4583 50%,#FF2526) border-box;
+    box-shadow:0 0 32px rgba(255,68,31,.28);animation:ds-rotate 3s linear infinite}
+  .ds-neon::after{content:"";position:absolute;inset:-12px;z-index:-1;border-radius:22px;pointer-events:none;
+    background:linear-gradient(var(--rotate),#FF2526,#FF4583 50%,#FF2526);filter:blur(20px);opacity:.55;animation:ds-rotate 3s linear infinite}
+  @keyframes ds-rotate{to{--rotate:360deg}}
+  @media(max-width:860px){.ds-flow{flex-direction:column}.ds-arrow{transform:rotate(90deg)}}
+  @media(prefers-reduced-motion:reduce){.ds-neon,.ds-neon::after{animation:none}}
   /* anatomía del nombre */
   .anatomy{display:flex;flex-wrap:wrap;align-items:flex-end;gap:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:22px;margin:18px 0 6px}
   .anatomy span{display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -134,12 +157,42 @@
       <section class="doc" id="capas">
         <h2>Tres capas</h2>
         <p>Mustache separa el <strong>valor</strong> de la <strong>intención</strong>. Diseñas y construyes siempre con la capa del medio.</p>
-        <div class="layers">
-          <div class="layer"><div class="k">Capa 1</div><b>Primitives</b><p>La paleta y las escalas crudas: <code>olive-green/50</code>, <code>font/size/16</code>. Están ocultos en Figma a propósito.</p></div>
-          <div class="arrow" aria-hidden="true">→</div>
-          <div class="layer hl"><div class="k">Capa 2</div><b>Semantics</b><p>El rol: <code>background/accent</code>, <code>ink/strong</code>. Apuntan a un primitivo distinto según tema, modo o breakpoint.</p></div>
-          <div class="arrow" aria-hidden="true">→</div>
-          <div class="layer"><div class="k">Capa 3</div><b>Componentes</b><p>Botones, cards, chips. Solo usan semantics, por eso cambian de tema sin tocarlos.</p></div>
+        <div class="ds-diagram">
+          <div class="ds-graphic-head">
+            <span class="ds-mark" role="img" aria-label="Mustache"></span>
+            <div class="ds-label">Tokens</div>
+          </div>
+          <div class="ds-flow">
+            <div class="ds-node dashed">
+              <p class="t">Capa 1</p>
+              <p class="v">primitives</p>
+              <p class="k">// valores crudos</p>
+              <p class="l">- olive-green/50</p>
+              <p class="l">- font/size/16</p>
+              <p class="l">- spacing-24</p>
+              <p class="foot">La paleta y las escalas. Ocultos en Figma a propósito.</p>
+            </div>
+            <div class="ds-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+            <div class="ds-node ds-neon">
+              <p class="t">Capa 2</p>
+              <p class="v">semantics</p>
+              <p class="k">// el rol</p>
+              <p class="l">- background/accent</p>
+              <p class="l">- ink/strong</p>
+              <p class="l">- size/h1</p>
+              <p class="foot">Apuntan a un primitivo distinto según tema, modo o breakpoint. <b style="color:#fff">Con estos diseñas.</b></p>
+            </div>
+            <div class="ds-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+            <div class="ds-node card">
+              <p class="t">Capa 3</p>
+              <p class="v">componentes</p>
+              <p class="k">// solo semantics</p>
+              <p class="l">- Botón</p>
+              <p class="l">- Card</p>
+              <p class="l">- Chip</p>
+              <p class="foot">Cambian de tema sin tocarlos.</p>
+            </div>
+          </div>
         </div>
         <p><strong>Por qué no hex:</strong> si un botón usa <code>#34C85A</code>, se queda verde en Pay, en dark mode y para siempre. Si usa <code>background/accent</code>, toma el color de cada producto y se actualiza solo cuando cambia la marca.</p>
       </section>

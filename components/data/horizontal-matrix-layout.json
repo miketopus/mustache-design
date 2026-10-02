@@ -1,0 +1,164 @@
+{
+  "$schema": "mustache.component-contract/0.1",
+  "component": {
+    "slug": "horizontal-matrix-layout",
+    "title": "Horizontal matrix layout",
+    "group": "Views",
+    "family": "Matrix",
+    "status": "draft",
+    "figmaName": "horizontal-matrix-layout"
+  },
+  "source": {
+    "figma": {
+      "fileKey": "74goe3VH2X90dwGY3Nfneo",
+      "nodeId": "2:403",
+      "url": "https://www.figma.com/design/74goe3VH2X90dwGY3Nfneo/Mustache-Specs--template-?node-id=2-403"
+    },
+    "capturedWith": [
+      "uSpec: frames API (6:220) y Anatomy (18:239)",
+      "Figma MCP: estructura, instancias anidadas y variables enlazadas"
+    ],
+    "capturedAt": "2026-10-01",
+    "note": "Piloto. El contrato no salió del plugin uSpec Extract (_base.json); se armó con el MCP de Figma siguiendo la misma forma. En producción, reemplazar por la salida de create-component-md."
+  },
+
+  "summary": {
+    "lead": "Fila con scroll horizontal que agrupa los accesos a las verticales de Rappi: 2 chips promocionales grandes y una serie de tiles de tienda.",
+    "what": "Contenedor de layout, no un átomo. Ordena instancias de _horizontal-matrix-atoms (chips) y _vertical-matrix-atoms (tiles) en una sola fila desplazable.",
+    "whenToUse": [
+      "Como punto de entrada a las verticales en el home, arriba del feed.",
+      "Cuando hay 2 verticales destacadas (con artwork y ETA) más un set corto de verticales secundarias."
+    ],
+    "whenNotToUse": [
+      { "text": "Para listar tiendas o productos dentro de una vertical.", "alt": "Cards o listas de tiendas", "altHref": null },
+      { "text": "Para filtrar resultados de una búsqueda.", "alt": "Filters / Chips", "altHref": null },
+      { "text": "Con más de 7 elementos: el último queda fuera de vista y pierde descubrimiento.", "alt": "Pantalla de \"Ver más\" (state=seeMore)", "altHref": null }
+    ]
+  },
+
+  "anatomy": {
+    "image": "ex1-default.png",
+    "elements": [
+      { "n": 1, "name": "_horizontal-matrix-atoms", "kind": "instance", "notes": "Chip promocional Rest: artwork 3D, título y ETA." },
+      { "n": 2, "name": "_horizontal-matrix-atoms", "kind": "instance", "notes": "Chip promocional Turbo: artwork de mercado y ETA más corto." },
+      { "n": "3–7", "name": "_vertical-matrix-atoms", "kind": "instance", "notes": "Tile de tienda: artwork 56px arriba y caption abajo. Se repite 5 veces." }
+    ]
+  },
+
+  "api": {
+    "props": [
+      { "name": "horizontalMatrixItems", "values": "HorizontalMatrixAtomItem[]", "required": false, "default": "—", "notes": "Chips en orden (Rest, Turbo). En Figma: 2 × _horizontal-matrix-atoms." },
+      { "name": "verticalMatrixItems", "values": "VerticalMatrixAtomItem[]", "required": false, "default": "—", "notes": "Tiles de tienda. En Figma: 5 × _vertical-matrix-atoms." },
+      { "name": "horizontalGap", "values": "token", "required": false, "default": "spacing/horizontal/between-chips", "notes": "Espacio entre todos los elementos de la fila." },
+      { "name": "contentPaddingStart", "values": "token", "required": false, "default": "spacing/l", "notes": "Margen inicial de la fila con scroll." }
+    ],
+    "subcomponents": [
+      {
+        "name": "_horizontal-matrix-atoms",
+        "title": "Chip horizontal",
+        "props": [
+          { "name": "status", "values": "default, skeleton, loading, placeholder, not-available, open-soon", "required": false, "default": "default", "notes": "En Figma los valores usan guion (not-available, open-soon)." },
+          { "name": "storetype", "values": "rest, turbo", "required": false, "default": "rest", "notes": "Define fondo, artwork y copy por defecto." },
+          { "name": "title", "values": "string", "required": false, "default": "—", "notes": "Línea principal. Suele venir del storetype." },
+          { "name": "subtitle", "values": "string", "required": false, "default": "—", "notes": "Línea secundaria (ej. ETA)." }
+        ]
+      },
+      {
+        "name": "_vertical-matrix-atoms",
+        "title": "Tile vertical",
+        "note": "Dentro de esta fila el default es secondary. Suelto, el component set arranca en primary + image.",
+        "props": [
+          { "name": "type", "values": "primary, secondary", "required": false, "default": "secondary", "notes": "Default contextual en esta fila." },
+          { "name": "state", "values": "image, not-available, temporarily-closed, placeholder, skeleton, see more", "required": false, "default": "image", "notes": "En Figma mezcla guion y espacio (see more)." },
+          { "name": "label", "values": "string", "required": false, "default": "—", "notes": "Caption del tile. Hoy la capa se llama \"Mercado\" en todos: se sobreescribe por instancia." }
+        ]
+      }
+    ]
+  },
+
+  "examples": [
+    { "title": "Fila por defecto", "image": "ex1-default.png", "rows": [
+      { "prop": "horizontalMatrixItems", "value": "rest, turbo", "notes": "Valores por defecto." },
+      { "prop": "verticalMatrixItems", "value": "5 × secondary / image", "notes": "—" }
+    ]},
+    { "title": "Primer chip cargando", "image": "ex2-loading.png", "rows": [
+      { "prop": "horizontalMatrixItems[0].status", "value": "loading", "notes": "Desaparece el artwork; el texto se mantiene." }
+    ]},
+    { "title": "Tile no disponible", "image": "ex3-not-available.png", "rows": [
+      { "prop": "verticalMatrixItems[2].state", "value": "not-available", "notes": "Tercer tile (Tiendas)." }
+    ]},
+    { "title": "Tiles primary", "image": "ex4-primary.png", "rows": [
+      { "prop": "verticalMatrixItems", "value": "5 × primary / image", "notes": "Sobreescribe el default contextual secondary. La fila crece de 96 a 152px." }
+    ]}
+  ],
+
+  "structure": [
+    { "element": "Fila", "property": "Dirección", "value": "Horizontal, scroll", "token": null },
+    { "element": "Fila", "property": "Gap", "value": "8", "token": "spacing/horizontal/between-chips" },
+    { "element": "Fila", "property": "Padding inicial", "value": "24", "token": "spacing/l" },
+    { "element": "Fila", "property": "Padding vertical", "value": "8", "token": null },
+    { "element": "Fila", "property": "Alto", "value": "96 (secondary) · 152 (primary)", "token": null },
+    { "element": "Chip", "property": "Artwork", "value": "80 × 80", "token": null },
+    { "element": "Chip", "property": "Gap interno / padding final", "value": "4 / 12", "token": null },
+    { "element": "Tile", "property": "Tamaño", "value": "90 × 80", "token": null },
+    { "element": "Tile", "property": "Artwork", "value": "56 × 56", "token": null },
+    { "element": "Tile", "property": "Padding inferior", "value": "8", "token": "spacing/vertical/margin-top-bottom" }
+  ],
+
+  "tokens": [
+    { "token": "spacing/horizontal/between-chips", "role": "Gap de la fila", "collection": "Tokens", "flag": null },
+    { "token": "spacing/l", "role": "Padding inicial de la fila", "collection": "Tokens", "flag": null },
+    { "token": "spacing/vertical/margin-top-bottom", "role": "Padding inferior del tile", "collection": "Tokens", "flag": null },
+    { "token": "colors/chart/orange-01", "role": "Fondo del chip Rest", "collection": "Tokens", "flag": "chart" },
+    { "token": "colors/chart/orange-04", "role": "Texto del chip Rest", "collection": "Tokens", "flag": "chart" },
+    { "token": "colors/chart/green-01", "role": "Fondo del chip Turbo y del tile Mercado", "collection": "Tokens", "flag": "chart" },
+    { "token": "colors/programs/turbo", "role": "Texto del chip Turbo", "collection": "Tokens", "flag": null },
+    { "token": "colors/chart/green-04", "role": "Texto del tile Mercado", "collection": "Tokens", "flag": "chart" },
+    { "token": "colors/chart/blue-01", "role": "Fondo del tile Farmacia", "collection": "Tokens", "flag": "chart" },
+    { "token": "colors/chart/blue-04", "role": "Texto del tile Farmacia", "collection": "Tokens", "flag": "chart" },
+    { "token": "colors/background/mild", "role": "Fondo de tiles neutros (Tiendas, Mascota, Licores)", "collection": "Tokens", "flag": null },
+    { "token": "ink/strong", "role": "Texto de tiles neutros", "collection": "Colors", "flag": null },
+    { "token": "font/family/content", "role": "Familia de todo el texto", "collection": "Typography", "flag": null },
+    { "token": "font/size/caption-1 · font/line-height/caption-1 · font/weight/Medium", "role": "Título del chip", "collection": "Typography", "flag": null },
+    { "token": "font/size/caption-2 · font/line-height/caption-2 · font/weight/Regular", "role": "ETA del chip y caption del tile", "collection": "Typography", "flag": null }
+  ],
+
+  "artwork": [
+    { "name": "shop", "usedIn": "Tile Mercado" },
+    { "name": "pharmacy", "usedIn": "Tile Farmacia" },
+    { "name": "stores-new", "usedIn": "Tile Tiendas" },
+    { "name": "pets-new", "usedIn": "Tile Mascota" },
+    { "name": "whisky-new", "usedIn": "Tile Licores" }
+  ],
+
+  "dependencies": [
+    { "name": "_horizontal-matrix-atoms", "kind": "Componente (set)", "library": "[por confirmar]", "uses": "Chips Rest y Turbo" },
+    { "name": "_vertical-matrix-atoms", "kind": "Componente (set)", "library": "[por confirmar]", "uses": "Tiles de tienda" },
+    { "name": "Artwork 3D de verticales", "kind": "Componentes sueltos (shop, pharmacy…)", "library": "[por confirmar]", "uses": "Ilustración 56px de cada tile" },
+    { "name": "Tokens · Colors · Typography", "kind": "Colecciones de variables", "library": "Foundations", "uses": "Color, spacing y tipografía" }
+  ],
+
+  "accessibility": [
+    { "topic": "Rol", "text": "La fila se anuncia como lista (\"7 elementos\"). Cada chip o tile es un botón." },
+    { "topic": "Nombre accesible", "text": "Título + subtítulo en chips (\"Restaurantes, desde 15 min\"); label en tiles. El artwork es decorativo y no se anuncia." },
+    { "topic": "Estados", "text": "not-available y temporarily-closed se anuncian (\"Tiendas, no disponible\") y quedan deshabilitados. loading y skeleton marcan la fila como ocupada." },
+    { "topic": "Área táctil", "text": "Tile de 90 × 80 y chip de 80 de alto: cumplen el mínimo de 48 × 48." },
+    { "topic": "Contraste", "text": "Validar el texto de los chips sobre los fondos colors/chart/*-01 y el label atenuado de not-available. caption-2 es el tamaño mínimo: no bajarlo." }
+  ],
+
+  "dosDonts": [
+    { "do": "Mantén el orden fijo: 2 chips primero y luego los tiles.", "dont": "No mezcles chips y tiles en la misma posición." },
+    { "do": "Usa labels de una palabra (Mercado, Farmacia).", "dont": "No uses labels largos: en type=primary se truncan (\"Resta…\")." },
+    { "do": "Muestra el estado not-available con su pill y el tile atenuado.", "dont": "No ocultes la vertical: el usuario pierde la referencia de dónde estaba." }
+  ],
+
+  "knownGaps": [
+    { "severity": "alta", "text": "Al pasar un tile a not-available, el artwork vuelve al de Mercado (en el ejemplo, \"Tiendas\" muestra la canasta). Cambiar de estado pierde el override del artwork." },
+    { "severity": "alta", "text": "Al pasar los tiles a type=primary se pierden label y artwork: los 5 muestran la hamburguesa y \"Resta…\"." },
+    { "severity": "media", "text": "Los fondos y textos usan colors/chart/*, una paleta de visualización de datos, en vez de tokens de superficie. Además conviven con colors/background/mild en la misma fila." },
+    { "severity": "media", "text": "El estado loading del chip solo oculta el artwork: no hay shimmer ni indicador, y se lee como imagen rota." },
+    { "severity": "media", "text": "Padding vertical de la fila (8), gap interno del chip (4) y padding final (12) no están enlazados a tokens." },
+    { "severity": "baja", "text": "La capa de texto se llama \"Mercado\" en los 5 tiles." },
+    { "severity": "baja", "text": "Valores de enum inconsistentes entre Figma y código: guion (not-available), espacio (see more) y camelCase (notAvailable)." }
+  ]
+}

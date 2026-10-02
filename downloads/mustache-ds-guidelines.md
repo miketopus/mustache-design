@@ -672,24 +672,49 @@ Un mismo nombre de token funciona en 13 productos, en light y dark, y en tres ta
 
 Mustache separa el **valor** de la **intención**. Diseñas y construyes siempre con la capa del medio.
 
+Tokens
+
 Capa 1
-Primitives
 
-La paleta y las escalas crudas: `olive-green/50`, `font/size/16`. Están ocultos en Figma a propósito.
+primitives
 
-→
+// valores crudos
+
+- olive-green/50
+
+- font/size/16
+
+- spacing-24
+
+La paleta y las escalas. Ocultos en Figma a propósito.
 
 Capa 2
-Semantics
 
-El rol: `background/accent`, `ink/strong`. Apuntan a un primitivo distinto según tema, modo o breakpoint.
+semantics
 
-→
+// el rol
+
+- background/accent
+
+- ink/strong
+
+- size/h1
+
+Apuntan a un primitivo distinto según tema, modo o breakpoint. **Con estos diseñas.**
 
 Capa 3
-Componentes
 
-Botones, cards, chips. Solo usan semantics, por eso cambian de tema sin tocarlos.
+componentes
+
+// solo semantics
+
+- Botón
+
+- Card
+
+- Chip
+
+Cambian de tema sin tocarlos.
 
 **Por qué no hex:** si un botón usa `#34C85A`, se queda verde en Pay, en dark mode y para siempre. Si usa `background/accent`, toma el color de cada producto y se actualiza solo cuando cambia la marca.
 
