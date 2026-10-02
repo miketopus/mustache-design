@@ -1,10 +1,10 @@
 # Mustache UX System · Guía para Claude
 
-> Archivo único para cargar en un **Project de Claude** (Project knowledge) o adjuntar en un chat. Versión **Rappi 8** · 1 oct 2026 · tema User App · light + dark · generado desde las librerías de Figma `semantics` y `primitives` y el sitio de Mustache.
+> Archivo único para cargar en un **Project de Claude** (Project knowledge) o adjuntar en un chat. Versión **Rappi 8** · 2 oct 2026 · tema User App · light + dark · generado desde las librerías de Figma `semantics` y `primitives` y el sitio de Mustache.
 
 # Mustache UX System (Rappi)
 
-> **Skill v1.1 · Rappi 8 · 1 oct 2026.** Tema User App (light + dark). Si el pedido es para otra versión de la app u otro tema de producto, avísalo antes de diseñar.
+> **Skill v1.1 · Rappi 8 · 2 oct 2026.** Tema User App (light + dark). Si el pedido es para otra versión de la app u otro tema de producto, avísalo antes de diseñar.
 
 Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, specs, críticas, copies) sigue el Mustache UX System. Si algo no está definido en el DS, **no lo inventes**: usa lo más cercano y dilo.
 
@@ -67,12 +67,13 @@ Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, sp
 - Tamaños: 16 (denso), **24 (base)**, 32 (empty states, onboarding). Color con `ink/*`.
 - Ícono funcional siempre con label accesible y área táctil de 48px.
 
-## Estados interactivos (mientras `interactive/*` esté vacío)
+## Estados interactivos (`interactive/*` es de web)
 
-Los tokens `interactive/*` existen pero valen transparente (`#FFFFFF00`). No los uses solos: no se vería nada.
+`interactive/*` son los estados de **web**: hover, pressed y foco. En los temas mobile (**User App**, **Nitro**) valen **N/A** a propósito: en la app no hay hover ni foco de teclado. En los temas web (RT App, Cargo, Pay, Merchants, Portal Partners…) sí apuntan a un primitivo.
 
-- **Hover / pressed:** superposición del color base (ej. `ink/strong` al 8% / 12%) y marca "⚠️ sin valor oficial en `interactive/*`".
-- **Focus:** anillo de stroke `selected` (2px) con `line/border-strong`. ⚠️ No hay token de foco oficial (`line/border-focus` e `interactive/focus` **no existen**).
+- **Mobile (User App, este kit):** no diseñes hover ni foco. El feedback al tocar es el del componente nativo.
+- **Web:** hover/pressed → `interactive/bg-<fondo>-hover` / `-pressed` según el fondo del elemento (`standard`, `mild`, `weak`, `accent`, `inverse`). Foco → `interactive/border-focus` (o `interactive/border-accent-focus` sobre acento). Este kit trae solo User App, así que **lee los valores del tema web en Figma** (MCP) o pídelos; no los inventes.
+- No existen `line/border-focus` ni `interactive/focus`: el de foco es `interactive/border-focus`.
 - **Disabled:** es un **estado**, no una variante. `background/disabled` + `ink/disabled`.
 
 ## Accesibilidad (mínimos WCAG 2.2 AA)
@@ -143,7 +144,7 @@ Sé directo: señala hex hardcodeados, tokens inexistentes o mal usados (ej. `in
 
 ## Lo que aún está en construcción
 
-- `interactive/*` sin valores oficiales (ver "Estados interactivos"). No hay token de foco.
+- Los valores de `interactive/*` de los temas web no vienen en este kit (solo User App, donde son N/A).
 - **Radius:** semánticos solo `card` (24) y `pill`. Hay escala primitiva (2 a 32…) sin semántico: si necesitas otro radio, usa el primitivo más cercano y **dilo**. El sitio los llama `borderRadius1…8`: son nombres heredados.
 - **Stroke:** tokens `none` / `standard` (1) / `selected` (2). El sitio nombra `strokeSmall` (0.5), sin token.
 - **Elevación:** el sitio define 4 niveles (Elevated, Strong, Hard, -Y) y sombras de botón (Green, Rappi), pero **no hay tokens ni valores** exportados. Nómbralos por nivel y marca "⚠️ sin token oficial".
@@ -188,7 +189,8 @@ Generadas desde el sitio de documentación. Léelas cuando el pedido toque ese t
 
 **Components**
 
-- `references/site/components/button.md`: Button. Disparador de acción principal en cualquier superficie. Renderiza un `<button>` (o cualquier elemento vía `asChild`) con tokens semánticos de variante y tamaño.
+- `references/site/components/button.md`: Button. Dispara la acción que la persona quiere hacer: pedir, pagar, confirmar, agregar. En Figma es el componente `flexible`: 3 estilos, 5 tamaños, 4 estados, y puede llevar ícono a la izquierda, a la derecha o solo ícono.
+- `references/site/components/horizontal-matrix-layout.md`: Horizontal matrix layout. Fila con scroll horizontal que agrupa los accesos a las verticales de Rappi: 2 chips promocionales grandes y una serie de tiles de tienda.
 
 **Principios de diseño**
 
@@ -368,7 +370,7 @@ Los hex se listan solo para trazabilidad y para diseño a código. **Nunca los e
 
 ## Estado pendiente
 
-- `interactive/*` está definido como placeholder transparente (`#FFFFFF00`) en Figma. Mientras se define, para hover/pressed usa una superposición del mismo color base y **avisa** que el token aún no tiene valor oficial.
+- `interactive/*` vale **N/A** en User App porque es un tema mobile y esos estados (hover, pressed, foco) son de web. En los temas web de Figma sí tienen primitivo. Ver "Estados interactivos" en `SKILL.md`.
 - Solo está el tema **User App**. Los otros 12 temas de producto (RT App, Aliados, Pay, Cargo, etc.) existen en Figma pero no están en este kit.
 
 
@@ -577,7 +579,7 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 ## Principios
 
 1. **Superficie:** el fondo del componente sale de `background/*`; el texto e iconos, de `ink/*`; los bordes, de `line/*`.
-2. **Estados:** cada componente interactivo cubre `default / hover / pressed / focus / disabled`. ⚠️ `interactive/*` hoy vale transparente: para hover/pressed usa una superposición del color base (8% / 12%) y avísalo. Foco: anillo de stroke `selected` (2px) con `line/border-strong` (⚠️ no existe token de foco oficial; `line/border-focus` no existe).
+2. **Estados:** cada componente interactivo cubre `default / hover / pressed / focus / disabled`. En **mobile** (User App) hover y foco no aplican: `interactive/*` es N/A. En **web** usa `interactive/bg-<fondo>-hover` / `-pressed` y foco `interactive/border-focus` con los valores del tema web en Figma.
 3. **Forma:** radios desde `radius/*` (`card` = 24, `pill` = 1000), grosores desde `stroke/*` (`standard` = 1, `selected` = 2).
 4. **Ritmo:** paddings y gaps desde `--rp-space-*`. Prefiere los de intención (`horizontal/between-buttons`, `vertical/docked-buttons`) cuando aplique.
 5. **Texto:** tamaño y line-height por rol tipográfico (`--rp-type-*`), respetando el breakpoint.
@@ -596,27 +598,42 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 
 ## Botón
 
-- **Variantes** (ver `site/components/button.md`): `primary`, `secondary`, `error`, `inverse`, `neutral`, `outline`. `disabled` es un **estado** (`disabled`), no una variante de diseño.
-- **Tamaños:** `xsmall` 24 · `small` 32 · `medium` 40 (default) · `large` 48 · `xlarge` 56. Por debajo de `large`, el área táctil debe extenderse a 48px (padding invisible o hit area).
-- **Primario:** fondo `background/accent`, texto `ink/inverse-on` (blanco fijo en light y dark), radio `radius/pill`, padding horizontal `--rp-space-24`, texto rol `body` en Medium. ⚠️ 2.2:1 de contraste: si piden revisión de accesibilidad, señálalo (alternativa: `ink/strong-on`, 9.6:1).
-- **Secundario / outline:** fondo `background/standard`, borde `stroke/standard` + `line/border-standard`, texto `ink/standard`.
-- **Error:** fondo `background/error` + `ink/inverse-on`.
-- **Estados:** hover/pressed → superposición del color base (⚠️ `interactive/bg-accent-hover` / `-pressed` existen pero están vacíos); disabled → texto `ink/disabled`, fondo `background/disabled`; focus → anillo 2px `line/border-strong` con separación de 2px.
+Componente `flexible` de mobile-library Rappi 8 (Figma `j7dMt2KutCl1U0BUZN1jqu`, set `40115:170`).
+
+- **Estilos:** `primary` (acción principal, una por vista) · `secondary` (apoyo) · `tertiary` (menor énfasis, con borde).
+- **Tamaños:** `xSmall` 24 · `small` 32 · `medium` 40 · `large` 48 · `xLarge` 56. Padding lateral 8 · 16 · 16 · 24 · 28. Texto `caption-2` (xSmall), `caption-1` (small, medium), `body` (large, xLarge), siempre Medium. Por debajo de `large`, extiende el área táctil a 48px.
+- **Estados:** `enable` · `loading` (3 puntos en lugar del label) · `disable` · `skeleton`. `disable` es un estado, no un estilo.
+- **Ícono:** a la izquierda o a la derecha (nunca los dos), o solo ícono (`label=false`, cuadrado del alto del tamaño). `loading` no existe con ícono + label. Ícono 16 (xSmall), 20 (small), 24 (resto).
+- **Tokens:**
+
+| style · state | Fondo | Texto / ícono | Borde |
+|---|---|---|---|
+| primary | `background/accent` | `ink/inverse-on` | — |
+| secondary | `background/weak` | `ink/strong` | — |
+| tertiary | `background/standard` | `ink/strong` | `stroke/standard` + `line/border-standard` |
+| primary · disable | `background/disabled` | `ink/disabled` | — |
+| secondary / tertiary · disable | el de su estilo | `ink/disabled` | el de su estilo |
+| loading | el de su estilo | puntos `ink/inverse-on` (primary) · `ink/strong` (secondary, tertiary) | el de su estilo |
+| skeleton | `skeleton/standard` | `skeleton/standard` | — |
+
+- Radio `radius/pill`. ⚠️ `primary` da 2.2:1 de contraste: si piden revisión de accesibilidad, señálalo (alternativa: `ink/strong-on`, 9.6:1).
+- **Hover / pressed / focus:** no son variantes en Figma y no aplican en mobile. En web: primary → `interactive/bg-accent-hover` / `-pressed`, secondary → `interactive/bg-weak-*`, tertiary → `interactive/bg-standard-*`; foco → `interactive/border-focus` (stroke `selected`, 2px, separación 2px).
 
 ```css
-.rp-btn--primary {
-  background: var(--rp-color-background-accent);
-  color: var(--rp-color-ink-inverse-on);
+.rp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 40px; padding: 0 16px;              /* medium */
   border-radius: var(--rp-radius-pill);
-  min-height: 48px; /* size large; en medium (40) extiende el hit area */
-  padding: 0 var(--rp-space-24);
-  font-size: var(--rp-type-pp-object-sans-size-body);
-  line-height: var(--rp-type-pp-object-sans-line-height-body);
+  font-family: var(--rp-font-family-content);
+  font-weight: var(--rp-font-weight-medium);
+  font-size: var(--rp-type-pp-object-sans-size-caption-1);
 }
-.rp-btn--primary:disabled {
-  background: var(--rp-color-background-disabled);
-  color: var(--rp-color-ink-disabled);
-}
+.rp-btn--primary   { background: var(--rp-color-background-accent);   color: var(--rp-color-ink-inverse-on); }
+.rp-btn--secondary { background: var(--rp-color-background-weak);     color: var(--rp-color-ink-strong); }
+.rp-btn--tertiary  { background: var(--rp-color-background-standard); color: var(--rp-color-ink-strong);
+                     border: var(--rp-stroke-standard) solid var(--rp-color-line-border-standard); }
+.rp-btn:disabled          { color: var(--rp-color-ink-disabled); }
+.rp-btn--primary:disabled { background: var(--rp-color-background-disabled); }
 ```
 
 ## Card
@@ -819,7 +836,7 @@ El `tokens.css` del kit trae solo el tema **User App**, en light y dark.
 
 > **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 >
-> Versión 0.1 (en construcción). Los mínimos (4.5:1, 3:1, 48×48px, 8px) sí son regla. No existe token de foco: usa anillo 2px `line/border-strong` y marca "⚠️ sin token oficial".
+> Versión 0.1 (en construcción). Los mínimos (4.5:1, 3:1, 48×48px, 8px) sí son regla. El foco es de web: token `interactive/border-focus` (N/A en los temas mobile).
 
 Cómo Mustache garantiza que cualquier persona, sin importar su capacidad visual, motriz, auditiva o cognitiva, pueda usar Rappi. No es un checklist al final: es la base que sostiene color, tipografía, iconografía y spacing.
 
@@ -866,7 +883,7 @@ Mínimos que Mustache exige, alineados al estándar internacional **WCAG 2.2 niv
 | Contraste de elementos gráficos y UI (íconos, bordes de input, foco) | 3:1 | Si no se ve el borde, no se sabe que es interactivo |
 | Área táctil mínima | 48×48px | Clave para repartidores en movimiento |
 | Separación entre áreas táctiles adyacentes | 8px | Evita toques accidentales |
-| Foco visible | Siempre, con token interactive/focus | Navegación por teclado/switch debe verse, no solo funcionar |
+| Foco visible | Siempre en web, con el token interactive/border-focus (en mobile no aplica) | Navegación por teclado/switch debe verse, no solo funcionar |
 | Escalado de texto | Hasta 200% sin romper el layout | Personas que agrandan la fuente del sistema |
 | Animaciones/parpadeo | Máx. 3 veces por segundo; respeta "reducir movimiento" | Riesgo de crisis fotosensibles |
 
@@ -2410,81 +2427,372 @@ Una vez el contenido que se presenta donde estaba el skeleton termine de cargar,
 
 > **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 >
-> `disabled` aparece como variante en el paquete, pero en diseño trátalo como **estado**. Tamaños menores a `large` (48px) necesitan hit area extendida a 48px.
+> Fuente: componente `flexible` de Figma (mobile-library Rappi 8). Tamaños menores a `large` (48px) necesitan hit area extendida a 48px.
 
-Disparador de acción principal en cualquier superficie. Renderiza un `<button>` (o cualquier elemento vía `asChild`) con tokens semánticos de variante y tamaño.
+Dispara la acción que la persona quiere hacer: pedir, pagar, confirmar, agregar. En Figma es el componente `flexible`: 3 estilos, 5 tamaños, 4 estados, y puede llevar ícono a la izquierda, a la derecha o solo ícono.
 
 - **Estado** Live
 
-- **Paquete** @rappi/ds-web
+- **Figma** `flexible` · mobile-library Rappi 8
+Abrir en Figma ↗
 
-- **Extiende** <button>
+Vista previa en vivo Figma · mobile-library Rappi 8
 
-### Uso
+Variantes · flexible
 
-Extiende `<button>`: todos los atributos nativos de HTML, event handlers, props ARIA y atributos `data-*` están soportados junto con las props de abajo.
+Estilo
+styleprimary
+primarysecondarytertiary
 
-```
-import Button from '@rappi/ds-web/web/atoms/Button';
+Tamaño
+sizemedium
+xSmallsmallmediumlargexLarge
 
-export function CheckoutCta() {
-  return <Button onClick={handle}>Save</Button>;
-}
-```
+Estado
+stateenable
+enableloadingdisableskeleton
 
-```
-<Button variant="primary" size="medium" onClick={handle}>Save</Button>
-<Button asChild variant="secondary"><a href="/path">Go</a></Button>
-```
+Ícono
+left/right Icon · labelsin ícono
+sin íconoa la izquierdaa la derechasolo ícono (sin label)
 
-### Variantes
+### Estilos
 
-`variant` define la intención visual y mapea a un rol semántico: **primary** = acción dominante, **secondary** = acción de soporte, **error** = destructiva, **inverse** = sobre superficies oscuras, **disabled** = no disponible. (`neutral` / `outline` existen como alternativas de bajo énfasis, sin story dedicado en la fuente.)
+El estilo marca la jerarquía. En una misma vista, que el ojo sepa en un segundo cuál es la acción principal.
 
-#### Primary variant="primary"
+#### Primary style=primary
 
-<Button variant="primary">Click me</Button>
+La acción principal de la pantalla: pagar, pedir, continuar. **Una por vista.**
 
-#### Secondary variant="secondary"
+#### Secondary style=secondary
 
-<Button variant="secondary">Click me</Button>
+Acción de apoyo al lado de un primary, o la principal cuando la pantalla no necesita tanto peso.
 
-#### Disabled variant="disabled"
+#### Tertiary style=tertiary
 
-<Button variant="disabled" disabled>Click me</Button>
-
-#### Error variant="error"
-
-<Button variant="error">Click me</Button>
-
-#### Inverse variant="inverse"
-
-<Button variant="inverse">Click me</Button>
+La de menor énfasis: cancelar, omitir, acciones opcionales. Borde en vez de fondo.
 
 ### Tamaños
 
-`size` combina escala de spacing y tipografía. **xsmall** es de tipo tag, **xlarge** es para un CTA hero.
+Cinco alturas, de 24 a 56px. Elige por el espacio y la importancia, no por el largo del texto.
 
-| Token | Alto |
-| --- | --- |
-| `xsmall` | 24px |
-| `small` | 32px |
-| `medium` | 40px |
-| `large` | 48px |
-| `xlarge` | 56px |
-
-### Props
-
-| Prop | Descripción | Default |
+| size | Alto | Cuándo |
 | --- | --- | --- |
-| `variant` | Intención visual. Mapea a un rol semántico: `primary`, `secondary`, `error`, `inverse`, `disabled`, `neutral`, `outline`. | `'primary'` |
-| `size` | Escala de spacing + tipografía: `xsmall`, `small`, `medium`, `large`, `xlarge`. | `'medium'` |
-| `asChild` | Cuando es `true`, renderiza vía Radix Slot y fusiona las props sobre el único hijo. Úsalo para aplicar el estilo de Button a un link o elemento custom. | `false` |
-| `onClick` | Evento — `function`. | — |
-| `children` | Slot — `string`. | — |
-| `disabled` | Estado — `boolean`. | — |
+| `xSmall` | 24px | Dentro de cards o filas densas, como acción secundaria. |
+| `small` | 32px | Acciones en listas, banners y headers. |
+| `medium` | 40px | Acciones dentro del contenido. |
+| `large` | 48px | CTA principal de una pantalla. |
+| `xLarge` | 56px | CTA fijo abajo (checkout, confirmar pedido). |
 
-> **Fuente.** Descripción, props y variantes replicadas 1:1 desde `Rappi Web DS` (Storybook, Atoms / Button). Los colores usan nuestros propios tokens semánticos (`background.accent`, `background.error`, etc.) en vez de los valores originales del paquete.
+Por debajo de `large`, el área táctil se extiende a 48px aunque el botón se vea más chico.
+
+### Estados
+
+Skeleton
+
+| state | Qué comunica |
+| --- | --- |
+| `enable` | Disponible. |
+| `loading` | La acción está en curso. El label se reemplaza por 3 puntos y el botón no se puede volver a tocar. |
+| `disable` | No disponible todavía. Explica cerca por qué (ej. "Elige un método de pago"). |
+| `skeleton` | La pantalla está cargando y el botón aún no existe. No es interactivo. |
+
+### Con ícono
+
+Ícono a la izquierda **o** a la derecha, nunca los dos. Solo ícono cuando la acción se entiende sin texto (agregar, cerrar) y siempre con nombre accesible.
+
+### Implementación con tokens
+
+Cómo se traduce `flexible` a CSS con las variables de `tokens.css` del kit. Es la referencia de valores; el componente de cada plataforma debe cumplirla.
+
+```
+.rp-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;                                   /* medium */
+  height: 40px; padding: 0 16px;              /* medium */
+  border-radius: var(--rp-radius-pill);
+  font-family: var(--rp-font-family-content);
+  font-weight: var(--rp-font-weight-medium);
+  font-size: var(--rp-type-pp-object-sans-size-caption-1);
+}
+.rp-btn--primary   { background: var(--rp-color-background-accent);   color: var(--rp-color-ink-inverse-on); }
+.rp-btn--secondary { background: var(--rp-color-background-weak);     color: var(--rp-color-ink-strong); }
+.rp-btn--tertiary  { background: var(--rp-color-background-standard); color: var(--rp-color-ink-strong);
+                     border: var(--rp-stroke-standard) solid var(--rp-color-line-border-standard); }
+
+.rp-btn:disabled               { color: var(--rp-color-ink-disabled); }
+.rp-btn--primary:disabled      { background: var(--rp-color-background-disabled); }
+.rp-btn--skeleton              { background: var(--rp-color-skeleton-standard); color: transparent; pointer-events: none; }
+
+/* Solo web. En User App (mobile) estos tokens son N/A: no se usan. */
+.rp-btn--primary:hover    { background: var(--rp-color-interactive-bg-accent-hover); }
+.rp-btn--primary:active   { background: var(--rp-color-interactive-bg-accent-pressed); }
+.rp-btn--secondary:hover  { background: var(--rp-color-interactive-bg-weak-hover); }
+.rp-btn--secondary:active { background: var(--rp-color-interactive-bg-weak-pressed); }
+.rp-btn--tertiary:hover   { background: var(--rp-color-interactive-bg-standard-hover); }
+.rp-btn--tertiary:active  { background: var(--rp-color-interactive-bg-standard-pressed); }
+.rp-btn:focus-visible     { outline: var(--rp-stroke-selected) solid var(--rp-color-interactive-border-focus); outline-offset: 2px; }
+```
+
+Tamaños: alto 24 · 32 · 40 · 48 · 56 y padding 8 · 16 · 16 · 24 · 28 (ver Personalización). `xSmall` usa `caption-2`; `large` y `xLarge` usan `body`.
+
+### Accesibilidad
+
+| Tema | Regla |
+| --- | --- |
+| **Área táctil** | Mínimo 48×48px y 8px entre áreas táctiles. `xSmall` (24px), `small` (32px) y `medium` (40px) necesitan área táctil extendida a 48px aunque se vean más chicos. |
+| **Contraste** | `primary` usa `ink/inverse-on` sobre `background/accent`: **2.2:1**, no llega al 4.5:1 de WCAG AA. Es el componente oficial; señálalo en revisiones. `secondary` y `tertiary` (`ink/strong`) sí pasan. |
+| **Solo ícono** | Con `label=false` el botón no tiene texto visible: dale nombre accesible (`aria-label`) que diga la acción, no el ícono ("Agregar al carrito", no "Más"). |
+| **Loading** | El label se reemplaza por los 3 puntos: anuncia el estado (`aria-busy="true"`) y evita que se dispare dos veces. |
+| **Disable** | `ink/disabled` no busca contraste: no comuniques solo con el botón deshabilitado por qué no se puede continuar; explícalo cerca. |
+| **Skeleton** | Es un placeholder de carga, no un botón: no debe recibir foco ni clic. |
+| **Foco (web)** | Anillo de stroke `selected` (2px) con `interactive/border-focus`. En mobile no aplica. |
+
+### Propiedades en Figma
+
+Componente `flexible` de **mobile-library Rappi 8** (182 variantes). Así se configura una instancia.
+
+| Propiedad | Valores | Default |
+| --- | --- | --- |
+| `style` | primary · secondary · tertiary | primary |
+| `size` | xSmall · small · medium · large · xLarge | xSmall |
+| `state` | enable · loading · disable · skeleton | enable |
+| `label` | true · false (false = solo ícono) | true |
+| `left Icon` | true · false | false |
+| `right Icon` | true · false | false |
+| `icon type` | Intercambio de instancia (cualquier ícono de la librería) | filled/filled_add |
+| `label text` | Texto | "Label" |
+
+#### Combinaciones que existen
+
+Ícono a la izquierda **o** a la derecha, nunca los dos. Solo ícono usa `left Icon=true` con `label=false`. **Loading** no existe con ícono + label: solo con label o solo ícono.
+
+#### Medidas por tamaño
+
+| size | Alto | Padding lateral | Texto | Ícono · separación |
+| --- | --- | --- | --- | --- |
+| `xSmall` | 24 | 8 | `caption-2/caption2Medium` | 16 · 4 |
+| `small` | 32 | 16 | `caption-1/caption1Medium` | 20 · 4 |
+| `medium` | 40 | 16 | `caption-1/caption1Medium` | 24 · 8 |
+| `large` | 48 | 24 | `body/bodyMedium` | 24 · 12 |
+| `xLarge` | 56 | 28 | `body/bodyMedium` | 24 · 12 |
+
+Solo ícono: cuadrado del alto del tamaño (24 a 56px). Radio: `pill`.
+
+### Tokens
+
+Leídos de las variantes de Figma. Todo en token semántico.
+
+| style · state | Fondo | Texto / ícono | Borde |
+| --- | --- | --- | --- |
+| primary · enable | `background/accent` | `ink/inverse-on` | — |
+| secondary · enable | `background/weak` | `ink/strong` | — |
+| tertiary · enable | `background/standard` | `ink/strong` | `line/border-standard` |
+| primary · disable | `background/disabled` | `ink/disabled` | — |
+| secondary · disable | `background/weak` | `ink/disabled` | — |
+| tertiary · disable | `background/standard` | `ink/disabled` | `line/border-standard` |
+| * · loading | el de su style | puntos: `ink/inverse-on` (primary) · `ink/strong` (secondary, tertiary) | el de su style |
+| * · skeleton | `skeleton/standard` | `skeleton/standard` | — |
+
+Radio `pill` · borde `stroke/standard` (1px) en tertiary.
+
+#### Estados de web
+
+Solo en los temas web (RT App, Cargo, Pay, Merchants, Portal Partners…). En los temas mobile, **User App** y **Nitro**, estos tokens valen N/A porque en la app no hay hover ni foco de teclado.
+
+| style | Hover | Pressed |
+| --- | --- | --- |
+| primary | `interactive/bg-accent-hover` | `interactive/bg-accent-pressed` |
+| secondary | `interactive/bg-weak-hover` | `interactive/bg-weak-pressed` |
+| tertiary | `interactive/bg-standard-hover` | `interactive/bg-standard-pressed` |
+| Foco (todos) | Anillo stroke `selected` (2px) con `interactive/border-focus` |  |
+
+
+## Horizontal matrix layout
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
+Fila con scroll horizontal que agrupa los accesos a las verticales de Rappi: 2 chips promocionales grandes y una serie de tiles de tienda.
+
+Estado Borrador
+
+- **Figma** `horizontal-matrix-layout`
+Abrir en Figma ↗
+
+### Resumen
+
+Contenedor de layout, no un átomo. Ordena instancias de _horizontal-matrix-atoms (chips) y _vertical-matrix-atoms (tiles) en una sola fila desplazable.
+
+#### Cuándo usarlo
+
+- Como punto de entrada a las verticales en el home, arriba del feed.
+- Cuando hay 2 verticales destacadas (con artwork y ETA) más un set corto de verticales secundarias.
+
+#### Cuándo no
+
+- Para listar tiendas o productos dentro de una vertical.Usa: Cards o listas de tiendas
+- Para filtrar resultados de una búsqueda.Usa: Filters / Chips
+- Con más de 7 elementos: el último queda fuera de vista y pierde descubrimiento.Usa: Pantalla de "Ver más" (state=seeMore)
+
+### Anatomía
+
+| # | Elemento | Notas |
+| --- | --- | --- |
+| 1 | `_horizontal-matrix-atoms` | Chip promocional Rest: artwork 3D, título y ETA. |
+| 2 | `_horizontal-matrix-atoms` | Chip promocional Turbo: artwork de mercado y ETA más corto. |
+| 3–7 | `_vertical-matrix-atoms` | Tile de tienda: artwork 56px arriba y caption abajo. Se repite 5 veces. |
+
+### Ejemplos
+
+#### 01Fila por defecto
+
+| Prop | Valor | Notas |
+| --- | --- | --- |
+| `horizontalMatrixItems` | rest, turbo | Valores por defecto. |
+| `verticalMatrixItems` | 5 × secondary / image | — |
+
+#### 02Primer chip cargando
+
+| Prop | Valor | Notas |
+| --- | --- | --- |
+| `horizontalMatrixItems[0].status` | loading | Desaparece el artwork; el texto se mantiene. |
+
+#### 03Tile no disponible
+
+| Prop | Valor | Notas |
+| --- | --- | --- |
+| `verticalMatrixItems[2].state` | not-available | Tercer tile (Tiendas). |
+
+#### 04Tiles primary
+
+| Prop | Valor | Notas |
+| --- | --- | --- |
+| `verticalMatrixItems` | 5 × primary / image | Sobreescribe el default contextual secondary. La fila crece de 96 a 152px. |
+
+Las filas tienen scroll horizontal, igual que en el producto.
+
+### Do / Don’t
+
+DoMantén el orden fijo: 2 chips primero y luego los tiles.
+Don’tNo mezcles chips y tiles en la misma posición.
+
+DoUsa labels de una palabra (Mercado, Farmacia).
+Don’tNo uses labels largos: en type=primary se truncan ("Resta…").
+
+DoMuestra el estado not-available con su pill y el tile atenuado.
+Don’tNo ocultes la vertical: el usuario pierde la referencia de dónde estaba.
+
+### Pendientes
+
+Problemas encontrados al documentar. Se resuelven en Figma, no en esta página.
+
+- altaAl pasar un tile a not-available, el artwork vuelve al de Mercado (en el ejemplo, "Tiendas" muestra la canasta). Cambiar de estado pierde el override del artwork.
+- altaAl pasar los tiles a type=primary se pierden label y artwork: los 5 muestran la hamburguesa y "Resta…".
+- mediaLos fondos y textos usan colors/chart/*, una paleta de visualización de datos, en vez de tokens de superficie. Además conviven con colors/background/mild en la misma fila.
+- mediaEl estado loading del chip solo oculta el artwork: no hay shimmer ni indicador, y se lee como imagen rota.
+- mediaPadding vertical de la fila (8), gap interno del chip (4) y padding final (12) no están enlazados a tokens.
+- bajaLa capa de texto se llama "Mercado" en los 5 tiles.
+- bajaValores de enum inconsistentes entre Figma y código: guion (not-available), espacio (see more) y camelCase (notAvailable).
+
+Todavía no hay implementación en código documentada para este componente.
+
+### Accesibilidad
+
+| Tema | Regla |
+| --- | --- |
+| **Rol** | La fila se anuncia como lista ("7 elementos"). Cada chip o tile es un botón. |
+| **Nombre accesible** | Título + subtítulo en chips ("Restaurantes, desde 15 min"); label en tiles. El artwork es decorativo y no se anuncia. |
+| **Estados** | not-available y temporarily-closed se anuncian ("Tiendas, no disponible") y quedan deshabilitados. loading y skeleton marcan la fila como ocupada. |
+| **Área táctil** | Tile de 90 × 80 y chip de 80 de alto: cumplen el mínimo de 48 × 48. |
+| **Contraste** | Validar el texto de los chips sobre los fondos colors/chart/*-01 y el label atenuado de not-available. caption-2 es el tamaño mínimo: no bajarlo. |
+
+### API
+
+| Prop | Valores | Default | Notas |
+| --- | --- | --- | --- |
+| `horizontalMatrixItems` | HorizontalMatrixAtomItem[] | — | Chips en orden (Rest, Turbo). En Figma: 2 × _horizontal-matrix-atoms. |
+| `verticalMatrixItems` | VerticalMatrixAtomItem[] | — | Tiles de tienda. En Figma: 5 × _vertical-matrix-atoms. |
+| `horizontalGap` | token | `spacing/horizontal/between-chips` | Espacio entre todos los elementos de la fila. |
+| `contentPaddingStart` | token | `spacing/l` | Margen inicial de la fila con scroll. |
+
+#### Chip horizontal · `_horizontal-matrix-atoms`
+
+| Prop | Valores | Default | Notas |
+| --- | --- | --- | --- |
+| `status` | default, skeleton, loading, placeholder, not-available, open-soon | `default` | En Figma los valores usan guion (not-available, open-soon). |
+| `storetype` | rest, turbo | `rest` | Define fondo, artwork y copy por defecto. |
+| `title` | string | — | Línea principal. Suele venir del storetype. |
+| `subtitle` | string | — | Línea secundaria (ej. ETA). |
+
+#### Tile vertical · `_vertical-matrix-atoms`
+
+Dentro de esta fila el default es secondary. Suelto, el component set arranca en primary + image.
+
+| Prop | Valores | Default | Notas |
+| --- | --- | --- | --- |
+| `type` | primary, secondary | `secondary` | Default contextual en esta fila. |
+| `state` | image, not-available, temporarily-closed, placeholder, skeleton, see more | `image` | En Figma mezcla guion y espacio (see more). |
+| `label` | string | — | Caption del tile. Hoy la capa se llama "Mercado" en todos: se sobreescribe por instancia. |
+
+### Estructura
+
+| Elemento | Propiedad | Valor | Token |
+| --- | --- | --- | --- |
+| Fila | Dirección | Horizontal, scroll | Sin token |
+| Fila | Gap | 8 | `spacing/horizontal/between-chips` |
+| Fila | Padding inicial | 24 | `spacing/l` |
+| Fila | Padding vertical | 8 | Sin token |
+| Fila | Alto | 96 (secondary) · 152 (primary) | Sin token |
+| Chip | Artwork | 80 × 80 | Sin token |
+| Chip | Gap interno / padding final | 4 / 12 | Sin token |
+| Tile | Tamaño | 90 × 80 | Sin token |
+| Tile | Artwork | 56 × 56 | Sin token |
+| Tile | Padding inferior | 8 | `spacing/vertical/margin-top-bottom` |
+
+### Dependencias
+
+Lo que este componente necesita de otras librerías para existir.
+
+| Pieza | Tipo | Librería | Para qué |
+| --- | --- | --- | --- |
+| `_horizontal-matrix-atoms` | Componente (set) | Por confirmar | Chips Rest y Turbo |
+| `_vertical-matrix-atoms` | Componente (set) | Por confirmar | Tiles de tienda |
+| `Artwork 3D de verticales` | Componentes sueltos (shop, pharmacy…) | Por confirmar | Ilustración 56px de cada tile |
+| `Tokens` `Colors` `Typography` | Colecciones de variables | Foundations | Color, spacing y tipografía |
+
+### Tokens
+
+Todo en token semántico. Las etiquetas marcan lo que hay que revisar antes de dar el componente por cerrado.
+
+| Token | Rol | Colección |
+| --- | --- | --- |
+| `spacing/horizontal/between-chips` | Gap de la fila | Tokens |
+| `spacing/l` | Padding inicial de la fila | Tokens |
+| `spacing/vertical/margin-top-bottom` | Padding inferior del tile | Tokens |
+| `colors/chart/orange-01`Paleta de datos | Fondo del chip Rest | Tokens |
+| `colors/chart/orange-04`Paleta de datos | Texto del chip Rest | Tokens |
+| `colors/chart/green-01`Paleta de datos | Fondo del chip Turbo y del tile Mercado | Tokens |
+| `colors/programs/turbo` | Texto del chip Turbo | Tokens |
+| `colors/chart/green-04`Paleta de datos | Texto del tile Mercado | Tokens |
+| `colors/chart/blue-01`Paleta de datos | Fondo del tile Farmacia | Tokens |
+| `colors/chart/blue-04`Paleta de datos | Texto del tile Farmacia | Tokens |
+| `colors/background/mild` | Fondo de tiles neutros (Tiendas, Mascota, Licores) | Tokens |
+| `ink/strong` | Texto de tiles neutros | Colors |
+| `font/family/content` | Familia de todo el texto | Typography |
+| `font/size/caption-1` `font/line-height/caption-1` `font/weight/Medium` | Título del chip | Typography |
+| `font/size/caption-2` `font/line-height/caption-2` `font/weight/Regular` | ETA del chip y caption del tile | Typography |
+
+#### Artwork
+
+| Componente | Dónde |
+| --- | --- |
+| `shop` | Tile Mercado |
+| `pharmacy` | Tile Farmacia |
+| `stores-new` | Tile Tiendas |
+| `pets-new` | Tile Mascota |
+| `whisky-new` | Tile Licores |
+
+> **Fuente.** uSpec: frames API (6:220) y Anatomy (18:239) · Figma MCP: estructura, instancias anidadas y variables enlazadas. Capturado el 2026-10-01. Piloto. El contrato no salió del plugin uSpec Extract (_base.json); se armó con el MCP de Figma siguiendo la misma forma. En producción, reemplazar por la salida de create-component-md.
 
 
 ## Principios de Diseño

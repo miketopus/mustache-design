@@ -172,5 +172,5 @@ Los hex se listan solo para trazabilidad y para diseño a código. **Nunca los e
 
 ## Estado pendiente
 
-- `interactive/*` está definido como placeholder transparente (`#FFFFFF00`) en Figma. Mientras se define, para hover/pressed usa una superposición del mismo color base y **avisa** que el token aún no tiene valor oficial.
+- `interactive/*` vale **N/A** en User App porque es un tema mobile y esos estados (hover, pressed, foco) son de web. En los temas web de Figma sí tienen primitivo. Ver "Estados interactivos" en `SKILL.md`.
 - Solo está el tema **User App**. Los otros 12 temas de producto (RT App, Aliados, Pay, Cargo, etc.) existen en Figma pero no están en este kit.

@@ -1,0 +1,14 @@
+/* Tabs de página de componente: regla para todos los componentes.
+   Orden fijo: Uso · Código · Accesibilidad · Personalización · Tokens.
+   Marcado: cada pestaña es un <div class="ctab-panel" data-tab="uso" data-label="Uso">.
+   js/component-tabs.js arma la barra; sin JS se ven todos los paneles seguidos. */
+.ctabs{position:sticky;top:var(--topbar);z-index:30;display:flex;margin:36px 0 0;background:var(--bg);border-bottom:1px solid var(--line-2)}
+.ctab{flex:1 1 0;position:relative;height:56px;padding:0 12px;font:inherit;font-size:15px;font-weight:500;color:var(--muted);background:none;border:0;cursor:pointer;white-space:nowrap;transition:color .15s}
+.ctab:hover{color:var(--text)}
+.ctab[aria-selected="true"]{color:var(--text);font-weight:600}
+.ctab[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:4px;background:var(--text)}
+.ctab:focus-visible{outline:2px solid var(--text);outline-offset:-4px;border-radius:6px}
+.ctab-panel{scroll-margin-top:calc(var(--topbar) + 72px)}
+.ctab-panel[hidden]{display:none}
+.ctab-empty{margin-top:40px;padding:28px;border:1px dashed var(--line-2);border-radius:var(--radius);color:var(--muted);font-size:15px;text-align:center}
+@media(max-width:760px){.ctabs{overflow-x:auto;scrollbar-width:none}.ctabs::-webkit-scrollbar{display:none}.ctab{flex:0 0 auto;padding:0 16px}}

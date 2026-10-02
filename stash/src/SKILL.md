@@ -68,12 +68,13 @@ Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, sp
 - Tamaños: 16 (denso), **24 (base)**, 32 (empty states, onboarding). Color con `ink/*`.
 - Ícono funcional siempre con label accesible y área táctil de 48px.
 
-## Estados interactivos (mientras `interactive/*` esté vacío)
+## Estados interactivos (`interactive/*` es de web)
 
-Los tokens `interactive/*` existen pero valen transparente (`#FFFFFF00`). No los uses solos: no se vería nada.
+`interactive/*` son los estados de **web**: hover, pressed y foco. En los temas mobile (**User App**, **Nitro**) valen **N/A** a propósito: en la app no hay hover ni foco de teclado. En los temas web (RT App, Cargo, Pay, Merchants, Portal Partners…) sí apuntan a un primitivo.
 
-- **Hover / pressed:** superposición del color base (ej. `ink/strong` al 8% / 12%) y marca "⚠️ sin valor oficial en `interactive/*`".
-- **Focus:** anillo de stroke `selected` (2px) con `line/border-strong`. ⚠️ No hay token de foco oficial (`line/border-focus` e `interactive/focus` **no existen**).
+- **Mobile (User App, este kit):** no diseñes hover ni foco. El feedback al tocar es el del componente nativo.
+- **Web:** hover/pressed → `interactive/bg-<fondo>-hover` / `-pressed` según el fondo del elemento (`standard`, `mild`, `weak`, `accent`, `inverse`). Foco → `interactive/border-focus` (o `interactive/border-accent-focus` sobre acento). Este kit trae solo User App, así que **lee los valores del tema web en Figma** (MCP) o pídelos; no los inventes.
+- No existen `line/border-focus` ni `interactive/focus`: el de foco es `interactive/border-focus`.
 - **Disabled:** es un **estado**, no una variante. `background/disabled` + `ink/disabled`.
 
 ## Accesibilidad (mínimos WCAG 2.2 AA)
@@ -144,7 +145,7 @@ Sé directo: señala hex hardcodeados, tokens inexistentes o mal usados (ej. `in
 
 ## Lo que aún está en construcción
 
-- `interactive/*` sin valores oficiales (ver "Estados interactivos"). No hay token de foco.
+- Los valores de `interactive/*` de los temas web no vienen en este kit (solo User App, donde son N/A).
 - **Radius:** semánticos solo `card` (24) y `pill`. Hay escala primitiva (2 a 32…) sin semántico: si necesitas otro radio, usa el primitivo más cercano y **dilo**. El sitio los llama `borderRadius1…8`: son nombres heredados.
 - **Stroke:** tokens `none` / `standard` (1) / `selected` (2). El sitio nombra `strokeSmall` (0.5), sin token.
 - **Elevación:** el sitio define 4 niveles (Elevated, Strong, Hard, -Y) y sombras de botón (Green, Rappi), pero **no hay tokens ni valores** exportados. Nómbralos por nivel y marca "⚠️ sin token oficial".

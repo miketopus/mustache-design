@@ -42,6 +42,7 @@ npm run build:stash
 - Tokens de `css/tokens.css`, no hex.
 - El menú está en `js/site-header.js`. **Si lo cambias, cambia también el menú del home** (`index.html`).
 - Logos nuevos en `assets/identidad-visual/logos/`, en SVG.
+- **Páginas de componente:** siempre 5 pestañas, en este orden: Uso · Código · Accesibilidad · Personalización · Tokens (`css/component-tabs.css` + `js/component-tabs.js`). Las que salen de un contrato JSON (`npm run build:components`) ya las traen.
 
 ## Deploy
 

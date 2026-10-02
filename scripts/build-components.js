@@ -32,6 +32,22 @@ const SIDEBAR_GROUPS = [
 ];
 const STATIC_LINKS = { Buttons: 'button.html' };
 
+// Regla: toda página de componente tiene estas 5 pestañas, en este orden.
+// Si un componente no tiene contenido para una, se muestra como pendiente.
+const TABS = [
+  ['uso', 'Uso'],
+  ['codigo', 'Código'],
+  ['accesibilidad', 'Accesibilidad'],
+  ['personalizacion', 'Personalización'],
+  ['tokens', 'Tokens']
+];
+const TAB_EMPTY = {
+  codigo: 'Todavía no hay implementación en código documentada para este componente.',
+  accesibilidad: 'Pendiente: criterios de accesibilidad de este componente.',
+  personalizacion: 'Pendiente: propiedades y estructura del componente en Figma.',
+  tokens: 'Pendiente: tokens que usa este componente.'
+};
+
 const HEX_RE = /\s*\(?#[0-9a-fA-F]{3,8}\)?/g;
 
 function esc(s) {
@@ -83,9 +99,9 @@ const ICON_INFO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
 function render(c, families) {
   const slug = c.component.slug;
-  const sections = [];
-  const nav = [];
-  function add(id, label, html) { nav.push({ label, href: '#' + id }); sections.push('<section class="doc" id="' + id + '">\n<h2>' + esc(label) + '</h2>\n' + html + '\n</section>'); }
+  const byTab = {};
+  let tab = 'uso';
+  function add(id, label, html) { (byTab[tab] = byTab[tab] || []).push('<section class="doc" id="' + id + '">\n<h2>' + esc(label) + '</h2>\n' + html + '\n</section>'); }
 
   const s = c.summary;
   add('resumen', 'Resumen',
@@ -101,11 +117,13 @@ function render(c, families) {
     table(['#', 'Elemento', 'Notas'], a.elements.map(e => [esc(e.n), tok(e.name), esc(e.notes)])));
 
   const api = c.api;
+  tab = 'personalizacion';
   const propRows = list => list.map(p => [tok(p.name), esc(p.values), p.default === '—' ? '<span class="dim">—</span>' : (/\//.test(p.default) ? tok(p.default) : '<code>' + esc(p.default) + '</code>'), esc(p.notes)]);
   add('api', 'API',
     table(['Prop', 'Valores', 'Default', 'Notas'], propRows(api.props)) +
     api.subcomponents.map(sc => '<h3>' + esc(sc.title) + ' · <code>' + esc(sc.name) + '</code></h3>' + (sc.note ? '<p>' + esc(sc.note) + '</p>' : '') + table(['Prop', 'Valores', 'Default', 'Notas'], propRows(sc.props))).join(''));
 
+  tab = 'uso';
   add('ejemplos', 'Ejemplos', c.examples.map((ex, i) =>
     '<div class="example"><h3><span class="num">' + String(i + 1).padStart(2, '0') + '</span>' + esc(ex.title) + '</h3>' +
     stage(slug, ex.image, ex.title, imgWidth(slug, ex.image)) +
@@ -113,21 +131,26 @@ function render(c, families) {
     '</div>').join('') +
     '<p class="stage-cap">Las filas tienen scroll horizontal, igual que en el producto.</p>');
 
+  tab = 'personalizacion';
   add('estructura', 'Estructura',
     table(['Elemento', 'Propiedad', 'Valor', 'Token'], c.structure.map(r => [esc(r.element), esc(r.property), esc(r.value), r.token ? tok(r.token) : '<span class="flag flag-warn">Sin token</span>'])));
 
+  tab = 'tokens';
   add('tokens', 'Tokens',
     '<p>Todo en token semántico. Las etiquetas marcan lo que hay que revisar antes de dar el componente por cerrado.</p>' +
     table(['Token', 'Rol', 'Colección'], c.tokens.map(t => [tok(t.token) + (t.flag === 'chart' ? '<span class="flag flag-warn">Paleta de datos</span>' : ''), esc(t.role), esc(t.collection)])) +
     (c.artwork && c.artwork.length ? '<h3>Artwork</h3>' + table(['Componente', 'Dónde'], c.artwork.map(i => [tok(i.name), esc(i.usedIn)])) : ''));
 
+  tab = 'personalizacion';
   add('dependencias', 'Dependencias',
     '<p>Lo que este componente necesita de otras librerías para existir.</p>' +
     table(['Pieza', 'Tipo', 'Librería', 'Para qué'], c.dependencies.map(d => [tok(d.name), esc(d.kind), todo(d.library), esc(d.uses)])));
 
+  tab = 'accesibilidad';
   add('accesibilidad', 'Accesibilidad',
     table(['Tema', 'Regla'], c.accessibility.map(r => ['<strong>' + esc(r.topic) + '</strong>', esc(r.text)])));
 
+  tab = 'uso';
   add('do-dont', 'Do / Don’t', c.dosDonts.map(d =>
     '<div class="dd"><div class="dd-cell dd-do"><b>Do</b><span>' + esc(d.do) + '</span></div><div class="dd-cell dd-dont"><b>Don’t</b><span>' + esc(d.dont) + '</span></div></div>').join(''));
 
@@ -137,8 +160,14 @@ function render(c, families) {
       '<ul class="gaps">' + c.knownGaps.map(g => '<li><span class="sev sev-' + esc(g.severity) + '">' + esc(g.severity) + '</span><span>' + esc(g.text) + '</span></li>').join('') + '</ul>');
   }
 
+  const panels = TABS.map(([key, label]) =>
+    '<div class="ctab-panel" data-tab="' + key + '" data-label="' + label + '">\n' +
+    (byTab[key] ? byTab[key].join('\n\n') : '<p class="ctab-empty">' + esc(TAB_EMPTY[key]) + '</p>') +
+    '\n</div>').join('\n\n');
+
   const src = c.source;
-  const config = { eyebrow: 'Components', groups: sidebar(families), onThisPage: nav };
+  // las pestañas reemplazan al índice "On this page"
+  const config = { eyebrow: 'Components', groups: sidebar(families) };
   const draft = c.component.status === 'draft';
 
   return `<!DOCTYPE html>
@@ -155,7 +184,9 @@ ${draft ? '<meta name="robots" content="noindex, nofollow">\n' : ''}<title>Compo
 <link rel="stylesheet" href="../css/site-header.css">
 <link rel="stylesheet" href="../css/site-sidebar.css">
 <link rel="stylesheet" href="../css/component-page.css">
+<link rel="stylesheet" href="../css/component-tabs.css">
 <script src="../js/site-header.js" defer></script>
+<script src="../js/component-tabs.js" defer></script>
 <script src="../js/site-sidebar.js" defer></script>
 </head>
 <body id="top">
@@ -177,7 +208,7 @@ ${draft ? '<meta name="robots" content="noindex, nofollow">\n' : ''}<title>Compo
         <a class="meta-chip" href="${esc(src.figma.url)}" target="_blank" rel="noopener"><b>Abrir en Figma</b> ↗</a>
       </div>
 
-${sections.join('\n\n')}
+${panels}
 
       <div class="note">${ICON_INFO}<p><b>Fuente.</b> ${esc(src.capturedWith.join(' · '))}. Capturado el ${esc(src.capturedAt)}. ${esc(src.note || '')}</p></div>
 
