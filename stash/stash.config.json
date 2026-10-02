@@ -21,7 +21,7 @@
     "foundations/stroke": "> ⚠️ **Nombres heredados.** Tokens reales: `stroke/none` (0), `stroke/standard` (1) = strokeMedium, `stroke/selected` (2) = strokeLarge. `strokeSmall` (0.5) no tiene token.",
     "foundations/elevation": "> ⚠️ **Borrador sin tokens.** Los niveles existen en el sitio, pero no hay valores de sombra exportados en `tokens.css`. Nombra el nivel (ej. \"Elevated Strong\") y marca \"⚠️ sin token oficial\". Nunca inventes valores de sombra como si fueran del DS.",
     "foundations/haptics": "> ⚠️ **Borrador.** Nomenclatura y varios casos están \"por confirmar\". Úsalo como criterio, no como spec cerrada.",
-    "foundations/accessibility": "> Versión 0.1 (en construcción). Los mínimos (4.5:1, 3:1, 48×48px, 8px) sí son regla. No existe token de foco: usa anillo 2px `line/border-strong` y marca \"⚠️ sin token oficial\".",
-    "components/button": "> `disabled` aparece como variante en el paquete, pero en diseño trátalo como **estado**. Tamaños menores a `large` (48px) necesitan hit area extendida a 48px."
+    "foundations/accessibility": "> Versión 0.1 (en construcción). Los mínimos (4.5:1, 3:1, 48×48px, 8px) sí son regla. El foco es de web: token `interactive/border-focus` (N/A en los temas mobile).",
+    "components/button": "> Fuente: componente `flexible` de Figma (mobile-library Rappi 8). Tamaños menores a `large` (48px) necesitan hit area extendida a 48px."
   }
 }

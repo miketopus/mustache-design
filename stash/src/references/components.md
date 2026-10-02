@@ -7,7 +7,7 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 ## Principios
 
 1. **Superficie:** el fondo del componente sale de `background/*`; el texto e iconos, de `ink/*`; los bordes, de `line/*`.
-2. **Estados:** cada componente interactivo cubre `default / hover / pressed / focus / disabled`. ⚠️ `interactive/*` hoy vale transparente: para hover/pressed usa una superposición del color base (8% / 12%) y avísalo. Foco: anillo de stroke `selected` (2px) con `line/border-strong` (⚠️ no existe token de foco oficial; `line/border-focus` no existe).
+2. **Estados:** cada componente interactivo cubre `default / hover / pressed / focus / disabled`. En **mobile** (User App) hover y foco no aplican: `interactive/*` es N/A. En **web** usa `interactive/bg-<fondo>-hover` / `-pressed` y foco `interactive/border-focus` con los valores del tema web en Figma.
 3. **Forma:** radios desde `radius/*` (`card` = 24, `pill` = 1000), grosores desde `stroke/*` (`standard` = 1, `selected` = 2).
 4. **Ritmo:** paddings y gaps desde `--rp-space-*`. Prefiere los de intención (`horizontal/between-buttons`, `vertical/docked-buttons`) cuando aplique.
 5. **Texto:** tamaño y line-height por rol tipográfico (`--rp-type-*`), respetando el breakpoint.
@@ -26,27 +26,42 @@ Cómo construir componentes del Mustache UX System en código mapeando su anatom
 
 ## Botón
 
-- **Variantes** (ver `site/components/button.md`): `primary`, `secondary`, `error`, `inverse`, `neutral`, `outline`. `disabled` es un **estado** (`disabled`), no una variante de diseño.
-- **Tamaños:** `xsmall` 24 · `small` 32 · `medium` 40 (default) · `large` 48 · `xlarge` 56. Por debajo de `large`, el área táctil debe extenderse a 48px (padding invisible o hit area).
-- **Primario:** fondo `background/accent`, texto `ink/inverse-on` (blanco fijo en light y dark), radio `radius/pill`, padding horizontal `--rp-space-24`, texto rol `body` en Medium. ⚠️ 2.2:1 de contraste: si piden revisión de accesibilidad, señálalo (alternativa: `ink/strong-on`, 9.6:1).
-- **Secundario / outline:** fondo `background/standard`, borde `stroke/standard` + `line/border-standard`, texto `ink/standard`.
-- **Error:** fondo `background/error` + `ink/inverse-on`.
-- **Estados:** hover/pressed → superposición del color base (⚠️ `interactive/bg-accent-hover` / `-pressed` existen pero están vacíos); disabled → texto `ink/disabled`, fondo `background/disabled`; focus → anillo 2px `line/border-strong` con separación de 2px.
+Componente `flexible` de mobile-library Rappi 8 (Figma `j7dMt2KutCl1U0BUZN1jqu`, set `40115:170`).
+
+- **Estilos:** `primary` (acción principal, una por vista) · `secondary` (apoyo) · `tertiary` (menor énfasis, con borde).
+- **Tamaños:** `xSmall` 24 · `small` 32 · `medium` 40 · `large` 48 · `xLarge` 56. Padding lateral 8 · 16 · 16 · 24 · 28. Texto `caption-2` (xSmall), `caption-1` (small, medium), `body` (large, xLarge), siempre Medium. Por debajo de `large`, extiende el área táctil a 48px.
+- **Estados:** `enable` · `loading` (3 puntos en lugar del label) · `disable` · `skeleton`. `disable` es un estado, no un estilo.
+- **Ícono:** a la izquierda o a la derecha (nunca los dos), o solo ícono (`label=false`, cuadrado del alto del tamaño). `loading` no existe con ícono + label. Ícono 16 (xSmall), 20 (small), 24 (resto).
+- **Tokens:**
+
+| style · state | Fondo | Texto / ícono | Borde |
+|---|---|---|---|
+| primary | `background/accent` | `ink/inverse-on` | — |
+| secondary | `background/weak` | `ink/strong` | — |
+| tertiary | `background/standard` | `ink/strong` | `stroke/standard` + `line/border-standard` |
+| primary · disable | `background/disabled` | `ink/disabled` | — |
+| secondary / tertiary · disable | el de su estilo | `ink/disabled` | el de su estilo |
+| loading | el de su estilo | puntos `ink/inverse-on` (primary) · `ink/strong` (secondary, tertiary) | el de su estilo |
+| skeleton | `skeleton/standard` | `skeleton/standard` | — |
+
+- Radio `radius/pill`. ⚠️ `primary` da 2.2:1 de contraste: si piden revisión de accesibilidad, señálalo (alternativa: `ink/strong-on`, 9.6:1).
+- **Hover / pressed / focus:** no son variantes en Figma y no aplican en mobile. En web: primary → `interactive/bg-accent-hover` / `-pressed`, secondary → `interactive/bg-weak-*`, tertiary → `interactive/bg-standard-*`; foco → `interactive/border-focus` (stroke `selected`, 2px, separación 2px).
 
 ```css
-.rp-btn--primary {
-  background: var(--rp-color-background-accent);
-  color: var(--rp-color-ink-inverse-on);
+.rp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 40px; padding: 0 16px;              /* medium */
   border-radius: var(--rp-radius-pill);
-  min-height: 48px; /* size large; en medium (40) extiende el hit area */
-  padding: 0 var(--rp-space-24);
-  font-size: var(--rp-type-pp-object-sans-size-body);
-  line-height: var(--rp-type-pp-object-sans-line-height-body);
+  font-family: var(--rp-font-family-content);
+  font-weight: var(--rp-font-weight-medium);
+  font-size: var(--rp-type-pp-object-sans-size-caption-1);
 }
-.rp-btn--primary:disabled {
-  background: var(--rp-color-background-disabled);
-  color: var(--rp-color-ink-disabled);
-}
+.rp-btn--primary   { background: var(--rp-color-background-accent);   color: var(--rp-color-ink-inverse-on); }
+.rp-btn--secondary { background: var(--rp-color-background-weak);     color: var(--rp-color-ink-strong); }
+.rp-btn--tertiary  { background: var(--rp-color-background-standard); color: var(--rp-color-ink-strong);
+                     border: var(--rp-stroke-standard) solid var(--rp-color-line-border-standard); }
+.rp-btn:disabled          { color: var(--rp-color-ink-disabled); }
+.rp-btn--primary:disabled { background: var(--rp-color-background-disabled); }
 ```
 
 ## Card
