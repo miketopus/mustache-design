@@ -18,10 +18,13 @@
  *         // collapses into a single `<a class="sb-title">` instead of
  *         // repeating the label as both a header and its own link
  *         { items: [{ label: 'Overview', href: '#overview' }] },
- *         // a locked, collapsible placeholder (chevron + "Coming soon")
+ *         // collapsible item: locked placeholder ("Coming soon") or, with
+ *         // `items`, a folder of sub-links (opens itself on the current page)
  *         { title: 'Get Started', items: [
- *           { label: 'Get Started', href: '#get-started' },
- *           { label: 'Designing', collapse: true, locked: true }
+ *           { label: 'Designing', collapse: true, items: [
+ *             { label: 'Design Principles', href: 'design-principles.html' }
+ *           ]},
+ *           { label: 'Developing', collapse: true, locked: true }
  *         ]}
  *       ],
  *       // optional — only renders if it has 2+ items (a single-section
@@ -65,7 +68,9 @@
         '<button type="button" class="sb-collapse-btn" aria-expanded="false">' +
           item.label + (item.locked ? LOCK_SVG : '') + CHEV_SVG +
         '</button>' +
-        '<div class="sb-collapse-body"><p class="sb-collapse-soon">' + (item.note || 'Coming soon') + '</p></div>' +
+        '<div class="sb-collapse-body">' + (item.items && item.items.length
+          ? '<div class="sb-sub">' + item.items.map(function (it) { return '<a' + linkAttrs(it) + '>' + it.label + '</a>'; }).join('') + '</div>'
+          : '<p class="sb-collapse-soon">' + (item.note || 'Coming soon') + '</p>') + '</div>' +
       '</div>';
     }
     return '<a' + linkAttrs(item) + '>' + item.label + '</a>';
@@ -110,7 +115,12 @@
       this.innerHTML = html;
 
       this._markCurrentPage();
+      // a folder that holds the current page starts open
+      this.querySelectorAll('.sb-collapse-item').forEach(function (it) {
+        if (it.querySelector('a.on')) { it.dataset.open = 'true'; it.querySelector('.sb-collapse-btn').setAttribute('aria-expanded', 'true'); }
+      });
       this._wireCollapse();
+      this._wireGlide();
       this._wireScrollSpy();
     }
 
@@ -130,6 +140,45 @@
           var u = new URL(href, location.href);
           if (u.origin === location.origin && normalize(u.pathname) === current) a.classList.add('on');
         } catch (e) { /* ignore malformed hrefs */ }
+      });
+    }
+
+    // Fondo que se desliza al ítem bajo el cursor (ref. 21st.dev animated-sidebar).
+    _wireGlide() {
+      if (!window.matchMedia || !matchMedia('(hover: hover)').matches) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var aside = this.querySelector('.sidebar');
+      if (!aside) return;
+      var glide = document.createElement('span');
+      glide.className = 'sb-glide';
+      glide.setAttribute('aria-hidden', 'true');
+      aside.insertBefore(glide, aside.firstChild);
+      aside.classList.add('is-glide');
+      var TARGETS = '.sb-links a, .sb-collapse-btn, a.sb-title:not(.sb-caps)';
+      var shown = false;
+      function moveTo(el) {
+        var a = aside.getBoundingClientRect(), r = el.getBoundingClientRect();
+        // primera aparición: sin deslizar desde (0,0), solo aparece en su lugar
+        glide.classList.toggle('no-anim', !shown);
+        glide.style.width = r.width + 'px';
+        glide.style.height = r.height + 'px';
+        glide.style.transform = 'translate(' + (r.left - a.left + aside.scrollLeft) + 'px,' + (r.top - a.top + aside.scrollTop) + 'px)';
+        glide.classList.add('is-on');
+        shown = true;
+      }
+      aside.addEventListener('pointerover', function (e) {
+        var el = e.target.closest(TARGETS);
+        if (el && aside.contains(el)) moveTo(el);
+      });
+      aside.addEventListener('pointerleave', function () {
+        glide.classList.remove('is-on');
+        shown = false;
+      });
+      // al abrir o cerrar un desplegable los ítems cambian de lugar
+      aside.addEventListener('transitionend', function (e) {
+        if (!shown || !e.target.classList.contains('sb-collapse-body')) return;
+        var hov = aside.querySelector(TARGETS.split(', ').map(function (t) { return t + ':hover'; }).join(', '));
+        if (hov) moveTo(hov);
       });
     }
 

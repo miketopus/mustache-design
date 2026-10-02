@@ -22,6 +22,8 @@
     "note": "Piloto. El contrato no salió del plugin uSpec Extract (_base.json); se armó con el MCP de Figma siguiendo la misma forma. En producción, reemplazar por la salida de create-component-md."
   },
 
+  "examplesNote": "Las filas tienen scroll horizontal, igual que en el producto.",
+
   "summary": {
     "lead": "Fila con scroll horizontal que agrupa los accesos a las verticales de Rappi: 2 chips promocionales grandes y una serie de tiles de tienda.",
     "what": "Contenedor de layout, no un átomo. Ordena instancias de _horizontal-matrix-atoms (chips) y _vertical-matrix-atoms (tiles) en una sola fila desplazable.",

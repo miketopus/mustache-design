@@ -50,6 +50,8 @@ section.doc{padding-top:56px;scroll-margin-top:calc(var(--topbar) + 20px)}
 /* preview stage: the component screenshot scrolls like the real row */
 .stage{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px 0 28px 24px;margin:14px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .stage img{display:block;height:auto;max-width:none}
+.stage.fit{padding:24px}
+.stage.fit img{max-width:100%;margin:0 auto}
 .stage-cap{font-size:12.5px;color:var(--muted-2);margin:-6px 0 14px}
 
 .example{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin:16px 0}

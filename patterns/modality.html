@@ -11,9 +11,11 @@
 <link rel="stylesheet" href="../css/site-header.css">
 <link rel="stylesheet" href="../css/site-sidebar.css">
 <link rel="stylesheet" href="../css/hero-particles.css">
+<link rel="stylesheet" href="../css/component-tabs.css">
 <script src="../js/site-header.js" defer></script>
 <script src="../js/site-sidebar.js" defer></script>
 <script src="../js/hero-particles.js" defer></script>
+<script src="../js/component-tabs.js" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -57,6 +59,17 @@
   table.spec td{padding:10px 16px 10px 0;color:var(--muted);border-bottom:1px solid var(--line)}
   table.spec td:first-child{color:var(--text);font-family:var(--mono);font-weight:500}
   table.spec tr:last-child td{border-bottom:none}
+
+
+  /* Motion: un ejemplo por tabla (Inicio · Elemento · Movimiento · Duración) */
+  .mo-wrap{overflow-x:auto}
+  table.spec.mo{margin:6px 0 18px;table-layout:fixed;min-width:560px}
+  table.spec.mo th:nth-child(1){width:12%}table.spec.mo th:nth-child(2){width:30%}table.spec.mo th:nth-child(4){width:13%}
+  table.spec.mo td:first-child,table.spec.mo td:last-child{font-family:var(--mono);white-space:nowrap}
+  table.spec.mo td:nth-child(2){color:var(--text)}
+  .mo-trigger{margin:-4px 0 10px}
+  .mo-trigger b{color:var(--text)}
+  .doc .mo-phase{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--muted-2);margin:16px 0 0}
 
   .chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 20px}
   .chip{font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px 10px}
@@ -144,20 +157,6 @@
       ],
       "title": "Patterns"
     }
-  ],
-  "onThisPage": [
-    {
-      "label": "Overview",
-      "href": "#overview"
-    },
-    {
-      "label": "Design",
-      "href": "#design"
-    },
-    {
-      "label": "Usage",
-      "href": "#usage"
-    }
   ]
 };
   </script>
@@ -172,42 +171,37 @@
         <div class="crumb"><b>Patterns</b> <span>/</span> Modality</div>
         <h1 class="page-h1 display">Modality</h1>
         <p class="page-lead">Soluciones gráficas que, a través de un diseño fluido y sencillo, presentan el contenido de una manera clara que facilita la toma de decisiones.</p>
-        <div class="meta-row"><span class="meta-chip"><b>Tabs</b> Design · Usage</span></div>
       </div>
     </div>
 
     <div class="main-inner">
 
+      <div class="ctab-panel" data-tab="resumen" data-label="Resumen">
       <section class="doc" id="overview">
         <h2>Modality</h2>
-
         <p>Estas soluciones gráficas tienen como fin, a través de su diseño fluido y sencillo, presentar el contenido de una manera clara que facilite la toma de decisiones en las personas usuarias.</p>
-        <p>Pestañas de esta sección en la fuente: Design | Usage.</p>
-
-      </section>
-      <section class="doc" id="design">
-        <h2>Design</h2>
-
         <p>iOS: another component of iOS 13's new look is cards. Since the original SDK, the default presentation style in iPhone has covered the full screen. We're changing that default to a much more fluid, card presentation &mdash; and even better, they are dismissible with just a single downwards swipe.</p>
         <p>New in iOS 13 we have a standard design for presentations. For example, if I'm here in the Contacts app and I tap plus to add a new contact, we have a new presentation style that looks like this, rather than the full screen presentation that we had before. You can see that the root view controller's view is not as scaled down and not removed from the view hierarchy.</p>
 
-        <h3>¿Cuándo usar un estilo determinado?</h3>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Componente:</b> las sábanas y pantallas completas de este patrón se arman con <a href="../components/modal-sheets.html"><u>Modal sheets</u></a> (handle-sheets, stacked-sheets, full-screen-sheets y full-screen).</p></div>
+      </section>
+      </div>
+
+      <div class="ctab-panel" data-tab="cuando-usar" data-label="Cuándo usar">
+      <section class="doc" id="cuando">
+        <h2>¿Cuándo usar un estilo determinado?</h2>
         <p>Elegir entre todas las opciones que nos da Apple/Android puede ser algo complejo.</p>
         <p>En primer lugar, debemos evaluar si realmente necesitamos una vista modal o no.</p>
         <p>Una experiencia modal saca a las personas de su contexto actual, por lo que es esencial usar modales solo cuando le brindan un beneficio al usuario.</p>
         <p>No deseamos molestar a nuestros usuarios. Pero, cuando decida utilizar un modal, su elección debe basarse en el nivel o la complejidad del compromiso. Use una hoja para contenido modal no inmersivo que no resulte en una tarea compleja.</p>
         <p>Utilice una vista modal de pantalla completa para contenido envolvente, como videos, fotos o vistas de cámara, o una tarea compleja que se beneficie de una presentación de pantalla completa, como marcar un documento o editar una foto.</p>
 
-        <h3>Buenas prácticas</h3>
-        <p>Si al final decide usar una modal, considere y recuerde lo siguiente:</p>
-        <ul>
-          <li>¿Puedes decir claramente cuál es el propósito de este modal? Mantenga las tareas modales simples, cortas y enfocadas.</li>
-          <li>Las modales siempre deben incluir un botón de descarte. No solo permitirá a los usuarios que no conocen el gesto de descartar el modal, sino que también mejorará la accesibilidad.</li>
-          <li>Independientemente de si las personas usan el gesto de deslizar o un botón para cerrar la vista, si la acción puede provocar la pérdida de datos generados por el usuario, presente una hoja de acciones que explique la situación y brinde a las personas formas de resolverla (como "Eliminar borrador" y "Guardar borrador" al descartar un nuevo correo electrónico).</li>
-          <li>En general, es recomendable agregar un título a un modal que describa su propósito. A veces es necesario incluir un subtítulo para mayor comprensión.</li>
-        </ul>
+      </section>
+      </div>
 
-        <h3>Tipos de Modales</h3>
+      <div class="ctab-panel" data-tab="tipos" data-label="Tipos">
+      <section class="doc" id="tipos-modales">
+        <h2>Tipos de modales</h2>
         <p>Pueden ocupar toda la pantalla, o una parte de ella. Pueden estar centrados, fijados en la parte superior o inferior. A veces aparecen, a veces se deslizan. No es de extrañar que esto sea confuso.</p>
 
         <p><strong>Pickers</strong> — Este tipo de modal requiere una decisión antes de poder continuar. Puede ser un cuadro de diálogo de advertencia que le permite especificar qué desea hacer o qué modo desea seleccionar.</p>
@@ -221,41 +215,127 @@
                 <div class="note gap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Así está en la fuente.</b> La página menciona un diagrama de flujo de referencia rápida para elegir el tipo de modal, pero es solo contenido visual (sin texto extraíble).</p></div>
 
       </section>
-      <section class="doc" id="usage">
-        <h2>Usage</h2>
+      </div>
 
-        <h3>Ejemplo Sábana - Detalle de producto</h3>
-        <p>Cuando seleccionamos un elemento para conocer sus detalles o elegir sus características, la modal en la que este se encuentra presente inicia una transición desde la parte inferior hacia la parte superior de la pantalla con una duración de 0,20s.</p>
-        <p>En el mismo momento en el que la modal, con el elemento mencionado, atraviesa esa transición, una capa de color negro se sobrepone en la pantalla inicial con opacidad de 0% a 80% junto a un fade de 0,20s.</p>
-        <p>Una vez comienza la animación, a los 0,10s, la modal da paso al Tab bar (con el stepper y botón de agregar) desde la parte inferior de la pantalla con una trayectoria de 0,10 segundos en donde ambos elementos concluyen al mismo tiempo su recorrido.</p>
-        <p>Al cerrarse la modal, esta se convierte en una animación que asciende 24px en 0,10s, posterior a ello desciende hasta el final de la pantalla con una duración de 0,20s.</p>
-        <p>Es necesario tener presente que, al mismo momento en que la animación de la modal desciende para finalizar su recorrido en la pantalla, en un trayecto de 0,20s, la Tab bar experimenta la misma transición. Así mismo, en el momento en que la modal asciende, el fade de color negro que se encuentra detrás experimenta una opacidad de 80% a 0% con una duración de 0,20s.</p>
-
-        <h3>Ejemplo pantalla parcial - Modal más servicios Home</h3>
-        <p>En el momento en el que se selecciona el botón "Más servicios" en el Home de la app, la modal que ingresa desde la parte inferior de la pantalla hace un recorrido hacia la parte superior de la pantalla con una duración total de 0,20s. Al mismo momento en el que el movimiento sucede, una capa negra se ubica sobre la pantalla con una opacidad de 0% a 80% con 0,20s de duración total.</p>
-        <p>Al cerrarse la modal, esta se transforma en una animación que asciende 24px con 0,10s de duración, en donde posteriormente la modal vuelve a descender hasta finalizar su interacción en la pantalla con una duración total de 0,20s.</p>
-        <p>Es necesario tener en cuenta que al momento en que la modal asciende, el fade de la capa negra detrás de esta experimenta una opacidad de 80% a 0% con una duración total de 0,20s.</p>
-
-        <h3>Ejemplo pantalla parcial - Oferta</h3>
-        <p>La modal promocional, que surge en la pantalla del Home sin que el usuario realice alguna acción previa, ocurre cuando buscamos comunicar algún deal o contenido de forma rápida y clara. Esta modal surge de la parte inferior de la pantalla hacia la parte superior y ejecuta un recorrido con una duración de 0,20s hasta su final.</p>
-        <p>A este tipo de modal, en el momento en el que hace su aparición en pantalla, una capa negra se le sobrepone dándole una opacidad de 0% a 80% con una duración de 0,20s.</p>
-        <p>Al cerrarse la modal, esta se transforma en una animación que asciende 24px con 0,10s de duración, en donde posteriormente la modal vuelve a descender para finalizar su interacción en la pantalla con una duración total de 0,20s.</p>
-        <p>Es necesario tener en cuenta que al momento en que la modal asciende, el fade de la capa negra detrás de esta experimenta una opacidad de 80% a 0% con una duración total de 0,15s.</p>
-
-        <h3>Ejemplo pantalla parcial - Modal Pantalla de rescate</h3>
-        <p>La modal de rescate, que surge en la pantalla del Home sin que el usuario realice alguna acción previa, ocurre cuando buscamos comunicar al usuario que su pedido fue entregado y damos opciones para tener soporte sobre esta orden. Esta modal surge de la parte inferior de la pantalla hacia la parte superior y ejecuta un recorrido con una duración de 0,20s hasta su final.</p>
-        <p>A este tipo de modal, en el momento en el que hace su aparición en pantalla, una capa negra se le sobrepone dándole una opacidad de 0% a 80% con una duración de 0,20s.</p>
-        <p>Al cerrarse la modal, esta se transforma en una animación que asciende 24px con 0,10s de duración, en donde posteriormente la modal vuelve a descender hasta finalizar su interacción en la pantalla con una duración total de 0,20s.</p>
-        <p>Es necesario tener en cuenta que al momento en que la modal asciende, el fade de la capa negra detrás de esta experimenta una opacidad de 80% a 0% con una duración total de 0,15s.</p>
-
-        <h3>Ejemplo pantalla completa - Modal entrega estimada</h3>
-        <p>Al seleccionar el componente del seguimiento de la orden en el header, comienza la entrada de la pantalla del ETA. Esta pantalla completa surge de la parte inferior de la pantalla hacia la parte superior y ejecuta un recorrido con una duración de 0,20s hasta su final.</p>
-        <p>0,10s después de que la pantalla llega a su posición final, se incorpora a la visualización de esta un componente de Handle desde la parte inferior, con una duración total de 0,20s.</p>
-        <p>Al mismo tiempo, desde la parte superior de la pantalla, entra el componente del Tiempo de Entrega con una duración total de 0,20s con un desplazamiento hacia abajo.</p>
-        <p>0,20s después de que la pantalla completa entra a su posición final, entra el componente de informational messages. Este componente asciende desde la parte de atrás del componente con Handle, realizando un desplazamiento de 50px hacia arriba con una duración total de 0,20s.</p>
-        <p>Al cerrarse esta pantalla del ETA, esta desciende hasta finalizar su recorrido en la parte inferior de la pantalla con un tiempo total de 0,20s.</p>
+      <div class="ctab-panel" data-tab="buenas-practicas" data-label="Buenas prácticas">
+      <section class="doc" id="buenas">
+        <h2>Buenas prácticas</h2>
+        <p>Si al final decide usar una modal, considere y recuerde lo siguiente:</p>
+        <ul>
+          <li>¿Puedes decir claramente cuál es el propósito de este modal? Mantenga las tareas modales simples, cortas y enfocadas.</li>
+          <li>Las modales siempre deben incluir un botón de descarte. No solo permitirá a los usuarios que no conocen el gesto de descartar el modal, sino que también mejorará la accesibilidad.</li>
+          <li>Independientemente de si las personas usan el gesto de deslizar o un botón para cerrar la vista, si la acción puede provocar la pérdida de datos generados por el usuario, presente una hoja de acciones que explique la situación y brinde a las personas formas de resolverla (como "Eliminar borrador" y "Guardar borrador" al descartar un nuevo correo electrónico).</li>
+          <li>En general, es recomendable agregar un título a un modal que describa su propósito. A veces es necesario incluir un subtítulo para mayor comprensión.</li>
+        </ul>
 
       </section>
+      </div>
+
+      <div class="ctab-panel" data-tab="motion" data-label="Motion">
+      <section class="doc" id="usage">
+        <h2>Ejemplos de motion</h2>
+        <p>Todos los tiempos en segundos. <b>Inicio</b> cuenta desde que arranca la entrada o la salida.</p>
+        <p>Casi todas las modales comparten la misma base: suben desde abajo en 0,20s mientras el scrim pasa de 0% a 80%. Al cerrar, rebotan 24px hacia arriba y bajan en 0,20s.</p>
+        <h3>Sábana · Detalle de producto</h3>
+        <p class="mo-trigger"><b>Se abre:</b> al tocar un producto para ver su detalle o elegir sus opciones.</p>
+        <p class="mo-phase">Entrada</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Modal</td><td>Sube desde abajo hasta su posición</td><td>0,20s</td></tr>
+            <tr><td>0s</td><td>Capa negra (scrim)</td><td>Opacidad de 0% a 80%</td><td>0,20s</td></tr>
+            <tr><td>0,10s</td><td>Tab bar (stepper y botón agregar)</td><td>Entra desde abajo y termina al mismo tiempo que la modal</td><td>0,10s</td></tr>
+          </tbody>
+        </table></div>
+        <p class="mo-phase">Salida</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Modal</td><td>Sube 24px</td><td>0,10s</td></tr>
+            <tr><td>0,10s</td><td>Modal</td><td>Baja hasta salir de la pantalla</td><td>0,20s</td></tr>
+            <tr><td>0s</td><td>Capa negra (scrim)</td><td>Opacidad de 80% a 0%</td><td>0,20s</td></tr>
+            <tr><td>0,10s</td><td>Tab bar</td><td>Baja junto con la modal</td><td>0,20s</td></tr>
+          </tbody>
+        </table></div>
+        <h3>Pantalla parcial · Más servicios (Home)</h3>
+        <p class="mo-trigger"><b>Se abre:</b> al tocar "Más servicios" en el Home.</p>
+        <p class="mo-phase">Entrada</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Modal</td><td>Sube desde abajo hasta su posición</td><td>0,20s</td></tr>
+            <tr><td>0s</td><td>Capa negra (scrim)</td><td>Opacidad de 0% a 80%</td><td>0,20s</td></tr>
+          </tbody>
+        </table></div>
+        <p class="mo-phase">Salida</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Modal</td><td>Sube 24px</td><td>0,10s</td></tr>
+            <tr><td>0,10s</td><td>Modal</td><td>Baja hasta salir de la pantalla</td><td>0,20s</td></tr>
+            <tr><td>0s</td><td>Capa negra (scrim)</td><td>Opacidad de 80% a 0%</td><td>0,20s</td></tr>
+          </tbody>
+        </table></div>
+        <h3>Pantalla parcial · Oferta</h3>
+        <p class="mo-trigger"><b>Se abre:</b> sola en el Home, sin que la persona haga nada, para comunicar un deal de forma rápida.</p>
+        <p class="mo-phase">Entrada</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Modal</td><td>Sube desde abajo hasta su posición</td><td>0,20s</td></tr>
+            <tr><td>0s</td><td>Capa negra (scrim)</td><td>Opacidad de 0% a 80%</td><td>0,20s</td></tr>
+          </tbody>
+        </table></div>
+        <p class="mo-phase">Salida</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Modal</td><td>Sube 24px</td><td>0,10s</td></tr>
+            <tr><td>0,10s</td><td>Modal</td><td>Baja hasta salir de la pantalla</td><td>0,20s</td></tr>
+            <tr><td>0s</td><td>Capa negra (scrim)</td><td>Opacidad de 80% a 0%</td><td>0,15s</td></tr>
+          </tbody>
+        </table></div>
+        <h3>Pantalla parcial · Rescate</h3>
+        <p class="mo-trigger"><b>Se abre:</b> sola en el Home cuando el pedido fue entregado, con opciones de soporte para esa orden.</p>
+        <p class="mo-phase">Entrada</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Modal</td><td>Sube desde abajo hasta su posición</td><td>0,20s</td></tr>
+            <tr><td>0s</td><td>Capa negra (scrim)</td><td>Opacidad de 0% a 80%</td><td>0,20s</td></tr>
+          </tbody>
+        </table></div>
+        <p class="mo-phase">Salida</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Modal</td><td>Sube 24px</td><td>0,10s</td></tr>
+            <tr><td>0,10s</td><td>Modal</td><td>Baja hasta salir de la pantalla</td><td>0,20s</td></tr>
+            <tr><td>0s</td><td>Capa negra (scrim)</td><td>Opacidad de 80% a 0%</td><td>0,15s</td></tr>
+          </tbody>
+        </table></div>
+        <h3>Pantalla completa · Entrega estimada (ETA)</h3>
+        <p class="mo-trigger"><b>Se abre:</b> al tocar el seguimiento de la orden en el header.</p>
+        <p class="mo-phase">Entrada</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Pantalla completa</td><td>Sube desde abajo hasta su posición</td><td>0,20s</td></tr>
+            <tr><td>0,30s</td><td>Componente con handle</td><td>Entra desde abajo (0,10s después de que la pantalla llega)</td><td>0,20s</td></tr>
+            <tr><td>0,30s</td><td>Tiempo de entrega</td><td>Entra desde arriba, desplazándose hacia abajo</td><td>0,20s</td></tr>
+            <tr><td>0,40s</td><td>Informational messages</td><td>Sube 50px desde detrás del componente con handle</td><td>0,20s</td></tr>
+          </tbody>
+        </table></div>
+        <p class="mo-phase">Salida</p>
+        <div class="mo-wrap"><table class="spec mo">
+          <thead><tr><th>Inicio</th><th>Elemento</th><th>Movimiento</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td>0s</td><td>Pantalla completa</td><td>Baja hasta salir de la pantalla</td><td>0,20s</td></tr>
+          </tbody>
+        </table></div>
+        <div class="note gap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><p><b>Por confirmar.</b> Al cerrar, el scrim dura 0,20s en Detalle de producto y Más servicios, pero 0,15s en Oferta y Rescate. Si no es intencional, conviene unificarlo.</p></div>
+      </section>
+      </div>
 
       <a href="#top" class="backtop"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg> Volver arriba</a>
     </div>

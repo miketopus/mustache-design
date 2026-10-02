@@ -26,7 +26,7 @@
     { id: 'stash',      href: '/stash.html',    label: 'Tools', ai: true, divider: true, lockAfter: true },
   ];
 
-  // AI mark for Stash/Resources — the Claude Code "thinking" glyph: it
+  // AI mark for Tools — the Claude Code "thinking" glyph: it
   // cycles · ✢ ✳ ✶ ✻ ✽ back and forth every 250ms (after
   // https://codepen.io/levimluke/pen/OPMJrvv). U+FE0E forces text
   // presentation so ✳ doesn't turn into an emoji on Apple platforms.
