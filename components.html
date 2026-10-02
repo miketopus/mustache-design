@@ -55,11 +55,25 @@
   .note p{margin:0;font-size:14px;color:var(--muted)}
   .note p b{color:var(--text)}
 
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
-  .chip{font-family:var(--mono);font-size:12.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 12px;display:inline-flex;align-items:center;gap:5px}
-  a.chip-live{color:#fff;background:#34C85A;border-color:#34C85A;font-weight:600;transition:.15s}
-  a.chip-live:hover{background:#2CAA4C;border-color:#2CAA4C}
-  a.chip-live svg{width:11px;height:11px}
+
+
+  /* Overview: una card por componente. Arriba, espacio en blanco para el
+     preview del componente (pendiente); abajo, nombre y para qué sirve. */
+  .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:0 0 28px}
+  .ccard{display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#FFFFFF;transition:transform .18s,box-shadow .18s,border-color .18s}
+  /* documentados: botón circular con flecha diagonal (toda la card es el link) */
+  .ccard-go{margin-left:auto;flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--text);color:#fff;display:grid;place-items:center;transition:transform .18s}
+  .ccard-go svg{width:15px;height:15px}
+  a.ccard:hover .ccard-go{transform:rotate(45deg)}
+  a.ccard:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(23,26,30,.12)}
+  .ccard-prev{height:150px;background:#FFFFFF;border-bottom:1px solid var(--line);overflow:hidden}
+  /* imagen de ejemplo: se reemplaza por el preview real de cada componente */
+  .ccard-prev img{display:block;width:100%;height:100%;object-fit:cover}
+  .ccard-body{padding:18px 18px 20px}
+  .ccard-body h5{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.01em;color:var(--text);margin-bottom:8px}
+  .doc .ccard-body p{font-size:13.5px;line-height:1.5;color:var(--muted);margin:0}
+  .ccard-soon{display:inline-flex;align-items:center;gap:4px;font-family:var(--body);font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+  .ccard-soon svg{width:10px;height:10px}
 
   /* quality checklist — ported from the Zeroheight "Quality Components" doc */
   .qc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:18px 0 8px}
@@ -93,7 +107,7 @@
           { label: 'Quality Components', href: '#quality-components' }
         ] },
         { title: 'Bars', items: [
-          { label: 'Modal Sheets', collapse: true, locked: true },
+          { label: 'Modal Sheets', href: 'components/modal-sheets.html' },
           { label: 'Navigation Bars', collapse: true, locked: true },
           { label: 'Search Bars', collapse: true, locked: true },
           { label: 'Tab Bars', collapse: true, locked: true }
@@ -152,7 +166,7 @@
         <p class="page-lead">Los Componentes en Rappi tienen el objetivo de solucionar y construir una consistencia visual a través de toda nuestra interfaz.</p>
         <div class="meta-row">
           <span class="meta-chip"><b>Estado</b> En progreso</span>
-          <span class="meta-chip"><b>Piloto</b> Buttons</span>
+          <span class="meta-chip"><b>Documentados</b> 3 de 32</span>
           <span class="meta-chip"><b>Fuente</b> Rappi Web DS</span>
         </div>
       </div>
@@ -161,61 +175,60 @@
     <div class="main-inner">
 
       <section class="doc" id="overview">
-        <h2>Conoce más sobre ellos</h2>
-        <p>Cada Componente creado en nuestro Design System, tiene como objetivo construir una interfaz consistente, eficiente y clara al momento de usar.</p>
-        <p>Aplicarlos en cada uno de nuestros diseños, nos permite además de solucionar de forma más rápida y eficiente algunos problemas en UI o desarrollo, enfocar nuestra energía en crear nuevas e innovadoras soluciones.</p>
+        <h2>Las piezas detrás de cada pedido</h2>
+        <p>Cada pantalla de Rappi, del home al checkout, se arma con estas piezas. Úsalas tal cual y dedica tu tiempo a resolver el problema, no a redibujar un botón.</p>
 
-        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Trabajo en progreso.</b> Esta sección replica la estructura real del Design System (Bars, Controls, Views, Elements — más de 40 componentes en total entre Storybook y Figma). Empezamos por <b>Buttons</b> como piloto para validar el formato antes de escalar al resto.</p></div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Trabajo en progreso.</b> Esta sección replica la estructura real del Design System: Bars, Controls, Views y Elements. Ya están documentados <b>Buttons</b>, <b>Matrix</b> y <b>Modal sheets</b>; el resto se suma desde Figma.</p></div>
 
         <h3>Categorías</h3>
         <p>Los componentes se agrupan según dónde y cómo se usan en la interfaz:</p>
 
         <h4>Bars</h4>
-        <div class="chips">
-          <span class="chip">Modal Sheets</span>
-          <span class="chip">Navigation Bars</span>
-          <span class="chip">Search Bars</span>
-          <span class="chip">Tab Bars</span>
+        <div class="cgrid">
+          <a class="ccard" href="components/modal-sheets.html"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Modal Sheets<span class="ccard-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></h5><p>Paneles que suben desde abajo para tareas cortas, sin salir de la pantalla.</p></div></a>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Navigation Bars <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Barra superior con el título de la pantalla y acciones para volver o salir.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Search Bars <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Búsqueda con sugerencias, búsquedas recientes y filtros.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Tab Bars <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Navegación principal entre las secciones de la app.</p></div></div>
         </div>
 
         <h4>Controls</h4>
-        <div class="chips">
-          <a class="chip chip-live" href="components/button.html">Buttons <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
-          <span class="chip">Chips</span>
-          <span class="chip">Checkboxes</span>
-          <span class="chip">Filters</span>
-          <span class="chip">Loaders</span>
-          <span class="chip">Notifications</span>
-          <span class="chip">Pagination</span>
-          <span class="chip">Pills</span>
-          <span class="chip">Pop-up</span>
-          <span class="chip">Progress</span>
-          <span class="chip">Radiobuttons</span>
-          <span class="chip">Snackbars</span>
-          <span class="chip">Sliders</span>
-          <span class="chip">Switches</span>
-          <span class="chip">Tabs</span>
-          <span class="chip">Tags</span>
-          <span class="chip">Text fields</span>
-          <span class="chip">Tooltips</span>
+        <div class="cgrid">
+          <a class="ccard" href="components/button.html"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Buttons<span class="ccard-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></h5><p>Disparan la acción que la persona quiere hacer: pedir, pagar, confirmar.</p></div></a>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Chips <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Opciones compactas para elegir o filtrar entre varias alternativas.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Checkboxes <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Elegir una o varias opciones de una lista.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Filters <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Acotan resultados por categoría, precio u otros criterios.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Loaders <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Avisan que algo está cargando y que la app sigue trabajando.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Notifications <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Avisos sobre un pedido, una promo o la cuenta.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Pagination <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Muestran en qué página o paso estás y permiten moverte.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Pills <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Etiquetas cortas para destacar un estado o un atributo.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Pop-up <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Ventana que pide una decisión antes de continuar.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Progress <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Cuánto falta para completar una tarea o un pedido.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Radiobuttons <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Elegir una sola opción entre varias.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Snackbars <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Mensaje breve que confirma una acción y se va solo.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Sliders <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Ajustar un valor dentro de un rango, como precio o distancia.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Switches <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Prender o apagar una opción al instante.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Tabs <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Cambiar entre vistas relacionadas en una misma pantalla.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Tags <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Etiquetas para categorizar contenido, como "Nuevo" o "Promo".</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Text fields <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Campos para escribir datos: dirección, nombre, código.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Tooltips <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Explicación corta que aparece junto a un elemento.</p></div></div>
         </div>
 
         <h4>Views</h4>
-        <div class="chips">
-          <span class="chip">Banners</span>
-          <span class="chip">Cards</span>
-          <span class="chip">Chat</span>
-          <span class="chip">Innaps</span>
-          <a class="chip chip-live" href="components/horizontal-matrix-layout.html">Matrix <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
-          <span class="chip">Rappipay</span>
-          <span class="chip">Tables</span>
+        <div class="cgrid">
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Banners <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Piezas para destacar ofertas y campañas.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Cards <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Agrupan la información de una tienda, un producto o un pedido.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Chat <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Conversación con soporte o con el repartidor.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Innaps <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Mensajes dentro de la app para anunciar novedades.</p></div></div>
+          <a class="ccard" href="components/horizontal-matrix-layout.html"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Matrix<span class="ccard-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></h5><p>Accesos a las verticales de Rappi en una fila con scroll.</p></div></a>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Rappipay <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Componentes de pagos y de la billetera de RappiPay.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Tables <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Datos ordenados en filas y columnas.</p></div></div>
         </div>
 
         <h4>Elements</h4>
-        <div class="chips">
-          <span class="chip">Avatars</span>
-          <span class="chip">Media</span>
-          <span class="chip">Logos</span>
+        <div class="cgrid">
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Avatars <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Representan a una persona o una tienda con foto o iniciales.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Media <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Imágenes y videos dentro de la interfaz.</p></div></div>
+          <div class="ccard is-soon"><div class="ccard-prev" aria-hidden="true"><img src="assets/identidad-visual/foto/preview-component.png" alt="" loading="lazy"></div><div class="ccard-body"><h5>Logos <span class="ccard-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pronto</span></h5><p>Logos de Rappi y de sus productos.</p></div></div>
         </div>
       </section>
 

@@ -1,0 +1,29 @@
+/* Header de Tools: puntos de 1px cada 6px (los mismos de los headers de
+   Design) que toman color de degradés que se mueven lento.
+   Ref. 21st.dev "gradient-dots": una capa del color de fondo con agujeros
+   en grilla tapa unos radial-gradient que se desplazan; solo se ve el
+   color a través de los agujeros. Colores: neón de Rappi.
+   Uso: <div class="gdots" aria-hidden="true"></div> como primer hijo de un
+   contenedor con position:relative y overflow:hidden. */
+.gdots{position:absolute;inset:0;z-index:0;pointer-events:none;
+  --gd-bg:var(--bg,#08080A);
+  background-color:var(--gd-bg);
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent .7px, var(--gd-bg) 1.1px),   /* capa con agujeros */
+    radial-gradient(circle at 50% 50%, #FF441F, transparent 60%),
+    radial-gradient(circle at 50% 50%, #FF4583, transparent 60%),
+    radial-gradient(circle at 50% 50%, #FF8A5C, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #FF2526, transparent 60%),
+    linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16));              /* puntos base, blancos tenues */
+  background-size:6px 6px, 200% 200%, 200% 200%, 200% 200%, 200% 100%, 100% 100%;
+  background-position:0 0, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;
+  animation:gdots 30s linear infinite alternate;
+  /* se apaga hacia el texto (para que el título se lea) y hacia abajo
+     (para no cortar en seco contra el contenido) */
+  -webkit-mask-image:linear-gradient(100deg, transparent 0%, rgba(0,0,0,.35) 35%, #000 75%), linear-gradient(180deg, #000 55%, transparent 100%);
+  -webkit-mask-composite:source-in;
+          mask-image:linear-gradient(100deg, transparent 0%, rgba(0,0,0,.35) 35%, #000 75%), linear-gradient(180deg, #000 55%, transparent 100%);
+          mask-composite:intersect}
+@keyframes gdots{
+  to{background-position:0 0, 800% 400%, 1000% -400%, -1200% -600%, 400% 0%, 0 0}}
+@media(prefers-reduced-motion:reduce){.gdots{animation:none}}

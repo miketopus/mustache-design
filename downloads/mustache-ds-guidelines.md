@@ -191,6 +191,7 @@ Generadas desde el sitio de documentación. Léelas cuando el pedido toque ese t
 
 - `references/site/components/button.md`: Button. Dispara la acción que la persona quiere hacer: pedir, pagar, confirmar, agregar. En Figma es el componente `flexible`: 3 estilos, 5 tamaños, 4 estados, y puede llevar ícono a la izquierda, a la derecha o solo ícono.
 - `references/site/components/horizontal-matrix-layout.md`: Horizontal matrix layout. Fila con scroll horizontal que agrupa los accesos a las verticales de Rappi: 2 chips promocionales grandes y una serie de tiles de tienda.
+- `references/site/components/modal-sheets.md`: Modal sheets. Panel que sube desde abajo, sobre un fondo oscuro, para mostrar una tarea o información sin sacar a la persona de la pantalla en la que está.
 
 **Principios de diseño**
 
@@ -2186,21 +2187,17 @@ El momento de registro en nuestra app o sistema es la primera interacción con n
 
 Soluciones gráficas que, a través de un diseño fluido y sencillo, presentan el contenido de una manera clara que facilita la toma de decisiones.
 
-- **Tabs** Design · Usage
-
 ### Modality
 
 Estas soluciones gráficas tienen como fin, a través de su diseño fluido y sencillo, presentar el contenido de una manera clara que facilite la toma de decisiones en las personas usuarias.
-
-Pestañas de esta sección en la fuente: Design | Usage.
-
-### Design
 
 iOS: another component of iOS 13's new look is cards. Since the original SDK, the default presentation style in iPhone has covered the full screen. We're changing that default to a much more fluid, card presentation — and even better, they are dismissible with just a single downwards swipe.
 
 New in iOS 13 we have a standard design for presentations. For example, if I'm here in the Contacts app and I tap plus to add a new contact, we have a new presentation style that looks like this, rather than the full screen presentation that we had before. You can see that the root view controller's view is not as scaled down and not removed from the view hierarchy.
 
-#### ¿Cuándo usar un estilo determinado?
+> **Componente:** las sábanas y pantallas completas de este patrón se arman con [Modal sheets](../components/modal-sheets.html) (handle-sheets, stacked-sheets, full-screen-sheets y full-screen).
+
+### ¿Cuándo usar un estilo determinado?
 
 Elegir entre todas las opciones que nos da Apple/Android puede ser algo complejo.
 
@@ -2212,19 +2209,7 @@ No deseamos molestar a nuestros usuarios. Pero, cuando decida utilizar un modal,
 
 Utilice una vista modal de pantalla completa para contenido envolvente, como videos, fotos o vistas de cámara, o una tarea compleja que se beneficie de una presentación de pantalla completa, como marcar un documento o editar una foto.
 
-#### Buenas prácticas
-
-Si al final decide usar una modal, considere y recuerde lo siguiente:
-
-- ¿Puedes decir claramente cuál es el propósito de este modal? Mantenga las tareas modales simples, cortas y enfocadas.
-
-- Las modales siempre deben incluir un botón de descarte. No solo permitirá a los usuarios que no conocen el gesto de descartar el modal, sino que también mejorará la accesibilidad.
-
-- Independientemente de si las personas usan el gesto de deslizar o un botón para cerrar la vista, si la acción puede provocar la pérdida de datos generados por el usuario, presente una hoja de acciones que explique la situación y brinde a las personas formas de resolverla (como "Eliminar borrador" y "Guardar borrador" al descartar un nuevo correo electrónico).
-
-- En general, es recomendable agregar un título a un modal que describa su propósito. A veces es necesario incluir un subtítulo para mayor comprensión.
-
-#### Tipos de Modales
+### Tipos de modales
 
 Pueden ocupar toda la pantalla, o una parte de ella. Pueden estar centrados, fijados en la parte superior o inferior. A veces aparecen, a veces se deslizan. No es de extrañar que esto sea confuso.
 
@@ -2246,59 +2231,122 @@ Los modales son una herramienta muy efectiva. Al principio puede resultarle dif�
 
 > **Así está en la fuente.** La página menciona un diagrama de flujo de referencia rápida para elegir el tipo de modal, pero es solo contenido visual (sin texto extraíble).
 
-### Usage
+### Buenas prácticas
 
-#### Ejemplo Sábana - Detalle de producto
+Si al final decide usar una modal, considere y recuerde lo siguiente:
 
-Cuando seleccionamos un elemento para conocer sus detalles o elegir sus características, la modal en la que este se encuentra presente inicia una transición desde la parte inferior hacia la parte superior de la pantalla con una duración de 0,20s.
+- ¿Puedes decir claramente cuál es el propósito de este modal? Mantenga las tareas modales simples, cortas y enfocadas.
 
-En el mismo momento en el que la modal, con el elemento mencionado, atraviesa esa transición, una capa de color negro se sobrepone en la pantalla inicial con opacidad de 0% a 80% junto a un fade de 0,20s.
+- Las modales siempre deben incluir un botón de descarte. No solo permitirá a los usuarios que no conocen el gesto de descartar el modal, sino que también mejorará la accesibilidad.
 
-Una vez comienza la animación, a los 0,10s, la modal da paso al Tab bar (con el stepper y botón de agregar) desde la parte inferior de la pantalla con una trayectoria de 0,10 segundos en donde ambos elementos concluyen al mismo tiempo su recorrido.
+- Independientemente de si las personas usan el gesto de deslizar o un botón para cerrar la vista, si la acción puede provocar la pérdida de datos generados por el usuario, presente una hoja de acciones que explique la situación y brinde a las personas formas de resolverla (como "Eliminar borrador" y "Guardar borrador" al descartar un nuevo correo electrónico).
 
-Al cerrarse la modal, esta se convierte en una animación que asciende 24px en 0,10s, posterior a ello desciende hasta el final de la pantalla con una duración de 0,20s.
+- En general, es recomendable agregar un título a un modal que describa su propósito. A veces es necesario incluir un subtítulo para mayor comprensión.
 
-Es necesario tener presente que, al mismo momento en que la animación de la modal desciende para finalizar su recorrido en la pantalla, en un trayecto de 0,20s, la Tab bar experimenta la misma transición. Así mismo, en el momento en que la modal asciende, el fade de color negro que se encuentra detrás experimenta una opacidad de 80% a 0% con una duración de 0,20s.
+### Ejemplos de motion
 
-#### Ejemplo pantalla parcial - Modal más servicios Home
+Todos los tiempos en segundos. **Inicio** cuenta desde que arranca la entrada o la salida.
 
-En el momento en el que se selecciona el botón "Más servicios" en el Home de la app, la modal que ingresa desde la parte inferior de la pantalla hace un recorrido hacia la parte superior de la pantalla con una duración total de 0,20s. Al mismo momento en el que el movimiento sucede, una capa negra se ubica sobre la pantalla con una opacidad de 0% a 80% con 0,20s de duración total.
+Casi todas las modales comparten la misma base: suben desde abajo en 0,20s mientras el scrim pasa de 0% a 80%. Al cerrar, rebotan 24px hacia arriba y bajan en 0,20s.
 
-Al cerrarse la modal, esta se transforma en una animación que asciende 24px con 0,10s de duración, en donde posteriormente la modal vuelve a descender hasta finalizar su interacción en la pantalla con una duración total de 0,20s.
+#### Sábana · Detalle de producto
 
-Es necesario tener en cuenta que al momento en que la modal asciende, el fade de la capa negra detrás de esta experimenta una opacidad de 80% a 0% con una duración total de 0,20s.
+**Se abre:** al tocar un producto para ver su detalle o elegir sus opciones.
 
-#### Ejemplo pantalla parcial - Oferta
+Entrada
 
-La modal promocional, que surge en la pantalla del Home sin que el usuario realice alguna acción previa, ocurre cuando buscamos comunicar algún deal o contenido de forma rápida y clara. Esta modal surge de la parte inferior de la pantalla hacia la parte superior y ejecuta un recorrido con una duración de 0,20s hasta su final.
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Modal | Sube desde abajo hasta su posición | 0,20s |
+| 0s | Capa negra (scrim) | Opacidad de 0% a 80% | 0,20s |
+| 0,10s | Tab bar (stepper y botón agregar) | Entra desde abajo y termina al mismo tiempo que la modal | 0,10s |
 
-A este tipo de modal, en el momento en el que hace su aparición en pantalla, una capa negra se le sobrepone dándole una opacidad de 0% a 80% con una duración de 0,20s.
+Salida
 
-Al cerrarse la modal, esta se transforma en una animación que asciende 24px con 0,10s de duración, en donde posteriormente la modal vuelve a descender para finalizar su interacción en la pantalla con una duración total de 0,20s.
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Modal | Sube 24px | 0,10s |
+| 0,10s | Modal | Baja hasta salir de la pantalla | 0,20s |
+| 0s | Capa negra (scrim) | Opacidad de 80% a 0% | 0,20s |
+| 0,10s | Tab bar | Baja junto con la modal | 0,20s |
 
-Es necesario tener en cuenta que al momento en que la modal asciende, el fade de la capa negra detrás de esta experimenta una opacidad de 80% a 0% con una duración total de 0,15s.
+#### Pantalla parcial · Más servicios (Home)
 
-#### Ejemplo pantalla parcial - Modal Pantalla de rescate
+**Se abre:** al tocar "Más servicios" en el Home.
 
-La modal de rescate, que surge en la pantalla del Home sin que el usuario realice alguna acción previa, ocurre cuando buscamos comunicar al usuario que su pedido fue entregado y damos opciones para tener soporte sobre esta orden. Esta modal surge de la parte inferior de la pantalla hacia la parte superior y ejecuta un recorrido con una duración de 0,20s hasta su final.
+Entrada
 
-A este tipo de modal, en el momento en el que hace su aparición en pantalla, una capa negra se le sobrepone dándole una opacidad de 0% a 80% con una duración de 0,20s.
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Modal | Sube desde abajo hasta su posición | 0,20s |
+| 0s | Capa negra (scrim) | Opacidad de 0% a 80% | 0,20s |
 
-Al cerrarse la modal, esta se transforma en una animación que asciende 24px con 0,10s de duración, en donde posteriormente la modal vuelve a descender hasta finalizar su interacción en la pantalla con una duración total de 0,20s.
+Salida
 
-Es necesario tener en cuenta que al momento en que la modal asciende, el fade de la capa negra detrás de esta experimenta una opacidad de 80% a 0% con una duración total de 0,15s.
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Modal | Sube 24px | 0,10s |
+| 0,10s | Modal | Baja hasta salir de la pantalla | 0,20s |
+| 0s | Capa negra (scrim) | Opacidad de 80% a 0% | 0,20s |
 
-#### Ejemplo pantalla completa - Modal entrega estimada
+#### Pantalla parcial · Oferta
 
-Al seleccionar el componente del seguimiento de la orden en el header, comienza la entrada de la pantalla del ETA. Esta pantalla completa surge de la parte inferior de la pantalla hacia la parte superior y ejecuta un recorrido con una duración de 0,20s hasta su final.
+**Se abre:** sola en el Home, sin que la persona haga nada, para comunicar un deal de forma rápida.
 
-0,10s después de que la pantalla llega a su posición final, se incorpora a la visualización de esta un componente de Handle desde la parte inferior, con una duración total de 0,20s.
+Entrada
 
-Al mismo tiempo, desde la parte superior de la pantalla, entra el componente del Tiempo de Entrega con una duración total de 0,20s con un desplazamiento hacia abajo.
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Modal | Sube desde abajo hasta su posición | 0,20s |
+| 0s | Capa negra (scrim) | Opacidad de 0% a 80% | 0,20s |
 
-0,20s después de que la pantalla completa entra a su posición final, entra el componente de informational messages. Este componente asciende desde la parte de atrás del componente con Handle, realizando un desplazamiento de 50px hacia arriba con una duración total de 0,20s.
+Salida
 
-Al cerrarse esta pantalla del ETA, esta desciende hasta finalizar su recorrido en la parte inferior de la pantalla con un tiempo total de 0,20s.
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Modal | Sube 24px | 0,10s |
+| 0,10s | Modal | Baja hasta salir de la pantalla | 0,20s |
+| 0s | Capa negra (scrim) | Opacidad de 80% a 0% | 0,15s |
+
+#### Pantalla parcial · Rescate
+
+**Se abre:** sola en el Home cuando el pedido fue entregado, con opciones de soporte para esa orden.
+
+Entrada
+
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Modal | Sube desde abajo hasta su posición | 0,20s |
+| 0s | Capa negra (scrim) | Opacidad de 0% a 80% | 0,20s |
+
+Salida
+
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Modal | Sube 24px | 0,10s |
+| 0,10s | Modal | Baja hasta salir de la pantalla | 0,20s |
+| 0s | Capa negra (scrim) | Opacidad de 80% a 0% | 0,15s |
+
+#### Pantalla completa · Entrega estimada (ETA)
+
+**Se abre:** al tocar el seguimiento de la orden en el header.
+
+Entrada
+
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Pantalla completa | Sube desde abajo hasta su posición | 0,20s |
+| 0,30s | Componente con handle | Entra desde abajo (0,10s después de que la pantalla llega) | 0,20s |
+| 0,30s | Tiempo de entrega | Entra desde arriba, desplazándose hacia abajo | 0,20s |
+| 0,40s | Informational messages | Sube 50px desde detrás del componente con handle | 0,20s |
+
+Salida
+
+| Inicio | Elemento | Movimiento | Duración |
+| --- | --- | --- | --- |
+| 0s | Pantalla completa | Baja hasta salir de la pantalla | 0,20s |
+
+> **Por confirmar.** Al cerrar, el scrim dura 0,20s en Detalle de producto y Más servicios, pero 0,15s en Oferta y Rescate. Si no es intencional, conviene unificarlo.
 
 
 ## Onboarding
@@ -2793,6 +2841,226 @@ Todo en token semántico. Las etiquetas marcan lo que hay que revisar antes de d
 | `whisky-new` | Tile Licores |
 
 > **Fuente.** uSpec: frames API (6:220) y Anatomy (18:239) · Figma MCP: estructura, instancias anidadas y variables enlazadas. Capturado el 2026-10-01. Piloto. El contrato no salió del plugin uSpec Extract (_base.json); se armó con el MCP de Figma siguiendo la misma forma. En producción, reemplazar por la salida de create-component-md.
+
+
+## Modal sheets
+
+> **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
+
+Panel que sube desde abajo, sobre un fondo oscuro, para mostrar una tarea o información sin sacar a la persona de la pantalla en la que está.
+
+Estado Borrador
+
+- **Figma** `handle-sheets · stacked-sheets · full-screen-sheets · full-screen`
+Abrir en Figma ↗
+
+### Resumen
+
+Familia de contenedores modales de la app. Todos comparten la misma cabecera (_headers) y se diferencian por cómo ocupan la pantalla: con handle, apilados o a pantalla completa. La altura la define el contenido.
+
+#### Cuándo usarlo
+
+- Tareas cortas que dependen de la pantalla de atrás: elegir dirección, método de pago, filtros u opciones de un producto.
+- Información o confirmaciones que necesitan más espacio que un snackbar o un pop-up.
+- Flujos de varios pasos dentro de un sheet: usa stacked-sheets para mostrar que hay un paso encima de otro.
+- Contenido largo o con scroll propio (detalle de producto, formularios): usa full-screen-sheets o full-screen.
+
+#### Cuándo no
+
+- Para un aviso breve que no pide acción.Usa: Snackbars
+- Para una decisión de sí o no que bloquea el flujo.Usa: Pop-up
+- Para navegar entre secciones principales de la app.Usa: Navigation Bars / Tab Bars
+
+> **Patrón:** [Modality](../patterns/modality.html). Cuándo usar una sábana, una pantalla parcial o una pantalla completa, buenas prácticas y el motion de entrada y salida (0,20s, scrim de 0% a 80%).
+
+### Anatomía
+
+| # | Elemento | Notas |
+| --- | --- | --- |
+| 1 | `scrim` | Fondo oscuro que cubre la pantalla de atrás (surface/overlay). Tocarlo cierra el sheet. |
+| 2 | `_grabber` | Handle de 36×4. Externo (sobre el scrim) o interno (dentro del sheet): son intercambiables. |
+| 3 | `header` | Contenedor del sheet: fondo background/on-top y esquinas superiores redondeadas (radius/xxl, 32). |
+| 4 | `_headers` | Cabecera con título, botones de cerrar o volver, label y divisor. 16 tipos. |
+| 5 | `_status-bars` | Barra de estado del sistema, opcional (status-bar). |
+
+### Átomos
+
+Los 4 sheets se alimentan de los mismos átomos. Van como nested instances (instancias expuestas): desde el sheet eliges el tipo de cabecera o de handle sin que el componente necesite una variante por cada combinación. Así 4 sheets × 16 cabeceras no se vuelven 64 variantes en Figma.
+
+#### `_headers` · cabecera
+
+Cabecera de todos los sheets. Desde la instancia expuesta eliges type (16 tipos) y prendes o apagas título, cerrar, volver, segunda línea, label y divisor.
+
+| Componente | Valor por defecto | Notas |
+| --- | --- | --- |
+| `handle-sheets` | `type=title` | Cualquier tipo de cabecera. |
+| `stacked-sheets` | `type=title` | Cualquier tipo de cabecera. |
+| `full-screen-sheets` `large-title` | `type=title+close` | — |
+| `full-screen-sheets` `product-detail-page` | `type=three-buttons` | Acciones de compartir y guardar. |
+| `full-screen` `close-top` | `type=close-label` | — |
+| `full-screen` `fixed-header` | `type=title` | Cabecera fija al hacer scroll. |
+
+#### `_grabber` · handle
+
+Handle de 36×4 para indicar que el sheet se puede arrastrar. inner=false va sobre el scrim (background/standard); inner=true va dentro del sheet (background/weak).
+
+| Componente | Valor por defecto | Notas |
+| --- | --- | --- |
+| `handle-sheets` | `inner=true` | Lo usan las dos variantes (inner-handle=false y true). |
+
+### Ejemplos
+
+#### 01Handle sheets
+
+| Prop | Valor | Notas |
+| --- | --- | --- |
+| `handle` | externo · interno | El handle puede ir fuera o dentro del sheet; son intercambiables. |
+| `_headers type` | cancel-label · title-actions · title+close | La cabecera cambia según la tarea. |
+| `altura` | según contenido | La altura del sheet la define el contenido. |
+
+#### 02Stacked sheets
+
+| Prop | Valor | Notas |
+| --- | --- | --- |
+| `stacked-sheets` | — | El sheet de atrás asoma arriba: hay un paso encima de otro. |
+| `_headers type` | title · title + double-line · title-actions | Con botón fijo abajo (Save) cuando hay una acción principal. |
+
+#### 03Full-screen sheets
+
+| Prop | Valor | Notas |
+| --- | --- | --- |
+| `type` | large-title | Cabecera title+close. |
+| `type` | product-detail-page | Cabecera three-buttons (compartir, guardar). |
+
+#### 04Full screen
+
+| Prop | Valor | Notas |
+| --- | --- | --- |
+| `type` | close-top | Cabecera close-label. |
+| `type` | fixed-header | Cabecera title fija al hacer scroll. |
+
+### Do / Don’t
+
+DoDeja que el contenido defina la altura del sheet.
+Don’tFijar una altura que obligue a hacer scroll dentro de un sheet corto.
+
+DoOfrece cerrar con el botón y tocando el scrim.
+Don’tDepender solo del gesto de arrastrar el handle para cerrar.
+
+DoUsa stacked-sheets cuando un paso se abre encima de otro sheet.
+Don’tApilar varios handle-sheets sin que se note cuál está arriba.
+
+DoPasa a full-screen-sheets cuando el contenido es largo o tiene su propio scroll.
+Don’tMeter un formulario largo en un handle-sheet.
+
+### Pendientes
+
+Problemas encontrados al documentar. Se resuelven en Figma, no en esta página.
+
+- mediaradius/xxl (32) viene de la colección local Tokens de mobile-library, no de semantics: en semantics solo existen card (24) y pill.
+- mediaSpacing/4xxl, Spacing/xs y Spacing/s vienen de Primitives. Deberían ser tokens de semantics (escala spacing-* o tokens con intención).
+- mediaEl botón cerrar mide 32×32, por debajo del área táctil mínima de 48×48.
+- bajaEl sheet de atrás en stacked-sheets tiene radio 30 sin token; el sheet usa 32.
+- bajahandle-sheets con inner-handle=false usa _grabber inner=true (background/weak), pensado para ir dentro del sheet. Sobre el scrim correspondería inner=false (background/standard). Por confirmar.
+- bajaLa lámina de documentación de _headers usa nombres (title-actions, two-actions, close-der) que no coinciden con los valores de su propiedad type (close-label, cancel-label, single-buttons…).
+
+Todavía no hay implementación en código documentada para este componente.
+
+### Accesibilidad
+
+| Tema | Regla |
+| --- | --- |
+| **Foco** | Al abrir, el foco va al sheet (al título o al primer control) y no puede salir a la pantalla de atrás mientras esté abierto. Al cerrar, vuelve al elemento que lo abrió. |
+| **Cerrar** | Siempre hay una forma explícita de cerrar además del gesto: botón cerrar, "Cancelar" o tocar el scrim. El handle no puede ser la única salida, porque arrastrar no es accesible para todas las personas. |
+| **Área táctil** | El botón cerrar mide 32×32: necesita área táctil extendida a 48×48 aunque se vea más chico. |
+| **Nombre accesible** | El botón cerrar y los botones de solo ícono de la cabecera llevan nombre que diga la acción ("Cerrar", "Compartir"), no el ícono. |
+| **Título** | El título de la cabecera es el nombre del diálogo: el lector de pantalla debe anunciarlo al abrir. |
+| **Scrim** | El scrim es decorativo para el lector de pantalla: no se anuncia, pero tocarlo cierra el sheet. |
+
+### API
+
+| Prop | Valores | Default | Notas |
+| --- | --- | --- | --- |
+| `handle-sheets` | inner-handle=false · inner-handle=true | `inner-handle=false` | Sheet con handle. inner-handle=true lo pone dentro del panel. |
+| `show-handle` | true · false | `true` | Muestra u oculta el handle en handle-sheets. |
+| `status-bar` | true · false | `false` | Muestra la barra de estado. Existe en handle-sheets, stacked-sheets y full-screen-sheets. |
+| `stacked-sheets` | — | — | Sheet con otro asomando detrás (frame back): indica un paso encima de otro. |
+| `full-screen-sheets` | type=large-title · type=product-detail-page | `type=large-title` | Sheet que llega casi al borde superior. large-title usa _headers title+close; product-detail-page usa three-buttons. |
+| `full-screen` | type=close-top · type=fixed-header | `type=close-top` | Pantalla completa sin scrim. close-top usa _headers close-label; fixed-header usa title. |
+
+#### Cabecera · `_headers`
+
+Átomo de cabecera, expuesto en todos los sheets (nested instance). Sus propiedades se editan desde la instancia del sheet.
+
+| Prop | Valores | Default | Notas |
+| --- | --- | --- | --- |
+| `type` | title · title+close · title+back · close-label · double-buttons · outside-search · address · cancel-label · help · segmented · three-buttons · single-buttons · skeleton · brand-title · success · image | `title` | 16 tipos de cabecera. |
+| `title` | texto | `Large title` | Título de la cabecera. |
+| `show-title` | true · false | `true` | — |
+| `show-close` | true · false | `true` | Botón de cerrar. |
+| `show-back` | true · false | `false` | Botón de volver. |
+| `double-line` | true · false | `false` | Segunda línea de texto bajo el título. |
+| `show-label` | true · false | `true` | Acción de texto a la derecha (ej. "Label"). |
+| `show-divider` | true · false | `true` | Línea divisoria bajo la cabecera. |
+
+#### Handle · `_grabber`
+
+| Prop | Valores | Default | Notas |
+| --- | --- | --- | --- |
+| `inner` | true · false | `false` | false: sobre el scrim (background/standard). true: dentro del sheet (background/weak). |
+
+### Estructura
+
+| Elemento | Propiedad | Valor | Token |
+| --- | --- | --- | --- |
+| scrim | Fondo | Overlay oscuro | `surface/overlay` |
+| scrim | Espacio superior | 48 | `Spacing/4xxl` |
+| sheet | Fondo | — | `background/on-top` |
+| sheet | Radio superior | 32 | `radius/xxl` |
+| sheet | Gap interno | 4 | `Spacing/xs` |
+| _headers | Padding | 24 / 24 / 16 / 24 | `spacing-24` `horizontal/inside-screen` `spacing-16` |
+| _headers | Título (title+close) | h3 Medium | `h3/h3Medium` |
+| _headers | Título (double-buttons) | body Medium | `body/bodyMedium` |
+| _headers | Color del título | — | `ink/strong` |
+| close | Tamaño | 32×32 | Sin token |
+| close | Fondo · radio | — | `background/weak` `radius/pill` |
+| _grabber | Tamaño · radio | 36×4 · 2.5 | Sin token |
+| stacked: frame back | Fondo · radio | 30 | `background/weak` |
+| full-screen | Fondo | — | `background/standard` |
+
+### Dependencias
+
+Lo que este componente necesita de otras librerías para existir.
+
+| Pieza | Tipo | Librería | Para qué |
+| --- | --- | --- | --- |
+| `_headers` | componente | mobile-library Rappi 8 | Cabecera de todos los sheets. |
+| `_grabber` | componente | mobile-library Rappi 8 | Handle de handle-sheets. |
+| `flexible` | componente | mobile-library Rappi 8 | Botones de solo ícono en las cabeceras con acciones (double-buttons, three-buttons). |
+| `close` | componente | mobile-library Rappi 8 | Botón de cerrar de la cabecera. |
+| `divider` | componente | mobile-library Rappi 8 | Línea bajo la cabecera. |
+| `_status-bars` | componente | mobile-library Rappi 8 | Barra de estado del sistema. |
+| `Colors` `Typography` `Spacing` | variables | semantics | Color, tipografía y espacios de la cabecera y el sheet. |
+| `Íconos (cerrar, volver, acciones)` | íconos | icons | Dentro de close y de los botones de la cabecera. |
+
+### Tokens
+
+Todo en token semántico. Las etiquetas marcan lo que hay que revisar antes de dar el componente por cerrado.
+
+| Token | Rol | Colección |
+| --- | --- | --- |
+| `surface/overlay` | Scrim detrás del sheet | semantics · Colors |
+| `background/on-top` | Fondo del sheet | semantics · Colors |
+| `background/standard` | Fondo de full-screen · handle externo | semantics · Colors |
+| `background/weak` | Botón cerrar · handle interno · sheet de atrás (stacked) | semantics · Colors |
+| `ink/strong` | Título | semantics · Colors |
+| `h3/h3Medium` `body/bodyMedium` | Estilos del título según el tipo de cabecera | semantics · Typography |
+| `spacing-8` `spacing-16` `spacing-24` `horizontal/inside-screen` | Padding y gaps de la cabecera | semantics · Spacing |
+| `radius/pill` | Botón cerrar | Tokens (mobile-library) |
+| `radius/xxl` | Esquinas superiores del sheet (32) | Tokens (mobile-library) |
+| `Spacing/4xxl` `Spacing/xs` `Spacing/s` | Espacio superior, gap y grilla | Primitives |
+
+> **Fuente.** Figma MCP: componentes, propiedades y variables enlazadas de la página modal-sheets (mobile-library Rappi 8) · Sección documentation (41940:14449): ejemplos y reglas de uso. Capturado el 2026-10-02. Se documenta la familia de sheets (handle, stacked, full-screen-sheets, full-screen) y sus átomos _headers y _grabber. modal-pdp vive en la misma página pero es un caso de producto: se documenta aparte.
 
 
 ## Principios de Diseño

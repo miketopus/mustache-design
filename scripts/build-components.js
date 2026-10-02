@@ -68,10 +68,12 @@ function table(head, rows) {
     rows.map(r => '<tr>' + r.map(c => '<td>' + c + '</td>').join('') + '</tr>').join('') +
     '</tbody></table></div>';
 }
-function stage(slug, file, alt, scale) {
-  // capturas a 2x: se muestran a la mitad de su ancho real
+function stage(slug, file, alt, scale, fit) {
+  // capturas a 2x: se muestran a la mitad de su ancho real.
+  // fit: la imagen se ajusta al ancho de la columna en vez de tener scroll
+  // (component.stage = "fit" en el contrato)
   const w = scale ? ' style="width:' + scale + 'px"' : '';
-  return '<div class="stage"><img src="../assets/components/' + esc(slug) + '/' + esc(file) + '" alt="' + esc(alt) + '"' + w + ' loading="lazy"></div>';
+  return '<div class="stage' + (fit ? ' fit' : '') + '"><img src="../assets/components/' + esc(slug) + '/' + esc(file) + '" alt="' + esc(alt) + '"' + w + ' loading="lazy"></div>';
 }
 function imgWidth(slug, file) {
   // lee el ancho del PNG (bytes 16-19 del IHDR) para mostrarlo a 1x
@@ -99,6 +101,7 @@ const ICON_INFO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
 function render(c, families) {
   const slug = c.component.slug;
+  const fit = c.component.stage === 'fit';
   const byTab = {};
   let tab = 'uso';
   function add(id, label, html) { (byTab[tab] = byTab[tab] || []).push('<section class="doc" id="' + id + '">\n<h2>' + esc(label) + '</h2>\n' + html + '\n</section>'); }
@@ -109,12 +112,29 @@ function render(c, families) {
     '<div class="use-grid">' +
       '<div class="use-card yes"><h3>Cuándo usarlo</h3><ul>' + s.whenToUse.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul></div>' +
       '<div class="use-card no"><h3>Cuándo no</h3><ul>' + s.whenNotToUse.map(t => '<li>' + esc(t.text) + (t.alt ? '<span class="alt">Usa: ' + (t.altHref ? '<a href="' + esc(t.altHref) + '">' + esc(t.alt) + '</a>' : esc(t.alt)) + '</span>' : '') + '</li>').join('') + '</ul></div>' +
-    '</div>');
+    '</div>' +
+    // patrones de Patterns que usan este componente
+    (c.patterns && c.patterns.length ? c.patterns.map(p =>
+      '<div class="note">' + ICON_INFO + '<p><b>Patrón:</b> <a href="' + esc(p.href) + '"><u>' + esc(p.title) + '</u></a>. ' + esc(p.text) + '</p></div>').join('') : ''));
 
   const a = c.anatomy;
   add('anatomia', 'Anatomía',
-    stage(slug, a.image, c.component.title, imgWidth(slug, a.image)) +
+    stage(slug, a.image, c.component.title, imgWidth(slug, a.image), fit) +
     table(['#', 'Elemento', 'Notas'], a.elements.map(e => [esc(e.n), tok(e.name), esc(e.notes)])));
+
+  // Átomos: piezas que el componente usa como nested instances (instancias
+  // expuestas). Se cambia el átomo desde el componente en vez de crear una
+  // variante por cada combinación.
+  if (c.atoms && c.atoms.items && c.atoms.items.length) {
+    add('atomos', 'Átomos',
+      (c.atoms.intro ? '<p>' + esc(c.atoms.intro) + '</p>' : '') +
+      c.atoms.items.map(at =>
+        '<div class="example"><h3>' + tok(at.name) + (at.title ? ' ' + esc(at.title) : '') + '</h3>' +
+        (at.what ? '<p>' + esc(at.what) + '</p>' : '') +
+        (at.image ? stage(slug, at.image, at.name, imgWidth(slug, at.image), fit) : '') +
+        (at.usedIn && at.usedIn.length ? table(['Componente', 'Valor por defecto', 'Notas'], at.usedIn.map(u => [tok(u.component), tok(u.value), esc(u.notes || '—')])) : '') +
+        '</div>').join(''));
+  }
 
   const api = c.api;
   tab = 'personalizacion';
@@ -126,10 +146,10 @@ function render(c, families) {
   tab = 'uso';
   add('ejemplos', 'Ejemplos', c.examples.map((ex, i) =>
     '<div class="example"><h3><span class="num">' + String(i + 1).padStart(2, '0') + '</span>' + esc(ex.title) + '</h3>' +
-    stage(slug, ex.image, ex.title, imgWidth(slug, ex.image)) +
+    stage(slug, ex.image, ex.title, imgWidth(slug, ex.image), fit) +
     table(['Prop', 'Valor', 'Notas'], ex.rows.map(r => ['<code>' + esc(r.prop) + '</code>', esc(r.value), esc(r.notes)])) +
     '</div>').join('') +
-    '<p class="stage-cap">Las filas tienen scroll horizontal, igual que en el producto.</p>');
+    (c.examplesNote ? '<p class="stage-cap">' + esc(c.examplesNote) + '</p>' : ''));
 
   tab = 'personalizacion';
   add('estructura', 'Estructura',

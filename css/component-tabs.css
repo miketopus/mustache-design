@@ -1,5 +1,6 @@
-/* Tabs de página de componente: regla para todos los componentes.
-   Orden fijo: Uso · Código · Accesibilidad · Personalización · Tokens.
+/* Tabs de página: regla para todos los componentes, con orden fijo
+   Uso · Código · Accesibilidad · Personalización · Tokens. Las páginas de
+   Patterns las reutilizan con sus propias pestañas (ej. patterns/modality.html).
    Marcado: cada pestaña es un <div class="ctab-panel" data-tab="uso" data-label="Uso">.
    js/component-tabs.js arma la barra; sin JS se ven todos los paneles seguidos. */
 .ctabs{position:sticky;top:var(--topbar);z-index:30;display:flex;margin:36px 0 0;background:var(--bg);border-bottom:1px solid var(--line-2)}

@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/site-header.css">
 <link rel="stylesheet" href="css/site-sidebar.css">
+<link rel="stylesheet" href="css/gradient-dots.css">
 <script src="js/site-header.js" defer></script>
 <script src="js/site-sidebar.js" defer></script>
 <link rel="stylesheet" href="css/glowing-effect.css">
@@ -58,7 +59,6 @@
   .hero::before{content:"";position:absolute;inset:0;background:
       radial-gradient(600px 320px at 78% 30%,rgba(255,68,31,.16),transparent 70%),
       radial-gradient(500px 300px at 12% 100%,rgba(255,255,255,.05),transparent 70%);pointer-events:none}
-  .hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:22px 22px;mask-image:linear-gradient(180deg,#000 0%,transparent 85%);-webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 85%);pointer-events:none}
   .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
   .crumb{font-size:13px;color:var(--muted-2);margin-bottom:22px}
   .crumb b{color:var(--muted);font-weight:500}
@@ -356,6 +356,7 @@
   </nav>
   <!-- ═════ HERO ═════ -->
   <div class="hero">
+    <div class="gdots" aria-hidden="true"></div>
     <div class="wrap">
       <div>
         <div class="crumb"><b>Tools</b> / AI / Kit Claude</div>
@@ -509,7 +510,7 @@
 │     ├─ tokens/ (1)
 │     ├─ foundations/ (11)
 │     ├─ patterns/ (10)
-│     ├─ components/ (2)
+│     ├─ components/ (3)
 │     └─ principles/ (1)
 └─ assets/
    ├─ tokens.css
@@ -517,7 +518,7 @@
           <p class="for"><b>Ideal para:</b> diseñadores, PMs y devs que usan claude.ai o Claude Code.</p>
           <div class="foot">
             <a class="btn btn-primary" href="downloads/mustache-ds-skill.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Descargar .zip</a>
-            <span class="size" data-stash="zip-meta">96 KB · 34 archivos</span>
+            <span class="size" data-stash="zip-meta">100 KB · 35 archivos</span>
           </div>
         </article>
 
@@ -533,7 +534,7 @@
           <p class="for"><b>Ideal para:</b> un Project de equipo (ej. "Checkout", "Growth").</p>
           <div class="foot">
             <a class="btn btn-ghost" href="downloads/mustache-ds-guidelines.md" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Descargar .md</a>
-            <span class="size" data-stash="md-size">160 KB</span>
+            <span class="size" data-stash="md-size">171 KB</span>
           </div>
         </article>
 
@@ -651,7 +652,7 @@
             <li><b>Componentes base</b><span>botón · card · chip · input · alert</span></li>
             <li><b>Voz y tono</b><span>Rappi · Soy Rappi · B2B</span></li>
             <li><b>Iconografía y accesibilidad</b><span>guías completas</span></li>
-            <li><b>Guías del sitio</b><span data-stash="site-count">Tokens y temas 1 · Foundations 11 · Patterns 10 · Components 2 · Principios de diseño 1</span></li>
+            <li><b>Guías del sitio</b><span data-stash="site-count">Tokens y temas 1 · Foundations 11 · Patterns 10 · Components 3 · Principios de diseño 1</span></li>
           </ul>
         </div>
         <div class="st wip">
@@ -712,9 +713,9 @@
                   <div class="ds-term-body">
                     <div class="cmd"><span class="p">$</span> npm run build:stash</div>
                     <div class="c"># arma el kit</div>
-                    <div class="ok"><span>✓ guías del sitio → .md</span><b data-stash="guide-count">25</b></div>
-                    <div class="ok"><span>✓ skill.zip</span><b data-stash="zip-size">96 KB</b></div>
-                    <div class="ok"><span>✓ guidelines.md</span><b data-stash="md-size">160 KB</b></div>
+                    <div class="ok"><span>✓ guías del sitio → .md</span><b data-stash="guide-count">26</b></div>
+                    <div class="ok"><span>✓ skill.zip</span><b data-stash="zip-size">100 KB</b></div>
+                    <div class="ok"><span>✓ guidelines.md</span><b data-stash="md-size">171 KB</b></div>
                     <div class="ok"><span>✓ tokens.css · .json</span><b>2</b></div>
                     <div class="ok"><span>✓ versión</span><b data-stash="version">Rappi 8</b></div>
                     <div class="cmd"><span class="p">$</span> <span class="cur"></span></div>

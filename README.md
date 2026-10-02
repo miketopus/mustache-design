@@ -22,7 +22,7 @@ Abre http://localhost:5173 (siempre por `http://`, no con doble clic).
 | Components | `components.html`, `components/` |
 | Patterns | `patterns.html`, `patterns/` |
 | Brand | `brand.html` |
-| Stash/Resources | `stash.html` (overview), `claude-md.html` (kit para Claude), `resources.html` (otros recursos) |
+| Tools | `stash.html` (overview), `claude-md.html` (Kit Claude), `resources.html` (PromptMaker 3D) |
 
 ## Stash
 

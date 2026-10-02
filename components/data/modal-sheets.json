@@ -1,0 +1,613 @@
+{
+  "$schema": "mustache.component-contract/0.1",
+  "component": {
+    "slug": "modal-sheets",
+    "title": "Modal sheets",
+    "group": "Bars",
+    "family": "Modal Sheets",
+    "status": "draft",
+    "figmaName": "handle-sheets · stacked-sheets · full-screen-sheets · full-screen",
+    "stage": "fit"
+  },
+  "source": {
+    "figma": {
+      "fileKey": "j7dMt2KutCl1U0BUZN1jqu",
+      "nodeId": "41940:14333",
+      "url": "https://www.figma.com/design/j7dMt2KutCl1U0BUZN1jqu/mobile-library---rappi-8?node-id=41940-14333"
+    },
+    "capturedWith": [
+      "Figma MCP: componentes, propiedades y variables enlazadas de la página modal-sheets (mobile-library Rappi 8)",
+      "Sección documentation (41940:14449): ejemplos y reglas de uso"
+    ],
+    "capturedAt": "2026-10-02",
+    "note": "Se documenta la familia de sheets (handle, stacked, full-screen-sheets, full-screen) y sus átomos _headers y _grabber. modal-pdp vive en la misma página pero es un caso de producto: se documenta aparte."
+  },
+  "summary": {
+    "lead": "Panel que sube desde abajo, sobre un fondo oscuro, para mostrar una tarea o información sin sacar a la persona de la pantalla en la que está.",
+    "what": "Familia de contenedores modales de la app. Todos comparten la misma cabecera (_headers) y se diferencian por cómo ocupan la pantalla: con handle, apilados o a pantalla completa. La altura la define el contenido.",
+    "whenToUse": [
+      "Tareas cortas que dependen de la pantalla de atrás: elegir dirección, método de pago, filtros u opciones de un producto.",
+      "Información o confirmaciones que necesitan más espacio que un snackbar o un pop-up.",
+      "Flujos de varios pasos dentro de un sheet: usa stacked-sheets para mostrar que hay un paso encima de otro.",
+      "Contenido largo o con scroll propio (detalle de producto, formularios): usa full-screen-sheets o full-screen."
+    ],
+    "whenNotToUse": [
+      {
+        "text": "Para un aviso breve que no pide acción.",
+        "alt": "Snackbars",
+        "altHref": null
+      },
+      {
+        "text": "Para una decisión de sí o no que bloquea el flujo.",
+        "alt": "Pop-up",
+        "altHref": null
+      },
+      {
+        "text": "Para navegar entre secciones principales de la app.",
+        "alt": "Navigation Bars / Tab Bars",
+        "altHref": null
+      }
+    ]
+  },
+  "anatomy": {
+    "image": "anatomy-handle-sheets.png",
+    "elements": [
+      {
+        "n": 1,
+        "name": "scrim",
+        "kind": "frame",
+        "notes": "Fondo oscuro que cubre la pantalla de atrás (surface/overlay). Tocarlo cierra el sheet."
+      },
+      {
+        "n": 2,
+        "name": "_grabber",
+        "kind": "instance",
+        "notes": "Handle de 36×4. Externo (sobre el scrim) o interno (dentro del sheet): son intercambiables."
+      },
+      {
+        "n": 3,
+        "name": "header",
+        "kind": "frame",
+        "notes": "Contenedor del sheet: fondo background/on-top y esquinas superiores redondeadas (radius/xxl, 32)."
+      },
+      {
+        "n": 4,
+        "name": "_headers",
+        "kind": "instance",
+        "notes": "Cabecera con título, botones de cerrar o volver, label y divisor. 16 tipos."
+      },
+      {
+        "n": 5,
+        "name": "_status-bars",
+        "kind": "instance",
+        "notes": "Barra de estado del sistema, opcional (status-bar)."
+      }
+    ]
+  },
+  "api": {
+    "props": [
+      {
+        "name": "handle-sheets",
+        "values": "inner-handle=false · inner-handle=true",
+        "required": false,
+        "default": "inner-handle=false",
+        "notes": "Sheet con handle. inner-handle=true lo pone dentro del panel."
+      },
+      {
+        "name": "show-handle",
+        "values": "true · false",
+        "required": false,
+        "default": "true",
+        "notes": "Muestra u oculta el handle en handle-sheets."
+      },
+      {
+        "name": "status-bar",
+        "values": "true · false",
+        "required": false,
+        "default": "false",
+        "notes": "Muestra la barra de estado. Existe en handle-sheets, stacked-sheets y full-screen-sheets."
+      },
+      {
+        "name": "stacked-sheets",
+        "values": "—",
+        "required": false,
+        "default": "—",
+        "notes": "Sheet con otro asomando detrás (frame back): indica un paso encima de otro."
+      },
+      {
+        "name": "full-screen-sheets",
+        "values": "type=large-title · type=product-detail-page",
+        "required": false,
+        "default": "type=large-title",
+        "notes": "Sheet que llega casi al borde superior. large-title usa _headers title+close; product-detail-page usa three-buttons."
+      },
+      {
+        "name": "full-screen",
+        "values": "type=close-top · type=fixed-header",
+        "required": false,
+        "default": "type=close-top",
+        "notes": "Pantalla completa sin scrim. close-top usa _headers close-label; fixed-header usa title."
+      }
+    ],
+    "subcomponents": [
+      {
+        "name": "_headers",
+        "title": "Cabecera",
+        "note": "Átomo de cabecera, expuesto en todos los sheets (nested instance). Sus propiedades se editan desde la instancia del sheet.",
+        "props": [
+          {
+            "name": "type",
+            "values": "title · title+close · title+back · close-label · double-buttons · outside-search · address · cancel-label · help · segmented · three-buttons · single-buttons · skeleton · brand-title · success · image",
+            "required": false,
+            "default": "title",
+            "notes": "16 tipos de cabecera."
+          },
+          {
+            "name": "title",
+            "values": "texto",
+            "required": false,
+            "default": "Large title",
+            "notes": "Título de la cabecera."
+          },
+          {
+            "name": "show-title",
+            "values": "true · false",
+            "required": false,
+            "default": "true",
+            "notes": "—"
+          },
+          {
+            "name": "show-close",
+            "values": "true · false",
+            "required": false,
+            "default": "true",
+            "notes": "Botón de cerrar."
+          },
+          {
+            "name": "show-back",
+            "values": "true · false",
+            "required": false,
+            "default": "false",
+            "notes": "Botón de volver."
+          },
+          {
+            "name": "double-line",
+            "values": "true · false",
+            "required": false,
+            "default": "false",
+            "notes": "Segunda línea de texto bajo el título."
+          },
+          {
+            "name": "show-label",
+            "values": "true · false",
+            "required": false,
+            "default": "true",
+            "notes": "Acción de texto a la derecha (ej. \"Label\")."
+          },
+          {
+            "name": "show-divider",
+            "values": "true · false",
+            "required": false,
+            "default": "true",
+            "notes": "Línea divisoria bajo la cabecera."
+          }
+        ]
+      },
+      {
+        "name": "_grabber",
+        "title": "Handle",
+        "props": [
+          {
+            "name": "inner",
+            "values": "true · false",
+            "required": false,
+            "default": "false",
+            "notes": "false: sobre el scrim (background/standard). true: dentro del sheet (background/weak)."
+          }
+        ]
+      }
+    ]
+  },
+  "examples": [
+    {
+      "title": "Handle sheets",
+      "image": "ex1-handle-sheets.png",
+      "rows": [
+        {
+          "prop": "handle",
+          "value": "externo · interno",
+          "notes": "El handle puede ir fuera o dentro del sheet; son intercambiables."
+        },
+        {
+          "prop": "_headers type",
+          "value": "cancel-label · title-actions · title+close",
+          "notes": "La cabecera cambia según la tarea."
+        },
+        {
+          "prop": "altura",
+          "value": "según contenido",
+          "notes": "La altura del sheet la define el contenido."
+        }
+      ]
+    },
+    {
+      "title": "Stacked sheets",
+      "image": "ex2-stacked-sheets.png",
+      "rows": [
+        {
+          "prop": "stacked-sheets",
+          "value": "—",
+          "notes": "El sheet de atrás asoma arriba: hay un paso encima de otro."
+        },
+        {
+          "prop": "_headers type",
+          "value": "title · title + double-line · title-actions",
+          "notes": "Con botón fijo abajo (Save) cuando hay una acción principal."
+        }
+      ]
+    },
+    {
+      "title": "Full-screen sheets",
+      "image": "ex3-full-screen-sheets.png",
+      "rows": [
+        {
+          "prop": "type",
+          "value": "large-title",
+          "notes": "Cabecera title+close."
+        },
+        {
+          "prop": "type",
+          "value": "product-detail-page",
+          "notes": "Cabecera three-buttons (compartir, guardar)."
+        }
+      ]
+    },
+    {
+      "title": "Full screen",
+      "image": "ex4-full-screen.png",
+      "rows": [
+        {
+          "prop": "type",
+          "value": "close-top",
+          "notes": "Cabecera close-label."
+        },
+        {
+          "prop": "type",
+          "value": "fixed-header",
+          "notes": "Cabecera title fija al hacer scroll."
+        }
+      ]
+    }
+  ],
+  "structure": [
+    {
+      "element": "scrim",
+      "property": "Fondo",
+      "value": "Overlay oscuro",
+      "token": "surface/overlay"
+    },
+    {
+      "element": "scrim",
+      "property": "Espacio superior",
+      "value": "48",
+      "token": "Spacing/4xxl"
+    },
+    {
+      "element": "sheet",
+      "property": "Fondo",
+      "value": "—",
+      "token": "background/on-top"
+    },
+    {
+      "element": "sheet",
+      "property": "Radio superior",
+      "value": "32",
+      "token": "radius/xxl"
+    },
+    {
+      "element": "sheet",
+      "property": "Gap interno",
+      "value": "4",
+      "token": "Spacing/xs"
+    },
+    {
+      "element": "_headers",
+      "property": "Padding",
+      "value": "24 / 24 / 16 / 24",
+      "token": "spacing-24 · horizontal/inside-screen · spacing-16"
+    },
+    {
+      "element": "_headers",
+      "property": "Título (title+close)",
+      "value": "h3 Medium",
+      "token": "h3/h3Medium"
+    },
+    {
+      "element": "_headers",
+      "property": "Título (double-buttons)",
+      "value": "body Medium",
+      "token": "body/bodyMedium"
+    },
+    {
+      "element": "_headers",
+      "property": "Color del título",
+      "value": "—",
+      "token": "ink/strong"
+    },
+    {
+      "element": "close",
+      "property": "Tamaño",
+      "value": "32×32",
+      "token": null
+    },
+    {
+      "element": "close",
+      "property": "Fondo · radio",
+      "value": "—",
+      "token": "background/weak · radius/pill"
+    },
+    {
+      "element": "_grabber",
+      "property": "Tamaño · radio",
+      "value": "36×4 · 2.5",
+      "token": null
+    },
+    {
+      "element": "stacked: frame back",
+      "property": "Fondo · radio",
+      "value": "30",
+      "token": "background/weak"
+    },
+    {
+      "element": "full-screen",
+      "property": "Fondo",
+      "value": "—",
+      "token": "background/standard"
+    }
+  ],
+  "tokens": [
+    {
+      "token": "surface/overlay",
+      "role": "Scrim detrás del sheet",
+      "collection": "semantics · Colors",
+      "flag": null
+    },
+    {
+      "token": "background/on-top",
+      "role": "Fondo del sheet",
+      "collection": "semantics · Colors",
+      "flag": null
+    },
+    {
+      "token": "background/standard",
+      "role": "Fondo de full-screen · handle externo",
+      "collection": "semantics · Colors",
+      "flag": null
+    },
+    {
+      "token": "background/weak",
+      "role": "Botón cerrar · handle interno · sheet de atrás (stacked)",
+      "collection": "semantics · Colors",
+      "flag": null
+    },
+    {
+      "token": "ink/strong",
+      "role": "Título",
+      "collection": "semantics · Colors",
+      "flag": null
+    },
+    {
+      "token": "h3/h3Medium · body/bodyMedium",
+      "role": "Estilos del título según el tipo de cabecera",
+      "collection": "semantics · Typography",
+      "flag": null
+    },
+    {
+      "token": "spacing-8 · spacing-16 · spacing-24 · horizontal/inside-screen",
+      "role": "Padding y gaps de la cabecera",
+      "collection": "semantics · Spacing",
+      "flag": null
+    },
+    {
+      "token": "radius/pill",
+      "role": "Botón cerrar",
+      "collection": "Tokens (mobile-library)",
+      "flag": null
+    },
+    {
+      "token": "radius/xxl",
+      "role": "Esquinas superiores del sheet (32)",
+      "collection": "Tokens (mobile-library)",
+      "flag": null
+    },
+    {
+      "token": "Spacing/4xxl · Spacing/xs · Spacing/s",
+      "role": "Espacio superior, gap y grilla",
+      "collection": "Primitives",
+      "flag": null
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "_headers",
+      "kind": "componente",
+      "library": "mobile-library Rappi 8",
+      "uses": "Cabecera de todos los sheets."
+    },
+    {
+      "name": "_grabber",
+      "kind": "componente",
+      "library": "mobile-library Rappi 8",
+      "uses": "Handle de handle-sheets."
+    },
+    {
+      "name": "flexible",
+      "kind": "componente",
+      "library": "mobile-library Rappi 8",
+      "uses": "Botones de solo ícono en las cabeceras con acciones (double-buttons, three-buttons)."
+    },
+    {
+      "name": "close",
+      "kind": "componente",
+      "library": "mobile-library Rappi 8",
+      "uses": "Botón de cerrar de la cabecera."
+    },
+    {
+      "name": "divider",
+      "kind": "componente",
+      "library": "mobile-library Rappi 8",
+      "uses": "Línea bajo la cabecera."
+    },
+    {
+      "name": "_status-bars",
+      "kind": "componente",
+      "library": "mobile-library Rappi 8",
+      "uses": "Barra de estado del sistema."
+    },
+    {
+      "name": "Colors · Typography · Spacing",
+      "kind": "variables",
+      "library": "semantics",
+      "uses": "Color, tipografía y espacios de la cabecera y el sheet."
+    },
+    {
+      "name": "Íconos (cerrar, volver, acciones)",
+      "kind": "íconos",
+      "library": "icons",
+      "uses": "Dentro de close y de los botones de la cabecera."
+    }
+  ],
+  "accessibility": [
+    {
+      "topic": "Foco",
+      "text": "Al abrir, el foco va al sheet (al título o al primer control) y no puede salir a la pantalla de atrás mientras esté abierto. Al cerrar, vuelve al elemento que lo abrió."
+    },
+    {
+      "topic": "Cerrar",
+      "text": "Siempre hay una forma explícita de cerrar además del gesto: botón cerrar, \"Cancelar\" o tocar el scrim. El handle no puede ser la única salida, porque arrastrar no es accesible para todas las personas."
+    },
+    {
+      "topic": "Área táctil",
+      "text": "El botón cerrar mide 32×32: necesita área táctil extendida a 48×48 aunque se vea más chico."
+    },
+    {
+      "topic": "Nombre accesible",
+      "text": "El botón cerrar y los botones de solo ícono de la cabecera llevan nombre que diga la acción (\"Cerrar\", \"Compartir\"), no el ícono."
+    },
+    {
+      "topic": "Título",
+      "text": "El título de la cabecera es el nombre del diálogo: el lector de pantalla debe anunciarlo al abrir."
+    },
+    {
+      "topic": "Scrim",
+      "text": "El scrim es decorativo para el lector de pantalla: no se anuncia, pero tocarlo cierra el sheet."
+    }
+  ],
+  "dosDonts": [
+    {
+      "do": "Deja que el contenido defina la altura del sheet.",
+      "dont": "Fijar una altura que obligue a hacer scroll dentro de un sheet corto."
+    },
+    {
+      "do": "Ofrece cerrar con el botón y tocando el scrim.",
+      "dont": "Depender solo del gesto de arrastrar el handle para cerrar."
+    },
+    {
+      "do": "Usa stacked-sheets cuando un paso se abre encima de otro sheet.",
+      "dont": "Apilar varios handle-sheets sin que se note cuál está arriba."
+    },
+    {
+      "do": "Pasa a full-screen-sheets cuando el contenido es largo o tiene su propio scroll.",
+      "dont": "Meter un formulario largo en un handle-sheet."
+    }
+  ],
+  "knownGaps": [
+    {
+      "severity": "media",
+      "text": "radius/xxl (32) viene de la colección local Tokens de mobile-library, no de semantics: en semantics solo existen card (24) y pill."
+    },
+    {
+      "severity": "media",
+      "text": "Spacing/4xxl, Spacing/xs y Spacing/s vienen de Primitives. Deberían ser tokens de semantics (escala spacing-* o tokens con intención)."
+    },
+    {
+      "severity": "media",
+      "text": "El botón cerrar mide 32×32, por debajo del área táctil mínima de 48×48."
+    },
+    {
+      "severity": "baja",
+      "text": "El sheet de atrás en stacked-sheets tiene radio 30 sin token; el sheet usa 32."
+    },
+    {
+      "severity": "baja",
+      "text": "handle-sheets con inner-handle=false usa _grabber inner=true (background/weak), pensado para ir dentro del sheet. Sobre el scrim correspondería inner=false (background/standard). Por confirmar."
+    },
+    {
+      "severity": "baja",
+      "text": "La lámina de documentación de _headers usa nombres (title-actions, two-actions, close-der) que no coinciden con los valores de su propiedad type (close-label, cancel-label, single-buttons…)."
+    }
+  ],
+  "atoms": {
+    "intro": "Los 4 sheets se alimentan de los mismos átomos. Van como nested instances (instancias expuestas): desde el sheet eliges el tipo de cabecera o de handle sin que el componente necesite una variante por cada combinación. Así 4 sheets × 16 cabeceras no se vuelven 64 variantes en Figma.",
+    "items": [
+      {
+        "name": "_headers",
+        "title": "· cabecera",
+        "what": "Cabecera de todos los sheets. Desde la instancia expuesta eliges type (16 tipos) y prendes o apagas título, cerrar, volver, segunda línea, label y divisor.",
+        "image": "headers-all-cases.png",
+        "usedIn": [
+          {
+            "component": "handle-sheets",
+            "value": "type=title",
+            "notes": "Cualquier tipo de cabecera."
+          },
+          {
+            "component": "stacked-sheets",
+            "value": "type=title",
+            "notes": "Cualquier tipo de cabecera."
+          },
+          {
+            "component": "full-screen-sheets · large-title",
+            "value": "type=title+close",
+            "notes": "—"
+          },
+          {
+            "component": "full-screen-sheets · product-detail-page",
+            "value": "type=three-buttons",
+            "notes": "Acciones de compartir y guardar."
+          },
+          {
+            "component": "full-screen · close-top",
+            "value": "type=close-label",
+            "notes": "—"
+          },
+          {
+            "component": "full-screen · fixed-header",
+            "value": "type=title",
+            "notes": "Cabecera fija al hacer scroll."
+          }
+        ]
+      },
+      {
+        "name": "_grabber",
+        "title": "· handle",
+        "what": "Handle de 36×4 para indicar que el sheet se puede arrastrar. inner=false va sobre el scrim (background/standard); inner=true va dentro del sheet (background/weak).",
+        "image": "atom-grabber.png",
+        "usedIn": [
+          {
+            "component": "handle-sheets",
+            "value": "inner=true",
+            "notes": "Lo usan las dos variantes (inner-handle=false y true)."
+          }
+        ]
+      }
+    ]
+  },
+  "patterns": [
+    {
+      "title": "Modality",
+      "href": "../patterns/modality.html",
+      "text": "Cuándo usar una sábana, una pantalla parcial o una pantalla completa, buenas prácticas y el motion de entrada y salida (0,20s, scrim de 0% a 80%)."
+    }
+  ]
+}
