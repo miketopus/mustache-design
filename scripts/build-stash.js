@@ -86,6 +86,7 @@ function pageToMarkdown(html) {
   const blocks = [];   // <pre> code, kept verbatim (indentation included)
 
   let s = main
+    .replace(/<!-- stash:skip\b[\s\S]*?<!-- \/stash:skip -->/g, '')   // interactive demos with no text for the kit
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/<pre\b[^>]*>([\s\S]*?)<\/pre>|<div class="code-block"[^>]*>([\s\S]*?)<\/div>/gi, function (_, pre, div) {
       const t = pre || div;

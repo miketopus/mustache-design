@@ -195,6 +195,10 @@ function render(c, families) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/assets/favicon/site.webmanifest">
 ${draft ? '<meta name="robots" content="noindex, nofollow">\n' : ''}<title>Components · ${esc(c.component.title)} — Mustache Design System</title>
 <!-- Generado por scripts/build-components.js desde components/data/${esc(slug)}.json. No editar a mano. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/assets/favicon/site.webmanifest">
 <title>Design · Haptics — Mustache Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,6 +56,7 @@
   .doc li{color:var(--muted);font-size:15.5px;margin-bottom:9px}
   .doc li strong{color:var(--text);font-weight:600}
   .doc code{font-family:var(--mono);font-size:12.5px;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--text)}
+  .doc a.inline{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-2)}
 
   .note{display:flex;gap:12px;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:18px 0}
   .note svg{width:17px;height:17px;flex-shrink:0;margin-top:2px;color:var(--muted)}
@@ -60,21 +65,137 @@
   .note.gap{border-style:dashed;border-color:var(--line-2)}
   .note.gap svg{color:var(--muted-2)}
 
-  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:16px 0}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:16px 0;background:var(--panel)}
   table.spec{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
   table.spec th{text-align:left;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);padding:10px 16px;background:var(--panel-2);border-bottom:1px solid var(--line-2);white-space:nowrap}
   table.spec td{padding:10px 16px;color:var(--muted);border-bottom:1px solid var(--line);vertical-align:top}
   table.spec td:first-child{color:var(--text);font-family:var(--mono);font-weight:500;white-space:nowrap}
   table.spec tr:last-child td{border-bottom:none}
-  .tbl-wrap table.spec{margin:0;border:none;border-radius:0}
 
-  .chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 20px}
-  .chip{font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px 10px}
+  /* ---------- Waveform glyph (shared by categories, cases and library) ---------- */
+  .wave{display:block;flex-shrink:0;color:var(--text)}
+  .wave .base{stroke:var(--line-2)}
 
-  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#171A1E;background:rgba(255,255,255,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:999px;padding:10px 16px;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s;pointer-events:none}
+  /* ---------- Category overview ---------- */
+  .cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0 8px}
+  .cat-card{display:flex;flex-direction:column;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;transition:border-color .15s,transform .15s}
+  .cat-card:hover{border-color:var(--line-2);transform:translateY(-2px)}
+  .cat-card-top{display:flex;justify-content:space-between;align-items:center}
+  .cat-num{font-family:var(--mono);font-size:12px;color:var(--muted-2)}
+  .cat-count{font-size:12px;color:var(--muted);background:var(--panel-2);border-radius:999px;padding:3px 10px}
+  .cat-card h3{margin:0;font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .cat-card p{margin:0;font-size:14px;color:var(--muted)}
+  .cat-card-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid var(--line)}
+  .cat-card-foot span{font-size:12.5px;color:var(--muted)}
+  .cat-card-foot b{color:var(--text);font-weight:600}
+
+  /* Common rules strip */
+  .rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+  .rule{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel)}
+  .rule .eyebrow{display:block;margin-bottom:6px;letter-spacing:.14em}
+  .rule p{margin:0;font-size:14px}
+  .rule p b{color:var(--text);font-weight:600}
+
+  /* Decision guide */
+  .decide{list-style:none;margin:16px 0 0!important;counter-reset:q;border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+  .decide li{counter-increment:q;display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 16px;margin:0!important;border-bottom:1px solid var(--line);font-size:14.5px}
+  .decide li:last-child{border-bottom:none}
+  .decide li::before{content:counter(q);font-family:var(--mono);font-size:12px;color:var(--muted-2)}
+  .decide li a{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;border:1px solid var(--line-2);border-radius:999px;padding:4px 11px}
+  .decide li a:hover{background:var(--panel-2)}
+  .decide li.none a{border-style:dashed;color:var(--muted)}
+
+  /* ---------- Filter bar ---------- */
+  .filters{position:sticky;top:calc(var(--topbar) + 8px);z-index:20;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:40px 0 0;padding:10px;background:rgba(247,248,249,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:14px}
+  .filters input,.filters select{font:inherit;font-size:14px;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px;outline:none}
+  .filters input{flex:1;min-width:200px}
+  .filters input:focus,.filters select:focus{border-color:var(--text)}
+  .filters .count{font-size:12.5px;color:var(--muted);padding:0 6px;white-space:nowrap}
+
+  /* ---------- Category sections ---------- */
+  .cat-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .cat-head .cat-num{font-size:13px}
+  .cat-head h2{margin:0}
+  .cat-lead{margin-top:12px}
+  .cat-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin:18px 0 20px;overflow:hidden}
+  .cat-facts div{padding:12px 16px;border-right:1px solid var(--line)}
+  .cat-facts div:last-child{border-right:none}
+  .cat-facts dt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);font-weight:600;margin-bottom:4px}
+  .cat-facts dd{font-size:14px;color:var(--text)}
+  .figma-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-top:12px}
+  .figma-link:hover{color:var(--text)}
+
+  /* Case list */
+  .use-list{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+  .use-head,.use{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);gap:20px;padding:16px 18px}
+  .use-head{padding:10px 18px;background:var(--panel-2);border-bottom:1px solid var(--line-2);font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2)}
+  .use{border-bottom:1px solid var(--line)}
+  .use:last-child{border-bottom:none}
+  .use h4{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .use p{font-size:14px;color:var(--muted);margin:0}
+  .where{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+  .where span{font-size:11.5px;color:var(--muted);background:var(--panel-2);border-radius:6px;padding:2px 8px}
+  .badge{font-family:var(--body);font-size:10.5px;font-weight:600;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line-2);border-radius:999px;padding:1px 8px}
+  .hap{display:flex;gap:12px;align-items:center}
+  .hap b{display:block;font-size:14px;font-weight:600;color:var(--text);line-height:1.3}
+  .hap code{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:none;border:none;padding:0}
+  .hap .int{display:block;font-size:12.5px;color:var(--muted)}
+  .when-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px}
+  .when-tag i{width:7px;height:7px;border-radius:50%;background:var(--text);display:inline-block}
+  .when-tag i.auto{background:none;border:1.5px solid var(--text)}
+  .when-tag i.threshold{border-radius:1px;transform:rotate(45deg)}
+  .use .when p{font-size:13.5px}
+  .steps{grid-column:1/-1;display:grid;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:2px}
+  .step{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);gap:20px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--bg)}
+  .step:last-child{border-bottom:none}
+  .step .step-n{font-family:var(--mono);font-size:11.5px;color:var(--muted-2);display:block;margin-bottom:2px}
+  .use.is-hidden,.cat-section.is-empty .use-list{display:none}
+  .empty{display:none;font-size:14px;color:var(--muted);border:1px dashed var(--line-2);border-radius:12px;padding:16px}
+  .cat-section.is-empty .empty{display:block}
+
+  /* ---------- Pattern library ---------- */
+  .lib{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px}
+  .pat{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;scroll-margin-top:calc(var(--topbar) + 80px)}
+  .pat-viz{background:var(--panel-2);padding:22px 18px;display:flex;justify-content:center;border-bottom:1px solid var(--line)}
+  .pat-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .pat-kind{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+  .pat h3{margin:0;font-family:var(--display);font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .pat .tok{align-self:flex-start}
+  .pat p{font-size:13.5px;margin:0}
+  .pat dl{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 12px;font-size:12.5px}
+  .pat dt{color:var(--muted-2)}
+  .pat dd{color:var(--text);font-family:var(--mono);font-size:11.5px;word-break:break-word}
+  .pat dd.tbd{color:var(--muted-2);font-family:var(--body);font-style:italic}
+  .pat-used{font-size:12px;color:var(--muted)}
+
+  /* ---------- Do & Don't ---------- */
+  .dd{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+  .dd-col{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+  .dd-col h3{margin:0;padding:11px 16px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center}
+  .dd-col ul{list-style:none;margin:0!important}
+  .dd-col li{padding:11px 16px;border-bottom:1px solid var(--line);font-size:14px;margin:0!important}
+  .dd-col li:last-child{border-bottom:none}
+  .dd-col.dont h3{color:var(--muted)}
+
+  .backtop{position:fixed;bottom:24px;right:24px;z-index:45;display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#171A1E;background:rgba(255,255,255,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:999px;padding:10px 16px;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s;pointer-events:none;box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .backtop.show{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
   .backtop:hover{background:rgba(255,255,255,1)}
-  @media(max-width:760px){.main{padding:30px 22px 90px}}
+
+  @media(max-width:1100px){.lib{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:860px){
+    .use-head{display:none}
+    .use,.step{grid-template-columns:1fr;gap:12px}
+    .rules,.cat-facts{grid-template-columns:1fr}
+    .cat-facts div{border-right:none;border-bottom:1px solid var(--line)}
+    .cat-facts div:last-child{border-bottom:none}
+  }
+  @media(max-width:760px){
+    .main{padding:30px 22px 90px}
+    .cat-grid,.lib,.dd{grid-template-columns:1fr}
+    .decide li{grid-template-columns:22px minmax(0,1fr)}
+    .decide li a{grid-column:2;justify-self:start}
+    .filters{top:calc(var(--topbar) + 4px)}
+  }
 </style>
 </head>
 <body id="top">
@@ -84,89 +205,37 @@
 <div class="shell">
   <script>
     window.SIDEBAR_CONFIG = {
-  "eyebrow": "Design",
-  "groups": [
-    {
-      "title": "Get Started",
-      "items": [
+      "eyebrow": "Design",
+      "groups": [
         {
-          "label": "How Foundations works",
-          "href": "../design.html#how-foundations-works"
-        },
-        {
-          "label": "Tokens y temas",
-          "href": "../tokens-temas.html"
-        },
-        {
-          "label": "Designing",
-          "collapse": true,
+          "title": "Get Started",
           "items": [
-            {
-              "label": "Design Principles",
-              "href": "../design-principles.html"
-            }
+            { "label": "How Foundations works", "href": "../design.html#how-foundations-works" },
+            { "label": "Tokens y temas", "href": "../tokens-temas.html" },
+            { "label": "Designing", "collapse": true, "items": [ { "label": "Design Principles", "href": "../design-principles.html" } ] },
+            { "label": "Developing", "collapse": true, "locked": true },
+            { "label": "Contributing", "collapse": true, "locked": true }
           ]
         },
-        {
-          "label": "Developing",
-          "collapse": true,
-          "locked": true
-        },
-        {
-          "label": "Contributing",
-          "collapse": true,
-          "locked": true
-        }
+        { "items": window.FOUNDATIONS_NAV, "title": "Foundations" }
+      ],
+      "onThisPage": [
+        { "label": "Overview", "href": "#overview" },
+        { "label": "Key terms", "href": "#terminos" },
+        { "label": "Principles", "href": "#principios" },
+        { "label": "Categories", "href": "#categorias" },
+        { "label": "01 · Main actions", "href": "#main-actions" },
+        { "label": "02 · Secondary actions", "href": "#secondary-actions" },
+        { "label": "03 · Success / Warning / Error", "href": "#status" },
+        { "label": "04 · Physical Feedback", "href": "#physical-feedback" },
+        { "label": "Pattern library", "href": "#patrones" },
+        { "label": "Accessibility", "href": "#accesibilidad" },
+        { "label": "Do & Don't", "href": "#do-dont" },
+        { "label": "Dependencies", "href": "#dependencias" },
+        { "label": "Open items", "href": "#pendientes" },
+        { "label": "References", "href": "#referencias" }
       ]
-    },
-    {
-      "items": window.FOUNDATIONS_NAV,
-      "title": "Foundations"
-    }
-  ],
-  "onThisPage": [
-    {
-      "label": "Overview",
-      "href": "#overview"
-    },
-    {
-      "label": "Key terms",
-      "href": "#terminos"
-    },
-    {
-      "label": "Principles",
-      "href": "#principios"
-    },
-    {
-      "label": "Types",
-      "href": "#tipos"
-    },
-    {
-      "label": "How it maps to Rappi",
-      "href": "#uso"
-    },
-    {
-      "label": "Accessibility",
-      "href": "#accesibilidad"
-    },
-    {
-      "label": "Do & Don't",
-      "href": "#do-dont"
-    },
-    {
-      "label": "Dependencies",
-      "href": "#dependencias"
-    },
-    {
-      "label": "Open items",
-      "href": "#pendientes"
-    },
-    {
-      "label": "References",
-      "href": "#referencias"
-    }
-  ]
-};
+    };
   </script>
   <site-sidebar></site-sidebar>
 
@@ -181,16 +250,19 @@
         <p class="page-lead">Cómo Mustache usa la vibración del dispositivo para confirmar, advertir y dar textura física a las interacciones de Rappi, siempre de forma consistente y como refuerzo de lo que la persona ya ve y oye.</p>
         <div class="meta-row">
           <span class="meta-chip"><b>Estado</b> En construcción</span>
-          <span class="meta-chip"><b>Versión</b> 0.1</span>
+          <span class="meta-chip"><b>Versión</b> 0.2</span>
+          <span class="meta-chip"><b>Categorías</b> 4</span>
+          <span class="meta-chip"><b>Casos</b> <span data-total-cases>0</span></span>
+          <span class="meta-chip"><b>Plataforma</b> iOS · Android por definir</span>
         </div>
       </div>
     </div>
 
     <div class="main-inner">
 
+      <!-- ===================== OVERVIEW ===================== -->
       <section class="doc" id="overview">
         <h2>Overview</h2>
-
         <p>Un haptic es cualquier respuesta física que la persona siente en el cuerpo a través del dispositivo, normalmente una vibración corta. Estimula el sentido del tacto para <strong>transmitir y reforzar</strong> acciones puntuales dentro de la app.</p>
         <p>Por qué le importa a Rappi:</p>
         <ul>
@@ -201,6 +273,7 @@
         </ul>
       </section>
 
+      <!-- ===================== KEY TERMS ===================== -->
       <section class="doc" id="terminos">
         <h2>Key terms</h2>
         <div class="tbl-wrap">
@@ -208,8 +281,9 @@
             <tr><th>Término</th><th>Qué significa</th></tr>
             <tr><td>Haptic del sistema</td><td>Patrón predefinido por iOS o Android. Es la opción por defecto en Mustache.</td></tr>
             <tr><td>Haptic personalizado</td><td>Patrón diseñado a mano (Core Haptics en iOS, composiciones en Android). Solo se usa si el sistema no cubre el caso.</td></tr>
-            <tr><td>Fuerza</td><td>Qué tan fuerte se siente la vibración. En iOS se divide en nitidez e intensidad; en Android se llama amplitud.</td></tr>
-            <tr><td>Comportamiento</td><td>El patrón de la vibración: un toque, dos toques, una vibración larga.</td></tr>
+            <tr><td>Categoría</td><td>Para qué se usa el haptic en Rappi: Main actions, Secondary actions, Success / Warning / Error o Physical Feedback. Cada caso pertenece a una sola.</td></tr>
+            <tr><td>Patrón</td><td>La vibración concreta que suena (ej. Light impact). Vive en la <a class="inline" href="#patrones">Pattern library</a> y se reutiliza entre categorías.</td></tr>
+            <tr><td>Momento</td><td>El instante exacto en que se dispara: al soltar el dedo, al presionar, al llegar al umbral de un gesto o de forma automática.</td></tr>
             <tr><td>Nitidez (iOS)</td><td>Si la vibración se siente estrecha y precisa, o difusa.</td></tr>
             <tr><td>Intensidad (iOS)</td><td>Qué tan fuerte es el golpe.</td></tr>
             <tr><td>Amplitud (Android)</td><td>La fuerza del haptic. Los mensajes importantes pueden ser más fuertes y con un patrón más largo.</td></tr>
@@ -217,6 +291,7 @@
         </div>
       </section>
 
+      <!-- ===================== PRINCIPLES ===================== -->
       <section class="doc" id="principios">
         <h2>Principles</h2>
         <ul>
@@ -229,92 +304,53 @@
         </ul>
       </section>
 
-      <section class="doc" id="tipos">
-        <h2>Types</h2>
-        <p>Mustache trabaja con <strong>tres tipos</strong> de haptic, heredados de las familias de feedback de iOS y mapeados a su equivalente en Android.</p>
+      <!-- ===================== CATEGORIES (hub) ===================== -->
+      <section class="doc" id="categorias">
+        <h2>Categories</h2>
+        <p>Todo haptic de Rappi pertenece a <strong>una de 4 categorías</strong>. La categoría dice <strong>para qué</strong> se usa; el patrón de la <a class="inline" href="#patrones">librería</a> dice <strong>cómo se siente</strong>. Así un caso nuevo no inventa una vibración: elige categoría y reutiliza un patrón.</p>
 
-        <div class="note gap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Por confirmar:</b> diagrama nitidez vs. intensidad, tomado del tablero FigJam <code>haptics-rappi</code>.</p></div>
+        <div class="cat-grid" data-cat-grid></div>
 
-        <div class="tbl-wrap">
-          <table class="spec">
-            <tr><th>Tipo</th><th>Para qué</th><th>iOS</th><th>Android (tablero actual)</th><th>Android (recomendado)</th></tr>
-            <tr><td>selection</td><td>Feedback mientras cambia el valor de un elemento de UI (elegir toppings, agregar a la canasta, stepper)</td><td><code>UISelectionFeedbackGenerator</code></td><td><code>EFFECT_TICK</code></td><td><code>SEGMENT_TICK</code> / <code>CLOCK_TICK</code></td></tr>
-            <tr><td>notification · success</td><td>Una tarea o acción se completó</td><td><code>UINotificationFeedbackGenerator .success</code></td><td><code>EFFECT_CLICK</code></td><td><code>CONFIRM</code></td></tr>
-            <tr><td>notification · warning</td><td>La acción produjo una advertencia</td><td><code>UINotificationFeedbackGenerator .warning</code></td><td><code>EFFECT_CLICK</code></td><td><em>[por definir]</em> (no hay constante nativa de advertencia)</td></tr>
-            <tr><td>notification · error</td><td>La tarea o acción falló</td><td><code>UINotificationFeedbackGenerator .error</code></td><td><code>EFFECT_CLICK</code></td><td><code>REJECT</code></td></tr>
-            <tr><td>impact</td><td>Metáfora física que complementa algo visual (una vista que encaja en su lugar, un toggle)</td><td><code>UIImpactFeedbackGenerator</code> (estilo <code>medium</code> para toggles)</td><td><em>[por definir]</em></td><td><code>TOGGLE_ON</code> / <code>TOGGLE_OFF</code> para toggles</td></tr>
-          </table>
+        <h3>Reglas comunes a todas las categorías</h3>
+        <div class="rules">
+          <div class="rule"><span class="eyebrow">Momento por defecto</span><p><b>Al soltar el dedo.</b> Solo se documenta el momento cuando es distinto (al presionar, umbral de gesto o automático).</p></div>
+          <div class="rule"><span class="eyebrow">Intensidad por defecto</span><p><b>80%</b> en impacts y <b>100%</b> en notifications. Otro valor se marca como excepción en el caso.</p></div>
+          <div class="rule"><span class="eyebrow">Siempre con cambio visual</span><p>Ningún haptic suena solo. Si es automático, coincide con una animación o un mensaje en pantalla.</p></div>
         </div>
 
-        <p>Constantes Android listadas en el tablero como catálogo base:</p>
-        <div class="chips">
-          <span class="chip">EFFECT_TICK</span>
-          <span class="chip">EFFECT_CLICK</span>
-          <span class="chip">EFFECT_HEAVY_CLICK</span>
-          <span class="chip">EFFECT_DOUBLE_CLICK</span>
-        </div>
+        <h3>¿En qué categoría va un caso nuevo?</h3>
+        <p>Responde en orden. La primera respuesta "sí" define la categoría.</p>
+        <ol class="decide">
+          <li><span>¿Comunica el <strong>resultado</strong> de algo: éxito, alerta, error o un premio?</span><a href="#status">Success / Warning / Error</a></li>
+          <li><span>¿Imita un <strong>comportamiento físico</strong>: llegar al límite de un gesto o algo que aparece e interrumpe?</span><a href="#physical-feedback">Physical Feedback</a></li>
+          <li><span>¿Hace <strong>avanzar la compra</strong>: agregar, ir a canasta, continuar, pagar?</span><a href="#main-actions">Main actions</a></li>
+          <li><span>¿Es una acción secundaria donde importa <strong>confirmar</strong> que ocurrió?</span><a href="#secondary-actions">Secondary actions</a></li>
+          <li class="none"><span>Ninguna de las anteriores.</span><a href="#do-dont">Sin haptic</a></li>
+        </ol>
 
-        <div class="note gap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Nomenclatura propuesta (por confirmar):</b> nombrar el haptic por intención, no por plataforma: <code>haptic/selection</code>, <code>haptic/success</code>, <code>haptic/warning</code>, <code>haptic/error</code>, <code>haptic/impact-medium</code>. Cada plataforma resuelve el nombre a su API nativa, igual que un token semántico resuelve a un primitive.</p></div>
+        <div class="filters" role="search">
+          <input type="search" placeholder="Buscar interacción, pantalla o componente" aria-label="Buscar casos" data-filter-q>
+          <select aria-label="Filtrar por patrón" data-filter-pattern><option value="">Todos los patrones</option></select>
+          <span class="count" data-filter-count></span>
+        </div>
       </section>
 
-      <section class="doc" id="uso">
-        <h2>How it maps to Rappi</h2>
-        <p>Mapeo de interacciones reales de la app a cada tipo. El estado refleja lo marcado en el tablero de diseño.</p>
+      <!-- Category sections are rendered from HAPTIC_CATEGORIES below -->
+      <div data-cat-sections></div>
 
-        <h3>selection</h3>
-        <div class="tbl-wrap">
-          <table class="spec">
-            <tr><th>Interacción</th><th>Estado</th></tr>
-            <tr><td>Agregar un producto a la canasta</td><td>Propuesto</td></tr>
-            <tr><td>Dar like a un producto o tienda</td><td>Propuesto</td></tr>
-            <tr><td>Aumentar unidades de producto (stepper)</td><td>Propuesto</td></tr>
-            <tr><td>Slider con opciones de selección (ej. madurez del producto)</td><td>Propuesto</td></tr>
-            <tr><td>Confirmar sustitutos (selección múltiple)</td><td>Propuesto</td></tr>
-            <tr><td>Activar o desactivar filtros</td><td>Propuesto</td></tr>
-            <tr><td>Filtros con selección</td><td>En revisión</td></tr>
-            <tr><td>Selección de storetype</td><td>En revisión (entrar a un storetype es navegación; no parece necesario)</td></tr>
-            <tr><td>Ir a pagar</td><td>En revisión</td></tr>
-            <tr><td>Tocar ver canasta</td><td>En revisión</td></tr>
-            <tr><td>Cerrar modales</td><td>En revisión</td></tr>
-          </table>
-        </div>
-
-        <h3>notification</h3>
-        <div class="tbl-wrap">
-          <table class="spec">
-            <tr><th>Resultado</th><th>Interacción</th><th>Estado</th></tr>
-            <tr><td>success</td><td>Confirmación del código enviado al celular</td><td>Propuesto (revisar si el sistema ya vibra cuando el código llega por SMS)</td></tr>
-            <tr><td>success</td><td>Aceptar un sustituto</td><td>Propuesto</td></tr>
-            <tr><td>success</td><td>Confirmación de un pedido</td><td>Propuesto</td></tr>
-            <tr><td>warning</td><td>Intentar agregar un producto sin completar los toppings</td><td>Propuesto</td></tr>
-            <tr><td>warning</td><td>Dirección de entrega lejos de la ubicación actual</td><td>Propuesto</td></tr>
-            <tr><td>error</td><td>Código inválido al ingresarlo (ej. cupón no válido, con snackbar o microinteracción en el input)</td><td>Propuesto</td></tr>
-            <tr><td>error</td><td>Dirección de entrega errónea</td><td>Propuesto</td></tr>
-            <tr><td>warning o error</td><td>Realizar un pedido sin seleccionar método de pago</td><td><em>[por decidir]</em>: aparece en ambas columnas del tablero</td></tr>
-          </table>
-        </div>
-
-        <h3>impact</h3>
-        <div class="tbl-wrap">
-          <table class="spec">
-            <tr><th>Interacción</th><th>Estilo</th><th>Estado</th></tr>
-            <tr><td>Prender o apagar toggles</td><td>medium</td><td>En revisión</td></tr>
-          </table>
-        </div>
-
-        <h3>Dónde NO usar haptic (por revisar)</h3>
-        <ul>
-          <li>Cancelar una búsqueda.</li>
-          <li>Modales nativas con selección (el sistema ya resuelve su feedback).</li>
-          <li>Tab bar: es un componente donde la persona se mueve mucho; apps nativas y de delivery revisadas no lo usan.</li>
-          <li>Entrada al home o a un storetype: pendiente validar, se inclina a no usar.</li>
-        </ul>
+      <!-- ===================== PATTERN LIBRARY ===================== -->
+      <section class="doc" id="patrones">
+        <h2>Pattern library</h2>
+        <p>Las vibraciones que usa Rappi hoy, nombradas por intención como un token semántico: <code>haptic/*</code> resuelve a la API nativa de cada plataforma, igual que un token de color resuelve a un primitive.</p>
+        <div class="note gap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p><b>Por confirmar:</b> la nomenclatura <code>haptic/*</code> con desarrollo y la columna Android, que hoy es una recomendación sin validar.</p></div>
+        <div class="lib" data-lib></div>
       </section>
 
+      <!-- ===================== ACCESSIBILITY ===================== -->
       <section class="doc" id="accesibilidad">
         <h2>Accessibility</h2>
         <ul>
-          <li><strong>Nunca como único canal.</strong> Todo haptic tiene su par visual (color + ícono + texto) y, cuando aplique, sonoro. Es la misma regla que en <a href="accessibility.html">Accessibility</a>: el color no es el único indicador de estado, y la vibración tampoco.</li>
+          <li><strong>Nunca como único canal.</strong> Todo haptic tiene su par visual (color + ícono + texto) y, cuando aplique, sonoro. Es la misma regla que en <a class="inline" href="accessibility.html">Accessibility</a>: el color no es el único indicador de estado, y la vibración tampoco.</li>
           <li><strong>Respetar el ajuste del sistema.</strong> Si la persona desactivó las vibraciones del sistema, la app no las fuerza (en Android, nunca usar <code>FLAG_IGNORE_GLOBAL_SETTING</code>).</li>
           <li><strong>Consistencia como apoyo real.</strong> Muchas personas usan los haptics del sistema para saber si algo funcionó o falló cuando no pueden ver la pantalla. Usar los patrones de éxito y error de forma coherente es parte de la accesibilidad, no un extra.</li>
           <li><strong>Nada largo ni repetitivo.</strong> Evita vibraciones prolongadas o en bucle: pueden resultar incómodas y generan fatiga.</li>
@@ -323,51 +359,70 @@
         </ul>
       </section>
 
+      <!-- ===================== DO & DON'T ===================== -->
       <section class="doc" id="do-dont">
-        <h2>Do & Don't</h2>
-        <ul>
-          <li><strong>Usar success al confirmar un pedido, junto al check y el mensaje en pantalla</strong> — no vibres sin ningún cambio visible en la UI.</li>
-          <li><strong>Usar el patrón nativo del switch del sistema</strong> — no sumes un haptic custom a un control que ya vibra por defecto (se duplica).</li>
-          <li><strong>Reservar error para fallas reales (cupón no válido)</strong> — no uses el mismo patrón para éxito y error.</li>
-          <li><strong>Un haptic corto y nítido por evento</strong> — no uses vibraciones largas, en bucle o en cada scroll.</li>
-          <li><strong>Dejar que la persona apague los haptics y que la app siga siendo clara</strong> — no dependas del haptic para comunicar información compleja.</li>
-        </ul>
+        <h2>Do &amp; Don't</h2>
+        <div class="dd">
+          <div class="dd-col">
+            <h3><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Do</h3>
+            <ul>
+              <li>Usar success al confirmar un pedido, junto al check y el mensaje en pantalla.</li>
+              <li>Usar el patrón nativo del switch del sistema.</li>
+              <li>Reservar error para fallas reales (cupón no válido).</li>
+              <li>Un haptic corto y nítido por evento.</li>
+              <li>Dejar que la persona apague los haptics y que la app siga siendo clara.</li>
+            </ul>
+          </div>
+          <div class="dd-col dont">
+            <h3><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg> Don't</h3>
+            <ul>
+              <li>Vibrar sin ningún cambio visible en la UI.</li>
+              <li>Sumar un haptic custom a un control que ya vibra por defecto (se duplica).</li>
+              <li>Usar el mismo patrón para éxito y error.</li>
+              <li>Usar vibraciones largas, en bucle o en cada scroll.</li>
+              <li>Depender del haptic para comunicar información compleja.</li>
+            </ul>
+          </div>
+        </div>
       </section>
 
+      <!-- ===================== DEPENDENCIES ===================== -->
       <section class="doc" id="dependencias">
         <h2>Dependencies</h2>
         <ul>
-          <li><a href="accessibility.html">Accessibility</a>: los haptics son un canal más de feedback y heredan la regla de "nunca un solo indicador".</li>
-          <li><a href="motion.html">Motion</a>: haptic y animación deben ir sincronizados (ej. el impact al encajar una vista coincide con el final de la animación). <em>[por documentar]</em></li>
-          <li><strong>Componentes que disparan haptics:</strong> stepper (<code>button-stepper</code>), toggle (<code>switch</code>), slider, filtros (<code>tags/carousel/standard-filters</code>), snackbars, <code>inputs/PIN</code>. Documentar en cada ficha de componente qué haptic dispara y cuándo. <em>[por confirmar]</em></li>
-          <li><a href="../content.html">Content</a>: el mensaje visual que acompaña a un warning o error sigue la guía de voz y tono.</li>
+          <li><a class="inline" href="accessibility.html">Accessibility</a>: los haptics son un canal más de feedback y heredan la regla de "nunca un solo indicador".</li>
+          <li><a class="inline" href="motion.html">Motion</a>: haptic y animación van sincronizados (ej. el sello de RappiRewards vibra justo cuando toca la pantalla). <em>[por documentar]</em></li>
+          <li><strong>Componentes que disparan haptics:</strong> se listan en cada caso de las 4 categorías. La ficha de cada componente debe enlazar aquí su caso. <em>[por confirmar]</em></li>
+          <li><a class="inline" href="../content.html">Content</a>: el mensaje visual que acompaña a un warning o error sigue la guía de voz y tono.</li>
         </ul>
       </section>
 
+      <!-- ===================== OPEN ITEMS ===================== -->
       <section class="doc" id="pendientes">
         <h2>Open items before Stable</h2>
         <div class="note gap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><p>
+          <b>Especificar</b> el patrón Press &amp; release (intensidad, nitidez y tiempos) para que no dependa de una referencia en producción.<br>
+          <b>Definir</b> el equivalente Android de cada patrón de la librería.<br>
+          <b>Reconciliar</b> esta guía con la propuesta del tablero FigJam <code>haptics-rappi</code> (stepper, filtros y propina como selection).<br>
           <b>Decidir</b> si "pedido sin método de pago" es warning o error.<br>
-          <b>Cerrar</b> los ítems "En revisión" de selection (filtros con selección, ir a pagar, ver canasta, cerrar modales, storetype).<br>
-          <b>Definir</b> el uso de impact: el tablero lo deja en revisión porque sus niveles no tienen una intención clara para Rappi.<br>
-          <b>Validar</b> la migración en Android de EFFECT_* a constantes por acción (CONFIRM, REJECT, SEGMENT_TICK, TOGGLE_ON/OFF), y definir qué usar para warning.<br>
-          <b>Confirmar</b> con desarrollo la nomenclatura haptic/*.
+          <b>Confirmar</b> con desarrollo la nomenclatura <code>haptic/*</code>.
         </p></div>
       </section>
 
+      <!-- ===================== REFERENCES ===================== -->
       <section class="doc" id="referencias">
         <h2>References</h2>
         <ul>
-          <li>Origen en Figma: FigJam <strong>haptics-rappi</strong> (<code>fileKey 5aOqmDJMcu1dsNZIIWhe94</code>), secciones "Haptics ¿Qué son?", "Dimensiones hápticas", "Tipos de Haptics", "Principios", "Implementación" y "Proposal Rappi experience".</li>
-          <li>DS y guías consultadas: Apple Human Interface Guidelines (Playing haptics, Accessibility), Android Developers (Haptics design principles, Add haptic feedback to events), AOSP (UX foundation for haptic framework).</li>
+          <li>Fuente de las 4 categorías: Figma <a class="inline" href="https://www.figma.com/design/9swVK6lCtF6ZfjjzjrQwDX/Haptics---Motion?node-id=1-733" target="_blank" rel="noopener">Haptics &amp; Motion · Haptics guide</a>.</li>
+          <li>Propuesta inicial: FigJam <strong>haptics-rappi</strong> (<code>fileKey 5aOqmDJMcu1dsNZIIWhe94</code>).</li>
+          <li>Guías consultadas: Apple Human Interface Guidelines (Playing haptics), Android Developers (Haptics design principles), Meta (Haptics system).</li>
         </ul>
-
         <div class="tbl-wrap">
           <table class="spec">
             <tr><th>Campo</th><th>Valor</th></tr>
-            <tr><td>Versión</td><td>0.1 (borrador para revisión interna)</td></tr>
+            <tr><td>Versión</td><td>0.2 (estructura por categorías, borrador para revisión interna)</td></tr>
             <tr><td>Propietario</td><td>Equipo de Design System, Mustache</td></tr>
-            <tr><td>Última actualización</td><td>24 sep, 2026</td></tr>
+            <tr><td>Última actualización</td><td>26 oct, 2026</td></tr>
           </table>
         </div>
       </section>
@@ -377,14 +432,305 @@
   </main>
 </div>
 
+<!--
+  ============================================================
+  HAPTICS DATA · única fuente de verdad de esta página
+  ------------------------------------------------------------
+  Agregar un caso nuevo = agregar un objeto a HAPTIC_USAGES.
+  La sección de su categoría, los contadores, el filtro y el
+  "Usado en" de la librería se actualizan solos.
+
+  Campos de un caso:
+    cat      'main' | 'secondary' | 'status' | 'physical'
+    title    nombre corto de la interacción
+    where    pantallas o flujos donde vive
+    action   qué hace la persona (o qué pasa)
+    pattern  id de HAPTIC_PATTERNS
+    int      intensidad en %, solo si NO es la del patrón
+    when     'release' (default) | 'press' | 'hold' | 'threshold' | 'auto'
+    whenText detalle del momento, solo si no es "al soltar"
+    comp     componentes de Mustache involucrados (opcional)
+    badge    etiqueta corta, ej. 'En producción · iOS' (opcional)
+    steps    para interacciones de varios pasos (reemplaza pattern/when)
+
+  Un patrón nuevo se agrega a HAPTIC_PATTERNS solo si ninguno
+  de los existentes encaja (principio "Sistema primero").
+  ============================================================
+-->
 <script>
-  (function () {
-    var btn = document.querySelector('.backtop');
-    if (!btn) return;
-    function onScroll() { btn.classList.toggle('show', window.scrollY > 200); }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  })();
+  var HAPTIC_CATEGORIES = [
+    { id: 'main', anchor: 'main-actions', num: '01', name: 'Main actions',
+      lead: 'Acciones clave de compra durante el purchase journey. Confirman que la acción se ejecutó.',
+      trigger: 'Siempre por una acción de la persona',
+      pattern: 'press-release', patternNote: 'Press & release o Medium impact',
+      figma: '1-734' },
+    { id: 'secondary', anchor: 'secondary-actions', num: '02', name: 'Secondary actions',
+      lead: 'Acciones secundarias del purchase journey donde importa que la persona sepa que la acción se realizó.',
+      trigger: 'Siempre por una acción de la persona',
+      pattern: 'impact-light', patternNote: 'Light impact',
+      figma: '1-776' },
+    { id: 'status', anchor: 'status', num: '03', name: 'Success / Warning / Error',
+      lead: 'Resultados positivos del journey, errores que bloquean la experiencia y alertas que piden atención.',
+      trigger: 'Por la persona o automático, siempre con un cambio visual',
+      pattern: 'success', patternNote: 'Notifications, Heavy y Dynamic',
+      figma: '1-793' },
+    { id: 'physical', anchor: 'physical-feedback', num: '04', name: 'Physical Feedback',
+      lead: 'Emulan una acción física de los elementos en pantalla para que la interacción se entienda mejor.',
+      trigger: 'Umbral de un gesto o aparición automática',
+      pattern: 'impact-medium', patternNote: 'Light y Medium impact',
+      figma: '1-810' }
+  ];
+
+  /* pulses: [x 0..1, height 0..1, width 0..1] · cont: barra continua */
+  var HAPTIC_PATTERNS = {
+    'press-release': { name: 'Press & release', kind: 'Custom · Rappi', token: 'haptic/press-release', int: null,
+      desc: 'Dos pulsos: uno al presionar y otro al soltar. Es la firma táctil de las acciones que hacen avanzar la compra.',
+      ios: 'Core Haptics (patrón custom)', android: null, params: null,
+      pulses: [[.28,.55,.07],[.68,.9,.09]] },
+    'impact-medium': { name: 'Medium impact', kind: 'Impact', token: 'haptic/impact-medium', int: 80,
+      desc: 'Golpe de peso medio. Confirma acciones primarias puntuales y el umbral de un gesto.',
+      ios: 'UIImpactFeedbackGenerator .medium', android: 'Por definir', params: 'Intensidad 0.8',
+      pulses: [[.5,.7,.09]] },
+    'impact-light': { name: 'Light impact', kind: 'Impact', token: 'haptic/impact-light', int: 80,
+      desc: 'Golpe suave. Confirma acciones secundarias sin competir con las principales.',
+      ios: 'UIImpactFeedbackGenerator .light', android: 'Por definir', params: 'Intensidad 0.8',
+      pulses: [[.5,.42,.08]] },
+    'impact-heavy': { name: 'Heavy impact', kind: 'Impact', token: 'haptic/impact-heavy', int: 80,
+      desc: 'Golpe pesado. Acompaña un objeto que "cae" o golpea la pantalla en una animación.',
+      ios: 'UIImpactFeedbackGenerator .heavy', android: 'Por definir', params: 'Intensidad 0.8',
+      pulses: [[.5,1,.12]] },
+    'success': { name: 'Success', kind: 'Notification', token: 'haptic/success', int: 100,
+      desc: 'Una tarea o acción se completó con éxito.',
+      ios: 'UINotificationFeedbackGenerator .success', android: 'CONFIRM (recomendado)', params: 'Intensidad 1.0',
+      pulses: [[.34,.5,.07],[.64,.9,.07]] },
+    'warning': { name: 'Warning', kind: 'Notification', token: 'haptic/warning', int: 100,
+      desc: 'Algo requiere la atención de la persona o la acción no se puede hacer todavía.',
+      ios: 'UINotificationFeedbackGenerator .warning', android: 'Por definir', params: 'Intensidad 1.0',
+      pulses: [[.34,.9,.07],[.64,.5,.07]] },
+    'error': { name: 'Error', kind: 'Notification', token: 'haptic/error', int: 100,
+      desc: 'La acción falló o hay un error que bloquea la experiencia.',
+      ios: 'UINotificationFeedbackGenerator .error', android: 'REJECT (recomendado)', params: 'Intensidad 1.0',
+      pulses: [[.22,.75,.06],[.4,.75,.06],[.58,.9,.06],[.76,.6,.06]] },
+    'continuous': { name: 'Continuous', kind: 'Custom · Core Haptics', token: 'haptic/continuous', int: 50,
+      desc: 'Vibración sostenida y corta en 3 paradas. Marca el inicio de una acción de mantener presionado.',
+      ios: 'CHHapticEvent .hapticContinuous', android: 'Por definir', params: 'Intensidad 0.5 · Nitidez 0.5 · 0.1 s',
+      cont: [.18,.82,[.38,.5,.38]] },
+    'dynamic': { name: 'Dynamic', kind: 'Custom · Core Haptics', token: 'haptic/dynamic', int: 70,
+      desc: 'Vibración que dura lo mismo que una animación de temblor. Solo para momentos de celebración.',
+      ios: 'CHHapticPattern (dinámico)', android: 'Por definir', params: 'Intensidad 0.7 · Nitidez 0.8',
+      pulses: [[.16,.35,.04],[.26,.6,.04],[.36,.4,.04],[.46,.7,.04],[.56,.45,.04],[.66,.65,.04],[.76,.38,.04],[.86,.55,.04]] }
+  };
+
+  var WHEN = {
+    release:   { label: 'Al soltar',      cls: '' },
+    press:     { label: 'Al presionar',   cls: '' },
+    hold:      { label: 'Mantener',       cls: '' },
+    threshold: { label: 'Umbral de gesto', cls: 'threshold' },
+    auto:      { label: 'Automático',     cls: 'auto' }
+  };
+
+  var HAPTIC_USAGES = [
+    /* ---------- 01 · Main actions ---------- */
+    { cat: 'main', title: 'Matrix de verticales', where: ['Home', 'RappiPay'], comp: ['horizontal-matrix-layout'],
+      action: 'Tocar una vertical en la matrix del home o de RappiPay.', pattern: 'press-release', badge: 'En producción · iOS' },
+    { cat: 'main', title: 'Agregar en product card', where: ['Multi pantalla'], comp: ['product-card'],
+      action: 'Tocar (+) o "Agregar" en un producto habilitado.', pattern: 'impact-medium' },
+    { cat: 'main', title: 'Stepper', where: ['Product card', 'Detalle de producto', 'Canasta'], comp: ['stepper-bottom'],
+      action: 'Tocar la caneca, (−) o (+) en un stepper.', pattern: 'impact-medium' },
+    { cat: 'main', title: 'CTA principal del flujo de compra', where: ['Detalle de producto · Agregar', 'Store home · Ver canasta', 'Canasta · Continuar', 'Checkout · Continuar', 'Propina · Hacer pedido'], comp: ['basket-ab-button', 'purchase'],
+      action: 'Tocar el botón principal que hace avanzar la compra.', pattern: 'press-release', badge: 'En producción · iOS' },
+    { cat: 'main', title: 'Canasta global flotante', where: ['Multi pantalla'], comp: ['bottom-basket'],
+      action: 'Tocar el botón flotante de la canasta global.', pattern: 'press-release', badge: 'En producción · iOS' },
+    { cat: 'main', title: 'Search bar flotante', where: ['Homes'], comp: ['search-dock-double'],
+      action: 'Tocar la search bar flotante de los homes.', pattern: 'press-release', badge: 'En producción · iOS' },
+    { cat: 'main', title: 'Barra de búsqueda en tiendas', where: ['Multi pantalla'], comp: ['store-header-V2'],
+      action: 'Tocar una barra de búsqueda para entrar al buscador.', pattern: 'impact-medium' },
+    { cat: 'main', title: 'Botón AI (micrófono)', where: ['Multi pantalla'], comp: ['search-dock-double'],
+      action: 'Interacción de 3 pasos: tocar, mantener para grabar y soltar para enviar.',
+      steps: [
+        { label: 'Tocar el botón AI', pattern: 'impact-medium', when: 'release' },
+        { label: 'Mantener presionado para grabar', pattern: 'continuous', when: 'hold', whenText: 'Cuando el micrófono empieza a grabar la voz.' },
+        { label: 'Soltar para enviar el audio', pattern: 'impact-medium', int: 60, when: 'release', whenText: 'Al soltar el press and hold para enviar el audio.' }
+      ] },
+
+    /* ---------- 02 · Secondary actions ---------- */
+    { cat: 'secondary', title: 'Chips de filtros', where: ['Multi pantalla'], comp: ['filters-carousel'],
+      action: 'Seleccionar un chip de filtros.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Mundos en Turbo', where: ['Turbo'],
+      action: 'Tocar el botón de un mundo para cambiarlo.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Chips de categorías', where: ['Multi pantalla', 'Categorías retail'], comp: ['category-chips'],
+      action: 'Seleccionar una categoría.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Vaciar canasta', where: ['Canasta', 'Canasta global'], comp: ['global-cart'],
+      action: 'Tocar "Vaciar canasta" o la caneca de la canasta global (acción destructiva).', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Dirección en headers', where: ['Headers de homes'], comp: ['root-nav-address'],
+      action: 'Tocar el componente de cambio de dirección.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Card de dirección', where: ['Pantalla de direcciones'], comp: ['address-list'],
+      action: 'Tocar una dirección en la lista.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Ofertas y floating pill', where: ['Tiendas', 'Home'], comp: ['new-offer-carousel', 'floating-pill'],
+      action: 'Tocar la card de oferta en una tienda o la promo pill.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Propina', where: ['Pantalla de propina'],
+      action: 'Seleccionar un valor de propina.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Expandir gamification', where: ['Canasta'],
+      action: 'Tocar el botón para expandir el gamification de la canasta.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Like', where: ['Product cards', 'Store cards', 'Tiendas'],
+      action: 'Dar like a una tienda o producto. Solo al dar like, no al quitarlo.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'CTA principal en modales y componentes', where: ['Multi pantalla'],
+      action: 'Tocar el CTA principal de un componente o modal. No aplica a CTAs secundarios ni terciarios, ni a cards de tiendas.', pattern: 'impact-light' },
+    { cat: 'secondary', title: 'Acciones en pantalla ETA', where: ['ETA'],
+      action: 'Tocar Ayuda, el código o abrir el modal on top. Solo estos 3 elementos.', pattern: 'impact-light' },
+
+    /* ---------- 03 · Success / Warning / Error ---------- */
+    { cat: 'status', title: 'Toast positivo', where: ['Multi pantalla'], comp: ['snackbar'],
+      action: 'Aparece un toast con una acción positiva.', pattern: 'success', when: 'auto', whenText: 'Mientras el toast aparece.' },
+    { cat: 'status', title: 'Toast de warning', where: ['Multi pantalla'], comp: ['snackbar'],
+      action: 'Aparece un toast de advertencia.', pattern: 'warning', when: 'auto', whenText: 'Mientras el toast aparece.' },
+    { cat: 'status', title: 'Toast de error', where: ['Multi pantalla'], comp: ['snackbar'],
+      action: 'Aparece un toast de error.', pattern: 'error', when: 'auto', whenText: 'Mientras el toast aparece.' },
+    { cat: 'status', title: 'Botón deshabilitado', where: ['Multi pantalla'], comp: ['button'],
+      action: 'Tocar un botón en estado disabled.', pattern: 'warning' },
+    { cat: 'status', title: 'Dirección cambiada', where: ['Multi pantalla'],
+      action: 'Volver a la pantalla de origen después de cambiar la dirección con éxito.', pattern: 'success', when: 'auto', whenText: 'Cuando se cierra la pantalla de dirección y se regresa a la anterior.' },
+    { cat: 'status', title: 'Meta de gamification', where: ['Canasta'], comp: ['gamification'],
+      action: 'Se completa un reto de gamification de la canasta.', pattern: 'success', when: 'auto', whenText: 'Justo cuando se completa la barra.' },
+    { cat: 'status', title: 'Estampa RappiRewards', where: ['ETA'],
+      action: 'La persona gana una estampa de RappiRewards.', pattern: 'impact-heavy', when: 'auto', whenText: 'Cuando la animación del sello toca la pantalla.' },
+    { cat: 'status', title: 'Regalo RappiRewards · temblor', where: ['ETA'],
+      action: 'El regalo cerrado tiembla en la animación.', pattern: 'dynamic', when: 'auto', whenText: 'Durante todo el tiempo que vibra el regalo.' },
+    { cat: 'status', title: 'Regalo RappiRewards · explosión', where: ['ETA'],
+      action: 'El regalo explota y aparece el premio.', pattern: 'success', when: 'auto', whenText: 'Justo cuando aparece el premio.' },
+
+    /* ---------- 04 · Physical Feedback ---------- */
+    { cat: 'physical', title: 'Modal que interrumpe', where: ['Multi pantalla'], comp: ['modal-sheets'],
+      action: 'Se abre sola una modal que interrumpe la navegación. No aplica a modales de producto ni a las que abre la persona.', pattern: 'impact-light', when: 'auto', whenText: 'Cuando la modal termina de abrir por completo.' },
+    { cat: 'physical', title: 'Drag para cerrar modal', where: ['Multi pantalla'], comp: ['modal-sheets', 'handle-sheets'],
+      action: 'Arrastrar una modal hacia abajo para cerrarla.', pattern: 'impact-medium', when: 'threshold', whenText: 'Al llegar al límite del pull: si suelta ahí, la modal se cierra. Si suelta antes, vuelve a su lugar.' },
+    { cat: 'physical', title: 'Pull to refresh', where: ['Multi pantalla'],
+      action: 'Arrastrar hacia abajo para refrescar la pantalla.', pattern: 'impact-medium', when: 'threshold', whenText: 'Al llegar al límite del pull: si suelta ahí, la pantalla se refresca.' }
+  ];
+</script>
+
+<script>
+(function () {
+  var FIGMA = 'https://www.figma.com/design/9swVK6lCtF6ZfjjzjrQwDX/Haptics---Motion?node-id=';
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  /* Waveform glyph: a horizontal baseline with one bar per pulse. */
+  function wave(id, w, h) {
+    var p = HAPTIC_PATTERNS[id]; w = w || 64; h = h || 28;
+    var mid = h / 2, max = h - 4, out = '<line class="base" x1="2" x2="' + (w - 2) + '" y1="' + mid + '" y2="' + mid + '" stroke-width="1"/>';
+    if (p.cont) {
+      var x0 = p.cont[0] * w, x1 = p.cont[1] * w, lv = p.cont[2], seg = (x1 - x0) / lv.length;
+      lv.forEach(function (v, i) { var bh = v * max; out += '<rect x="' + (x0 + i * seg + .5) + '" y="' + (mid - bh / 2) + '" width="' + (seg - 1) + '" height="' + bh + '" rx="1.5" fill="currentColor"/>'; });
+    } else {
+      p.pulses.forEach(function (q) { var bw = Math.max(2.5, q[2] * w), bh = q[1] * max; out += '<rect x="' + (q[0] * w - bw / 2) + '" y="' + (mid - bh / 2) + '" width="' + bw + '" height="' + bh + '" rx="' + bw / 2 + '" fill="currentColor"/>'; });
+    }
+    return '<svg class="wave" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" aria-hidden="true">' + out + '</svg>';
+  }
+
+  function hapCell(patternId, intOverride) {
+    var p = HAPTIC_PATTERNS[patternId], i = intOverride != null ? intOverride : p.int;
+    return '<div class="hap">' + wave(patternId) + '<div><b>' + esc(p.name) + '</b>' +
+      (i != null ? '<span class="int">Intensidad ' + i + '%' + (intOverride != null ? ' · excepción' : '') + '</span>' : '') +
+      '<a href="#pat-' + patternId + '"><code>' + p.token + '</code></a></div></div>';
+  }
+
+  function whenCell(when, text) {
+    var w = WHEN[when || 'release'];
+    return '<div class="when"><span class="when-tag"><i class="' + w.cls + '"></i>' + w.label + '</span>' +
+      (text ? '<p>' + esc(text) + '</p>' : (when && when !== 'release' ? '' : '<p>Al liberar el dedo de la pantalla.</p>')) + '</div>';
+  }
+
+  function searchText(u) {
+    var parts = [u.title, u.action].concat(u.where || [], u.comp || []);
+    (u.steps || [u]).forEach(function (s) { if (s.pattern) parts.push(HAPTIC_PATTERNS[s.pattern].name, HAPTIC_PATTERNS[s.pattern].token); if (s.label) parts.push(s.label); });
+    return parts.join(' ').toLowerCase();
+  }
+
+  function patternsOf(u) { return (u.steps || [u]).map(function (s) { return s.pattern; }); }
+
+  function renderUse(u) {
+    var head = '<div class="use-main"><h4>' + esc(u.title) + (u.badge ? ' <span class="badge">' + esc(u.badge) + '</span>' : '') + '</h4>' +
+      '<p>' + esc(u.action) + '</p>' +
+      '<div class="where">' + (u.where || []).map(function (w) { return '<span>' + esc(w) + '</span>'; }).join('') +
+      (u.comp || []).map(function (c) { return '<span><code style="font-size:11px;background:none;border:none;padding:0">' + esc(c) + '</code></span>'; }).join('') + '</div></div>';
+    var attrs = ' data-q="' + esc(searchText(u)) + '" data-patterns="' + patternsOf(u).join(' ') + '"';
+    if (u.steps) {
+      return '<article class="use"' + attrs + '>' + head.replace('<div class="use-main">', '<div class="use-main" style="grid-column:1/-1">') + '<div class="steps">' +
+        u.steps.map(function (s, i) {
+          return '<div class="step"><div><span class="step-n">Paso ' + (i + 1) + '</span><p>' + esc(s.label) + '</p></div>' + hapCell(s.pattern, s.int) + whenCell(s.when, s.whenText) + '</div>';
+        }).join('') + '</div></article>';
+    }
+    return '<article class="use"' + attrs + '>' + head + hapCell(u.pattern, u.int) + whenCell(u.when, u.whenText) + '</article>';
+  }
+
+  var byCat = {};
+  HAPTIC_CATEGORIES.forEach(function (c) { byCat[c.id] = HAPTIC_USAGES.filter(function (u) { return u.cat === c.id; }); });
+
+  /* Overview cards */
+  document.querySelector('[data-cat-grid]').innerHTML = HAPTIC_CATEGORIES.map(function (c) {
+    return '<a class="cat-card" href="#' + c.anchor + '"><div class="cat-card-top"><span class="cat-num">' + c.num + '</span><span class="cat-count">' + byCat[c.id].length + ' casos</span></div>' +
+      '<h3>' + esc(c.name) + '</h3><p>' + esc(c.lead) + '</p>' +
+      '<div class="cat-card-foot"><span><b>Patrón:</b> ' + esc(c.patternNote) + '</span>' + wave(c.pattern) + '</div></a>';
+  }).join('');
+
+  /* Category sections */
+  document.querySelector('[data-cat-sections]').innerHTML = HAPTIC_CATEGORIES.map(function (c) {
+    var list = byCat[c.id], used = {};
+    list.forEach(function (u) { patternsOf(u).forEach(function (p) { used[p] = 1; }); });
+    return '<section class="doc cat-section" id="' + c.anchor + '" data-cat="' + c.id + '">' +
+      '<div class="cat-head"><span class="cat-num">' + c.num + '</span><h2>' + esc(c.name) + '</h2></div>' +
+      '<p class="cat-lead">' + esc(c.lead) + '</p>' +
+      '<dl class="cat-facts"><div><dt>Disparo</dt><dd>' + esc(c.trigger) + '</dd></div>' +
+      '<div><dt>Patrones</dt><dd>' + Object.keys(used).map(function (p) { return HAPTIC_PATTERNS[p].name; }).join(', ') + '</dd></div>' +
+      '<div><dt>Casos</dt><dd><span data-cat-count="' + c.id + '">' + list.length + '</span> documentados</dd></div></dl>' +
+      '<div class="use-list"><div class="use-head"><span>Interacción</span><span>Haptic</span><span>Momento</span></div>' + list.map(renderUse).join('') + '</div>' +
+      '<p class="empty">Ningún caso de esta categoría coincide con el filtro.</p>' +
+      '<a class="figma-link" href="' + FIGMA + c.figma + '" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>Ver ejemplos en Figma</a>' +
+      '</section>';
+  }).join('');
+
+  /* Pattern library */
+  document.querySelector('[data-lib]').innerHTML = Object.keys(HAPTIC_PATTERNS).map(function (id) {
+    var p = HAPTIC_PATTERNS[id];
+    var uses = HAPTIC_USAGES.filter(function (u) { return patternsOf(u).indexOf(id) > -1; });
+    var cats = HAPTIC_CATEGORIES.filter(function (c) { return uses.some(function (u) { return u.cat === c.id; }); }).map(function (c) { return c.num; });
+    function dd(v) { return v ? '<dd>' + esc(v) + '</dd>' : '<dd class="tbd">Por definir</dd>'; }
+    return '<article class="pat" id="pat-' + id + '"><div class="pat-viz">' + wave(id, 150, 48) + '</div><div class="pat-body">' +
+      '<span class="pat-kind">' + esc(p.kind) + '</span><h3>' + esc(p.name) + '</h3><code class="tok">' + p.token + '</code>' +
+      '<p>' + esc(p.desc) + '</p>' +
+      '<span class="pat-used">Usado en ' + uses.length + (uses.length === 1 ? ' caso' : ' casos') + (cats.length ? ' · categorías ' + cats.join(', ') : '') + '</span>' +
+      '<dl><dt>iOS</dt>' + dd(p.ios) + '<dt>Android</dt>' + dd(p.android === 'Por definir' ? null : p.android) + '<dt>Valores</dt>' + dd(p.params) + '</dl>' +
+      '</div></article>';
+  }).join('');
+
+  /* Totals + filter */
+  document.querySelectorAll('[data-total-cases]').forEach(function (el) { el.textContent = HAPTIC_USAGES.length; });
+  var sel = document.querySelector('[data-filter-pattern]');
+  Object.keys(HAPTIC_PATTERNS).forEach(function (id) { var o = document.createElement('option'); o.value = id; o.textContent = HAPTIC_PATTERNS[id].name; sel.appendChild(o); });
+  var q = document.querySelector('[data-filter-q]'), count = document.querySelector('[data-filter-count]');
+
+  function apply() {
+    var term = q.value.trim().toLowerCase(), pat = sel.value, shown = 0;
+    document.querySelectorAll('.cat-section').forEach(function (sec) {
+      var n = 0;
+      sec.querySelectorAll('.use').forEach(function (el) {
+        var ok = (!term || el.dataset.q.indexOf(term) > -1) && (!pat || el.dataset.patterns.split(' ').indexOf(pat) > -1);
+        el.classList.toggle('is-hidden', !ok); if (ok) n++;
+      });
+      sec.classList.toggle('is-empty', n === 0);
+      sec.querySelector('[data-cat-count]').textContent = n;
+      shown += n;
+    });
+    count.textContent = (term || pat) ? shown + ' de ' + HAPTIC_USAGES.length + ' casos' : HAPTIC_USAGES.length + ' casos';
+  }
+  q.addEventListener('input', apply); sel.addEventListener('change', apply); apply();
+
+  /* Back to top */
+  var btn = document.querySelector('.backtop');
+  function onScroll() { btn.classList.toggle('show', window.scrollY > 200); }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+})();
 </script>
 </body>
 </html>
