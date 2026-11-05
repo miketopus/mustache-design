@@ -1,10 +1,10 @@
 # Mustache UX System · Guía para Claude
 
-> Archivo único para cargar en un **Project de Claude** (Project knowledge) o adjuntar en un chat. Versión **Rappi 8** · 2 oct 2026 · tema User App · light + dark · generado desde las librerías de Figma `semantics` y `primitives` y el sitio de Mustache.
+> Archivo único para cargar en un **Project de Claude** (Project knowledge) o adjuntar en un chat. Versión **Rappi 8** · 5 nov 2026 · tema User App · light + dark · generado desde las librerías de Figma `semantics` y `primitives` y el sitio de Mustache.
 
 # Mustache UX System (Rappi)
 
-> **Skill v1.1 · Rappi 8 · 2 oct 2026.** Tema User App (light + dark). Si el pedido es para otra versión de la app u otro tema de producto, avísalo antes de diseñar.
+> **Skill v1.1 · Rappi 8 · 5 nov 2026.** Tema User App (light + dark). Si el pedido es para otra versión de la app u otro tema de producto, avísalo antes de diseñar.
 
 Eres un diseñador del equipo de Rappi. Todo lo que produzcas (mockups, HTML, specs, críticas, copies) sigue el Mustache UX System. Si algo no está definido en el DS, **no lo inventes**: usa lo más cercano y dilo.
 
@@ -177,7 +177,7 @@ Generadas desde el sitio de documentación. Léelas cuando el pedido toque ese t
 **Patterns**
 
 - `references/site/patterns/add-product.md`: Add Product. Agregar los productos a la canasta en Rappi, al igual que como se hace en la vida real, es una de las experiencias que nos hace diferentes e innovadores.
-- `references/site/patterns/dialogs.md`: Dialogs. En nuestra interfaz, un diálogo es una “conversación” entre el sistema y las personas usuarias con el fin de solicitar o brindar información.
+- `references/site/patterns/dialogs.md`: Dialogs. En nuestra interfaz, un diálogo es una "conversación" entre el sistema y las personas usuarias con el fin de solicitar o brindar información.
 - `references/site/patterns/empty-states.md`: Empty states. Pantallas en nuestra interfaz o sistema que no contienen información, o que informan sobre alguna falla o error.
 - `references/site/patterns/loading-skeleton.md`: Loading / Skeleton. Elementos visuales que comunican a las personas usuarias la continuidad de un proceso en la interfaz o sistema.
 - `references/site/patterns/login.md`: Login. El inicio de sesión en un sistema es la acción que permite a las personas usuarias tener acceso a una app o programa.
@@ -759,6 +759,8 @@ La librería tiene **94 tokens de color**. Los fondos de intención vienen en pa
 
 La colección de color tiene **13 temas**, uno por producto. Todos usan los mismos 94 nombres; cada tema decide a qué primitivo apunta. Así un componente funciona en todos los productos sin cambios.
 
+El dashboard no tiene un solo color escrito a mano: cada pieza usa un token semántico. Al cambiar de tema solo cambian los valores de los tokens, y todo se repinta. La tarjeta de acento muestra un **sub-tema**: el mismo contenido sobre `background/accent`, con texto en `ink/inverse-on`.
+
 Ejemplo: `background/accent` en light, tema por tema.
 
 | Tema | `background/accent` apunta a | Dark mode propio |
@@ -1162,7 +1164,13 @@ Cómo Mustache usa la vibración del dispositivo para confirmar, advertir y dar 
 
 - **Estado** En construcción
 
-- **Versión** 0.1
+- **Versión** 0.2
+
+- **Categorías** 4
+
+- **Casos** 0
+
+- **Plataforma** iOS · Android por definir
 
 ### Overview
 
@@ -1184,8 +1192,9 @@ Por qué le importa a Rappi:
 | --- | --- |
 | Haptic del sistema | Patrón predefinido por iOS o Android. Es la opción por defecto en Mustache. |
 | Haptic personalizado | Patrón diseñado a mano (Core Haptics en iOS, composiciones en Android). Solo se usa si el sistema no cubre el caso. |
-| Fuerza | Qué tan fuerte se siente la vibración. En iOS se divide en nitidez e intensidad; en Android se llama amplitud. |
-| Comportamiento | El patrón de la vibración: un toque, dos toques, una vibración larga. |
+| Categoría | Para qué se usa el haptic en Rappi: Main actions, Secondary actions, Success / Warning / Error o Physical Feedback. Cada caso pertenece a una sola. |
+| Patrón | La vibración concreta que suena (ej. Light impact). Vive en la Pattern library y se reutiliza entre categorías. |
+| Momento | El instante exacto en que se dispara: al soltar el dedo, al presionar, al llegar al umbral de un gesto o de forma automática. |
 | Nitidez (iOS) | Si la vibración se siente estrecha y precisa, o difusa. |
 | Intensidad (iOS) | Qué tan fuerte es el golpe. |
 | Amplitud (Android) | La fuerza del haptic. Los mensajes importantes pueden ser más fuertes y con un patrón más largo. |
@@ -1204,77 +1213,45 @@ Por qué le importa a Rappi:
 
 - **Opcional y respetuoso.** Respeta el ajuste de haptics del sistema y deja que la persona los apague; la app debe funcionar igual de bien sin ellos. Por qué: la sensibilidad a la vibración varía mucho entre personas.
 
-### Types
+### Categories
 
-Mustache trabaja con **tres tipos** de haptic, heredados de las familias de feedback de iOS y mapeados a su equivalente en Android.
+Todo haptic de Rappi pertenece a **una de 4 categorías**. La categoría dice **para qué** se usa; el patrón de la librería dice **cómo se siente**. Así un caso nuevo no inventa una vibración: elige categoría y reutiliza un patrón.
 
-> **Por confirmar:** diagrama nitidez vs. intensidad, tomado del tablero FigJam `haptics-rappi`.
+#### Reglas comunes a todas las categorías
 
-| Tipo | Para qué | iOS | Android (tablero actual) | Android (recomendado) |
-| --- | --- | --- | --- | --- |
-| selection | Feedback mientras cambia el valor de un elemento de UI (elegir toppings, agregar a la canasta, stepper) | `UISelectionFeedbackGenerator` | `EFFECT_TICK` | `SEGMENT_TICK` / `CLOCK_TICK` |
-| notification · success | Una tarea o acción se completó | `UINotificationFeedbackGenerator .success` | `EFFECT_CLICK` | `CONFIRM` |
-| notification · warning | La acción produjo una advertencia | `UINotificationFeedbackGenerator .warning` | `EFFECT_CLICK` | [por definir] (no hay constante nativa de advertencia) |
-| notification · error | La tarea o acción falló | `UINotificationFeedbackGenerator .error` | `EFFECT_CLICK` | `REJECT` |
-| impact | Metáfora física que complementa algo visual (una vista que encaja en su lugar, un toggle) | `UIImpactFeedbackGenerator` (estilo `medium` para toggles) | [por definir] | `TOGGLE_ON` / `TOGGLE_OFF` para toggles |
+Momento por defecto
 
-Constantes Android listadas en el tablero como catálogo base:
+**Al soltar el dedo.** Solo se documenta el momento cuando es distinto (al presionar, umbral de gesto o automático).
 
-EFFECT_TICK
-EFFECT_CLICK
-EFFECT_HEAVY_CLICK
-EFFECT_DOUBLE_CLICK
+Intensidad por defecto
 
-> **Nomenclatura propuesta (por confirmar):** nombrar el haptic por intención, no por plataforma: `haptic/selection`, `haptic/success`, `haptic/warning`, `haptic/error`, `haptic/impact-medium`. Cada plataforma resuelve el nombre a su API nativa, igual que un token semántico resuelve a un primitive.
+**80%** en impacts y **100%** en notifications. Otro valor se marca como excepción en el caso.
 
-### How it maps to Rappi
+Siempre con cambio visual
 
-Mapeo de interacciones reales de la app a cada tipo. El estado refleja lo marcado en el tablero de diseño.
+Ningún haptic suena solo. Si es automático, coincide con una animación o un mensaje en pantalla.
 
-#### selection
+#### ¿En qué categoría va un caso nuevo?
 
-| Interacción | Estado |
-| --- | --- |
-| Agregar un producto a la canasta | Propuesto |
-| Dar like a un producto o tienda | Propuesto |
-| Aumentar unidades de producto (stepper) | Propuesto |
-| Slider con opciones de selección (ej. madurez del producto) | Propuesto |
-| Confirmar sustitutos (selección múltiple) | Propuesto |
-| Activar o desactivar filtros | Propuesto |
-| Filtros con selección | En revisión |
-| Selección de storetype | En revisión (entrar a un storetype es navegación; no parece necesario) |
-| Ir a pagar | En revisión |
-| Tocar ver canasta | En revisión |
-| Cerrar modales | En revisión |
+Responde en orden. La primera respuesta "sí" define la categoría.
 
-#### notification
+- ¿Comunica el **resultado** de algo: éxito, alerta, error o un premio?Success / Warning / Error
 
-| Resultado | Interacción | Estado |
-| --- | --- | --- |
-| success | Confirmación del código enviado al celular | Propuesto (revisar si el sistema ya vibra cuando el código llega por SMS) |
-| success | Aceptar un sustituto | Propuesto |
-| success | Confirmación de un pedido | Propuesto |
-| warning | Intentar agregar un producto sin completar los toppings | Propuesto |
-| warning | Dirección de entrega lejos de la ubicación actual | Propuesto |
-| error | Código inválido al ingresarlo (ej. cupón no válido, con snackbar o microinteracción en el input) | Propuesto |
-| error | Dirección de entrega errónea | Propuesto |
-| warning o error | Realizar un pedido sin seleccionar método de pago | [por decidir]: aparece en ambas columnas del tablero |
+- ¿Imita un **comportamiento físico**: llegar al límite de un gesto o algo que aparece e interrumpe?Physical Feedback
 
-#### impact
+- ¿Hace **avanzar la compra**: agregar, ir a canasta, continuar, pagar?Main actions
 
-| Interacción | Estilo | Estado |
-| --- | --- | --- |
-| Prender o apagar toggles | medium | En revisión |
+- ¿Es una acción secundaria donde importa **confirmar** que ocurrió?Secondary actions
 
-#### Dónde NO usar haptic (por revisar)
+- Ninguna de las anteriores.Sin haptic
 
-- Cancelar una búsqueda.
+Todos los patrones
 
-- Modales nativas con selección (el sistema ya resuelve su feedback).
+### Pattern library
 
-- Tab bar: es un componente donde la persona se mueve mucho; apps nativas y de delivery revisadas no lo usan.
+Las vibraciones que usa Rappi hoy, nombradas por intención como un token semántico: `haptic/*` resuelve a la API nativa de cada plataforma, igual que un token de color resuelve a un primitive.
 
-- Entrada al home o a un storetype: pendiente validar, se inclina a no usar.
+> **Por confirmar:** la nomenclatura `haptic/*` con desarrollo y la columna Android, que hoy es una recomendación sin validar.
 
 ### Accessibility
 
@@ -1292,41 +1269,57 @@ Mapeo de interacciones reales de la app a cada tipo. El estado refleja lo marcad
 
 ### Do & Don't
 
-- **Usar success al confirmar un pedido, junto al check y el mensaje en pantalla** — no vibres sin ningún cambio visible en la UI.
+#### Do
 
-- **Usar el patrón nativo del switch del sistema** — no sumes un haptic custom a un control que ya vibra por defecto (se duplica).
+- Usar success al confirmar un pedido, junto al check y el mensaje en pantalla.
 
-- **Reservar error para fallas reales (cupón no válido)** — no uses el mismo patrón para éxito y error.
+- Usar el patrón nativo del switch del sistema.
 
-- **Un haptic corto y nítido por evento** — no uses vibraciones largas, en bucle o en cada scroll.
+- Reservar error para fallas reales (cupón no válido).
 
-- **Dejar que la persona apague los haptics y que la app siga siendo clara** — no dependas del haptic para comunicar información compleja.
+- Un haptic corto y nítido por evento.
+
+- Dejar que la persona apague los haptics y que la app siga siendo clara.
+
+#### Don't
+
+- Vibrar sin ningún cambio visible en la UI.
+
+- Sumar un haptic custom a un control que ya vibra por defecto (se duplica).
+
+- Usar el mismo patrón para éxito y error.
+
+- Usar vibraciones largas, en bucle o en cada scroll.
+
+- Depender del haptic para comunicar información compleja.
 
 ### Dependencies
 
 - [Accessibility](accessibility.html): los haptics son un canal más de feedback y heredan la regla de "nunca un solo indicador".
 
-- [Motion](motion.html): haptic y animación deben ir sincronizados (ej. el impact al encajar una vista coincide con el final de la animación). [por documentar]
+- [Motion](motion.html): haptic y animación van sincronizados (ej. el sello de RappiRewards vibra justo cuando toca la pantalla). [por documentar]
 
-- **Componentes que disparan haptics:** stepper (`button-stepper`), toggle (`switch`), slider, filtros (`tags/carousel/standard-filters`), snackbars, `inputs/PIN`. Documentar en cada ficha de componente qué haptic dispara y cuándo. [por confirmar]
+- **Componentes que disparan haptics:** se listan en cada caso de las 4 categorías. La ficha de cada componente debe enlazar aquí su caso. [por confirmar]
 
 - [Content](../content.html): el mensaje visual que acompaña a un warning o error sigue la guía de voz y tono.
 
 ### Open items before Stable
 
-> **Decidir** si "pedido sin método de pago" es warning o error. **Cerrar** los ítems "En revisión" de selection (filtros con selección, ir a pagar, ver canasta, cerrar modales, storetype). **Definir** el uso de impact: el tablero lo deja en revisión porque sus niveles no tienen una intención clara para Rappi. **Validar** la migración en Android de EFFECT_* a constantes por acción (CONFIRM, REJECT, SEGMENT_TICK, TOGGLE_ON/OFF), y definir qué usar para warning. **Confirmar** con desarrollo la nomenclatura haptic/*.
+> **Especificar** el patrón Press & release (intensidad, nitidez y tiempos) para que no dependa de una referencia en producción. **Definir** el equivalente Android de cada patrón de la librería. **Reconciliar** esta guía con la propuesta del tablero FigJam `haptics-rappi` (stepper, filtros y propina como selection). **Decidir** si "pedido sin método de pago" es warning o error. **Confirmar** con desarrollo la nomenclatura `haptic/*`.
 
 ### References
 
-- Origen en Figma: FigJam **haptics-rappi** (`fileKey 5aOqmDJMcu1dsNZIIWhe94`), secciones "Haptics ¿Qué son?", "Dimensiones hápticas", "Tipos de Haptics", "Principios", "Implementación" y "Proposal Rappi experience".
+- Fuente de las 4 categorías: Figma [Haptics & Motion · Haptics guide](https://www.figma.com/design/9swVK6lCtF6ZfjjzjrQwDX/Haptics---Motion?node-id=1-733).
 
-- DS y guías consultadas: Apple Human Interface Guidelines (Playing haptics, Accessibility), Android Developers (Haptics design principles, Add haptic feedback to events), AOSP (UX foundation for haptic framework).
+- Propuesta inicial: FigJam **haptics-rappi** (`fileKey 5aOqmDJMcu1dsNZIIWhe94`).
+
+- Guías consultadas: Apple Human Interface Guidelines (Playing haptics), Android Developers (Haptics design principles), Meta (Haptics system).
 
 | Campo | Valor |
 | --- | --- |
-| Versión | 0.1 (borrador para revisión interna) |
+| Versión | 0.2 (estructura por categorías, borrador para revisión interna) |
 | Propietario | Equipo de Design System, Mustache |
-| Última actualización | 24 sep, 2026 |
+| Última actualización | 26 oct, 2026 |
 
 
 ## Icons
@@ -2085,7 +2078,7 @@ Concluyendo una duración total de 0,3s.
 
 > **Fuente: sitio Mustache (contexto).** Si un nombre o valor de este archivo choca con `SKILL.md`, `references/*.md` o `assets/tokens.css`, ganan esos. Avisa de la diferencia.
 
-En nuestra interfaz, un diálogo es una “conversación” entre el sistema y las personas usuarias con el fin de solicitar o brindar información.
+En nuestra interfaz, un diálogo es una "conversación" entre el sistema y las personas usuarias con el fin de solicitar o brindar información.
 
 ### Dialogs
 

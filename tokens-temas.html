@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/assets/favicon/site.webmanifest">
 <title>Design · Tokens y temas — Mustache Design System</title>
 <meta name="description" content="Cómo funcionan los tokens de Mustache: capas, nombres, temas de producto, light y dark, y modos por breakpoint.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -103,6 +107,71 @@
   .sw{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:8px;border:1px solid rgba(0,0,0,.12)}
   .pill{display:inline-block;font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 9px;border:1px solid var(--line-2);color:var(--muted)}
   .pill.ok{color:#0B6B3A;border-color:#9FDDBA;background:#E7F7EE}
+
+  /* ── Prueba de temas: mini dashboard abstracto (ref. tamagui.dev "Smart themes"
+     y la plantilla analytics de tailgrids). Todo el dashboard pinta con variables
+     --t-* que son tokens semánticos; js cambia sus valores por tema y modo. ── */
+  .th{margin:22px 0 26px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);overflow:hidden}
+  .th-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .th-themes{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
+  .th-chip{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:12.5px;font-weight:500;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 11px 5px 7px;cursor:pointer;transition:.15s}
+  .th-chip i{width:12px;height:12px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+  .th-chip:hover{color:var(--text);border-color:var(--line-2)}
+  .th-chip[aria-pressed="true"]{color:#fff;background:#171A1E;border-color:#171A1E}
+  .th-mode{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .th-mode button{font:inherit;font-size:12.5px;font-weight:500;color:var(--muted);background:none;border:0;border-radius:999px;padding:4px 12px;cursor:pointer}
+  .th-mode button[aria-pressed="true"]{background:#171A1E;color:#fff}
+  .th-mode button:disabled{opacity:.4;cursor:not-allowed}
+  .th-stage{padding:22px;background:var(--bg)}
+  .th-foot{display:flex;flex-wrap:wrap;gap:6px 14px;padding:12px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+  .th-foot span{display:inline-flex;align-items:center;gap:6px}
+  .th-foot i{width:12px;height:12px;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);transition:background .35s}
+  .th-foot code{font-size:11.5px}
+  .th-warn{margin:0;padding:10px 16px;border-top:1px solid var(--line);font-size:12.5px;color:#8a5a00;background:#FFF7E0}
+  /* dashboard */
+  .db{display:grid;grid-template-columns:92px 1fr;min-height:340px;border-radius:14px;overflow:hidden;border:1px solid var(--t-line);background:var(--t-bs);box-shadow:0 10px 30px rgba(23,26,30,.08)}
+  .db,.db *{transition:background-color .35s,color .35s,border-color .35s,fill .35s,stroke .35s}
+  .db-side{background:var(--t-bm);border-right:1px solid var(--t-line);padding:16px 12px;display:flex;flex-direction:column;gap:8px}
+  .db-logo{width:26px;height:26px;border-radius:8px;background:var(--t-ac);margin-bottom:10px}
+  .db-nav{display:flex;align-items:center;gap:7px;padding:7px;border-radius:8px}
+  .db-nav b{width:12px;height:12px;border-radius:4px;background:var(--t-sk);flex-shrink:0}
+  .db-nav u{height:6px;border-radius:3px;background:var(--t-iw);flex:1;opacity:.6}
+  .db-nav.on{background:var(--t-aw)}
+  .db-nav.on b{background:var(--t-ac)}
+  .db-nav.on u{background:var(--t-ia);opacity:1}
+  .db-main{padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+  .db-top{display:flex;align-items:center;gap:10px}
+  .db-search{flex:1;max-width:220px;height:28px;border-radius:999px;background:var(--t-bw)}
+  .db-av{width:28px;height:28px;border-radius:50%;background:var(--t-sk);margin-left:auto}
+  .db-btn{height:28px;padding:0 14px;border-radius:999px;background:var(--t-ac);display:flex;align-items:center}
+  .db-btn u{width:38px;height:6px;border-radius:3px;background:var(--t-io)}
+  .db-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .db-card{background:var(--t-bo);border:1px solid var(--t-line);border-radius:12px;padding:12px}
+  .db-ic{width:22px;height:22px;border-radius:7px;background:var(--t-aw);display:grid;place-items:center;margin-bottom:12px}
+  .db-ic::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--t-ac)}
+  .db-l{display:block;height:6px;border-radius:3px;background:var(--t-iw);opacity:.55;width:55%}
+  .db-xl{display:block;height:12px;border-radius:4px;background:var(--t-is);width:70%;margin:8px 0 10px}
+  .db-trend{display:inline-flex;align-items:center;gap:5px;height:18px;padding:0 7px;border-radius:999px;background:var(--t-pw)}
+  .db-trend u{width:22px;height:5px;border-radius:3px;background:var(--t-pos)}
+  .db-row{display:grid;grid-template-columns:1.7fr 1fr;gap:10px;flex:1}
+  .db-chart svg{display:block;width:100%;height:110px;margin-top:10px}
+  .db-chart .grid{stroke:var(--t-line);stroke-width:1}
+  .db-chart .area{fill:var(--t-aw)}
+  .db-chart .line{fill:none;stroke:var(--t-ac);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .db-chart .dot{fill:var(--t-bo);stroke:var(--t-ac);stroke-width:2.5}
+  .db-sub{background:var(--t-ac);border-color:transparent;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+  .db-sub .tag{font-family:var(--mono);font-size:10px;color:var(--t-io);opacity:.85}
+  .db-sub .db-l{background:var(--t-io);opacity:.7}
+  .db-sub .db-xl{background:var(--t-io)}
+  .db-sub .db-pill{align-self:flex-start;height:24px;padding:0 12px;border-radius:999px;background:var(--t-bo);display:flex;align-items:center}
+  .db-sub .db-pill u{width:34px;height:5px;border-radius:3px;background:var(--t-ia)}
+  .db-list{display:flex;flex-direction:column;gap:9px}
+  .db-li{display:flex;align-items:center;gap:8px}
+  .db-li b{width:18px;height:18px;border-radius:50%;background:var(--t-sk);flex-shrink:0}
+  .db-li u{height:6px;border-radius:3px;background:var(--t-it);opacity:.5;flex:1}
+  .db-li em{width:30px;height:14px;border-radius:999px;background:var(--t-of)}
+  @media(max-width:720px){.db{grid-template-columns:1fr}.db-side{display:none}.db-kpis{grid-template-columns:1fr 1fr}.db-kpis .db-card:nth-child(3){display:none}.db-row{grid-template-columns:1fr}}
+
   /* elegir */
   .steps{counter-reset:s;list-style:none;margin:14px 0 8px!important;display:grid;gap:10px}
   .steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0!important}
@@ -220,6 +289,46 @@
       <section class="doc" id="temas">
         <h2>Temas de producto</h2>
         <p>La colección de color tiene <strong>13 temas</strong>, uno por producto. Todos usan los mismos 94 nombres; cada tema decide a qué primitivo apunta. Así un componente funciona en todos los productos sin cambios.</p>
+        <!-- stash:skip (interactive demo, no text for the kit) -->
+        <div class="th" id="theme-demo">
+          <div class="th-bar">
+            <div class="th-themes" role="group" aria-label="Tema de producto"></div>
+            <div class="th-mode" role="group" aria-label="Modo"><button type="button" data-mode="light" aria-pressed="true">Light</button><button type="button" data-mode="dark" aria-pressed="false">Dark</button></div>
+          </div>
+          <div class="th-stage">
+            <div class="db" aria-hidden="true">
+              <div class="db-side">
+                <div class="db-logo"></div>
+                <div class="db-nav on"><b></b><u></u></div>
+                <div class="db-nav"><b></b><u></u></div>
+                <div class="db-nav"><b></b><u></u></div>
+                <div class="db-nav"><b></b><u></u></div>
+                <div class="db-nav"><b></b><u></u></div>
+              </div>
+              <div class="db-main">
+                <div class="db-top"><div class="db-search"></div><div class="db-av"></div><div class="db-btn"><u></u></div></div>
+                <div class="db-kpis">
+                  <div class="db-card"><div class="db-ic"></div><span class="db-l"></span><span class="db-xl"></span><span class="db-trend"><u></u></span></div>
+                  <div class="db-card"><div class="db-ic"></div><span class="db-l"></span><span class="db-xl" style="width:52%"></span><span class="db-trend"><u></u></span></div>
+                  <div class="db-card"><div class="db-ic"></div><span class="db-l"></span><span class="db-xl" style="width:62%"></span><span class="db-trend"><u></u></span></div>
+                </div>
+                <div class="db-row">
+                  <div class="db-card db-chart"><span class="db-l" style="width:30%"></span>
+                    <svg viewBox="0 0 300 110" preserveAspectRatio="none"><line class="grid" x1="0" y1="28" x2="300" y2="28"/><line class="grid" x1="0" y1="62" x2="300" y2="62"/><line class="grid" x1="0" y1="96" x2="300" y2="96"/><path class="area" d="M0 84 C40 80 50 50 90 56 S150 86 190 54 S250 18 300 26 V110 H0 Z"/><path class="line" d="M0 84 C40 80 50 50 90 56 S150 86 190 54 S250 18 300 26"/><circle class="dot" cx="190" cy="54" r="5"/></svg>
+                  </div>
+                  <div class="db-col" style="display:flex;flex-direction:column;gap:10px">
+                    <div class="db-card db-sub"><span class="tag">sub-tema · accent</span><div><span class="db-xl" style="width:75%;margin-top:10px"></span><span class="db-l" style="width:50%"></span></div><div class="db-pill" style="margin-top:12px"><u></u></div></div>
+                    <div class="db-card db-list"><div class="db-li"><b></b><u></u><em></em></div><div class="db-li"><b></b><u></u></div><div class="db-li"><b></b><u></u></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="th-foot" aria-live="polite"></div>
+          <p class="th-warn" hidden></p>
+        </div>
+        <!-- /stash:skip -->
+        <p>El dashboard no tiene un solo color escrito a mano: cada pieza usa un token semántico. Al cambiar de tema solo cambian los valores de los tokens, y todo se repinta. La tarjeta de acento muestra un <strong>sub-tema</strong>: el mismo contenido sobre <code>background/accent</code>, con texto en <code>ink/inverse-on</code>.</p>
         <p>Ejemplo: <code>background/accent</code> en light, tema por tema.</p>
         <div class="tbl-wrap"><table class="tbl">
           <tr><th>Tema</th><th><code>background/accent</code> apunta a</th><th>Dark mode propio</th></tr>
@@ -296,6 +405,42 @@
   </main>
 </div>
 
+<script>
+  // Prueba de temas: valores leídos de Figma semantics (Colors y Darkmode, 2 oct 2026)
+  (function () {
+    var demo = document.getElementById('theme-demo');
+    if (!demo) return;
+    var D = {"tokens":["background/standard","background/weak","background/mild","background/on-top","background/accent","background/accent-weak","background/positive-weak","background/offer","ink/strong","ink/standard","ink/weak","ink/accent","ink/inverse-on","ink/positive","line/border-standard","skeleton/standard"],"light":{"User App":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#34C85A","#E1F7E7","#DFF9ED","#FBDC25","#000000","#464D59","#919AAA","#34C85A","#FFFFFF","#34C85A","#ECEFF3","#ECEFF3"],"RT App":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#16625E","#DFF4F3","#DFF9ED","#FBDC25","#000000","#464D59","#919AAA","#16625E","#FFFFFF","#258E3F","#D6D9DF","#ECEFF3"],"Nitro":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#643DE2","#E8E2FB","#DFF9ED","#FFFFFF00","#000000","#464D59","#919AAA","#643DE2","#FFFFFF","#2CAA4C","#ECEFF3","#ECEFF3"],"Consumer CMS":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#16625E","#DFF4F3","#DFF9ED","#FFFFFF00","#000000","#5E6777","#FFFFFF00","#16625E","#FFFFFF00","#258E3F","#D6D9DF","#ECEFF3"],"Aliados":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#28B2AB","#DFF4F3","#DFF4F3","#FFFFFF00","#000000","#464D59","#919AAA","#28B2AB","#FFFFFF","#258E3F","#D6D9DF","#ECEFF3"],"Portal Partners":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#007AFF","#BDD8FB","#DFF9ED","#FFFFFF00","#171A1E","#464D59","#758195","#007AFF","#FFFFFF","#00A86C","#ECEFF3","#ECEFF3"],"Brands":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#4589FF","#EFF6FE","#DFF9ED","#FFFFFF00","#000000","#464D59","#919AAA","#34C85A","#FFFFFF","#00A86C","#D6D9DF","#ECEFF3"],"Mi Tienda":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#007AFF","#EFF6FE","#DFF9ED","#FFFFFF00","#000000","#464D59","#919AAA","#34C85A","#FFFFFF","#34C85A","#D6D9DF","#ECEFF3"],"Nexus":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#1D7232","#E1F7E7","#DFF9ED","#FFFFFF00","#000000","#464D59","#919AAA","#105635","#FFFFFF","#2CAA4C","#ECEFF3","#ECEFF3"],"Marketing Suite":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#2EC4B6","#DFF4F3","#DFF9ED","#FFFFFF00","#000000","#464D59","#919AAA","#2EC4B6","#FFFFFF","#34C85A","#ECEFF3","#ECEFF3"],"Merchants":["#FFFFFF","#D6D9DF","#F7F8F9","#FFFFFF","#FF441F","#FFE3E3","#DFF9ED","#FBDC25","#000000","#464D59","#919AAA","#FF441F","#FFFFFF","#00A86C","#ECEFF3","#ECEFF3"],"Cargo":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#FF441F","#E1F7E7","#DFF9ED","#FBDC25","#000000","#464D59","#919AAA","#FF441F","#FFFFFF","#00A86C","#ECEFF3","#ECEFF3"],"Pay":["#FFFFFF","#ECEFF3","#F7F8F9","#FFFFFF","#6168DB","#E8E9FA","#DFF9ED","#FBDC25","#000000","#2F343C","#464D59","#4B50A9","#FFFFFF","#00A86C","#ECEFF3","#ECEFF3"]},"dark":{"User App":["#000000","#2F343C","#171A1EB2","#171A1E","#1D7232","#0B2B13","#0B2B13","#FBDC25","#FFFFFF","#919AAA","#464D59","#34C85A","#FFFFFF","#34C85A","#2F343C","#171A1E"],"Pay":["#000000","#2F343C","#17191EB2","#171A1E","#353978","#0F1021","#0B2B13","#FBDC25","#FFFFFF","#919AAA","#464D59","#898EE4","#FFFFFF","#2CAA4C","#2F343C","#171A1E"]}};
+    var VARS = ['bs','bw','bm','bo','ac','aw','pw','of','is','it','iw','ia','io','pos','line','sk'];
+    var SHOW = [['background/accent',4],['background/accent-weak',5],['ink/accent',11],['ink/inverse-on',12],['background/standard',0],['ink/strong',8]];
+    var themes = Object.keys(D.light), cur = 'User App', mode = 'light';
+    var bar = demo.querySelector('.th-themes'), modeBtns = demo.querySelectorAll('.th-mode button');
+    var foot = demo.querySelector('.th-foot'), warn = demo.querySelector('.th-warn'), db = demo.querySelector('.db');
+    themes.forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'th-chip'; b.dataset.theme = t;
+      b.innerHTML = '<i style="background:' + D.light[t][4] + '"></i>' + t;
+      b.addEventListener('click', function () { cur = t; if (!D.dark[t]) mode = 'light'; apply(); });
+      bar.appendChild(b);
+    });
+    modeBtns.forEach(function (b) { b.addEventListener('click', function () { if (!b.disabled) { mode = b.dataset.mode; apply(); } }); });
+    function isNA(v) { return /^#?[0-9A-F]{6}00$/i.test(v); }
+    function apply() {
+      var vals = (mode === 'dark' && D.dark[cur]) ? D.dark[cur] : D.light[cur];
+      VARS.forEach(function (k, i) { db.style.setProperty('--t-' + k, vals[i]); });
+      bar.querySelectorAll('.th-chip').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.theme === cur)); });
+      modeBtns.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.mode === mode));
+        if (b.dataset.mode === 'dark') { b.disabled = !D.dark[cur]; b.title = D.dark[cur] ? '' : 'Este tema no tiene dark mode propio'; }
+      });
+      foot.innerHTML = SHOW.map(function (s) { return '<span><i style="background:' + vals[s[1]] + '"></i><code>' + s[0] + '</code></span>'; }).join('');
+      var na = D.tokens.filter(function (t, i) { return isNA(vals[i]); });
+      warn.hidden = !na.length;
+      if (na.length) warn.textContent = '⚠️ En ' + cur + ' estos tokens valen N/A en Figma y no se ven: ' + na.join(', ') + '.';
+    }
+    apply();
+  })();
+</script>
 <script>
   (function () {
     var btn = document.querySelector('.backtop');
